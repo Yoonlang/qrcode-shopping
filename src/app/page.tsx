@@ -3,6 +3,7 @@
 import CartPage from "@/pages/cart_page";
 import InfoPage from "@/pages/info_page";
 import MainPage from "@/pages/main_page";
+import GlobalStyle from "@/styles/global";
 import { useState } from "react";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
 
   return (
     <div>
+      <GlobalStyle />
       {
         [
           <MainPage
