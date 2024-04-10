@@ -1,6 +1,6 @@
 import { StyledSnackBar } from "@/styles/components/snack_bar";
 
-export default function MessageSnackBar({ message }: { message: string }) {
+function MessageSnackBar({ message }: { message: string }) {
   return (
     <StyledSnackBar
       open={true}
@@ -11,3 +11,5 @@ export default function MessageSnackBar({ message }: { message: string }) {
     />
   );
 }
+
+export { MessageSnackBar };

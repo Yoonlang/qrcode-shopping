@@ -1,7 +1,7 @@
 import { CameraStyle } from "@/styles/components/camera";
 import { useEffect, useRef } from "react";
 
-export function Camera() {
+function Camera() {
   const cameraRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -31,3 +31,5 @@ async function getVideoStream() {
   }
   return null;
 }
+
+export default Camera;

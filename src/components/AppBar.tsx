@@ -4,7 +4,7 @@ import Icons from "./Icons";
 import { StyledAppBar, StyledBottomAppBar } from "@/styles/components/app_bar";
 import { StyledBadge } from "@/styles/components/badge";
 
-export function TitleAppBar() {
+function TitleAppBar() {
   return (
     <StyledAppBar>
       <Toolbar>
@@ -14,7 +14,7 @@ export function TitleAppBar() {
   );
 }
 
-export function BottomAppBar({
+function BottomAppBar({
   badgeNum = 0,
   icon,
 }: {
@@ -31,3 +31,5 @@ export function BottomAppBar({
     </StyledBottomAppBar>
   );
 }
+
+export { TitleAppBar, BottomAppBar };

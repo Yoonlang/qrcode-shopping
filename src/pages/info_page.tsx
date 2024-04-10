@@ -1,4 +1,4 @@
-export default function InfoPage({ toNextPage }: { toNextPage: Function }) {
+function InfoPage({ toNextPage }: { toNextPage: Function }) {
   return (
     <div>
       <h1>Info</h1>
@@ -6,3 +6,5 @@ export default function InfoPage({ toNextPage }: { toNextPage: Function }) {
     </div>
   );
 }
+
+export default InfoPage;

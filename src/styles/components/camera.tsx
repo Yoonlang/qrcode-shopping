@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CameraStyle = styled.div`
+const CameraStyle = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -13,3 +13,5 @@ export const CameraStyle = styled.div`
     object-fit: cover;
   }
 `;
+
+export { CameraStyle };

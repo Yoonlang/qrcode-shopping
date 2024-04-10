@@ -1,9 +1,9 @@
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
-import { Camera } from "@/components/Camera";
-import MessageSnackBar from "@/components/SnackBar";
+import Camera from "@/components/Camera";
+import { MessageSnackBar } from "@/components/SnackBar";
 import { MainPageLayout } from "@/styles/layouts";
 
-export default function MainPage({ toNextPage }: { toNextPage: Function }) {
+function MainPage({ toNextPage }: { toNextPage: Function }) {
   return (
     <MainPageLayout>
       <MessageSnackBar message="Scan QR Code" />
@@ -13,3 +13,5 @@ export default function MainPage({ toNextPage }: { toNextPage: Function }) {
     </MainPageLayout>
   );
 }
+
+export default MainPage;
