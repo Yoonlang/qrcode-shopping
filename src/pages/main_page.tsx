@@ -1,6 +1,6 @@
-import { BottomAppBar, TitleAppBar } from "@/components/app_bar";
-import { Camera } from "@/components/camera";
-import MessageSnackBar from "@/components/snack_bar";
+import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
+import { Camera } from "@/components/Camera";
+import MessageSnackBar from "@/components/SnackBar";
 import { MainPageLayout } from "@/styles/layouts";
 
 export default function MainPage({ toNextPage }: { toNextPage: Function }) {

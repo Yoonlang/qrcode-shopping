@@ -1,6 +1,6 @@
 import { AppBarTitleText, BottomAppBarTitleText } from "@/styles/texts";
 import { Box, Toolbar } from "@mui/material";
-import Icons from "./icons";
+import Icons from "./Icons";
 import { StyledAppBar, StyledBottomAppBar } from "@/styles/components/app_bar";
 import { StyledBadge } from "@/styles/components/badge";
 
