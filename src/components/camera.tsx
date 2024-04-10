@@ -19,12 +19,8 @@ function Camera() {
   const cameraRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!cameraRef) return;
-    getVideoStream().then((stream) => {
-      if (!stream) return;
-      cameraRef.current!.srcObject = stream;
-    });
-  }, [cameraRef]);
+    getVideoStream(cameraRef);
+  }, []);
 
   return (
     <CameraStyle>
@@ -33,17 +29,20 @@ function Camera() {
   );
 }
 
-async function getVideoStream() {
+function getVideoStream(cameraRef: React.RefObject<HTMLVideoElement>) {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
-    return await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: "environment",
-        width: { ideal: 1920 },
-        height: { ideal: 1080 },
-      },
-    });
+    navigator.mediaDevices
+      .getUserMedia({
+        video: {
+          facingMode: "environment",
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+        },
+      })
+      .then((stream) => {
+        cameraRef.current!.srcObject = stream;
+      });
   }
-  return null;
 }
 
 export default Camera;
