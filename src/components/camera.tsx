@@ -1,5 +1,19 @@
-import { CameraStyle } from "@/styles/components/camera";
+import styled from "@emotion/styled";
 import { useEffect, useRef } from "react";
+
+const CameraStyle = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
 
 function Camera() {
   const cameraRef = useRef<HTMLVideoElement>(null);
