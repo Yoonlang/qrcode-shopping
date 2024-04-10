@@ -1,7 +1,7 @@
-const white = "#ffffff";
-const black = "#000000";
+const WHITE = "#ffffff";
+const BLACK = "#000000";
 
-const primary_dark = "#323232";
-const primary = "#42FF00";
+const PRIMARY_DARK = "#323232";
+const PRIMARY = "#42FF00";
 
-export { white, black, primary_dark, primary };
+export { WHITE, BLACK, PRIMARY_DARK, PRIMARY };
