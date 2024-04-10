@@ -18,6 +18,7 @@ const StyledSnackBar = styled(Snackbar)`
 
 function MessageSnackBar({ message }: { message: string }) {
   return (
+    //추후 로직 추가시 수정될 부분은 주석처리
     <StyledSnackBar
       open={true}
       // autoHideDuration={6000}
