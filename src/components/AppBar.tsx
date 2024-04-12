@@ -10,7 +10,7 @@ const StyledAppBar = styled(AppBar)`
   background-color: ${WHITE};
 `;
 
-function TitleAppBar() {
+const TitleAppBar = () => {
   return (
     <StyledAppBar>
       <Toolbar>
@@ -18,7 +18,7 @@ function TitleAppBar() {
       </Toolbar>
     </StyledAppBar>
   );
-}
+};
 
 ////BottomAppBar : 하단 바
 const StyledBottomAppBar = styled(AppBar)`
@@ -36,13 +36,13 @@ const StyledBadge = styled(Badge)`
   }
 `;
 
-function BottomAppBar({
+const BottomAppBar = ({
   badgeNum = 0,
   icon,
 }: {
   badgeNum?: number;
   icon: string;
-}) {
+}) => {
   return (
     <StyledBottomAppBar>
       <Toolbar>
@@ -52,6 +52,6 @@ function BottomAppBar({
       </Toolbar>
     </StyledBottomAppBar>
   );
-}
+};
 
 export { TitleAppBar, BottomAppBar };

@@ -7,16 +7,17 @@ const StyledSnackBar = styled(Snackbar)`
 
   .MuiSnackbarContent-root {
     width: 320px;
-
     position: fixed;
     top: 94px;
+    left: 50%;
+    transform: translateX(-50%) !important;
 
     display: flex;
     justify-content: center;
   }
 `;
 
-function MessageSnackBar({ message }: { message: string }) {
+const MessageSnackBar = ({ message }: { message: string }) => {
   return (
     //추후 로직 추가시 수정될 부분은 주석처리
     <StyledSnackBar
@@ -27,6 +28,6 @@ function MessageSnackBar({ message }: { message: string }) {
       // action={action}
     />
   );
-}
+};
 
 export { MessageSnackBar };

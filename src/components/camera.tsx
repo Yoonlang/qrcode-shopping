@@ -15,7 +15,7 @@ const CameraStyle = styled.div`
   }
 `;
 
-function Camera() {
+const Camera = () => {
   const cameraRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -27,9 +27,9 @@ function Camera() {
       <video ref={cameraRef} autoPlay></video>
     </CameraStyle>
   );
-}
+};
 
-function getVideoStream(cameraRef: React.RefObject<HTMLVideoElement>) {
+const getVideoStream = (cameraRef: React.RefObject<HTMLVideoElement>) => {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     navigator.mediaDevices
       .getUserMedia({
@@ -43,6 +43,6 @@ function getVideoStream(cameraRef: React.RefObject<HTMLVideoElement>) {
         cameraRef.current!.srcObject = stream;
       });
   }
-}
+};
 
 export default Camera;
