@@ -1,15 +1,17 @@
 "use client";
 
+import CartPage from "@/pages/cart_page";
+import InfoPage from "@/pages/info_page";
+import MainPage from "@/pages/main_page";
+import GlobalStyle from "@/styles/global";
 import { useState } from "react";
-import MainPage from "./components/pages/main_page";
-import CartPage from "./components/pages/cart_page";
-import InfoPage from "./components/pages/info_page";
 
 export default function Home() {
   const [pageIdx, setPageIdx] = useState(0);
 
   return (
     <div>
+      <GlobalStyle />
       {
         [
           <MainPage
