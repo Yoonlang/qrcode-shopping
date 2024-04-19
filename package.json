@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.15",
     "next": "14.1.4",
+    "qr-scanner": "^1.4.2",
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.8"
