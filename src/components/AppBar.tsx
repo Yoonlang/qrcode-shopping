@@ -1,20 +1,28 @@
 import { AppBarTitleText, BottomAppBarTitleText } from "@/styles/texts";
-import { AppBar, Badge, Box, Toolbar } from "@mui/material";
+import {
+  AppBar,
+  Badge,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import Icons from "./Icons";
 import styled from "@emotion/styled";
 import { BLACK, PRIMARY, PRIMARY_DARK, WHITE } from "@/constants/colors";
 
 ////AppBar : 상단바
 const StyledAppBar = styled(AppBar)`
-  align-items: center;
   background-color: ${WHITE};
+  position: sticky;
 `;
 
-const TitleAppBar = () => {
+const TitleAppBar = ({ back, title }: { back: boolean; title: string }) => {
   return (
     <StyledAppBar>
       <Toolbar>
-        <AppBarTitleText>QR Scan</AppBarTitleText>
+        {back && <IconButton edge="start">{Icons["back"]}</IconButton>}
+        <AppBarTitleText>{title}</AppBarTitleText>
       </Toolbar>
     </StyledAppBar>
   );
