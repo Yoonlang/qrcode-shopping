@@ -6,7 +6,7 @@ import GlobalStyle from "@/styles/global";
 import { useCallback, useState } from "react";
 
 const Home = () => {
-  const [pageIdx, setPageIdx] = useState(0);
+  const [pageIdx, setPageIdx] = useState(2);
   const [scannedItems, setScannedItems] = useState({});
 
   const toNextPage = useCallback(() => {

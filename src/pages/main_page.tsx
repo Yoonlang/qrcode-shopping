@@ -13,7 +13,7 @@ const MainPage = ({
   return (
     <div>
       <MessageSnackBar message="Scan QR Code" />
-      <TitleAppBar />
+      <TitleAppBar hasBack={false} title="QR Scan" />
       <QrCode setScannedItems={setScannedItems} />
       <BottomAppBar icon="cart" badgeNum={1} toNextPage={toNextPage} />
     </div>
