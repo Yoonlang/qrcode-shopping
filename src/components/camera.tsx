@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { useEffect, useRef } from "react";
 
-const CameraStyle = styled.div`
+const StyledCamera = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -23,9 +23,9 @@ const Camera = () => {
   }, []);
 
   return (
-    <CameraStyle>
+    <StyledCamera>
       <video ref={cameraRef} autoPlay></video>
-    </CameraStyle>
+    </StyledCamera>
   );
 };
 
