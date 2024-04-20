@@ -17,10 +17,16 @@ const AppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const TitleAppBar = () => {
+const titleText = {
+  main: "QR code",
+  cart: "Cart",
+  info: "Info",
+};
+
+const TitleAppBar = ({ id }) => {
   return (
     <StyledAppBar>
-      <AppBarTitleText>QR Scan</AppBarTitleText>
+      <AppBarTitleText>{titleText[id]}</AppBarTitleText>
     </StyledAppBar>
   );
 };
@@ -58,19 +64,23 @@ const BottomAppBarTitleText = styled.div`
 `;
 
 const BottomAppBar = ({
-  badgeNum = 0,
   icon,
   toNextPage,
+  text,
+  badgeNum,
 }: {
-  badgeNum?: number;
   icon: string;
-  toNextPage: Function;
+  toNextPage: () => void;
+  text: string;
+  badgeNum: number | null;
 }) => {
   return (
     <StyledBottomAppBar>
-      <button onClick={() => toNextPage()}>
-        <StyledBadge badgeContent={badgeNum}>{Icons[icon]}</StyledBadge>
-        <BottomAppBarTitleText>장바구니</BottomAppBarTitleText>
+      <button onClick={toNextPage}>
+        <StyledBadge badgeContent={badgeNum === null ? null : badgeNum}>
+          {Icons[icon]}
+        </StyledBadge>
+        <BottomAppBarTitleText>{text}</BottomAppBarTitleText>
       </button>
     </StyledBottomAppBar>
   );
