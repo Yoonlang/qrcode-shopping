@@ -19,10 +19,16 @@ const AppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const TitleAppBar = ({ back, title }: { back: boolean; title: string }) => {
+const TitleAppBar = ({
+  hasBack,
+  title,
+}: {
+  hasBack: boolean;
+  title: string;
+}) => {
   return (
     <StyledAppBar>
-      {back && <IconButton edge="start">{Icons["back"]}</IconButton>}
+      {hasBack && <IconButton edge="start">{Icons["back"]}</IconButton>}
       <AppBarTitleText>{title}</AppBarTitleText>
     </StyledAppBar>
   );

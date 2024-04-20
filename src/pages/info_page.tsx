@@ -34,7 +34,7 @@ const InfoPage = ({ toNextPage }: { toNextPage: Function }) => {
 
   return (
     <div>
-      <TitleAppBar back={true} title="INFO" />
+      <TitleAppBar hasBack={true} title="INFO" />
       <StyledStepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>

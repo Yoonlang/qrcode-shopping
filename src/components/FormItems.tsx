@@ -6,12 +6,21 @@ const StyledStepper = styled(Stepper)({
   "& .MuiStepIcon-root.Mui-active": {
     color: "#000",
   },
+  "& .MuiStepLabel-label": {
+    fontSize: "17px",
+  },
   "& circle": {
-    r: "10",
+    r: "7",
+  },
+  "& .MuiStepIcon-text": {
+    fontSize: "7.8px",
   },
 });
 
 const StyledTextField = styled(TextField)({
+  "& .MuiInputBase-root.MuiOutlinedInput-root": {
+    borderRadius: "6px",
+  },
   "& label.Mui-focused": {
     color: "#000",
   },
