@@ -1,16 +1,15 @@
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
-import Camera from "@/components/Camera";
+// import Camera from "@/components/Camera";
 import { MessageSnackBar } from "@/components/SnackBar";
-import { MainPageLayout } from "@/styles/layouts";
 
 const MainPage = ({ toNextPage }: { toNextPage: Function }) => {
   return (
-    <MainPageLayout>
-      <MessageSnackBar message="Scan QR Code" />
+    <div>
+      {/* <MessageSnackBar message="Scan QR Code" /> */}
       <TitleAppBar />
-      <Camera />
-      <BottomAppBar icon="cart" badgeNum={5} />
-    </MainPageLayout>
+      {/* <Camera /> */}
+      <BottomAppBar icon="cart" badgeNum={1} toNextPage={toNextPage} />
+    </div>
   );
 };
 
