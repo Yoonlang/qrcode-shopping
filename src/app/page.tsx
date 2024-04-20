@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 
 const Home = () => {
   const [pageIdx, setPageIdx] = useState(0);
+  const [scannedItems, setScannedItems] = useState({});
 
   const toNextPage = useCallback(() => {
     setPageIdx((pageIdx + 1) % 3);
@@ -16,9 +17,9 @@ const Home = () => {
     <>
       <GlobalStyle />
       {pageIdx === 0 ? (
-        <MainPage toNextPage={toNextPage} />
+        <MainPage toNextPage={toNextPage} setScannedItems={setScannedItems} />
       ) : pageIdx === 1 ? (
-        <CartPage toNextPage={toNextPage} />
+        <CartPage toNextPage={toNextPage} scannedItems={scannedItems} />
       ) : (
         <InfoPage toNextPage={toNextPage} />
       )}

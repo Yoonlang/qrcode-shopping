@@ -1,24 +1,24 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+* {
+    box-sizing: border-box;
+  }
+
   html,
-  body {
+  body,
+  body > div {
     padding: 0;
     margin: 0;
     line-height: 1.6;
     height: 100%;
+  }
 
-    > div {
+  body > div {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
 `;
 
 export default GlobalStyle;

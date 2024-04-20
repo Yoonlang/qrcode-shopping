@@ -1,4 +1,10 @@
-const CartPage = ({ toNextPage }: { toNextPage: Function }) => {
+const CartPage = ({
+  toNextPage,
+  scannedItems,
+}: {
+  toNextPage: Function;
+  scannedItems: Object;
+}) => {
   return (
     <div>
       <h1>Cart</h1>
