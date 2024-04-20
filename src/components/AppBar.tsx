@@ -1,6 +1,6 @@
 import { AppBar, Badge } from "@mui/material";
 import Icons from "@/components/icons";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
 
 const StyledAppBar = styled(AppBar)`

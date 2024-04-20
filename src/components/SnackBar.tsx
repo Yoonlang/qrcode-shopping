@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { Snackbar } from "@mui/material";
 
 const StyledSnackBar = styled(Snackbar)`
