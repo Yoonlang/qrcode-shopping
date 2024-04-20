@@ -4,8 +4,7 @@ import { Box, Step, StepContent, StepLabel, Stepper } from "@mui/material";
 
 import { TitleAppBar } from "@/components/AppBar";
 import { StyledStepper, UserInput, UserSelect } from "@/components/FormItems";
-import { MainPageLayout } from "@/styles/layouts";
-import { business, steps, codes } from "@/constants/form";
+import { business, steps, codes } from "@/consts/form";
 import styled from "styled-components";
 
 const StyledBox = styled(Box)`
@@ -34,7 +33,7 @@ const InfoPage = ({ toNextPage }: { toNextPage: Function }) => {
   });
 
   return (
-    <MainPageLayout>
+    <div>
       <TitleAppBar back={true} title="INFO" />
       <StyledStepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
@@ -71,7 +70,7 @@ const InfoPage = ({ toNextPage }: { toNextPage: Function }) => {
           </Step>
         ))}
       </StyledStepper>
-    </MainPageLayout>
+    </div>
   );
 };
 

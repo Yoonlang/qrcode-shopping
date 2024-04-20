@@ -1,39 +1,30 @@
 "use client";
-
 import CartPage from "@/pages/cart_page";
 import InfoPage from "@/pages/info_page";
 import MainPage from "@/pages/main_page";
 import GlobalStyle from "@/styles/global";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-export default function Home() {
-  const [pageIdx, setPageIdx] = useState(0);
+const Home = () => {
+  const [pageIdx, setPageIdx] = useState(2);
+  const [scannedItems, setScannedItems] = useState({});
+
+  const toNextPage = useCallback(() => {
+    setPageIdx((pageIdx + 1) % 3);
+  }, [pageIdx]);
 
   return (
-    <div>
+    <>
       <GlobalStyle />
-      {
-        [
-          <MainPage
-            key={0}
-            toNextPage={() => {
-              setPageIdx(1);
-            }}
-          />,
-          <CartPage
-            key={1}
-            toNextPage={() => {
-              setPageIdx(2);
-            }}
-          />,
-          <InfoPage
-            key={2}
-            toNextPage={() => {
-              setPageIdx(0);
-            }}
-          />,
-        ][pageIdx]
-      }
-    </div>
+      {pageIdx === 0 ? (
+        <MainPage toNextPage={toNextPage} setScannedItems={setScannedItems} />
+      ) : pageIdx === 1 ? (
+        <CartPage toNextPage={toNextPage} scannedItems={scannedItems} />
+      ) : (
+        <InfoPage toNextPage={toNextPage} />
+      )}
+    </>
   );
-}
+};
+
+export default Home;
