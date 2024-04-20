@@ -1,5 +1,6 @@
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { Snackbar } from "@mui/material";
+import { useState } from "react";
 
 const StyledSnackBar = styled(Snackbar)`
   display: flex;
@@ -18,14 +19,16 @@ const StyledSnackBar = styled(Snackbar)`
 `;
 
 const MessageSnackBar = ({ message }: { message: string }) => {
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
-    //추후 로직 추가시 수정될 부분은 주석처리
     <StyledSnackBar
-      open={true}
-      // autoHideDuration={6000}
-      // onClose={handleClose}
+      open={isOpen}
+      autoHideDuration={3000}
+      onClose={() => {
+        setIsOpen(false);
+      }}
       message={message}
-      // action={action}
     />
   );
 };
