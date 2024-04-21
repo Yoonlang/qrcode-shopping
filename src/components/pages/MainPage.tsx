@@ -17,7 +17,7 @@ const bottomText = {
 };
 
 const MainPage = () => {
-  const [pageIdx, setPageIdx] = useState(0);
+  const [pageIdx, setPageIdx] = useState(2);
   const [scannedItems, setScannedItems] = useState({});
   const formik = useFormik({
     initialValues: initialValues,

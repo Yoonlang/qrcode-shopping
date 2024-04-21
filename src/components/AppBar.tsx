@@ -25,11 +25,23 @@ const titleText = {
   info: "Info",
 };
 
+const EmptyDiv = styled.div`
+  margin: 8px;
+  width: 25px;
+`;
+
+const StyledIconButton = styled(IconButton)`
+  margin: 0;
+`;
+
 const TitleAppBar = ({ id, hasBack }) => {
   return (
     <StyledAppBar>
-      {hasBack && <IconButton edge="start">{Icons["back"]}</IconButton>}
+      {hasBack && (
+        <StyledIconButton edge="start">{Icons["back"]}</StyledIconButton>
+      )}
       <AppBarTitleText>{titleText[id]}</AppBarTitleText>
+      <EmptyDiv />
     </StyledAppBar>
   );
 };
