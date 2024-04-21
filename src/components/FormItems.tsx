@@ -1,6 +1,15 @@
-import { MenuItem, Stepper, TextField } from "@mui/material";
+import { Box, MenuItem, Stepper, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import styled from "styled-components";
+
+const StyledBox = styled(Box)`
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+`;
+
+const StyledDiv = styled.div`
+  margin-right: 10px;
+`;
 
 const StyledStepper = styled(Stepper)({
   "& .MuiSvgIcon-root": {
@@ -110,4 +119,4 @@ const UserSelect = ({
   );
 };
 
-export { StyledStepper, UserInput, UserSelect };
+export { StyledBox, StyledDiv, StyledStepper, UserInput, UserSelect };
