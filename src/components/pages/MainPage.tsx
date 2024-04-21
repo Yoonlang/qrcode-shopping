@@ -1,5 +1,5 @@
 import GlobalStyle from "@/styles/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import QrScannerPage from "./QrScannerPage";
 import ToBuyListPage from "./ToBuyListPage";
@@ -17,15 +17,21 @@ const bottomText = {
 };
 
 const MainPage = () => {
-  const [pageIdx, setPageIdx] = useState(2);
+  const [pageIdx, setPageIdx] = useState(0);
   const [scannedItems, setScannedItems] = useState({});
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
+    validateOnMount: true,
     onSubmit: (form) => {
       console.log(form);
     },
   });
+
+  useEffect(() => {
+    console.log(pageIdx);
+    console.log(formik.isValid);
+  }, [pageIdx]);
 
   const handleClickBottomAppBar = () => {
     if (pageIdx === 2) {
