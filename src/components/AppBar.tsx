@@ -1,14 +1,16 @@
-import { AppBar, Badge } from "@mui/material";
-import Icons from "@/components/Icons";
+import { AppBar, Badge, IconButton, Toolbar, Typography } from "@mui/material";
+import Icons from "@/components/icons";
 import styled from "styled-components";
 import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
 
 const StyledAppBar = styled(AppBar)`
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: #fff;
   width: 100%;
   height: 56px;
+  position: sticky;
 `;
 
 const AppBarTitleText = styled.div`
@@ -23,9 +25,10 @@ const titleText = {
   info: "Info",
 };
 
-const TitleAppBar = ({ id }) => {
+const TitleAppBar = ({ id, hasBack }) => {
   return (
     <StyledAppBar>
+      {hasBack && <IconButton edge="start">{Icons["back"]}</IconButton>}
       <AppBarTitleText>{titleText[id]}</AppBarTitleText>
     </StyledAppBar>
   );

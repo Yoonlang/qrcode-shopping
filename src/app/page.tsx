@@ -15,7 +15,7 @@ const bottomText = {
 };
 
 const Home = () => {
-  const [pageIdx, setPageIdx] = useState(0);
+  const [pageIdx, setPageIdx] = useState(2);
   const [scannedItems, setScannedItems] = useState({});
 
   const toNextPage = () => {
@@ -24,7 +24,10 @@ const Home = () => {
 
   return (
     <>
-      <TitleAppBar id={pageIds[pageIdx]} />
+      <TitleAppBar
+        id={pageIds[pageIdx]}
+        hasBack={pageIdx === 0 ? false : true}
+      />
       <GlobalStyle />
       {pageIdx === 0 ? (
         <MainPage setScannedItems={setScannedItems} />
