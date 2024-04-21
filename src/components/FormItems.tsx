@@ -3,17 +3,21 @@ import { FormikProps } from "formik";
 import styled from "styled-components";
 
 const StyledStepper = styled(Stepper)({
+  "& .MuiSvgIcon-root": {
+    width: "15.6px",
+    marginLeft: "5px",
+  },
   "& .MuiStepIcon-root.Mui-active": {
     color: "#000",
   },
   "& .MuiStepLabel-label": {
     fontSize: "17px",
   },
-  "& circle": {
-    r: "7",
-  },
   "& .MuiStepIcon-text": {
     fontSize: "7.8px",
+  },
+  "& .Mui-completed": {
+    color: "#000",
   },
 });
 
