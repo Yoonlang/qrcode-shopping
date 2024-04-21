@@ -1,5 +1,5 @@
 import { AppBar, Badge, IconButton } from "@mui/material";
-import Icons from "@/components/icons";
+import Icons from "@/components/Icons";
 import styled from "styled-components";
 import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
 
