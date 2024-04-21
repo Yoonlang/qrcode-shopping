@@ -6,7 +6,7 @@ export const validationSchema = Yup.object().shape({
   userName: Yup.string().required(),
   companyName: Yup.string().required(),
   business: Yup.string().required(),
-  email: Yup.string().email(),
+  email: Yup.string().email().required(),
   countryCode: Yup.string().required(),
   phoneNumber: Yup.number().required(),
   coZipCode: Yup.number().required(),
