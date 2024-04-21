@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Box, Step, StepContent, StepLabel, Stepper } from "@mui/material";
+import { Box, Step, StepContent, StepLabel } from "@mui/material";
 import { StyledStepper, UserInput, UserSelect } from "@/components/FormItems";
 import { business, steps, codes } from "@/consts/form";
 import styled from "styled-components";
