@@ -1,7 +1,11 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Step, StepContent, StepLabel } from "@mui/material";
-import { StyledStepper } from "@/components/FormItems";
+import { Checkbox, Step, StepContent, StepLabel } from "@mui/material";
+import {
+  AddressBox,
+  StyledFormControlLabel,
+  StyledStepper,
+} from "@/components/FormItems";
 import { steps } from "@/consts/form";
 import OrdererInfo from "../OrdererInfo";
 import CompanyAddress from "../CompanyAddress";
@@ -17,6 +21,12 @@ const UserInfoSubmissionPage = () => {
       email: "",
       countryCode: "",
       phoneNumber: "",
+      coZipCode: "",
+      coAddress1: "",
+      coAddress2: "",
+      spZipCode: "",
+      spAddress1: "",
+      spAddress2: "",
     },
     onSubmit: (form) => {
       console.log(form);
@@ -24,26 +34,35 @@ const UserInfoSubmissionPage = () => {
   });
 
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
-        <StyledStepper activeStep={activeStep} orientation="vertical">
-          {steps.map((step, index) => (
-            <Step key={step.label} expanded>
+    <form onSubmit={formik.handleSubmit}>
+      <StyledStepper activeStep={activeStep} orientation="vertical">
+        {steps.map((step, index) => (
+          <Step key={step.label} expanded>
+            {index !== 2 ? (
               <StepLabel>{step.label}</StepLabel>
-              <StepContent>
-                {index === 0 ? (
-                  <OrdererInfo formik={formik} />
-                ) : index === 1 ? (
-                  <CompanyAddress formik={formik} />
-                ) : (
-                  <ShippingAddress formik={formik} />
-                )}
-              </StepContent>
-            </Step>
-          ))}
-        </StyledStepper>
-      </form>
-    </div>
+            ) : (
+              <AddressBox>
+                <StepLabel>{step.label}</StepLabel>
+                <StyledFormControlLabel
+                  control={<Checkbox />}
+                  label="회사 주소와 동일"
+                  labelPlacement="start"
+                />
+              </AddressBox>
+            )}
+            <StepContent>
+              {index === 0 ? (
+                <OrdererInfo formik={formik} />
+              ) : index === 1 ? (
+                <CompanyAddress formik={formik} />
+              ) : (
+                <ShippingAddress formik={formik} />
+              )}
+            </StepContent>
+          </Step>
+        ))}
+      </StyledStepper>
+    </form>
   );
 };
 

@@ -1,4 +1,10 @@
-import { Box, MenuItem, Stepper, TextField } from "@mui/material";
+import {
+  Box,
+  FormControlLabel,
+  MenuItem,
+  Stepper,
+  TextField,
+} from "@mui/material";
 import { FormikProps } from "formik";
 import styled from "styled-components";
 
@@ -11,7 +17,14 @@ const StyledDiv = styled.div`
   margin-right: 10px;
 `;
 
+const AddressBox = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const StyledStepper = styled(Stepper)({
+  padding: "20px",
+  paddingBottom: "85px",
   "& .MuiSvgIcon-root": {
     width: "15.6px",
     marginLeft: "5px",
@@ -21,6 +34,8 @@ const StyledStepper = styled(Stepper)({
   },
   "& .MuiStepLabel-label": {
     fontSize: "17px",
+    fontWeight: "700",
+    color: "#000",
   },
   "& .MuiStepIcon-text": {
     fontSize: "7.8px",
@@ -31,8 +46,9 @@ const StyledStepper = styled(Stepper)({
 });
 
 const StyledTextField = styled(TextField)({
-  "& .MuiInputBase-root.MuiOutlinedInput-root": {
+  "& .MuiInputBase-root.MuiOutlinedInput-root fieldSet": {
     borderRadius: "6px",
+    borderColor: "rgba(0,0,0,0.1)",
   },
   "& label.Mui-focused": {
     color: "#000",
@@ -56,6 +72,18 @@ const StyledMenuItem = styled(MenuItem)({
   },
   "&:selected": {
     backgroundColor: "rgba(0,0,0,0.1)",
+  },
+});
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+  marginRight: "8px",
+  "& .MuiCheckbox-root": {
+    color: "#000",
+    paddingLeft: "0",
+  },
+  "& .MuiFormControlLabel-label": {
+    fontSize: "12px",
+    color: "rgba(0,0,0,0.87)",
   },
 });
 
@@ -119,4 +147,12 @@ const UserSelect = ({
   );
 };
 
-export { StyledBox, StyledDiv, StyledStepper, UserInput, UserSelect };
+export {
+  StyledBox,
+  StyledDiv,
+  AddressBox,
+  StyledFormControlLabel,
+  StyledStepper,
+  UserInput,
+  UserSelect,
+};
