@@ -68,18 +68,18 @@ const BottomAppBarTitleText = styled.div`
 
 const BottomAppBar = ({
   icon,
-  toNextPage,
+  handleClick,
   text,
   badgeNum,
 }: {
   icon: string;
-  toNextPage: () => void;
+  handleClick: () => void;
   text: string;
   badgeNum: number | null;
 }) => {
   return (
     <StyledBottomAppBar>
-      <button onClick={toNextPage}>
+      <button onClick={handleClick}>
         <StyledBadge badgeContent={badgeNum === null ? null : badgeNum}>
           {Icons[icon]}
         </StyledBadge>
