@@ -1,5 +1,6 @@
 import {
   Box,
+  Checkbox,
   FormControlLabel,
   MenuItem,
   Stepper,
@@ -87,6 +88,26 @@ const StyledFormControlLabel = styled(FormControlLabel)({
   },
 });
 
+const AddressCheckbox = ({
+  name,
+  formik,
+}: {
+  name: string;
+  formik: FormikProps<any>;
+}) => {
+  return (
+    <StyledFormControlLabel
+      control={<Checkbox />}
+      label="회사 주소와 동일"
+      labelPlacement="start"
+      name={name}
+      value={formik.values[name]}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+  );
+};
+
 const UserInput = ({
   label,
   name,
@@ -151,8 +172,8 @@ export {
   StyledBox,
   StyledDiv,
   AddressBox,
-  StyledFormControlLabel,
   StyledStepper,
+  AddressCheckbox,
   UserInput,
   UserSelect,
 };

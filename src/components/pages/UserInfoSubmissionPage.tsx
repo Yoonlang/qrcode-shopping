@@ -1,15 +1,16 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Checkbox, Step, StepContent, StepLabel } from "@mui/material";
+import { Step, StepContent, StepLabel } from "@mui/material";
 import {
   AddressBox,
-  StyledFormControlLabel,
+  AddressCheckbox,
   StyledStepper,
 } from "@/components/FormItems";
 import { steps } from "@/consts/form";
 import OrdererInfo from "../OrdererInfo";
 import CompanyAddress from "../CompanyAddress";
 import ShippingAddress from "../ShippingAddress";
+import { validationSchema } from "@/consts/validation";
 
 const UserInfoSubmissionPage = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -22,12 +23,14 @@ const UserInfoSubmissionPage = () => {
       countryCode: "",
       phoneNumber: "",
       coZipCode: "",
+      isSameAddress: false,
       coAddress1: "",
       coAddress2: "",
       spZipCode: "",
       spAddress1: "",
       spAddress2: "",
     },
+    validationSchema: validationSchema,
     onSubmit: (form) => {
       console.log(form);
     },
@@ -43,11 +46,7 @@ const UserInfoSubmissionPage = () => {
             ) : (
               <AddressBox>
                 <StepLabel>{step.label}</StepLabel>
-                <StyledFormControlLabel
-                  control={<Checkbox />}
-                  label="회사 주소와 동일"
-                  labelPlacement="start"
-                />
+                <AddressCheckbox name="isSameAddress" formik={formik} />
               </AddressBox>
             )}
             <StepContent>
@@ -61,6 +60,7 @@ const UserInfoSubmissionPage = () => {
             </StepContent>
           </Step>
         ))}
+        <button onClick={() => formik.handleSubmit()}>클릭</button>
       </StyledStepper>
     </form>
   );
