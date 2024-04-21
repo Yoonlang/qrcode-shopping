@@ -1,4 +1,4 @@
-import { Box, MenuItem, Stepper, TextField } from "@mui/material";
+import { MenuItem, Stepper, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import styled from "styled-components";
 

@@ -1,8 +1,6 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Box, Step, StepContent, StepLabel, Stepper } from "@mui/material";
-
-import { TitleAppBar } from "@/components/AppBar";
+import { Box, Step, StepContent, StepLabel } from "@mui/material";
 import { StyledStepper, UserInput, UserSelect } from "@/components/FormItems";
 import { business, steps, codes } from "@/consts/form";
 import styled from "styled-components";
@@ -16,7 +14,7 @@ const StyledDiv = styled.div`
   margin-right: 10px;
 `;
 
-const InfoPage = ({ toNextPage }: { toNextPage: Function }) => {
+const InfoPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const formik = useFormik({
     initialValues: {
@@ -34,7 +32,6 @@ const InfoPage = ({ toNextPage }: { toNextPage: Function }) => {
 
   return (
     <div>
-      <TitleAppBar hasBack={true} title="INFO" />
       <StyledStepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>

@@ -1,4 +1,4 @@
-import { AppBar, Badge, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, IconButton } from "@mui/material";
 import Icons from "@/components/icons";
 import styled from "styled-components";
 import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
@@ -19,17 +19,17 @@ const AppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const TitleAppBar = ({
-  hasBack,
-  title,
-}: {
-  hasBack: boolean;
-  title: string;
-}) => {
+const titleText = {
+  main: "QR code",
+  cart: "Cart",
+  info: "Info",
+};
+
+const TitleAppBar = ({ id, hasBack }) => {
   return (
     <StyledAppBar>
       {hasBack && <IconButton edge="start">{Icons["back"]}</IconButton>}
-      <AppBarTitleText>{title}</AppBarTitleText>
+      <AppBarTitleText>{titleText[id]}</AppBarTitleText>
     </StyledAppBar>
   );
 };
@@ -67,19 +67,23 @@ const BottomAppBarTitleText = styled.div`
 `;
 
 const BottomAppBar = ({
-  badgeNum = 0,
   icon,
   toNextPage,
+  text,
+  badgeNum,
 }: {
-  badgeNum?: number;
   icon: string;
-  toNextPage: Function;
+  toNextPage: () => void;
+  text: string;
+  badgeNum: number | null;
 }) => {
   return (
     <StyledBottomAppBar>
-      <button onClick={() => toNextPage()}>
-        <StyledBadge badgeContent={badgeNum}>{Icons[icon]}</StyledBadge>
-        <BottomAppBarTitleText>장바구니</BottomAppBarTitleText>
+      <button onClick={toNextPage}>
+        <StyledBadge badgeContent={badgeNum === null ? null : badgeNum}>
+          {Icons[icon]}
+        </StyledBadge>
+        <BottomAppBarTitleText>{text}</BottomAppBarTitleText>
       </button>
     </StyledBottomAppBar>
   );
