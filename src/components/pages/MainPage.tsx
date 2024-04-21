@@ -28,11 +28,6 @@ const MainPage = () => {
     },
   });
 
-  useEffect(() => {
-    console.log(pageIdx);
-    console.log(formik.isValid);
-  }, [pageIdx]);
-
   const handleClickBottomAppBar = () => {
     if (pageIdx === 2) {
       if (formik.isValid) {
