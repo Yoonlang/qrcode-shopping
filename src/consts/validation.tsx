@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const requiredText = "값을 입력해주세요.";
+const REQUIRED_TEXT = "값을 입력해주세요.";
 
 export const validationSchema = Yup.object().shape({
   userName: Yup.string().required(),

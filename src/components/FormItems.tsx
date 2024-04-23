@@ -12,6 +12,9 @@ import styled from "styled-components";
 const StyledBox = styled(Box)`
   display: grid;
   grid-template-columns: 1fr 2fr;
+  > div:first-child {
+    margin-right: 10px;
+  }
 `;
 
 const StyledDiv = styled.div`
