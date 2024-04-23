@@ -17,10 +17,6 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const StyledDiv = styled.div`
-  margin-right: 10px;
-`;
-
 const AddressBox = styled(Box)`
   display: flex;
   justify-content: space-between;
@@ -173,7 +169,6 @@ const UserSelect = ({
 
 export {
   StyledBox,
-  StyledDiv,
   AddressBox,
   StyledStepper,
   AddressCheckbox,

@@ -1,5 +1,5 @@
 import GlobalStyle from "@/styles/global";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import QrScannerPage from "./QrScannerPage";
 import ToBuyListPage from "./ToBuyListPage";
@@ -34,7 +34,9 @@ const MainPage = () => {
         formik.handleSubmit();
         setPageIdx((pageIdx + 1) % 3);
       }
-    } else setPageIdx((pageIdx + 1) % 3);
+    } else {
+      setPageIdx((pageIdx + 1) % 3);
+    }
   };
 
   return (
