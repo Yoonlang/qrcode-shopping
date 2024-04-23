@@ -1,25 +1,54 @@
-import { MenuItem, Stepper, TextField } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Stepper,
+  TextField,
+} from "@mui/material";
 import { FormikProps } from "formik";
 import styled from "styled-components";
 
+const StyledBox = styled(Box)`
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  > div:first-child {
+    margin-right: 10px;
+  }
+`;
+
+const AddressBox = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const StyledStepper = styled(Stepper)({
+  padding: "20px",
+  paddingBottom: "85px",
+  "& .MuiSvgIcon-root": {
+    width: "15.6px",
+    marginLeft: "5px",
+  },
   "& .MuiStepIcon-root.Mui-active": {
     color: "#000",
   },
   "& .MuiStepLabel-label": {
     fontSize: "17px",
-  },
-  "& circle": {
-    r: "7",
+    fontWeight: "700",
+    color: "#000",
   },
   "& .MuiStepIcon-text": {
     fontSize: "7.8px",
   },
+  "& .Mui-completed": {
+    color: "#000",
+  },
 });
 
 const StyledTextField = styled(TextField)({
-  "& .MuiInputBase-root.MuiOutlinedInput-root": {
+  "& .MuiInputBase-root.MuiOutlinedInput-root fieldSet": {
     borderRadius: "6px",
+    borderColor: "rgba(0,0,0,0.1)",
   },
   "& label.Mui-focused": {
     color: "#000",
@@ -45,6 +74,38 @@ const StyledMenuItem = styled(MenuItem)({
     backgroundColor: "rgba(0,0,0,0.1)",
   },
 });
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+  marginRight: "8px",
+  "& .MuiCheckbox-root": {
+    color: "#000",
+    paddingLeft: "0",
+  },
+  "& .MuiFormControlLabel-label": {
+    fontSize: "12px",
+    color: "rgba(0,0,0,0.87)",
+  },
+});
+
+const AddressCheckbox = ({
+  name,
+  formik,
+}: {
+  name: string;
+  formik: FormikProps<any>;
+}) => {
+  return (
+    <StyledFormControlLabel
+      control={<Checkbox />}
+      label="회사 주소와 동일"
+      labelPlacement="start"
+      name={name}
+      value={formik.values[name]}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+  );
+};
 
 const UserInput = ({
   label,
@@ -106,4 +167,11 @@ const UserSelect = ({
   );
 };
 
-export { StyledStepper, UserInput, UserSelect };
+export {
+  StyledBox,
+  AddressBox,
+  StyledStepper,
+  AddressCheckbox,
+  UserInput,
+  UserSelect,
+};
