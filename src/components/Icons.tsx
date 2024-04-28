@@ -11,6 +11,7 @@ const Icons: {
   ),
   person: <Image src={"/svg/person.svg"} width={25} height={25} alt={"사람"} />,
   check: <Image src={"/svg/check.svg"} width={25} height={25} alt={"체크"} />,
+  x: <Image src={"/svg/x.svg"} width={19} height={18} alt={"x"} />,
 };
 
 export default Icons;
