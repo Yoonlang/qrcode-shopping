@@ -66,7 +66,10 @@ const MainPage = () => {
           fetchedItems={fetchedItems}
         />
       ) : pageIdx === 1 ? (
-        <ToBuyListPage scannedItems={scannedItems} />
+        <ToBuyListPage
+          scannedItems={scannedItems}
+          fetchedItems={fetchedItems ?? []}
+        />
       ) : (
         <UserInfoSubmissionPage formik={formik} />
       )}
