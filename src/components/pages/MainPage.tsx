@@ -8,6 +8,7 @@ import { BottomAppBar, TitleAppBar } from "../AppBar";
 import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
+import SplashScreen from "../SplashScreen";
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -21,6 +22,7 @@ const MainPage = () => {
   const [pageIdx, setPageIdx] = useState(0);
   const [fetchedItems, setFetchedItems] = useState(null);
   const [scannedItems, setScannedItems] = useState({});
+  const [isSplashed, setIsSplashed] = useState(false);
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -29,6 +31,16 @@ const MainPage = () => {
       console.log(form);
     },
   });
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("splash")) {
+      setIsSplashed(true);
+      setTimeout(() => {
+        setIsSplashed(false);
+        sessionStorage.setItem("splash", "true");
+      }, 2000);
+    }
+  }, []);
 
   const handleClickBottomAppBar = () => {
     if (pageIdx === 2) {
@@ -55,6 +67,7 @@ const MainPage = () => {
 
   return (
     <>
+      {isSplashed && <SplashScreen />}
       <GlobalStyle />
       <TitleAppBar
         id={pageIds[pageIdx]}
