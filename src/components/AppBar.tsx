@@ -10,7 +10,6 @@ const StyledAppBar = styled(AppBar)`
   background-color: #fff;
   width: 100%;
   height: 56px;
-  position: sticky;
 `;
 
 const AppBarTitleText = styled.div`
