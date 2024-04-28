@@ -51,6 +51,10 @@ const MainPage = () => {
     }
   };
 
+  const handleClickBackButton = () => {
+    setPageIdx((pageIdx - 1) % 3);
+  };
+
   return (
     <>
       {isSplashed && <SplashScreen />}
@@ -58,6 +62,7 @@ const MainPage = () => {
       <TitleAppBar
         id={pageIds[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
+        handleClickBack={handleClickBackButton}
       />
       {pageIdx === 0 ? (
         <QrScannerPage setScannedItems={setScannedItems} />

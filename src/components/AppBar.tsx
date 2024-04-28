@@ -33,18 +33,19 @@ const StyledIconButton = styled(IconButton)`
   margin: 0;
 `;
 
-const TitleAppBar = ({ id, hasBack }) => {
+const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
   return (
     <StyledAppBar>
       {hasBack && (
-        <StyledIconButton edge="start">{Icons["back"]}</StyledIconButton>
+        <StyledIconButton onClick={handleClickBack} edge="start">
+          {Icons["back"]}
+        </StyledIconButton>
       )}
       <AppBarTitleText>{titleText[id]}</AppBarTitleText>
       <EmptyDiv />
     </StyledAppBar>
   );
 };
-
 const StyledBottomAppBar = styled(AppBar)`
   background-color: ${PRIMARY_DARK};
   top: calc(100% - 65px);
