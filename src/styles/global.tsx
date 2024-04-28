@@ -19,6 +19,11 @@ const GlobalStyle = createGlobalStyle`
       flex-direction: column;
       align-items: center;
     }
+
+
+  body > .MuiMenu-root ul {
+      padding: 0;
+  }
 `;
 
 export default GlobalStyle;
