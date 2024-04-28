@@ -29,6 +29,7 @@ const ProductLists = styled.div`
 
 const ToBuyListPage = ({ scannedItems }: { scannedItems: Object }) => {
   const [products, setProducts] = useState(productList);
+  console.log(scannedItems); // for real domain test
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,

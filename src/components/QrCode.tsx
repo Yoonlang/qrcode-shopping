@@ -9,7 +9,7 @@ const CAPTURE_DELAY_MS = 200;
 const StyledQrCode = styled.div`
   width: 100%;
   height: 100%;
-  padding: 56px 0 65px 0;
+  padding: 0 0 65px 0;
 
   > video {
     width: 100%;
@@ -20,17 +20,25 @@ const StyledQrCode = styled.div`
 
 const QrCode = ({
   setScannedItems,
+  fetchedItems,
 }: {
   setScannedItems: Dispatch<SetStateAction<{}>>;
+  fetchedItems: any[] | null;
 }) => {
   const imageScan = useCallback((imageData) => {
     const code = jsQR(imageData.data, imageData.width, imageData.height);
     if (code) {
-      setScannedItems((old) => {
-        const newScannedItems = { ...old };
-        newScannedItems[code.data] = true;
-        return newScannedItems;
-      });
+      const [pre, pid] = code.data.split("/");
+      if (
+        pre === "products" &&
+        fetchedItems &&
+        fetchedItems.some(({ productId }) => pid === productId)
+      )
+        setScannedItems((old) => {
+          const newScannedItems = { ...old };
+          newScannedItems[pid] = true;
+          return newScannedItems;
+        });
     }
   }, []);
 
@@ -65,11 +73,13 @@ const QrCode = ({
         audio={false}
         screenshotFormat="image/jpeg"
         ref={(node) => {
-          setInterval(() => {
-            if (node) {
-              capture(node);
-            }
-          }, CAPTURE_DELAY_MS);
+          if (fetchedItems) {
+            setInterval(() => {
+              if (node) {
+                capture(node);
+              }
+            }, CAPTURE_DELAY_MS);
+          }
         }}
       />
     </StyledQrCode>

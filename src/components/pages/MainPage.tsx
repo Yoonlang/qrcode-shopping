@@ -1,5 +1,5 @@
 import GlobalStyle from "@/styles/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import QrScannerPage from "./QrScannerPage";
 import ToBuyListPage from "./ToBuyListPage";
@@ -7,6 +7,7 @@ import UserInfoSubmissionPage from "./UserInfoSubmissionPage";
 import { BottomAppBar, TitleAppBar } from "../AppBar";
 import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
+import { SERVER_URL } from "@/consts/url";
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -18,6 +19,7 @@ const bottomText = {
 
 const MainPage = () => {
   const [pageIdx, setPageIdx] = useState(0);
+  const [fetchedItems, setFetchedItems] = useState(null);
   const [scannedItems, setScannedItems] = useState({});
   const formik = useFormik({
     initialValues: initialValues,
@@ -39,6 +41,18 @@ const MainPage = () => {
     }
   };
 
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await fetch(`${SERVER_URL}/products`, {
+        method: "get",
+      });
+      const data = await res.json();
+      setFetchedItems(data);
+    };
+
+    getProducts();
+  }, []);
+
   return (
     <>
       <GlobalStyle />
@@ -47,7 +61,10 @@ const MainPage = () => {
         hasBack={pageIdx === 0 ? false : true}
       />
       {pageIdx === 0 ? (
-        <QrScannerPage setScannedItems={setScannedItems} />
+        <QrScannerPage
+          setScannedItems={setScannedItems}
+          fetchedItems={fetchedItems}
+        />
       ) : pageIdx === 1 ? (
         <ToBuyListPage scannedItems={scannedItems} />
       ) : (
