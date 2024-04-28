@@ -48,6 +48,7 @@ const MainPage = () => {
       });
       const data = await res.json();
       setFetchedItems(data);
+      console.log(data);
     };
 
     getProducts();
