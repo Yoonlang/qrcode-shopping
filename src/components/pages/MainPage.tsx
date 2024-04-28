@@ -7,6 +7,7 @@ import UserInfoSubmissionPage from "./UserInfoSubmissionPage";
 import { BottomAppBar, TitleAppBar } from "../AppBar";
 import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
+import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
 
 const pageIds = ["main", "cart", "info"];
@@ -19,6 +20,7 @@ const bottomText = {
 
 const MainPage = () => {
   const [pageIdx, setPageIdx] = useState(0);
+  const [fetchedItems, setFetchedItems] = useState(null);
   const [scannedItems, setScannedItems] = useState({});
   const [isSplashed, setIsSplashed] = useState(false);
   const formik = useFormik({
@@ -51,6 +53,18 @@ const MainPage = () => {
     }
   };
 
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await fetch(`${SERVER_URL}/products`, {
+        method: "get",
+      });
+      const data = await res.json();
+      setFetchedItems(data);
+    };
+
+    getProducts();
+  }, []);
+
   return (
     <>
       {isSplashed && <SplashScreen />}
@@ -60,9 +74,15 @@ const MainPage = () => {
         hasBack={pageIdx === 0 ? false : true}
       />
       {pageIdx === 0 ? (
-        <QrScannerPage setScannedItems={setScannedItems} />
+        <QrScannerPage
+          setScannedItems={setScannedItems}
+          fetchedItems={fetchedItems}
+        />
       ) : pageIdx === 1 ? (
-        <ToBuyListPage scannedItems={scannedItems} />
+        <ToBuyListPage
+          scannedItems={scannedItems}
+          fetchedItems={fetchedItems ?? []}
+        />
       ) : (
         <UserInfoSubmissionPage formik={formik} />
       )}
