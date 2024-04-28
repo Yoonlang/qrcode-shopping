@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import Product from "./Product";
 import { useState } from "react";
+import Product from "../Product";
 
 const StyledDiv = styled.div`
   align-items: normal;
   padding: 30px 20px;
   background-color: #f5f5f5;
+  margin-top: 56px;
 `;
 
 const StyledTitle = styled.div`

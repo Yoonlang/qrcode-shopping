@@ -53,6 +53,10 @@ const MainPage = () => {
     }
   };
 
+  const handleClickBackButton = () => {
+    setPageIdx((pageIdx - 1) % 3);
+  };
+
   useEffect(() => {
     const getProducts = async () => {
       const res = await fetch(`${SERVER_URL}/products`, {
@@ -72,6 +76,7 @@ const MainPage = () => {
       <TitleAppBar
         id={pageIds[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
+        handleClickBack={handleClickBackButton}
       />
       {pageIdx === 0 ? (
         <QrScannerPage
