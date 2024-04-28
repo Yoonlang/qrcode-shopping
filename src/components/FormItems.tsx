@@ -2,12 +2,15 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
+  IconButton,
+  InputAdornment,
   MenuItem,
   Stepper,
   TextField,
 } from "@mui/material";
 import { FormikProps } from "formik";
 import styled from "styled-components";
+import Icons from "./Icons";
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -130,6 +133,15 @@ const UserInput = ({
       type={type}
       margin="dense"
       fullWidth
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            {!formik.errors[name] && formik.touched[name] && (
+              <>{Icons["select"]}</>
+            )}
+          </InputAdornment>
+        ),
+      }}
     />
   );
 };
@@ -161,6 +173,9 @@ const UserSelect = ({
       {items.map((item, index) => (
         <StyledMenuItem key={item} value={item}>
           {item}
+          {formik.values.business === item && (
+            <IconButton>{Icons["select"]}</IconButton>
+          )}
         </StyledMenuItem>
       ))}
     </StyledTextField>
