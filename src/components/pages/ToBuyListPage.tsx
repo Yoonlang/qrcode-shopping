@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import Product from "./Product";
 import { useState } from "react";
 import { productList } from "../test";
+import Product from "../Product";
 
 const StyledDiv = styled.div`
   align-items: normal;
