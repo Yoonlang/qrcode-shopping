@@ -9,7 +9,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Counter,
   MenuItemDivider,
@@ -42,9 +42,13 @@ const ALERT_MESSAGE = "숫자만 입력해 주세요.";
 
 const Product = ({
   product,
+  selectedInfos,
+  setSelectedInfos,
   handleDelete,
 }: {
   product: ProductType;
+  selectedInfos: Object;
+  setSelectedInfos: Dispatch<SetStateAction<Object>>;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
@@ -54,19 +58,32 @@ const Product = ({
     product.name = product.productId;
   }
   const { productId, colors, name } = product;
-  const [selected, setSelected] = useState<string[]>([]);
-  const [count, setCount] = useState<object>({});
   const [open, setOpen] = useState<boolean>(true);
+  const selected = Object.keys(selectedInfos[productId] || []).sort();
+  const count = selectedInfos[productId];
 
-  const handleChange = (event: SelectChangeEvent<typeof selected>) => {
+  const handleChange = (event: SelectChangeEvent<typeof selectedInfos>) => {
     const {
       target: { value },
     } = event;
 
-    setSelected(value as string[]);
-
     let sortedValue = (value as string[]).sort();
     let sortedSelected = selected.sort();
+
+    let colorCardIdx = sortedValue.indexOf(COLOR_CARD_TEXT);
+    if (colorCardIdx > -1) {
+      [sortedValue[colorCardIdx], sortedValue[0]] = [
+        sortedValue[0],
+        sortedValue[colorCardIdx],
+      ];
+    }
+    colorCardIdx = sortedSelected.indexOf(COLOR_CARD_TEXT);
+    if (colorCardIdx > -1) {
+      [sortedSelected[colorCardIdx], sortedSelected[0]] = [
+        sortedSelected[0],
+        sortedSelected[colorCardIdx],
+      ];
+    }
 
     if (sortedValue.length > sortedSelected.length) {
       for (let i = 0; i < sortedValue.length; i++) {
@@ -74,7 +91,10 @@ const Product = ({
           i === sortedValue.length - 1 ||
           sortedValue[i] !== sortedSelected[i]
         ) {
-          setCount({ ...count, [sortedValue[i]]: 1 });
+          setSelectedInfos({
+            ...selectedInfos,
+            [productId]: { ...selectedInfos[productId], [sortedValue[i]]: 1 },
+          });
           break;
         }
       }
@@ -84,9 +104,9 @@ const Product = ({
           i === sortedSelected.length - 1 ||
           sortedValue[i] !== sortedSelected[i]
         ) {
-          const newCount = { ...count };
-          delete newCount[sortedSelected[i]];
-          setCount(newCount);
+          const temp = { ...selectedInfos[productId] };
+          delete temp[sortedSelected[i]];
+          setSelectedInfos({ ...selectedInfos, [productId]: temp });
           break;
         }
       }
@@ -100,9 +120,11 @@ const Product = ({
     const value = e.target.value;
     const regex = /^[0-9]*$/;
     if (regex.test(value)) {
-      setCount({
-        ...count,
-        [name]: e.target.value.length < 1 ? 0 : +e.target.value + "",
+      setSelectedInfos({
+        ...selectedInfos,
+        [productId]: {
+          [name]: e.target.value.length < 1 ? 0 : +e.target.value + "",
+        },
       });
     } else {
       alert(ALERT_MESSAGE);
@@ -113,7 +135,10 @@ const Product = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
-    setCount({ ...count, [name]: +count[name] + 1 });
+    setSelectedInfos({
+      ...selectedInfos,
+      [productId]: { ...selectedInfos[productId], [name]: +count[name] + 1 },
+    });
   };
 
   const handleClickSubtract = (
@@ -121,20 +146,24 @@ const Product = ({
     name: string
   ) => {
     if (count[name] <= 1) {
-      const newCount = { ...count };
-      delete newCount[name];
-      setSelected(selected.filter((item) => item !== name));
-      setCount(newCount);
+      const temp = { ...selectedInfos[productId] };
+      delete temp[name];
+      setSelectedInfos({ ...selectedInfos, [productId]: temp });
     } else {
-      setCount({ ...count, [name]: count[name] - 1 });
+      setSelectedInfos({
+        ...selectedInfos,
+        [productId]: { ...selectedInfos[productId], [name]: count[name] - 1 },
+      });
     }
   };
 
   const handleDeleteOption = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    index: number
+    name: string
   ) => {
-    setSelected(selected.filter((_, idx) => idx !== index));
+    const temp = { ...selectedInfos[productId] };
+    delete temp[name];
+    setSelectedInfos({ ...selectedInfos, [productId]: temp });
   };
 
   return (
@@ -159,7 +188,7 @@ const Product = ({
           >
             <StyledMenuItem value={COLOR_CARD_TEXT}>
               <ListItemText>{COLOR_CARD_TEXT}</ListItemText>
-              {selected.findIndex((item) => item === COLOR_CARD_TEXT) > -1 && (
+              {selected?.findIndex((item) => item === COLOR_CARD_TEXT) > -1 && (
                 <IconButton>{Icons["select"]}</IconButton>
               )}
             </StyledMenuItem>
@@ -172,7 +201,7 @@ const Product = ({
                   value={`${colorId}. ${colorName}`}
                 >
                   <ListItemText primary={`${colorId}. ${colorName}`} />
-                  {selected.findIndex(
+                  {selected?.findIndex(
                     (item) => item === `${colorId}. ${colorName}`
                   ) > -1 && <IconButton>{Icons["select"]}</IconButton>}
                 </StyledMenuItem>
@@ -181,13 +210,13 @@ const Product = ({
           </Select>
         </StyledRight>
       </StyledTop>
-      {selected.length > 0 && (
+      {selected?.length > 0 && (
         <>
           <Collapse in={open}>
             <Divider />
             <StyledBottom>
               <p>{SELECTED_OPTIONS_TEXT}</p>
-              {selected.map((select, index) => (
+              {selected?.map((select, index) => (
                 <div key={select}>
                   <SelectedOption>
                     <div>{select}</div>
@@ -203,7 +232,9 @@ const Product = ({
                       <Button onClick={(e) => handleClickAdd(e, select)}>
                         +
                       </Button>
-                      <IconButton onClick={(e) => handleDeleteOption(e, index)}>
+                      <IconButton
+                        onClick={(e) => handleDeleteOption(e, select)}
+                      >
                         {Icons["delete"]}
                       </IconButton>
                     </Counter>
