@@ -14,7 +14,7 @@ const OrdererInfo = ({ formik }: { formik: FormikProps<any> }) => {
         formik={formik}
       />
       <UserInput label="이메일" name="email" formik={formik} />
-      <StyledBox display="flex">
+      <StyledBox>
         <UserSelect
           label="국가번호"
           name="countryCode"

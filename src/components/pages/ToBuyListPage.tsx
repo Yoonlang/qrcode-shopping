@@ -8,6 +8,7 @@ const StyledDiv = styled.div`
   align-items: normal;
   padding: 30px 20px;
   background-color: #f5f5f5;
+  margin-top: 56px;
 `;
 
 const StyledTitle = styled.div`

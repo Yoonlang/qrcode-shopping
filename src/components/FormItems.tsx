@@ -15,9 +15,7 @@ import Icons from "./Icons";
 const StyledBox = styled(Box)`
   display: grid;
   grid-template-columns: 1fr 2fr;
-  > div:first-child {
-    margin-right: 10px;
-  }
+  column-gap: 10px;
 `;
 
 const AddressBox = styled(Box)`
@@ -25,70 +23,100 @@ const AddressBox = styled(Box)`
   justify-content: space-between;
 `;
 
-const StyledStepper = styled(Stepper)({
-  padding: "20px",
-  paddingBottom: "85px",
-  "& .MuiSvgIcon-root": {
-    width: "15.6px",
-    marginLeft: "5px",
-  },
-  "& .MuiStepIcon-root.Mui-active": {
-    color: "#000",
-  },
-  "& .MuiStepLabel-label": {
-    fontSize: "17px",
-    fontWeight: "700",
-    color: "#000",
-  },
-  "& .MuiStepIcon-text": {
-    fontSize: "7.8px",
-  },
-  "& .Mui-completed": {
-    color: "#000",
-  },
-});
+const StyledStepper = styled(Stepper)`
+  padding: 20px;
+  padding-bottom: 85px;
+  margin-top: 56px;
 
-const StyledTextField = styled(TextField)({
-  "& .MuiInputBase-root.MuiOutlinedInput-root fieldSet": {
-    borderRadius: "6px",
-    borderColor: "rgba(0,0,0,0.1)",
-  },
-  "& label.Mui-focused": {
-    color: "#000",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#000",
-  },
-  "& .MuiOutlinedInput-root": {
-    "&.Mui-focused fieldset": {
-      borderColor: "#000",
+  & .MuiSvgIcon-root {
+    width: 15.6px;
+    margin-left: 5px;
+  }
+
+  & .MuiStepIcon-root.Mui-active {
+    color: #000;
+  }
+
+  & .MuiStepLabel-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  & .MuiStepIcon-text {
+    font-size: 7.8px;
+  }
+
+  & .Mui-completed {
+    color: #000;
+  }
+`;
+
+const StyledTextField = styled(TextField)`
+  & .MuiInputBase-root.MuiOutlinedInput-root {
+    & .MuiSelect-select {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    & fieldSet {
+    border-radius: 6px;
+    border-color: rgba(0,0,0,0.1);
+    }
+  }
+
+  & label.Mui-focused {
+    color: #000;
+  }
+
+  & .MuiInput-underline:after {
+    border=bottom-color: #000;
+  }
+
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: #000;
     },
   },
-});
+`;
 
-const StyledMenuItem = styled(MenuItem)({
-  "&.Mui-selected": {
-    backgroundColor: "rgba(0,0,0,0.1)",
-  },
-  "&:focus": {
-    backgroundColor: "rgba(0,0,0,0.1)",
-  },
-  "&:selected": {
-    backgroundColor: "rgba(0,0,0,0.1)",
-  },
-});
+const StyledMenuItem = styled(MenuItem)`
+  background-color: #e7e7e7;
+  font-size: 17px;
+  border-bottom: 0.5px solid rgba(60, 60, 67, 0.36);
+  display: flex;
+  justify-content: space-between;
 
-const StyledFormControlLabel = styled(FormControlLabel)({
-  marginRight: "8px",
-  "& .MuiCheckbox-root": {
-    color: "#000",
-    paddingLeft: "0",
-  },
-  "& .MuiFormControlLabel-label": {
-    fontSize: "12px",
-    color: "rgba(0,0,0,0.87)",
-  },
-});
+  &:hover {
+    background-color: #e7e7e7;
+  }
+
+  &.Mui-selected {
+    background-color: #e7e7e7;
+
+    &:hover {
+      background-color: #e7e7e7;
+    }
+  }
+
+  &:focus {
+    background-color: #e7e7e7;
+  }
+`;
+
+const StyledFormControlLabel = styled(FormControlLabel)`
+  margin-right: 8px;
+
+  & .MuiCheckbox-root {
+    color: #000;
+    padding-left: 0;
+  }
+
+  & .MuiFormControlLabel-label {
+    font-size: 12.5px;
+    color: rgba(0, 0, 0, 0.87);
+  }
+`;
 
 const AddressCheckbox = ({
   name,
