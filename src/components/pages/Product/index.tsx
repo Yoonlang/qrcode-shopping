@@ -6,6 +6,7 @@ import {
   IconButton,
   ListItemText,
   Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -32,6 +33,7 @@ const COLOR_CARD_TEXT = "Color Card";
 const OPTION_TEXT = "Option";
 const SELECTED_OPTIONS_TEXT = "Selected Options";
 const IMG_SIZE = 71;
+const ALERT_MESSAGE = "숫자만 입력해 주세요.";
 
 const Product = ({
   product,
@@ -48,15 +50,86 @@ const Product = ({
   const [count, setCount] = useState<object>({});
   const [open, setOpen] = useState<boolean>(true);
 
-  const handleChange = () => {};
+  const handleChange = (event: SelectChangeEvent<typeof selected>) => {
+    const {
+      target: { value },
+    } = event;
 
-  const handleChangeCount = () => {};
+    setSelected(value as string[]);
 
-  const handleClickAdd = () => {};
+    let sortedValue = (value as string[]).sort();
+    let sortedSelected = selected.sort();
 
-  const handleClickSubtract = () => {};
+    if (sortedValue.length > sortedSelected.length) {
+      for (let i = 0; i < sortedValue.length; i++) {
+        if (
+          i === sortedValue.length - 1 ||
+          sortedValue[i] !== sortedSelected[i]
+        ) {
+          setCount({ ...count, [sortedValue[i]]: 1 });
+          break;
+        }
+      }
+    } else if (sortedValue.length < sortedSelected.length) {
+      for (let i = 0; i < sortedSelected.length; i++) {
+        if (
+          i === sortedSelected.length - 1 ||
+          sortedValue[i] !== sortedSelected[i]
+        ) {
+          const newCount = { ...count };
+          delete newCount[sortedSelected[i]];
+          setCount(newCount);
+          break;
+        }
+      }
+    }
+  };
 
-  const handleDeleteOption = () => {};
+  const handleChangeCount = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    name: string
+  ) => {
+    const value = e.target.value;
+    const regex = /^[0-9]*$/;
+    if (regex.test(value)) {
+      if (value === "0") {
+      }
+      setCount({
+        ...count,
+        [name]: e.target.value.length < 1 ? 0 : +e.target.value + "",
+      });
+    } else {
+      alert(ALERT_MESSAGE);
+    }
+  };
+
+  const handleClickAdd = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    name: string
+  ) => {
+    setCount({ ...count, [name]: +count[name] + 1 });
+  };
+
+  const handleClickSubtract = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    name: string
+  ) => {
+    if (count[name] <= 1) {
+      const newCount = { ...count };
+      delete newCount[name];
+      setSelected(selected.filter((item) => item !== name));
+      setCount(newCount);
+    } else {
+      setCount({ ...count, [name]: count[name] - 1 });
+    }
+  };
+
+  const handleDeleteOption = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelected(selected.filter((_, idx) => idx !== index));
+  };
 
   return (
     <StyledWrapper>
@@ -107,14 +180,18 @@ const Product = ({
                   <SelectedOption>
                     <div>{select}</div>
                     <Counter>
-                      <Button onClick={handleClickSubtract}>-</Button>
+                      <Button onClick={(e) => handleClickSubtract(e, select)}>
+                        -
+                      </Button>
                       <StyledInput
                         value={count[select]}
-                        onChange={handleChangeCount}
+                        onChange={(e) => handleChangeCount(e, select)}
                         size="small"
                       />
-                      <Button onClick={handleClickAdd}>+</Button>
-                      <IconButton onClick={handleDeleteOption}>
+                      <Button onClick={(e) => handleClickAdd(e, select)}>
+                        +
+                      </Button>
+                      <IconButton onClick={(e) => handleDeleteOption(e, index)}>
                         {Icons["delete"]}
                       </IconButton>
                     </Counter>
