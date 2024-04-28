@@ -92,8 +92,6 @@ const Product = ({
     const value = e.target.value;
     const regex = /^[0-9]*$/;
     if (regex.test(value)) {
-      if (value === "0") {
-      }
       setCount({
         ...count,
         [name]: e.target.value.length < 1 ? 0 : +e.target.value + "",
