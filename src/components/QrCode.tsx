@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
-const CAPTURE_DELAY_MS = 200;
+const CAPTURE_DELAY_MS = 400;
 
 const StyledQrCode = styled.div`
   width: 100%;
@@ -25,63 +25,69 @@ const QrCode = ({
   setScannedItems: Dispatch<SetStateAction<{}>>;
   fetchedItems: any[] | null;
 }) => {
-  const imageScan = useCallback((imageData) => {
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
-    if (code) {
-      const [pre, pid] = code.data.split("/");
-      if (
-        pre === "products" &&
-        fetchedItems &&
-        fetchedItems.some(({ productId }) => pid === productId)
-      )
-        setScannedItems((old) => {
-          const newScannedItems = { ...old };
-          newScannedItems[pid] = true;
-          return newScannedItems;
-        });
-    }
-  }, []);
+  const imageScan = useCallback(
+    (imageData) => {
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+        const [pre, pid] = code.data.split("/");
+        if (
+          pre === "products" &&
+          fetchedItems &&
+          fetchedItems.some(({ productId }) => pid === productId)
+        )
+          setScannedItems((old) => {
+            const newScannedItems = { ...old };
+            newScannedItems[pid] = true;
+            return newScannedItems;
+          });
+      }
+    },
+    [fetchedItems]
+  );
 
-  const capture = useCallback((webcam) => {
-    const imageSrc = webcam.getScreenshot();
-    if (imageSrc) {
-      const image = new Image();
-      image.onload = () => {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        if (!context) {
-          return;
-        }
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context.drawImage(image, 0, 0, image.width, image.height);
-        const imageData = context.getImageData(
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-        imageScan(imageData);
-      };
-      image.src = imageSrc;
-    }
-  }, []);
+  const capture = useCallback(
+    (webcam) => {
+      const imageSrc = webcam.getScreenshot();
+      if (imageSrc) {
+        const image = new Image();
+        image.onload = () => {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          if (!context) {
+            return;
+          }
+          canvas.width = image.width;
+          canvas.height = image.height;
+          context.drawImage(image, 0, 0, image.width, image.height);
+          const imageData = context.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+          imageScan(imageData);
+        };
+        image.src = imageSrc;
+      }
+    },
+    [fetchedItems]
+  );
 
   return (
     <StyledQrCode>
-      <Webcam
-        audio={false}
-        screenshotFormat="image/jpeg"
-        ref={(node) => {
-          if (fetchedItems) {
+      {fetchedItems && (
+        <Webcam
+          audio={false}
+          screenshotFormat="image/jpeg"
+          ref={(node) => {
             setInterval(() => {
               if (node) {
                 capture(node);
               }
             }, CAPTURE_DELAY_MS);
-          }
-        }}
-      />
+          }}
+        />
+      )}
     </StyledQrCode>
   );
 };
