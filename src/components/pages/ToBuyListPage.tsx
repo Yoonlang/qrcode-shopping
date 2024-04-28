@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Icons from "../Icons";
 import { useState } from "react";
-import { productList } from "../test";
 import Product from "../Product";
 
 const StyledDiv = styled.div`
@@ -28,12 +27,22 @@ const ProductLists = styled.div`
   padding-bottom: 85px;
 `;
 
-const ToBuyListPage = ({ scannedItems }: { scannedItems: Object }) => {
-  const [products, setProducts] = useState(productList);
+const ToBuyListPage = ({
+  scannedItems,
+  fetchedItems,
+}: {
+  scannedItems: Object;
+  fetchedItems: any[];
+}) => {
+  const [products, setProducts] = useState(
+    fetchedItems.filter((item) =>
+      Object.keys(scannedItems).some((pid) => pid === item.productId)
+    )
+  );
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    id: number
+    id: string
   ) => {
     setProducts(products.filter((item) => item.id !== id));
   };
@@ -45,9 +54,15 @@ const ToBuyListPage = ({ scannedItems }: { scannedItems: Object }) => {
         <p>제품목록</p>
       </StyledTitle>
       <ProductLists>
-        {products.map((product, index) => (
-          <Product key={index} product={product} handleDelete={handleDelete} />
-        ))}
+        {products.map((product, index) => {
+          return (
+            <Product
+              key={product.productId}
+              product={product}
+              handleDelete={handleDelete}
+            />
+          );
+        })}
       </ProductLists>
     </StyledDiv>
   );

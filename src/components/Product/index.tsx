@@ -23,11 +23,16 @@ import {
   StyledWrapper,
 } from "./styled";
 
-type ProductType = {
-  id: number;
-  name: string;
-  options: string[];
-};
+interface Color {
+  colorId: string;
+  colorName: string;
+}
+
+interface ProductType {
+  productId: string;
+  name: string | undefined;
+  colors: Color[];
+}
 
 const COLOR_CARD_TEXT = "Color Card";
 const OPTION_TEXT = "Option";
@@ -42,10 +47,13 @@ const Product = ({
   product: ProductType;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    id: number
+    id: string
   ) => void;
 }) => {
-  const { id, name, options } = product;
+  if (product.name === undefined) {
+    product.name = product.productId;
+  }
+  const { productId, colors, name } = product;
   const [selected, setSelected] = useState<string[]>([]);
   const [count, setCount] = useState<object>({});
   const [open, setOpen] = useState<boolean>(true);
@@ -136,7 +144,7 @@ const Product = ({
         <StyledRight>
           <StyledNameDiv>
             <p>{name}</p>
-            <IconButton onClick={(e) => handleDelete(e, id)}>
+            <IconButton onClick={(e) => handleDelete(e, productId)}>
               {Icons["delete"]}
             </IconButton>
           </StyledNameDiv>
@@ -156,14 +164,20 @@ const Product = ({
               )}
             </StyledMenuItem>
             <MenuItemDivider />
-            {options.map((option, index) => (
-              <StyledMenuItem key={option} value={option}>
-                <ListItemText primary={option} />
-                {selected.findIndex((item) => item === option) > -1 && (
-                  <IconButton>{Icons["select"]}</IconButton>
-                )}
-              </StyledMenuItem>
-            ))}
+            {colors.map((color) => {
+              const { colorId, colorName } = color;
+              return (
+                <StyledMenuItem
+                  key={colorId}
+                  value={`${colorId}. ${colorName}`}
+                >
+                  <ListItemText primary={`${colorId}. ${colorName}`} />
+                  {selected.findIndex(
+                    (item) => item === `${colorId}. ${colorName}`
+                  ) > -1 && <IconButton>{Icons["select"]}</IconButton>}
+                </StyledMenuItem>
+              );
+            })}
           </Select>
         </StyledRight>
       </StyledTop>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "secure": "next dev --experimental-https"
   },
   "dependencies": {
     "@emotion/styled": "^11.11.5",
