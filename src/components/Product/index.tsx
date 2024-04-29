@@ -59,7 +59,9 @@ const Product = ({
   }
   const { productId, colors, name } = product;
   const [open, setOpen] = useState<boolean>(true);
-  const selected = Object.keys(selectedInfos[productId] || []).sort();
+  const selected = Object.keys(selectedInfos[productId] || []).sort(
+    (a, b) => +a.split(" ")[0] - +b.split(" ")[0]
+  );
   const count = selectedInfos[productId];
 
   const handleChange = (event: SelectChangeEvent<typeof selectedInfos>) => {
