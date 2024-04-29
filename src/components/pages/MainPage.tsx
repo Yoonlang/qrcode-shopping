@@ -23,15 +23,83 @@ const MainPage = () => {
   const [fetchedItems, setFetchedItems] = useState(null);
   const [scannedItems, setScannedItems] = useState({});
   const [isSplashed, setIsSplashed] = useState(false);
+  const [selectedInfos, setSelectedInfos] = useState<Object>({});
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     validateOnMount: true,
-    onSubmit: (form) => {
-      console.log(form);
+    onSubmit: async (form) => {
+      const {
+        userName,
+        companyName,
+        business,
+        countryCode,
+        phoneNumber,
+        email,
+        coZipCode,
+        coAddress1,
+        coAddress2,
+        isSameAddress,
+        spZipCode,
+        spAddress1,
+        spAddress2,
+      } = form;
+      try {
+        const res = await fetch(`${SERVER_URL}/users-info`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            hopeProducts: Object.entries(selectedInfos).map(
+              ([productId, items]) => {
+                return {
+                  productId,
+                  colorCardQuantity: items["Color Card"] ?? 0,
+                  sampleYardages: Object.entries(items)
+                    .filter(([colorInfo, b]) => colorInfo !== "Color Card")
+                    .map(([colorInfo, quantity]) => {
+                      const [colorId, colorName] = colorInfo.split(". ");
+                      return {
+                        colorId,
+                        colorName,
+                        yardageQuantity: quantity,
+                      };
+                    }),
+                };
+              }
+            ),
+            personalInfo: {
+              name: userName,
+              companyName,
+              businessType: business,
+              contactInfo: {
+                phoneNumber: {
+                  countryCode,
+                  number: phoneNumber,
+                },
+                email,
+              },
+              companyAddress: {
+                postalCode: coZipCode,
+                address: coAddress1,
+                detailAddress: coAddress2,
+              },
+              shippingAddress: {
+                useCompanyAddress: isSameAddress,
+                postalCode: spZipCode,
+                address: spAddress1,
+                detailAddress: spAddress2,
+              },
+            },
+          }),
+        });
+        const data = await res.json();
+      } catch (e) {
+        console.log(e);
+      }
     },
   });
-  const [selectedInfos, setSelectedInfos] = useState<Object>({});
 
   useEffect(() => {
     if (!sessionStorage.getItem("splash")) {
