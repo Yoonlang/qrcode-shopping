@@ -1,5 +1,5 @@
 import { FormikProps } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Step, StepContent, StepLabel } from "@mui/material";
 import {
   AddressBox,
@@ -13,6 +13,37 @@ import ShippingAddress from "../ShippingAddress";
 
 const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (
+      !formik.errors["userName"] &&
+      !formik.errors["companyName"] &&
+      !formik.errors["business"] &&
+      !formik.errors["countryCode"] &&
+      !formik.errors["phoneNumber"] &&
+      !formik.errors["email"]
+    ) {
+      setActiveStep(1);
+
+      if (
+        !formik.errors["coZipCode"] &&
+        !formik.errors["coAddress1"] &&
+        !formik.errors["coAddress2"]
+      ) {
+        setActiveStep(2);
+
+        if (
+          !formik.errors["spZipCode"] &&
+          !formik.errors["spAddress1"] &&
+          !formik.errors["spAddress2"]
+        ) {
+          setActiveStep(3);
+        }
+      }
+    } else {
+      setActiveStep(0);
+    }
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>
