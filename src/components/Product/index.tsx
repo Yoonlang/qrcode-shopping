@@ -117,13 +117,15 @@ const Product = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     name: string
   ) => {
+    console.log("change");
     const value = e.target.value;
     const regex = /^[0-9]*$/;
     if (regex.test(value)) {
       setSelectedInfos({
         ...selectedInfos,
         [productId]: {
-          [name]: e.target.value.length < 1 ? 0 : +e.target.value + "",
+          ...selectedInfos[productId],
+          [name]: +e.target.value + "",
         },
       });
     } else {
