@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Product from "../Product";
 
 const StyledDiv = styled.div`
@@ -30,9 +30,13 @@ const ProductLists = styled.div`
 const ToBuyListPage = ({
   scannedItems,
   fetchedItems,
+  selectedInfos,
+  setSelectedInfos,
 }: {
   scannedItems: Object;
   fetchedItems: any[];
+  selectedInfos: Object;
+  setSelectedInfos: Dispatch<SetStateAction<Object>>;
 }) => {
   const [products, setProducts] = useState(
     fetchedItems.filter((item) =>
@@ -59,6 +63,8 @@ const ToBuyListPage = ({
             <Product
               key={product.productId}
               product={product}
+              selectedInfos={selectedInfos}
+              setSelectedInfos={setSelectedInfos}
               handleDelete={handleDelete}
             />
           );

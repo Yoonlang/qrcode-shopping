@@ -31,6 +31,7 @@ const MainPage = () => {
       console.log(form);
     },
   });
+  const [selectedInfos, setSelectedInfos] = useState<Object>({});
 
   useEffect(() => {
     if (!sessionStorage.getItem("splash")) {
@@ -87,6 +88,8 @@ const MainPage = () => {
         <ToBuyListPage
           scannedItems={scannedItems}
           fetchedItems={fetchedItems ?? []}
+          selectedInfos={selectedInfos}
+          setSelectedInfos={setSelectedInfos}
         />
       ) : (
         <UserInfoSubmissionPage formik={formik} />
