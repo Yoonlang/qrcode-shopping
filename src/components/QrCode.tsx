@@ -86,6 +86,9 @@ const QrCode = ({
               }
             }, CAPTURE_DELAY_MS);
           }}
+          videoConstraints={{
+            facingMode: "environment",
+          }}
         />
       )}
     </StyledQrCode>
