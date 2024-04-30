@@ -28,7 +28,7 @@ const MainPage = () => {
     initialValues: initialValues,
     validationSchema: validationSchema,
     validateOnMount: true,
-    onSubmit: async (form) => {
+    onSubmit: async (form, { resetForm }) => {
       const {
         userName,
         companyName,
@@ -95,6 +95,10 @@ const MainPage = () => {
           }),
         });
         const data = await res.json();
+
+        setScannedItems({});
+        setSelectedInfos({});
+        resetForm();
       } catch (e) {
         console.log(e);
       }
