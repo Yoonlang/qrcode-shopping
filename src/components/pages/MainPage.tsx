@@ -9,6 +9,7 @@ import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
+import "@/i18n";
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
