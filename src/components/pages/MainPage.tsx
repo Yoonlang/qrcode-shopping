@@ -18,6 +18,12 @@ const bottomText = {
   cart: "정보 입력",
   info: "입력 완료",
 };
+const snackBarStatusMessage = {
+  default: `Scan QR Code`,
+  empty: `장바구니가 비었습니다.`,
+  complete: `정상 제출됐습니다.`,
+  scanned: `Scanned new item`,
+};
 
 const MainPage = () => {
   const [pageIdx, setPageIdx] = useState(0);
@@ -25,11 +31,14 @@ const MainPage = () => {
   const [scannedItems, setScannedItems] = useState({});
   const [isSplashed, setIsSplashed] = useState(false);
   const [selectedInfos, setSelectedInfos] = useState<Object>({});
+  const [snackBarStatus, setSnackBarStatus] = useState(
+    snackBarStatusMessage["default"]
+  );
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     validateOnMount: true,
-    onSubmit: async (form) => {
+    onSubmit: async (form, { resetForm }) => {
       const {
         userName,
         companyName,
@@ -96,6 +105,14 @@ const MainPage = () => {
           }),
         });
         const data = await res.json();
+
+        setScannedItems({});
+        setSelectedInfos({});
+        resetForm();
+        setSnackBarStatus(snackBarStatusMessage["complete"]);
+        setTimeout(() => {
+          setSnackBarStatus(snackBarStatusMessage["default"]);
+        }, 3500);
       } catch (e) {
         console.log(e);
       }
@@ -113,7 +130,13 @@ const MainPage = () => {
   }, []);
 
   const handleClickBottomAppBar = () => {
-    if (pageIdx === 2) {
+    if (pageIdx === 0) {
+      if (Object.keys(scannedItems).length === 0) {
+        setSnackBarStatus(snackBarStatusMessage["empty"]);
+      } else {
+        setPageIdx((pageIdx + 1) % 3);
+      }
+    } else if (pageIdx === 2) {
       if (formik.isValid) {
         formik.handleSubmit();
         setPageIdx((pageIdx + 1) % 3);
@@ -139,6 +162,12 @@ const MainPage = () => {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(scannedItems).length !== 0) {
+      setSnackBarStatus(snackBarStatusMessage["scanned"]);
+    }
+  }, [scannedItems]);
+
   return (
     <>
       {isSplashed && <SplashScreen />}
@@ -150,8 +179,10 @@ const MainPage = () => {
       />
       {pageIdx === 0 ? (
         <QrScannerPage
+          scannedItems={scannedItems}
           setScannedItems={setScannedItems}
           fetchedItems={fetchedItems}
+          snackBarStatus={snackBarStatus}
         />
       ) : pageIdx === 1 ? (
         <ToBuyListPage
