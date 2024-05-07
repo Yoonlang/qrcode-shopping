@@ -119,7 +119,6 @@ const Product = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     name: string
   ) => {
-    console.log("change");
     const value = e.target.value;
     const regex = /^[0-9]*$/;
     if (regex.test(value)) {
@@ -127,7 +126,7 @@ const Product = ({
         ...selectedInfos,
         [productId]: {
           ...selectedInfos[productId],
-          [name]: +e.target.value + "",
+          [name]: `${Number(e.target.value)}`,
         },
       });
     } else {
