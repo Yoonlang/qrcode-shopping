@@ -24,7 +24,6 @@ const ManagerPage = () => {
         weightGPerM2: Number(form["weightGPerM2"]),
         widthInch: Number(form["widthInch"]),
       };
-      console.log(newForm);
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "POST",
