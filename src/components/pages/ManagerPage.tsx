@@ -17,7 +17,7 @@ const ManagerPage = () => {
         ...form,
         colors: form.colors.map((color, index) => {
           return {
-            colorId: index + 1,
+            colorId: (index + 1).toString(),
             colorName: color,
           };
         }),
