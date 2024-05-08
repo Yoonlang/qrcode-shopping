@@ -9,7 +9,6 @@ import { initialValues } from "@/consts/dashboard";
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [keyIdx, setKeyIdx] = useState(0);
   const formik = useFormik({
     initialValues: initialValues,
     validateOnMount: true,
@@ -36,7 +35,6 @@ const ManagerPage = () => {
         });
         const data = await res.json();
         resetForm();
-        setKeyIdx((old) => old + 1);
       } catch (e) {
         console.log(e);
       }
@@ -69,7 +67,7 @@ const ManagerPage = () => {
       {isLoading ? (
         <></>
       ) : hasAuth ? (
-        <Dashboard formik={formik} keyIdx={keyIdx} />
+        <Dashboard formik={formik} />
       ) : (
         <LoginForm setHasAuth={setHasAuth} />
       )}

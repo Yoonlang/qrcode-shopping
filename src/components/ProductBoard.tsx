@@ -9,13 +9,7 @@ import {
   StyledModal,
 } from "./DashboardItems";
 
-const ProductBoard = ({
-  formik,
-  keyIdx,
-}: {
-  formik: FormikProps<any>;
-  keyIdx: number;
-}) => {
+const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [open, setOpen] = useState(false);
   const colors = formik.values.colors;
   const fileTypes = ["JPG", "PNG"];
@@ -68,7 +62,7 @@ const ProductBoard = ({
     <>
       <Button onClick={handleModalOpen}>Add</Button>
       <StyledModal open={open} onClose={handleModalClose}>
-        <ProductAddModal key={keyIdx}>
+        <ProductAddModal>
           <h2>Add</h2>
           <ProductInput
             label="Product ID"
