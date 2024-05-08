@@ -17,13 +17,14 @@ const ManagerPage = () => {
         ...form,
         colors: form.colors.map((color, index) => {
           return {
-            colorId: index + 1,
+            colorId: (index + 1).toString(),
             colorName: color,
           };
         }),
         weightGPerM2: Number(form["weightGPerM2"]),
         widthInch: Number(form["widthInch"]),
       };
+      console.log(newForm);
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "POST",
