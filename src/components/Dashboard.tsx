@@ -17,7 +17,13 @@ import Icons from "./Icons";
 import UserBoard from "./UserBoard";
 import ProductBoard from "./ProductBoard";
 
-const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {
+const Dashboard = ({
+  formik,
+  keyIdx,
+}: {
+  formik: FormikProps<any>;
+  keyIdx: number;
+}) => {
   const [menu, setMenu] = useState(0);
   const drawerItems = ["user", "product"];
 
@@ -55,7 +61,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {
         {menu === 0 ? (
           <UserBoard formik={formik} />
         ) : (
-          <ProductBoard formik={formik} />
+          <ProductBoard formik={formik} keyIdx={keyIdx} />
         )}
       </StyledDiv>
     </>

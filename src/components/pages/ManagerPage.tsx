@@ -9,16 +9,22 @@ import { initialValues } from "@/consts/dashboard";
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [keyIdx, setKeyIdx] = useState(0);
   const formik = useFormik({
     initialValues: initialValues,
     validateOnMount: true,
-    onSubmit: async (form) => {
+    onSubmit: async (form, { resetForm }) => {
       const newForm = {
         ...form,
+        colors: form.colors.map((color, index) => {
+          return {
+            colorId: index + 1,
+            colorName: color,
+          };
+        }),
         weightGPerM2: Number(form["weightGPerM2"]),
         widthInch: Number(form["widthInch"]),
       };
-
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "POST",
@@ -29,6 +35,8 @@ const ManagerPage = () => {
           body: JSON.stringify(newForm),
         });
         const data = await res.json();
+        resetForm();
+        setKeyIdx((old) => old + 1);
       } catch (e) {
         console.log(e);
       }
@@ -56,16 +64,16 @@ const ManagerPage = () => {
   }, []);
 
   return (
-    <>
+    <div>
       <GlobalStyle />
       {isLoading ? (
         <></>
       ) : hasAuth ? (
-        <Dashboard formik={formik} />
+        <Dashboard formik={formik} keyIdx={keyIdx} />
       ) : (
         <LoginForm setHasAuth={setHasAuth} />
       )}
-    </>
+    </div>
   );
 };
 

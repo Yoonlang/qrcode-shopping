@@ -1,5 +1,6 @@
 import { AppBar, Drawer, List, Modal, TextField } from "@mui/material";
 import { FormikProps } from "formik";
+import { MutableRefObject } from "react";
 import styled from "styled-components";
 
 const StyledAppBar = styled(AppBar)`
@@ -72,11 +73,13 @@ const ProductInput = ({
   name,
   formik,
   type = "text",
+  inputRef = undefined,
 }: {
   label: string;
   name: string;
   formik: FormikProps<any>;
   type?: string;
+  inputRef?: MutableRefObject<HTMLInputElement | undefined>;
 }) => {
   return (
     <TextField
@@ -90,6 +93,11 @@ const ProductInput = ({
       type={type}
       margin="dense"
       fullWidth
+      inputRef={(el) => {
+        if (inputRef) {
+          inputRef.current = el;
+        }
+      }}
     />
   );
 };

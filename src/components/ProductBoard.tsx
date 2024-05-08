@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { FileUploader } from "react-drag-drop-files";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormikProps } from "formik";
 import {
   ProductAddModal,
@@ -9,21 +9,28 @@ import {
   StyledModal,
 } from "./DashboardItems";
 
-const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
+const ProductBoard = ({
+  formik,
+  keyIdx,
+}: {
+  formik: FormikProps<any>;
+  keyIdx: number;
+}) => {
   const [open, setOpen] = useState(false);
-  const [colors, setColors] = useState<string[]>([]);
-  const [currColor, setCurrColor] = useState("");
+  const colors = formik.values.colors;
   const fileTypes = ["JPG", "PNG"];
+  const colorRefs = useRef<HTMLInputElement[]>([]);
+  const productIdRefs = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const newColors = [...colors, currColor];
-    formik.setFieldValue(
-      "colors",
-      newColors.map((color, idx) => {
-        return { colorId: (idx + 1).toString(), colorName: color };
-      })
-    );
-  }, [currColor]);
+    if (
+      colors.length > 0 &&
+      colorRefs.current[colors.length - 1] &&
+      formik.values.productId !== ""
+    ) {
+      colorRefs.current[colors.length - 1].focus();
+    }
+  }, [colors.length]);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -33,44 +40,18 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     setOpen(false);
   };
 
-  const handleChangeColorInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const newColors = [...colors];
-    newColors[index] = e.target.value;
-    setColors(newColors);
-  };
-
   const handleDeleteColor = (
     e: React.MouseEvent<HTMLElement>,
     index: number
   ) => {
-    const newColors = [...colors];
+    const newColors = [...formik.values.colors];
     newColors.splice(index, 1);
-    setColors(newColors);
-    formik.setFieldValue(
-      "colors",
-      [...newColors, currColor].map((color, idx) => {
-        return { colorId: (idx + 1).toString(), colorName: color };
-      })
-    );
-  };
-
-  const handleChangeCurrColor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrColor(e.target.value);
+    formik.setFieldValue("colors", newColors);
   };
 
   const handleAddColor = () => {
-    const newColors = [...colors, currColor];
-    setColors(newColors);
-    setCurrColor("");
-    formik.setFieldValue(
-      "colors",
-      newColors.map((color, idx) => {
-        return { colorId: (idx + 1).toString(), colorName: color };
-      })
-    );
+    const newColors = [...formik.values.colors, ""];
+    formik.setFieldValue("colors", newColors);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -87,9 +68,14 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     <>
       <Button onClick={handleModalOpen}>Add</Button>
       <StyledModal open={open} onClose={handleModalClose}>
-        <ProductAddModal>
+        <ProductAddModal key={keyIdx}>
           <h2>Add</h2>
-          <ProductInput label="Product ID" name="productId" formik={formik} />
+          <ProductInput
+            label="Product ID"
+            name="productId"
+            formik={formik}
+            // inputRef={productIdRefs}
+          />
           {/* <FileUploader
             handleChange={handleChangeFile}
             name="file"
@@ -105,30 +91,34 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
           <ProductInput label="Width" name="widthInch" formik={formik} />
           {colors.length > 0 &&
             colors.map((color, index) => (
-              <StyledFlexDiv key={color}>
+              <StyledFlexDiv key={index}>
                 <TextField
                   label="Sample Yardage"
-                  onChange={(e) => handleChangeColorInput(e, index)}
+                  name={`colors.${index}`}
+                  onChange={formik.handleChange}
+                  onKeyDown={handleKeyDown}
                   value={color}
+                  inputRef={(el) => (colorRefs.current[index] = el)}
                   fullWidth
                 />
-                <Button onClick={(e) => handleDeleteColor(e, index)}>
-                  Delete
-                </Button>
+                {index !== colors.length - 1 ? (
+                  <Button onClick={(e) => handleDeleteColor(e, index)}>
+                    Delete
+                  </Button>
+                ) : (
+                  <Button onClick={handleAddColor}>Add</Button>
+                )}
               </StyledFlexDiv>
             ))}
           <StyledFlexDiv>
-            <TextField
-              label="Sample Yardage"
-              onInput={handleChangeCurrColor}
-              value={currColor}
-              fullWidth
-              onKeyDown={handleKeyDown}
-            />
-            <Button onClick={handleAddColor}>Add</Button>
-          </StyledFlexDiv>
-          <StyledFlexDiv>
-            <Button onClick={() => formik.handleSubmit()}>Confirm</Button>
+            <Button
+              onClick={() => {
+                formik.handleSubmit();
+                productIdRefs.current && productIdRefs.current.focus();
+              }}
+            >
+              Confirm
+            </Button>
             <Button onClick={handleModalClose}>Cancel</Button>
           </StyledFlexDiv>
         </ProductAddModal>
