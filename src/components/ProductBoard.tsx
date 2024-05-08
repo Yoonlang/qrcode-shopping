@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { FileUploader } from "react-drag-drop-files";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormikProps } from "formik";
 import {
   ProductAddModal,
@@ -14,6 +14,16 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [colors, setColors] = useState<string[]>([]);
   const [currColor, setCurrColor] = useState("");
   const fileTypes = ["JPG", "PNG"];
+
+  useEffect(() => {
+    const newColors = [...colors, currColor];
+    formik.setFieldValue(
+      "colors",
+      newColors.map((color, idx) => {
+        return { colorId: (idx + 1).toString(), colorName: color };
+      })
+    );
+  }, [currColor]);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -41,7 +51,7 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     setColors(newColors);
     formik.setFieldValue(
       "colors",
-      newColors.map((color, idx) => {
+      [...newColors, currColor].map((color, idx) => {
         return { colorId: (idx + 1).toString(), colorName: color };
       })
     );
@@ -63,6 +73,12 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     );
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.code === "Enter" && !e.nativeEvent.isComposing) {
+      handleAddColor();
+    }
+  };
+
   const handleChangeFile = (file) => {
     formik.setFieldValue("image", file.name);
   };
@@ -74,11 +90,11 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
         <ProductAddModal>
           <h2>Add</h2>
           <ProductInput label="Product ID" name="productId" formik={formik} />
-          <FileUploader
+          {/* <FileUploader
             handleChange={handleChangeFile}
             name="file"
             types={fileTypes}
-          />
+          /> */}
           {formik.values.image !== "" && <div>{formik.values.image}</div>}
           <ProductInput
             label="Composition"
@@ -104,9 +120,10 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
           <StyledFlexDiv>
             <TextField
               label="Sample Yardage"
-              onChange={handleChangeCurrColor}
+              onInput={handleChangeCurrColor}
               value={currColor}
               fullWidth
+              onKeyDown={handleKeyDown}
             />
             <Button onClick={handleAddColor}>Add</Button>
           </StyledFlexDiv>
