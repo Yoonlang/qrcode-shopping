@@ -6,7 +6,8 @@ import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
 const StyledAppBar = styled(AppBar)`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.id === "main" ? "center" : "space-between"};
   background-color: #fff;
   width: 100%;
   height: 56px;
@@ -35,14 +36,14 @@ const StyledIconButton = styled(IconButton)`
 
 const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
   return (
-    <StyledAppBar>
+    <StyledAppBar id={id}>
       {hasBack && (
         <StyledIconButton onClick={handleClickBack} edge="start">
           {Icons["back"]}
         </StyledIconButton>
       )}
       <AppBarTitleText>{titleText[id]}</AppBarTitleText>
-      <EmptyDiv />
+      {id !== "main" && <EmptyDiv />}
     </StyledAppBar>
   );
 };
