@@ -9,7 +9,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import Image from "next/image";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Counter,
   MenuItemDivider,
@@ -59,8 +59,12 @@ const Product = ({
   }
   const { productId, colors, name } = product;
   const [open, setOpen] = useState<boolean>(true);
-  const selected = Object.keys(selectedInfos[productId] || []).sort(
-    (a, b) => +a.split(" ")[0] - +b.split(" ")[0]
+  let selected: string[] = Object.keys(selectedInfos[productId] || []).sort(
+    (a, b) => {
+      if (a === COLOR_CARD_TEXT) return -1;
+      if (b === COLOR_CARD_TEXT) return 1;
+      return +a.split(" ")[0] - +b.split(" ")[0];
+    }
   );
   const count = selectedInfos[productId];
 
