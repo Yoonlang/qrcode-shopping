@@ -140,16 +140,35 @@ const MainPage = () => {
     if (pageIdx === 0) {
       if (Object.keys(scannedItems).length === 0) {
         setSnackBarStatus(snackBarStatusMessage["empty"]);
+        setSnackBarOpen(true);
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
-    } else if (pageIdx === 2) {
+    } else if (pageIdx === 1) {
+      let isAllSelected = true;
+      for (const key of Object.keys(scannedItems)) {
+        if (
+          !selectedInfos[key] ||
+          Object.keys(selectedInfos[key]).length <= 0
+        ) {
+          isAllSelected = false;
+          break;
+        }
+      }
+      if (isAllSelected) {
+        setPageIdx((pageIdx + 1) % 3);
+      } else {
+        setSnackBarStatus(snackBarStatusMessage["selected"]);
+        setSnackBarOpen(true);
+      }
+    } else {
       if (formik.isValid) {
         formik.handleSubmit();
         setPageIdx((pageIdx + 1) % 3);
+      } else {
+        setSnackBarStatus(snackBarStatusMessage["invalid"]);
+        setSnackBarOpen(true);
       }
-    } else {
-      setPageIdx((pageIdx + 1) % 3);
     }
   };
 
