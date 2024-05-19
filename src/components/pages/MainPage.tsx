@@ -23,6 +23,8 @@ const snackBarStatusMessage = {
   empty: `장바구니가 비었습니다.`,
   complete: `정상 제출됐습니다.`,
   scanned: `Scanned new item`,
+  selected: `옵션을 하나 이상 선택해주세요.`,
+  invalid: `유효한 정보를 입력해주세요.`,
 };
 
 const MainPage = () => {
@@ -31,6 +33,7 @@ const MainPage = () => {
   const [scannedItems, setScannedItems] = useState({});
   const [isSplashed, setIsSplashed] = useState(false);
   const [selectedInfos, setSelectedInfos] = useState<Object>({});
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarStatus, setSnackBarStatus] = useState(
     snackBarStatusMessage["default"]
   );
@@ -110,8 +113,10 @@ const MainPage = () => {
         setSelectedInfos({});
         resetForm();
         setSnackBarStatus(snackBarStatusMessage["complete"]);
+        setSnackBarOpen(true);
         setTimeout(() => {
           setSnackBarStatus(snackBarStatusMessage["default"]);
+          setSnackBarOpen(true);
         }, 3500);
       } catch (e) {
         console.log(e);
@@ -125,6 +130,8 @@ const MainPage = () => {
       setTimeout(() => {
         setIsSplashed(false);
         sessionStorage.setItem("splash", "true");
+        setSnackBarStatus(snackBarStatusMessage["default"]);
+        setSnackBarOpen(true);
       }, 2000);
     }
   }, []);
@@ -165,6 +172,7 @@ const MainPage = () => {
   useEffect(() => {
     if (Object.keys(scannedItems).length !== 0) {
       setSnackBarStatus(snackBarStatusMessage["scanned"]);
+      setSnackBarOpen(true);
     }
   }, [scannedItems]);
 
@@ -182,14 +190,20 @@ const MainPage = () => {
           scannedItems={scannedItems}
           setScannedItems={setScannedItems}
           fetchedItems={fetchedItems}
+          snackBarOpen={snackBarOpen}
+          setSnackBarOpen={setSnackBarOpen}
           snackBarStatus={snackBarStatus}
         />
       ) : pageIdx === 1 ? (
         <ToBuyListPage
           scannedItems={scannedItems}
+          setScannedItems={setScannedItems}
           fetchedItems={fetchedItems ?? []}
           selectedInfos={selectedInfos}
           setSelectedInfos={setSelectedInfos}
+          snackBarOpen={snackBarOpen}
+          setSnackBarOpen={setSnackBarOpen}
+          snackBarStatus={snackBarStatus}
         />
       ) : (
         <UserInfoSubmissionPage formik={formik} />

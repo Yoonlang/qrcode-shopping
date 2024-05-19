@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Product from "../Product";
+import { MessageSnackBar } from "../SnackBar";
 
 const StyledDiv = styled.div`
   align-items: normal;

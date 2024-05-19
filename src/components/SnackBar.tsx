@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Snackbar } from "@mui/material";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 const StyledSnackBar = styled(Snackbar)`
   display: flex;
@@ -18,9 +18,15 @@ const StyledSnackBar = styled(Snackbar)`
   }
 `;
 
-const MessageSnackBar = ({ message }: { message: string }) => {
-  const [isOpen, setIsOpen] = useState(true);
-
+const MessageSnackBar = ({
+  isOpen,
+  setIsOpen,
+  message,
+}: {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  message: string;
+}) => {
   return (
     <StyledSnackBar
       open={isOpen}
