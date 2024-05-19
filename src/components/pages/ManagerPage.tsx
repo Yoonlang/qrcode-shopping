@@ -31,7 +31,9 @@ const ManagerPage = () => {
         if (key === "image" && value instanceof File) {
           formData.append(key, value);
         } else {
-          formData.append(key, JSON.stringify(value));
+          if (typeof value === "string") {
+            formData.append(key, JSON.stringify(value));
+          }
         }
       });
 
@@ -39,10 +41,7 @@ const ManagerPage = () => {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: JSON.stringify(newForm),
+          body: formData,
         });
         const data = await res.json();
         resetForm();
