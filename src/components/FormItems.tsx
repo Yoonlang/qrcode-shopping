@@ -153,6 +153,10 @@ const StyledErrorMessage = styled.div`
   }
 `;
 
+const StyledIconButton = styled(IconButton)`
+  padding: 0;
+`;
+
 const AddressCheckbox = ({
   name,
   formik,
@@ -250,8 +254,8 @@ const UserSelect = ({
       {items.map((item, index) => (
         <StyledMenuItem key={item} value={item}>
           {item}
-          {formik.values.business === item && (
-            <IconButton>{Icons["select"]}</IconButton>
+          {formik.values.businessType === item && (
+            <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
           )}
         </StyledMenuItem>
       ))}
