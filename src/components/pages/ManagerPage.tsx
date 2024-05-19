@@ -24,14 +24,22 @@ const ManagerPage = () => {
         weightGPerM2: Number(form["weightGPerM2"]),
         widthInch: Number(form["widthInch"]),
       };
+
+      const formData = new FormData();
+
+      Object.entries(newForm).forEach(([key, value]) => {
+        if (key === "image" && value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, JSON.stringify(value));
+        }
+      });
+
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newForm),
+          body: formData,
         });
         const data = await res.json();
         resetForm();

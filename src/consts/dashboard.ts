@@ -1,6 +1,6 @@
 export const initialValues = {
   productId: "",
-  image: "",
+  image: null,
   colors: [""],
   composition: "",
   weightGPerM2: "",
