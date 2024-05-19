@@ -43,19 +43,19 @@ const MainPage = () => {
     validateOnMount: true,
     onSubmit: async (form, { resetForm }) => {
       const {
-        userName,
+        name,
         companyName,
-        business,
+        businessType,
         countryCode,
         phoneNumber,
         email,
-        coZipCode,
-        coAddress1,
-        coAddress2,
+        coPostalCode,
+        coAddress,
+        coDetailAddress,
+        spPostalCode,
+        spAddress,
+        spDetailAddress,
         isSameAddress,
-        spZipCode,
-        spAddress1,
-        spAddress2,
       } = form;
       try {
         const res = await fetch(`${SERVER_URL}/users-info`, {
@@ -83,9 +83,9 @@ const MainPage = () => {
               }
             ),
             personalInfo: {
-              name: userName,
+              name,
               companyName,
-              businessType: business,
+              businessType,
               contactInfo: {
                 phoneNumber: {
                   countryCode,
@@ -94,15 +94,16 @@ const MainPage = () => {
                 email,
               },
               companyAddress: {
-                postalCode: coZipCode,
-                address: coAddress1,
-                detailAddress: coAddress2,
+                postalCode: coPostalCode,
+                address: coAddress,
+                detailAddress: coDetailAddress,
               },
               shippingAddress: {
-                useCompanyAddress: isSameAddress,
-                postalCode: spZipCode,
-                address: spAddress1,
-                detailAddress: spAddress2,
+                postalCode: isSameAddress ? coPostalCode : spPostalCode,
+                address: isSameAddress ? coAddress : spAddress,
+                detailAddress: isSameAddress
+                  ? coDetailAddress
+                  : spDetailAddress,
               },
             },
           }),

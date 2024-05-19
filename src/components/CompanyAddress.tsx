@@ -4,47 +4,47 @@ import { useEffect } from "react";
 
 const CompanyAddress = ({ formik }: { formik: FormikProps<any> }) => {
   useEffect(() => {
-    if (formik.values.business === "Student") {
+    if (formik.values.businessType === "Student") {
       formik.setValues({
         ...formik.values,
-        coZipCode: "",
-        coAddress1: "",
-        coAddress2: "",
+        coPostalCode: "",
+        coAddress: "",
+        coDetailAddress: "",
         isSameAddress: false,
       });
       formik.setErrors({
         ...formik.errors,
-        coZipCode: undefined,
-        coAddress1: undefined,
-        coAddress2: undefined,
+        coPostalCode: undefined,
+        coAddress: undefined,
+        coDetailAddress: undefined,
       });
       formik.setTouched({
         ...formik.touched,
-        coZipCode: false,
-        coAddress1: false,
-        coAddress2: false,
+        coPostalCode: false,
+        coAddress: false,
+        coDetailAddress: false,
       });
     }
-  }, [formik.values.business]);
+  }, [formik.values.businessType]);
   return (
     <>
       <UserInput
         label="우편번호"
-        name="coZipCode"
+        name="coPostalCode"
         formik={formik}
-        disable={formik.values.business === "Student"}
+        disable={formik.values.businessType === "Student"}
       />
       <UserInput
         label="주소"
-        name="coAddress1"
+        name="coAddress"
         formik={formik}
-        disable={formik.values.business === "Student"}
+        disable={formik.values.businessType === "Student"}
       />
       <UserInput
         label="상세주소"
-        name="coAddress2"
+        name="coDetailAddress"
         formik={formik}
-        disable={formik.values.business === "Student"}
+        disable={formik.values.businessType === "Student"}
       />
     </>
   );

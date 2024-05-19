@@ -1,17 +1,17 @@
 export const initialValues = {
-  userName: "",
+  name: "",
   companyName: "",
-  business: "",
+  businessType: "",
   email: "",
   countryCode: "",
   phoneNumber: "",
-  coZipCode: "",
+  coPostalCode: "",
+  coAddress: "",
+  coDetailAddress: "",
+  spPostalCode: "",
+  spAddress: "",
+  spDetailAddress: "",
   isSameAddress: false,
-  coAddress1: "",
-  coAddress2: "",
-  spZipCode: "",
-  spAddress1: "",
-  spAddress2: "",
 };
 
 export const steps = [

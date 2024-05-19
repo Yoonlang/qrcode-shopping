@@ -57,7 +57,7 @@ const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
             ) : (
               <AddressBox>
                 <StepLabel>{step.label}</StepLabel>
-                {formik.values.business !== "Student" && (
+                {formik.values.businessType !== "Student" && (
                   <AddressCheckbox name="isSameAddress" formik={formik} />
                 )}
               </AddressBox>

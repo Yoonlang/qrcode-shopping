@@ -11,7 +11,7 @@ const MAX_TEXT = {
 };
 
 export const validationSchema = Yup.object().shape({
-  userName: Yup.string()
+  name: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
@@ -19,7 +19,7 @@ export const validationSchema = Yup.object().shape({
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
-  business: Yup.string().required(REQUIRED_TEXT),
+  businessType: Yup.string().required(REQUIRED_TEXT),
   email: Yup.string()
     .email(EMAIL_TEXT)
     .required(REQUIRED_TEXT)
@@ -30,30 +30,30 @@ export const validationSchema = Yup.object().shape({
     .required(REQUIRED_TEXT)
     .typeError(NUMBER_TEXT)
     .max(30, MAX_TEXT["30"]),
-  coZipCode: Yup.string()
+  coPostalCode: Yup.string()
     .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
     .required(REQUIRED_TEXT)
     .max(30, MAX_TEXT["30"]),
-  isSameAddress: Yup.bool(),
-  coAddress1: Yup.string()
+  coAddress: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
-  coAddress2: Yup.string()
+  coDetailAddress: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
-  spZipCode: Yup.string()
+  spPostalCode: Yup.string()
     .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
     .required(REQUIRED_TEXT)
     .typeError(POSTAL_CODE_TEXT)
     .max(30, MAX_TEXT["30"]),
-  spAddress1: Yup.string()
+  spAddress: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
-  spAddress2: Yup.string()
+  spDetailAddress: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
+  isSameAddress: Yup.bool(),
 });
