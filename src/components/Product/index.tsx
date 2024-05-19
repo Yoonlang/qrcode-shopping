@@ -32,6 +32,7 @@ interface ProductType {
   productId: string;
   name: string | undefined;
   colors: Color[];
+  image: string | null;
 }
 
 const COLOR_CARD_TEXT = "Color Card";
@@ -172,7 +173,12 @@ const Product = ({
   return (
     <StyledWrapper>
       <StyledTop>
-        <Image width={IMG_SIZE} height={IMG_SIZE} src="" alt={name} />
+        <Image
+          width={IMG_SIZE}
+          height={IMG_SIZE}
+          src={`${product.image ?? ""}`}
+          alt={name}
+        />
         <StyledRight>
           <StyledNameDiv>
             <p>{name}</p>
