@@ -35,14 +35,15 @@ const ManagerPage = () => {
         }
       });
 
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "POST",
           credentials: "include",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: JSON.stringify(newForm),
+          body: formData,
         });
         const data = await res.json();
         resetForm();
