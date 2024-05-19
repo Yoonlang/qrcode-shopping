@@ -55,7 +55,7 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   };
 
   const handleChangeFile = (file) => {
-    formik.setFieldValue("image", file.name);
+    formik.setFieldValue("image", file);
   };
 
   return (
@@ -64,18 +64,15 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
       <StyledModal open={open} onClose={handleModalClose}>
         <ProductAddModal>
           <h2>Add</h2>
-          <ProductInput
-            label="Product ID"
-            name="productId"
-            formik={formik}
-            // inputRef={productIdRefs}
-          />
-          {/* <FileUploader
+          <ProductInput label="Product ID" name="productId" formik={formik} />
+          <FileUploader
             handleChange={handleChangeFile}
             name="file"
             types={fileTypes}
-          /> */}
-          {formik.values.image !== "" && <div>{formik.values.image}</div>}
+          />
+          {formik.values.image !== null && (
+            <div>{formik.values.image.name}</div>
+          )}
           <ProductInput
             label="Composition"
             name="composition"
