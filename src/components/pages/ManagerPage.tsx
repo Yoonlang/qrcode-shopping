@@ -31,9 +31,7 @@ const ManagerPage = () => {
         if (key === "image" && value instanceof File) {
           formData.append(key, value);
         } else {
-          if (typeof value === "string") {
-            formData.append(key, JSON.stringify(value));
-          }
+          formData.append(key, JSON.stringify(value));
         }
       });
 
