@@ -53,31 +53,53 @@ const StyledStepper = styled(Stepper)`
 `;
 
 const StyledTextField = styled(TextField)`
+  &.MuiFormControl-root {
+    & label.Mui-error {
+      color: #ff0000;
+    }
+
+    background-color: ${(props) => props.disabled && "#f7f7f7"};
+  }
+
   & .MuiInputBase-root.MuiOutlinedInput-root {
     & .MuiSelect-select {
       display: flex;
       justify-content: space-between;
     }
-    
+
+    &.Mui-focused fieldset {
+      border-color: #000;
+    }
+
     & fieldSet {
-    border-radius: 6px;
-    border-color: rgba(0,0,0,0.1);
+      border-radius: 6px;
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &.Mui-error {
+      & fieldSet {
+        border-color: #ff0000;
+      }
+
+      & label {
+        color: #ff0000;
+      }
     }
   }
 
-  & label.Mui-focused {
-    color: #000;
+  & label {
+    &.Mui-focused {
+      color: #000;
+    }
   }
 
   & .MuiInput-underline:after {
-    border=bottom-color: #000;
+    border-bottom-color: #000;
   }
 
-  & .MuiOutlinedInput-root {
-    &.Mui-focused fieldset {
-      border-color: #000;
-    },
-  },
+  & .MuiFormHelperText-root.Mui-error {
+    color: #ff0000;
+  }
 `;
 
 const StyledMenuItem = styled(MenuItem)`
@@ -118,6 +140,19 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   }
 `;
 
+const StyledErrorMessage = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  & p {
+    margin: 0;
+    font-size: 12px;
+    color: #ff0000;
+    margin-left: 5px;
+  }
+`;
+
 const AddressCheckbox = ({
   name,
   formik,
@@ -143,34 +178,48 @@ const UserInput = ({
   name,
   formik,
   type = "text",
+  disable = false,
 }: {
   label: string;
   name: string;
   formik: FormikProps<any>;
   type?: string;
+  disable?: boolean;
 }) => {
   return (
-    <StyledTextField
-      label={label}
-      name={name}
-      value={formik.values[name]}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={formik.touched[name] && !!formik.errors[name]}
-      autoComplete="off"
-      type={type}
-      margin="dense"
-      fullWidth
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            {!formik.errors[name] && formik.touched[name] && (
-              <>{Icons["select"]}</>
-            )}
-          </InputAdornment>
-        ),
-      }}
-    />
+    <>
+      <StyledTextField
+        label={label}
+        name={name}
+        value={formik.values[name]}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched[name] && !!formik.errors[name]}
+        autoComplete="off"
+        type={type}
+        margin="dense"
+        fullWidth
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              {!formik.errors[name] && formik.touched[name] && (
+                <>{Icons["select"]}</>
+              )}
+            </InputAdornment>
+          ),
+        }}
+        disabled={disable}
+      />
+      {name !== "countryCode" &&
+      name !== "phoneNumber" &&
+      formik.errors[name] &&
+      formik.touched[name] ? (
+        <StyledErrorMessage>
+          {Icons["error"]}
+          <p>{formik.errors[name]?.toString()}</p>
+        </StyledErrorMessage>
+      ) : null}
+    </>
   );
 };
 
@@ -214,6 +263,7 @@ export {
   StyledBox,
   AddressBox,
   StyledStepper,
+  StyledErrorMessage,
   AddressCheckbox,
   UserInput,
   UserSelect,
