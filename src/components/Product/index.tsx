@@ -9,13 +9,14 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import Image from "next/image";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Counter,
   MenuItemDivider,
   SelectedOption,
   StyledBottom,
   StyledInput,
+  StyledInputLabel,
   StyledMenuItem,
   StyledNameDiv,
   StyledRight,
@@ -39,6 +40,7 @@ const OPTION_TEXT = "Option";
 const SELECTED_OPTIONS_TEXT = "Selected Options";
 const IMG_SIZE = 71;
 const ALERT_MESSAGE = "숫자만 입력해 주세요.";
+const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
 
 const Product = ({
   product,
@@ -200,6 +202,7 @@ const Product = ({
               )}
             </StyledMenuItem>
             <MenuItemDivider />
+            <StyledInputLabel>{SAMPLE_YARDAGE_TEXT}</StyledInputLabel>
             {colors.map((color) => {
               const { colorId, colorName } = color;
               return (
