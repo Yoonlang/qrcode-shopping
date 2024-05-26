@@ -1,6 +1,6 @@
 import QrCode from "@/components/QrCode";
 import { MessageSnackBar } from "@/components/SnackBar";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 const QrScannerPage = ({
   scannedItems,
@@ -9,6 +9,8 @@ const QrScannerPage = ({
   snackBarOpen,
   setSnackBarOpen,
   snackBarStatus,
+  setSnackBarStatus,
+  snackBarStatusMessage,
 }: {
   scannedItems: Object;
   setScannedItems: Dispatch<SetStateAction<{}>>;
@@ -16,7 +18,16 @@ const QrScannerPage = ({
   snackBarOpen: boolean;
   setSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
+  setSnackBarStatus: Dispatch<SetStateAction<string>>;
+  snackBarStatusMessage: object;
 }) => {
+  useEffect(() => {
+    if (Object.keys(scannedItems).length > 0) {
+      setSnackBarStatus(snackBarStatusMessage["scanned"]);
+      setSnackBarOpen(true);
+    }
+  }, [scannedItems]);
+
   return (
     <div>
       <MessageSnackBar

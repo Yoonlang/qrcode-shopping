@@ -30,30 +30,60 @@ export const validationSchema = Yup.object().shape({
     .required(REQUIRED_TEXT)
     .typeError(NUMBER_TEXT)
     .max(30, MAX_TEXT["30"]),
-  coPostalCode: Yup.string()
-    .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
-    .required(REQUIRED_TEXT)
-    .max(30, MAX_TEXT["30"]),
-  coAddress: Yup.string()
-    .required(REQUIRED_TEXT)
-    .typeError(STRING_TEXT)
-    .max(50, MAX_TEXT["50"]),
-  coDetailAddress: Yup.string()
-    .required(REQUIRED_TEXT)
-    .typeError(STRING_TEXT)
-    .max(50, MAX_TEXT["50"]),
-  spPostalCode: Yup.string()
-    .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
-    .required(REQUIRED_TEXT)
-    .typeError(POSTAL_CODE_TEXT)
-    .max(30, MAX_TEXT["30"]),
-  spAddress: Yup.string()
-    .required(REQUIRED_TEXT)
-    .typeError(STRING_TEXT)
-    .max(50, MAX_TEXT["50"]),
-  spDetailAddress: Yup.string()
-    .required(REQUIRED_TEXT)
-    .typeError(STRING_TEXT)
-    .max(50, MAX_TEXT["50"]),
+  coPostalCode: Yup.string().when("businessType", {
+    is: "Student",
+    then: () => Yup.string().notRequired(),
+    otherwise: () =>
+      Yup.string()
+        .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
+        .required(REQUIRED_TEXT)
+        .max(30, MAX_TEXT["30"]),
+  }),
+  coAddress: Yup.string().when("businessType", {
+    is: "Student",
+    then: () => Yup.string().notRequired(),
+    otherwise: () =>
+      Yup.string()
+        .required(REQUIRED_TEXT)
+        .typeError(STRING_TEXT)
+        .max(50, MAX_TEXT["50"]),
+  }),
+  coDetailAddress: Yup.string().when("businessType", {
+    is: "Student",
+    then: () => Yup.string().notRequired(),
+    otherwise: () =>
+      Yup.string()
+        .required(REQUIRED_TEXT)
+        .typeError(STRING_TEXT)
+        .max(50, MAX_TEXT["50"]),
+  }),
+  spPostalCode: Yup.string().when("isSameAddress", {
+    is: true,
+    then: () => Yup.string().notRequired(),
+    otherwise: () =>
+      Yup.string()
+        .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
+        .required(REQUIRED_TEXT)
+        .typeError(POSTAL_CODE_TEXT)
+        .max(30, MAX_TEXT["30"]),
+  }),
+  spAddress: Yup.string().when("isSameAddress", {
+    is: true,
+    then: () => Yup.string().notRequired(),
+    otherwise: () =>
+      Yup.string()
+        .required(REQUIRED_TEXT)
+        .typeError(STRING_TEXT)
+        .max(50, MAX_TEXT["50"]),
+  }),
+  spDetailAddress: Yup.string().when("isSameAddress", {
+    is: true,
+    then: () => Yup.string().notRequired(),
+    otherwise: () =>
+      Yup.string()
+        .required(REQUIRED_TEXT)
+        .typeError(STRING_TEXT)
+        .max(50, MAX_TEXT["50"]),
+  }),
   isSameAddress: Yup.bool(),
 });
