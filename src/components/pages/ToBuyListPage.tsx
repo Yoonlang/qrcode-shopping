@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Product from "../Product";
 import { MessageSnackBar } from "../SnackBar";
+import { Box } from "@mui/material";
+import { SelectedBox, StyledBox, StyledButton } from "../Product/styled";
+import { FormikProps } from "formik";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -14,7 +17,6 @@ const StyledDiv = styled.div`
 const StyledTitle = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 
   > p {
     font-size: 17px;
@@ -24,9 +26,60 @@ const StyledTitle = styled.div`
   }
 `;
 
+const FlexDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
 const ProductLists = styled.div`
   padding-bottom: 85px;
 `;
+
+const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
+  return (
+    <Box sx={{ display: "flex" }}>
+      <StyledBox>
+        <SelectedBox
+          style={{
+            transform: `translateX(${
+              formik.values.productLengthUnit === "METER" ? 0 : "62px"
+            })`,
+          }}
+        />
+        <StyledButton
+          disableRipple
+          sx={{
+            color:
+              formik.values.productLengthUnit === "METER"
+                ? "#FBFBFB"
+                : "rgba(0, 0, 0, 0.87)",
+            fontWeight:
+              formik.values.productLengthUnit === "METER" ? "bold" : "normal",
+          }}
+          onClick={() => formik.setFieldValue("productLengthUnit", "METER")}
+        >
+          METER
+        </StyledButton>
+        <StyledButton
+          disableRipple
+          sx={{
+            color:
+              formik.values.productLengthUnit === "YARD"
+                ? "#FBFBFB"
+                : "rgba(0, 0, 0, 0.87)",
+            fontWeight:
+              formik.values.productLengthUnit === "YARD" ? "bold" : "normal",
+          }}
+          onClick={() => formik.setFieldValue("productLengthUnit", "YARD")}
+        >
+          YARD
+        </StyledButton>
+      </StyledBox>
+    </Box>
+  );
+};
 
 const ToBuyListPage = ({
   scannedItems,
@@ -37,6 +90,7 @@ const ToBuyListPage = ({
   snackBarOpen,
   setSnackBarOpen,
   snackBarStatus,
+  formik,
 }: {
   scannedItems: Object;
   setScannedItems: Dispatch<SetStateAction<Object>>;
@@ -46,6 +100,7 @@ const ToBuyListPage = ({
   snackBarOpen: boolean;
   setSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
+  formik: FormikProps<any>;
 }) => {
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -64,10 +119,13 @@ const ToBuyListPage = ({
         setIsOpen={setSnackBarOpen}
         message={snackBarStatus}
       />
-      <StyledTitle>
-        {Icons["list"]}
-        <p>제품목록</p>
-      </StyledTitle>
+      <FlexDiv>
+        <StyledTitle>
+          {Icons["list"]}
+          <p>제품목록</p>
+        </StyledTitle>
+        <StyledSwitch formik={formik} />
+      </FlexDiv>
       <ProductLists>
         {fetchedItems
           .filter((item) =>

@@ -12,6 +12,7 @@ export const initialValues = {
   spAddress: "",
   spDetailAddress: "",
   isSameAddress: false,
+  productLengthUnit: "METER",
 };
 
 export const steps = [

@@ -56,6 +56,7 @@ const MainPage = () => {
         spAddress,
         spDetailAddress,
         isSameAddress,
+        productLengthUnit,
       } = form;
       try {
         const res = await fetch(`${SERVER_URL}/users-info`, {
@@ -82,6 +83,7 @@ const MainPage = () => {
                 };
               }
             ),
+            productLengthUnit: productLengthUnit,
             personalInfo: {
               name,
               companyName,
@@ -224,6 +226,7 @@ const MainPage = () => {
           snackBarOpen={snackBarOpen}
           setSnackBarOpen={setSnackBarOpen}
           snackBarStatus={snackBarStatus}
+          formik={formik}
         />
       ) : (
         <UserInfoSubmissionPage formik={formik} />

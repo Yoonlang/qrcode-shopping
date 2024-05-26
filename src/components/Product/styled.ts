@@ -1,4 +1,11 @@
-import { Divider, InputLabel, MenuItem, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  InputLabel,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
@@ -197,6 +204,40 @@ const StyledInputLabel = styled(InputLabel)`
   color: rgba(0, 0, 0, 0.6);
 `;
 
+const StyledBox = styled(Box)`
+  border-radius: 20px;
+  position: relative;
+  background: rgba(43, 47, 74, 0.12);
+`;
+
+const SelectedBox = styled(Box)`
+  width: 60px;
+  height: 23px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.87);
+  position: absolute;
+  transition: all 0.5s ease;
+  top: 3px;
+  left: 3px;
+`;
+
+const StyledButton = styled(Button)`
+  font-size: 10px;
+
+  & .MuiButton-root {
+    border-radius: 20px;
+    width: 60px;
+    height: 30px;
+    font-weight: bold;
+    transition: all 0.2s 0.1s ease;
+    color: #fbfbfb;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+`;
+
 export {
   StyledWrapper,
   MenuItemDivider,
@@ -209,4 +250,7 @@ export {
   StyledInput,
   Counter,
   StyledInputLabel,
+  StyledBox,
+  SelectedBox,
+  StyledButton,
 };
