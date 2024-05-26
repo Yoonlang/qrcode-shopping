@@ -26,7 +26,7 @@ i18n
     },
     supportedLngs: ["zh", "en", "ko"],
     resources,
-    nonExplicitSupportedLngs: true, // en-US도 en으로 처리
+    nonExplicitSupportedLngs: false, // en-US도 en으로 처리
     fallbackLng: "zh",
     interpolation: {
       escapeValue: false,
