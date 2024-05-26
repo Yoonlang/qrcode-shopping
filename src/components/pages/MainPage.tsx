@@ -167,7 +167,7 @@ const MainPage = () => {
         if (isAllSelected) {
           setPageIdx((pageIdx + 1) % 3);
         } else {
-          setSnackBarStatus(snackBarStatusMessage["selected"]);
+          setSnackBarStatus(snackBarStatusMessage["option"]);
           setSnackBarOpen(true);
         }
       }
