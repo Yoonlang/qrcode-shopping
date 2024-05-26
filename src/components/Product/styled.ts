@@ -1,4 +1,4 @@
-import { Divider, MenuItem, TextField } from "@mui/material";
+import { Divider, InputLabel, MenuItem, TextField } from "@mui/material";
 import styled from "styled-components";
 
 const StyledWrapper = styled.div`
@@ -190,6 +190,13 @@ const Counter = styled.div`
   }
 `;
 
+const StyledInputLabel = styled(InputLabel)`
+  background-color: #f7f7f7;
+  font-size: 12px;
+  padding: 10px 0 0 10px;
+  color: rgba(0, 0, 0, 0.6);
+`;
+
 export {
   StyledWrapper,
   MenuItemDivider,
@@ -201,4 +208,5 @@ export {
   SelectedOption,
   StyledInput,
   Counter,
+  StyledInputLabel,
 };

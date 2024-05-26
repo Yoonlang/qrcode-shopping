@@ -23,6 +23,8 @@ const snackBarStatusMessage = {
   empty: `장바구니가 비었습니다.`,
   complete: `정상 제출됐습니다.`,
   scanned: `Scanned new item`,
+  selected: `옵션을 하나 이상 선택해주세요.`,
+  invalid: `유효한 정보를 입력해주세요.`,
 };
 
 const MainPage = () => {
@@ -31,6 +33,7 @@ const MainPage = () => {
   const [scannedItems, setScannedItems] = useState({});
   const [isSplashed, setIsSplashed] = useState(false);
   const [selectedInfos, setSelectedInfos] = useState<Object>({});
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarStatus, setSnackBarStatus] = useState(
     snackBarStatusMessage["default"]
   );
@@ -40,19 +43,19 @@ const MainPage = () => {
     validateOnMount: true,
     onSubmit: async (form, { resetForm }) => {
       const {
-        userName,
+        name,
         companyName,
-        business,
+        businessType,
         countryCode,
         phoneNumber,
         email,
-        coZipCode,
-        coAddress1,
-        coAddress2,
+        coPostalCode,
+        coAddress,
+        coDetailAddress,
+        spPostalCode,
+        spAddress,
+        spDetailAddress,
         isSameAddress,
-        spZipCode,
-        spAddress1,
-        spAddress2,
       } = form;
       try {
         const res = await fetch(`${SERVER_URL}/users-info`, {
@@ -80,9 +83,9 @@ const MainPage = () => {
               }
             ),
             personalInfo: {
-              name: userName,
+              name,
               companyName,
-              businessType: business,
+              businessType,
               contactInfo: {
                 phoneNumber: {
                   countryCode,
@@ -91,15 +94,16 @@ const MainPage = () => {
                 email,
               },
               companyAddress: {
-                postalCode: coZipCode,
-                address: coAddress1,
-                detailAddress: coAddress2,
+                postalCode: coPostalCode,
+                address: coAddress,
+                detailAddress: coDetailAddress,
               },
               shippingAddress: {
-                useCompanyAddress: isSameAddress,
-                postalCode: spZipCode,
-                address: spAddress1,
-                detailAddress: spAddress2,
+                postalCode: isSameAddress ? coPostalCode : spPostalCode,
+                address: isSameAddress ? coAddress : spAddress,
+                detailAddress: isSameAddress
+                  ? coDetailAddress
+                  : spDetailAddress,
               },
             },
           }),
@@ -110,8 +114,10 @@ const MainPage = () => {
         setSelectedInfos({});
         resetForm();
         setSnackBarStatus(snackBarStatusMessage["complete"]);
+        setSnackBarOpen(true);
         setTimeout(() => {
           setSnackBarStatus(snackBarStatusMessage["default"]);
+          setSnackBarOpen(true);
         }, 3500);
       } catch (e) {
         console.log(e);
@@ -125,6 +131,8 @@ const MainPage = () => {
       setTimeout(() => {
         setIsSplashed(false);
         sessionStorage.setItem("splash", "true");
+        setSnackBarStatus(snackBarStatusMessage["default"]);
+        setSnackBarOpen(true);
       }, 2000);
     }
   }, []);
@@ -133,16 +141,35 @@ const MainPage = () => {
     if (pageIdx === 0) {
       if (Object.keys(scannedItems).length === 0) {
         setSnackBarStatus(snackBarStatusMessage["empty"]);
+        setSnackBarOpen(true);
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
-    } else if (pageIdx === 2) {
+    } else if (pageIdx === 1) {
+      let isAllSelected = true;
+      for (const key of Object.keys(scannedItems)) {
+        if (
+          !selectedInfos[key] ||
+          Object.keys(selectedInfos[key]).length <= 0
+        ) {
+          isAllSelected = false;
+          break;
+        }
+      }
+      if (isAllSelected) {
+        setPageIdx((pageIdx + 1) % 3);
+      } else {
+        setSnackBarStatus(snackBarStatusMessage["selected"]);
+        setSnackBarOpen(true);
+      }
+    } else {
       if (formik.isValid) {
         formik.handleSubmit();
         setPageIdx((pageIdx + 1) % 3);
+      } else {
+        setSnackBarStatus(snackBarStatusMessage["invalid"]);
+        setSnackBarOpen(true);
       }
-    } else {
-      setPageIdx((pageIdx + 1) % 3);
     }
   };
 
@@ -165,6 +192,7 @@ const MainPage = () => {
   useEffect(() => {
     if (Object.keys(scannedItems).length !== 0) {
       setSnackBarStatus(snackBarStatusMessage["scanned"]);
+      setSnackBarOpen(true);
     }
   }, [scannedItems]);
 
@@ -182,14 +210,20 @@ const MainPage = () => {
           scannedItems={scannedItems}
           setScannedItems={setScannedItems}
           fetchedItems={fetchedItems}
+          snackBarOpen={snackBarOpen}
+          setSnackBarOpen={setSnackBarOpen}
           snackBarStatus={snackBarStatus}
         />
       ) : pageIdx === 1 ? (
         <ToBuyListPage
           scannedItems={scannedItems}
+          setScannedItems={setScannedItems}
           fetchedItems={fetchedItems ?? []}
           selectedInfos={selectedInfos}
           setSelectedInfos={setSelectedInfos}
+          snackBarOpen={snackBarOpen}
+          setSnackBarOpen={setSnackBarOpen}
+          snackBarStatus={snackBarStatus}
         />
       ) : (
         <UserInfoSubmissionPage formik={formik} />

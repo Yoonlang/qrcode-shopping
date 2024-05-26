@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Product from "../Product";
+import { MessageSnackBar } from "../SnackBar";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -29,46 +30,60 @@ const ProductLists = styled.div`
 
 const ToBuyListPage = ({
   scannedItems,
+  setScannedItems,
   fetchedItems,
   selectedInfos,
   setSelectedInfos,
+  snackBarOpen,
+  setSnackBarOpen,
+  snackBarStatus,
 }: {
   scannedItems: Object;
+  setScannedItems: Dispatch<SetStateAction<Object>>;
   fetchedItems: any[];
   selectedInfos: Object;
   setSelectedInfos: Dispatch<SetStateAction<Object>>;
+  snackBarOpen: boolean;
+  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
+  snackBarStatus: string;
 }) => {
-  const [products, setProducts] = useState(
-    fetchedItems.filter((item) =>
-      Object.keys(scannedItems).some((pid) => pid === item.productId)
-    )
-  );
-
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
   ) => {
-    setProducts(products.filter((item) => item.id !== id));
+    const newScannedItems = { ...scannedItems };
+    delete newScannedItems[id];
+    setScannedItems(newScannedItems);
   };
 
   return (
     <StyledDiv>
+      <MessageSnackBar
+        key={`${Object.keys(selectedInfos).length} ${snackBarStatus}`}
+        isOpen={snackBarOpen}
+        setIsOpen={setSnackBarOpen}
+        message={snackBarStatus}
+      />
       <StyledTitle>
         {Icons["list"]}
         <p>제품목록</p>
       </StyledTitle>
       <ProductLists>
-        {products.map((product, index) => {
-          return (
-            <Product
-              key={product.productId}
-              product={product}
-              selectedInfos={selectedInfos}
-              setSelectedInfos={setSelectedInfos}
-              handleDelete={handleDelete}
-            />
-          );
-        })}
+        {fetchedItems
+          .filter((item) =>
+            Object.keys(scannedItems).some((pid) => pid === item.productId)
+          )
+          .map((product, index) => {
+            return (
+              <Product
+                key={product.productId}
+                product={product}
+                selectedInfos={selectedInfos}
+                setSelectedInfos={setSelectedInfos}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
       </ProductLists>
     </StyledDiv>
   );

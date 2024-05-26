@@ -26,16 +26,18 @@ const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
       setActiveStep(1);
 
       if (
-        !formik.errors["coZipCode"] &&
-        !formik.errors["coAddress1"] &&
-        !formik.errors["coAddress2"]
+        formik.values.business === "Student" ||
+        (!formik.errors["coZipCode"] &&
+          !formik.errors["coAddress1"] &&
+          !formik.errors["coAddress2"])
       ) {
         setActiveStep(2);
 
         if (
-          !formik.errors["spZipCode"] &&
-          !formik.errors["spAddress1"] &&
-          !formik.errors["spAddress2"]
+          formik.values.isSameAddress ||
+          (!formik.errors["spZipCode"] &&
+            !formik.errors["spAddress1"] &&
+            !formik.errors["spAddress2"])
         ) {
           setActiveStep(3);
         }
@@ -55,7 +57,9 @@ const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
             ) : (
               <AddressBox>
                 <StepLabel>{step.label}</StepLabel>
-                <AddressCheckbox name="isSameAddress" formik={formik} />
+                {formik.values.businessType !== "Student" && (
+                  <AddressCheckbox name="isSameAddress" formik={formik} />
+                )}
               </AddressBox>
             )}
             <StepContent>

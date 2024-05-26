@@ -1,15 +1,21 @@
 import { business, codes } from "@/consts/form";
-import { StyledBox, UserInput, UserSelect } from "./FormItems";
+import {
+  StyledBox,
+  StyledErrorMessage,
+  UserInput,
+  UserSelect,
+} from "./FormItems";
 import { FormikProps } from "formik";
+import Icons from "./Icons";
 
 const OrdererInfo = ({ formik }: { formik: FormikProps<any> }) => {
   return (
     <>
-      <UserInput label="이름" name="userName" formik={formik} />
+      <UserInput label="이름" name="name" formik={formik} />
       <UserInput label="회사명" name="companyName" formik={formik} />
       <UserSelect
         label="사업종류"
-        name="business"
+        name="businessType"
         items={business}
         formik={formik}
       />
@@ -23,6 +29,13 @@ const OrdererInfo = ({ formik }: { formik: FormikProps<any> }) => {
         />
         <UserInput label="전화번호" name="phoneNumber" formik={formik} />
       </StyledBox>
+      {(formik.touched.countryCode && formik.errors.countryCode) ||
+      (formik.touched.phoneNumber && formik.errors.phoneNumber) ? (
+        <StyledErrorMessage>
+          {Icons["error"]}
+          <p>{formik.errors.phoneNumber?.toString()}</p>
+        </StyledErrorMessage>
+      ) : null}
     </>
   );
 };

@@ -16,6 +16,7 @@ import {
   SelectedOption,
   StyledBottom,
   StyledInput,
+  StyledInputLabel,
   StyledMenuItem,
   StyledNameDiv,
   StyledRight,
@@ -40,6 +41,7 @@ const OPTION_TEXT = "Option";
 const SELECTED_OPTIONS_TEXT = "Selected Options";
 const IMG_SIZE = 71;
 const ALERT_MESSAGE = "숫자만 입력해 주세요.";
+const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
 
 const Product = ({
   product,
@@ -60,8 +62,12 @@ const Product = ({
   }
   const { productId, colors, name } = product;
   const [open, setOpen] = useState<boolean>(true);
-  const selected = Object.keys(selectedInfos[productId] || []).sort(
-    (a, b) => +a.split(" ")[0] - +b.split(" ")[0]
+  let selected: string[] = Object.keys(selectedInfos[productId] || []).sort(
+    (a, b) => {
+      if (a === COLOR_CARD_TEXT) return -1;
+      if (b === COLOR_CARD_TEXT) return 1;
+      return +a.split(" ")[0] - +b.split(" ")[0];
+    }
   );
   const count = selectedInfos[productId];
 
@@ -202,6 +208,7 @@ const Product = ({
               )}
             </StyledMenuItem>
             <MenuItemDivider />
+            <StyledInputLabel>{SAMPLE_YARDAGE_TEXT}</StyledInputLabel>
             {colors.map((color) => {
               const { colorId, colorName } = color;
               return (
