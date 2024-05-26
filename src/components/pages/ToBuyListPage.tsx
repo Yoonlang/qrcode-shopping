@@ -9,8 +9,9 @@ import { FormikProps } from "formik";
 
 const StyledDiv = styled.div`
   align-items: normal;
-  padding: 80px 20px;
+  padding: 80px 20px 0 20px;
   background-color: #f5f5f5;
+  overflow: auto;
   height: 100%;
 `;
 
@@ -40,6 +41,7 @@ const EmptyTextDiv = styled.div`
   align-items: center;
   color: rgba(0, 0, 0, 0.6);
   font-size: 12px;
+  padding-bottom: 80px;
 `;
 
 const ProductLists = styled.div`
