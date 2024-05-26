@@ -18,13 +18,15 @@ const bottomText = {
   cart: "정보 입력",
   info: "입력 완료",
 };
+
 const snackBarStatusMessage = {
   default: `Scan QR Code`,
   empty: `장바구니가 비었습니다.`,
-  complete: `정상 제출됐습니다.`,
   scanned: `Scanned new item`,
-  selected: `옵션을 하나 이상 선택해주세요.`,
+  multipleScan: `QR Code를 하나 이상 스캔해주세요.`,
+  option: `옵션을 하나 이상 선택해주세요.`,
   invalid: `유효한 정보를 입력해주세요.`,
+  complete: `정상 제출됐습니다.`,
 };
 
 const MainPage = () => {
@@ -148,21 +150,26 @@ const MainPage = () => {
         setPageIdx((pageIdx + 1) % 3);
       }
     } else if (pageIdx === 1) {
-      let isAllSelected = true;
-      for (const key of Object.keys(scannedItems)) {
-        if (
-          !selectedInfos[key] ||
-          Object.keys(selectedInfos[key]).length <= 0
-        ) {
-          isAllSelected = false;
-          break;
-        }
-      }
-      if (isAllSelected) {
-        setPageIdx((pageIdx + 1) % 3);
-      } else {
-        setSnackBarStatus(snackBarStatusMessage["selected"]);
+      if (Object.keys(scannedItems).length <= 0) {
+        setSnackBarStatus(snackBarStatusMessage["multipleScan"]);
         setSnackBarOpen(true);
+      } else {
+        let isAllSelected = true;
+        for (const key of Object.keys(scannedItems)) {
+          if (
+            !selectedInfos[key] ||
+            Object.keys(selectedInfos[key]).length <= 0
+          ) {
+            isAllSelected = false;
+            break;
+          }
+        }
+        if (isAllSelected) {
+          setPageIdx((pageIdx + 1) % 3);
+        } else {
+          setSnackBarStatus(snackBarStatusMessage["selected"]);
+          setSnackBarOpen(true);
+        }
       }
     } else {
       if (formik.isValid) {
@@ -191,13 +198,6 @@ const MainPage = () => {
     getProducts();
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(scannedItems).length !== 0) {
-      setSnackBarStatus(snackBarStatusMessage["scanned"]);
-      setSnackBarOpen(true);
-    }
-  }, [scannedItems]);
-
   return (
     <>
       {isSplashed && <SplashScreen />}
@@ -215,6 +215,8 @@ const MainPage = () => {
           snackBarOpen={snackBarOpen}
           setSnackBarOpen={setSnackBarOpen}
           snackBarStatus={snackBarStatus}
+          setSnackBarStatus={setSnackBarStatus}
+          snackBarStatusMessage={snackBarStatusMessage}
         />
       ) : pageIdx === 1 ? (
         <ToBuyListPage

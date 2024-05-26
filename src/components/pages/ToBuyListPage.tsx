@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Icons from "../Icons";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import Product from "../Product";
 import { MessageSnackBar } from "../SnackBar";
 import { Box } from "@mui/material";
@@ -9,9 +9,9 @@ import { FormikProps } from "formik";
 
 const StyledDiv = styled.div`
   align-items: normal;
-  padding: 30px 20px;
+  padding: 80px 20px;
   background-color: #f5f5f5;
-  margin-top: 56px;
+  height: 100%;
 `;
 
 const StyledTitle = styled.div`
@@ -31,6 +31,15 @@ const FlexDiv = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+`;
+
+const EmptyTextDiv = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
 `;
 
 const ProductLists = styled.div`
@@ -81,6 +90,8 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
   );
 };
 
+const EMPTY_TEXT = "스캔한 항목이 없습니다.";
+
 const ToBuyListPage = ({
   scannedItems,
   setScannedItems,
@@ -109,6 +120,10 @@ const ToBuyListPage = ({
     const newScannedItems = { ...scannedItems };
     delete newScannedItems[id];
     setScannedItems(newScannedItems);
+
+    const newSelectedInfos = { ...selectedInfos };
+    delete newSelectedInfos[id];
+    setSelectedInfos(newSelectedInfos);
   };
 
   return (
@@ -126,23 +141,27 @@ const ToBuyListPage = ({
         </StyledTitle>
         <StyledSwitch formik={formik} />
       </FlexDiv>
-      <ProductLists>
-        {fetchedItems
-          .filter((item) =>
-            Object.keys(scannedItems).some((pid) => pid === item.productId)
-          )
-          .map((product, index) => {
-            return (
-              <Product
-                key={product.productId}
-                product={product}
-                selectedInfos={selectedInfos}
-                setSelectedInfos={setSelectedInfos}
-                handleDelete={handleDelete}
-              />
-            );
-          })}
-      </ProductLists>
+      {Object.keys(scannedItems).length <= 0 ? (
+        <EmptyTextDiv>{EMPTY_TEXT}</EmptyTextDiv>
+      ) : (
+        <ProductLists>
+          {fetchedItems
+            .filter((item) =>
+              Object.keys(scannedItems).some((pid) => pid === item.productId)
+            )
+            .map((product, index) => {
+              return (
+                <Product
+                  key={product.productId}
+                  product={product}
+                  selectedInfos={selectedInfos}
+                  setSelectedInfos={setSelectedInfos}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
+        </ProductLists>
+      )}
     </StyledDiv>
   );
 };
