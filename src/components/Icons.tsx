@@ -21,6 +21,8 @@ const Icons: {
   close: <Image src={"/svg/close.svg"} width={7} height={11} alt={"닫기"} />,
   select: <Image src={"/svg/select.svg"} width={12} height={13} alt={"선택"} />,
   error: <Image src={"/svg/error.svg"} width={10} height={10} alt={"에러"} />,
+  info: <Image src={"/svg/info.svg"} width={24} height={24} alt={"인포"} />,
+  globe: <Image src={"/svg/globe.svg"} width={24} height={24} alt={"지구"} />,
 };
 
 export default Icons;
