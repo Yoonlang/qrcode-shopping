@@ -1,4 +1,3 @@
-import GlobalStyle from "@/styles/global";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import QrScannerPage from "./QrScannerPage";
@@ -10,6 +9,16 @@ import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
 import "@/i18n";
+import { Noto_Sans_KR, Noto_Sans } from "next/font/google";
+
+const NotoSansKr = Noto_Sans_KR({
+  subsets: ["latin"],
+});
+
+// notosans test
+// const NotoSans = Noto_Sans({
+//   subsets: ["latin"],
+// });
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -199,9 +208,8 @@ const MainPage = () => {
   }, []);
 
   return (
-    <>
+    <main className={NotoSansKr.className}>
       {isSplashed && <SplashScreen />}
-      <GlobalStyle />
       <TitleAppBar
         id={pageIds[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
@@ -239,7 +247,7 @@ const MainPage = () => {
         text={bottomText[pageIds[pageIdx]]}
         badgeNum={pageIdx === 0 ? Object.keys(scannedItems).length : null}
       />
-    </>
+    </main>
   );
 };
 

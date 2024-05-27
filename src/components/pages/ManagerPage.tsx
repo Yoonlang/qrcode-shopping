@@ -1,10 +1,14 @@
-import GlobalStyle from "@/styles/global";
 import { useEffect, useState } from "react";
 import Dashboard from "../Dashboard";
 import LoginForm from "../LoginForm";
 import { SERVER_URL } from "@/consts/url";
 import { useFormik } from "formik";
 import { initialValues } from "@/consts/dashboard";
+import { Noto_Sans_KR } from "next/font/google";
+
+const NotoSansKr = Noto_Sans_KR({
+  subsets: ["latin"],
+});
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
@@ -68,8 +72,7 @@ const ManagerPage = () => {
   }, []);
 
   return (
-    <div>
-      <GlobalStyle />
+    <main className={NotoSansKr.className}>
       {isLoading ? (
         <></>
       ) : hasAuth ? (
@@ -77,7 +80,7 @@ const ManagerPage = () => {
       ) : (
         <LoginForm setHasAuth={setHasAuth} />
       )}
-    </div>
+    </main>
   );
 };
 

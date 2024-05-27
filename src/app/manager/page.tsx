@@ -1,9 +1,15 @@
 "use client";
 
 import ManagerPage from "@/components/pages/ManagerPage";
+import GlobalStyle from "@/styles/global";
 
 const Manager = () => {
-  return <ManagerPage />;
+  return (
+    <>
+      <GlobalStyle />
+      <ManagerPage />
+    </>
+  );
 };
 
 export default Manager;
