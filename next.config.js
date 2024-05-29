@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ["firebasestorage.googleapis.com"],
+    domains: ["server.jojoywmaeil.com"],
   },
   compiler: {
     styledComponents: true,

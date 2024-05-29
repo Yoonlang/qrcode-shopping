@@ -183,6 +183,8 @@ const Product = ({
           width={IMG_SIZE}
           height={IMG_SIZE}
           src={`${product.image ?? ""}`}
+          loading="lazy"
+          unoptimized
           alt={name}
         />
         <StyledRight>
