@@ -42,7 +42,7 @@ const handleUserInfoListForTable = (userInfoList) => {
       name,
       company: companyName,
       email: email,
-      contactNumber: `${phoneNumber.country}${phoneNumber.number}`,
+      contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
       type: businessType,
     };
   });
