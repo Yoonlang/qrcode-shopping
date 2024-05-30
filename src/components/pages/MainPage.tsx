@@ -9,16 +9,16 @@ import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
 import "@/i18n";
-import { Noto_Sans_KR, Noto_Sans } from "next/font/google";
+import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
+import { useTranslation } from "react-i18next";
 
-const NotoSansKr = Noto_Sans_KR({
+const NotoSans = Noto_Sans({
   subsets: ["latin"],
 });
 
-// notosans test
-// const NotoSans = Noto_Sans({
-//   subsets: ["latin"],
-// });
+const NotoSansSc = Noto_Sans_SC({
+  subsets: ["latin"],
+});
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -48,6 +48,9 @@ const MainPage = () => {
   const [snackBarStatus, setSnackBarStatus] = useState(
     snackBarStatusMessage["default"]
   );
+  const [fontClassName, setFontClassName] = useState("");
+  const { i18n } = useTranslation();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -207,8 +210,16 @@ const MainPage = () => {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    if (i18n.language === "zh") {
+      setFontClassName(`${NotoSansSc.className}`);
+    } else {
+      setFontClassName(NotoSans.className);
+    }
+  }, [i18n.language]);
+
   return (
-    <main className={NotoSansKr.className}>
+    <main className={fontClassName}>
       {isSplashed && <SplashScreen />}
       <TitleAppBar
         id={pageIds[pageIdx]}
