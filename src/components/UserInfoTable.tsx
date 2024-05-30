@@ -63,6 +63,12 @@ const UserInfoTable = ({ userInfoList }) => {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+        onCellClick={(cell, e) => {
+          if (cell.field !== "__check__") {
+            e.stopPropagation();
+            // 모달 오픈
+          }
+        }}
       />
     </div>
   );
