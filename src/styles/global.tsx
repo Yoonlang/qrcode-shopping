@@ -7,8 +7,7 @@ const GlobalStyle = createGlobalStyle`
 
   html,
   body,
-  body > main,
-  body > main > div {
+  body > main {
     padding: 0;
     margin: 0;
     line-height: 1.6;
