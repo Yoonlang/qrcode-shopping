@@ -10,6 +10,7 @@ import {
 } from "./DashboardItems";
 import ProductTable from "./ProductTable";
 import styled from "styled-components";
+import { SERVER_URL } from "@/consts/url";
 
 const StyledProductBoard = styled.div`
   display: flex;
@@ -23,6 +24,23 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const fileTypes = ["JPG", "PNG"];
   const colorRefs = useRef<HTMLInputElement[]>([]);
   const productIdRefs = useRef<HTMLInputElement>(null);
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    const getProductList = async () => {
+      try {
+        const res = await fetch(`${SERVER_URL}/products`, {
+          method: "GET",
+        });
+        const data = await res.json();
+        setProductList(data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getProductList();
+  }, []);
 
   useEffect(() => {
     if (
@@ -122,7 +140,7 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
           </StyledFlexDiv>
         </ProductAddModal>
       </StyledModal>
-      <ProductTable />
+      <ProductTable productList={productList} />
     </StyledProductBoard>
   );
 };
