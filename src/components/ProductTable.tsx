@@ -34,7 +34,7 @@ const ProductDetailModal = ({ isModalOpen, closeModal, modalProductData }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   return (
     <StyledModal open={isModalOpen} onClose={closeModal}>
-      {isEditMode ? <ProductEdit /> : <ProductDetail />}
+      <>{isEditMode ? <ProductEdit /> : <ProductDetail />}</>
     </StyledModal>
   );
 };
