@@ -121,6 +121,7 @@ const ProductCreateModal = ({ open, handleModalClose, formik }) => {
 const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState([]);
+  const [selectedProductList, setSelectedProductList] = useState([]);
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -130,29 +131,50 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    const getProductList = async () => {
-      try {
-        const res = await fetch(`${SERVER_URL}/products`, {
-          method: "GET",
-        });
-        const data = await res.json();
-        setProductList(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
+  const getProductList = async () => {
+    try {
+      const res = await fetch(`${SERVER_URL}/products`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      setProductList(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
+  const deleteProducts = async () => {
+    try {
+      const deletePromises = selectedProductList.map((product) => {
+        return fetch(`${SERVER_URL}/products`, {
+          method: "DELETE",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId: product }),
+        });
+      });
+
+      await Promise.all(deletePromises);
+      await getProductList();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
     getProductList();
   }, []);
 
   return (
     <StyledProductBoard>
       <div className="header">
-        <Button>Delete</Button>
+        <Button onClick={deleteProducts}>Delete</Button>
         <Button onClick={handleModalOpen}>Add</Button>
       </div>
-      <ProductTable productList={productList} />
+      <ProductTable
+        productList={productList}
+        setSelectedProductList={setSelectedProductList}
+      />
       <ProductCreateModal
         open={open}
         handleModalClose={handleModalClose}

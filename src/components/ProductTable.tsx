@@ -39,7 +39,7 @@ const ProductDetailModal = ({ isModalOpen, closeModal, modalProductData }) => {
   );
 };
 
-const ProductTable = ({ productList }) => {
+const ProductTable = ({ productList, setSelectedProductList }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalProductData, setModalProductData] = useState(null);
   const tableRows = handleProductListForTable(productList);
@@ -61,6 +61,9 @@ const ProductTable = ({ productList }) => {
           }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
+          onRowSelectionModelChange={(selectedList) => {
+            setSelectedProductList(selectedList);
+          }}
           onCellClick={(cell, e) => {
             if (cell.field !== "__check__") {
               e.stopPropagation();
