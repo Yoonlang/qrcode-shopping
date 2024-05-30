@@ -1,4 +1,3 @@
-import GlobalStyle from "@/styles/global";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import QrScannerPage from "./QrScannerPage";
@@ -10,6 +9,16 @@ import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
 import "@/i18n";
+import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
+import { useTranslation } from "react-i18next";
+
+const NotoSans = Noto_Sans({
+  subsets: ["latin"],
+});
+
+const NotoSansSc = Noto_Sans_SC({
+  subsets: ["latin"],
+});
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -39,6 +48,9 @@ const MainPage = () => {
   const [snackBarStatus, setSnackBarStatus] = useState(
     snackBarStatusMessage["default"]
   );
+  const [fontClassName, setFontClassName] = useState("");
+  const { i18n } = useTranslation();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -198,10 +210,17 @@ const MainPage = () => {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    if (i18n.language === "zh") {
+      setFontClassName(`${NotoSansSc.className}`);
+    } else {
+      setFontClassName(NotoSans.className);
+    }
+  }, [i18n.language]);
+
   return (
-    <>
+    <main className={fontClassName}>
       {isSplashed && <SplashScreen />}
-      <GlobalStyle />
       <TitleAppBar
         id={pageIds[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
@@ -239,7 +258,7 @@ const MainPage = () => {
         text={bottomText[pageIds[pageIdx]]}
         badgeNum={pageIdx === 0 ? Object.keys(scannedItems).length : null}
       />
-    </>
+    </main>
   );
 };
 
