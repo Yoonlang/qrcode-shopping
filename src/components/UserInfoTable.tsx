@@ -25,22 +25,36 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  {
-    id: "f7bcb290-58e7-478f-bad1-9bef845d72a6",
-    name: "Yoonseok Choi",
-    company: "NAVER CLOUD",
-    email: "cdt9473@gmail.com",
-    contactNumber: "+821094730190",
-    type: "TRADER",
-  },
-];
+const handleUserInfoListForTable = (userInfoList) => {
+  return userInfoList.map((userInfo) => {
+    const {
+      personalInfo: {
+        name,
+        companyName,
+        contactInfo: { email, phoneNumber },
+        businessType,
+      },
+      documentId,
+    } = userInfo;
 
-const UserInfoTable = () => {
+    return {
+      id: documentId,
+      name,
+      company: companyName,
+      email: email,
+      contactNumber: `${phoneNumber.country}${phoneNumber.number}`,
+      type: businessType,
+    };
+  });
+};
+
+const UserInfoTable = ({ userInfoList }) => {
+  const tableRows = handleUserInfoListForTable(userInfoList);
+
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={rows}
+        rows={tableRows}
         columns={columns}
         initialState={{
           pagination: {
