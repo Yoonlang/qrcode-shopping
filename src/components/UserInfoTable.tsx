@@ -48,7 +48,7 @@ const handleUserInfoListForTable = (userInfoList) => {
   });
 };
 
-const UserInfoTable = ({ userInfoList }) => {
+const UserInfoTable = ({ userInfoList, setSelectedUserList }) => {
   const tableRows = handleUserInfoListForTable(userInfoList);
 
   return (
@@ -63,6 +63,9 @@ const UserInfoTable = ({ userInfoList }) => {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+        onRowSelectionModelChange={(selectedList) => {
+          setSelectedUserList(selectedList);
+        }}
         onCellClick={(cell, e) => {
           if (cell.field !== "__check__") {
             e.stopPropagation();

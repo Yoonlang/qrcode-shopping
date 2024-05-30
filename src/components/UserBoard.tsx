@@ -21,30 +21,52 @@ const StyledUserBoard = styled.div`
 
 const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [userInfoList, setUserInfoList] = useState([]);
+  const [selectedUserList, setSelectedUserList] = useState([]);
+
+  const getUserInfoList = async () => {
+    try {
+      const res = await fetch(`${SERVER_URL}/users-info`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+      setUserInfoList(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteUsers = async () => {
+    try {
+      const deletePromises = selectedUserList.map((user) => {
+        return fetch(`${SERVER_URL}/users-info`, {
+          method: "DELETE",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user }),
+        });
+      });
+
+      await Promise.all(deletePromises);
+      await getUserInfoList();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
-    const getUserInfoList = async () => {
-      try {
-        const res = await fetch(`${SERVER_URL}/users-info`, {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await res.json();
-        setUserInfoList(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
     getUserInfoList();
   }, []);
 
   return (
     <StyledUserBoard>
       <div className="header">
-        <Button>Delete</Button>
+        <Button onClick={deleteUsers}>Delete</Button>
       </div>
-      <UserInfoTable userInfoList={userInfoList} />
+      <UserInfoTable
+        userInfoList={userInfoList}
+        setSelectedUserList={setSelectedUserList}
+      />
     </StyledUserBoard>
   );
 };
