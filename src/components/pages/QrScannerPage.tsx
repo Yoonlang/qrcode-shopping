@@ -1,6 +1,12 @@
 import QrCode from "@/components/QrCode";
 import { MessageSnackBar } from "@/components/SnackBar";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const QrScannerPage = ({
   scannedItems,
@@ -29,7 +35,7 @@ const QrScannerPage = ({
   }, [scannedItems]);
 
   return (
-    <div>
+    <StyledContainer>
       <MessageSnackBar
         key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
         isOpen={snackBarOpen}
@@ -37,7 +43,7 @@ const QrScannerPage = ({
         message={snackBarStatus}
       />
       <QrCode setScannedItems={setScannedItems} fetchedItems={fetchedItems} />
-    </div>
+    </StyledContainer>
   );
 };
 

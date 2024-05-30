@@ -7,14 +7,15 @@ const GlobalStyle = createGlobalStyle`
 
   html,
   body,
-  body > div {
+  body > main {
     padding: 0;
     margin: 0;
     line-height: 1.6;
     height: 100%;
   }
 
-  body > div {
+  body > main,
+  body > main > div {
       display: flex;
       flex-direction: column;
       align-items: center;

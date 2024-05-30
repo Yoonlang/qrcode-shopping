@@ -15,11 +15,11 @@ import styled from "styled-components";
 
 const StyledBoardContainer = styled.div`
   display: flex;
-  position: absolute; // 바깥 HTML 태그 수정 전 임시 처리
+  position: fixed;
   left: 200px;
+  top: 70px;
   width: calc(100% - 200px);
-  height: 100%;
-  margin-top: 70px;
+  height: calc(100% - 70px);
 `;
 
 const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {

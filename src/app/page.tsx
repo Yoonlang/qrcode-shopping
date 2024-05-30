@@ -1,9 +1,15 @@
 "use client";
 
 import MainPage from "@/components/pages/MainPage";
+import GlobalStyle from "@/styles/global";
 
 const Home = () => {
-  return <MainPage />;
+  return (
+    <>
+      <GlobalStyle />
+      <MainPage />
+    </>
+  );
 };
 
 export default Home;
