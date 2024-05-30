@@ -1,6 +1,6 @@
 import Webcam from "react-webcam";
 import jsQR from "jsqr";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
@@ -25,6 +25,7 @@ const QrCode = ({
   setScannedItems: Dispatch<SetStateAction<{}>>;
   fetchedItems: any[] | null;
 }) => {
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const imageScan = useCallback(
     (imageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
@@ -80,11 +81,15 @@ const QrCode = ({
           audio={false}
           screenshotFormat="image/jpeg"
           ref={(node) => {
-            setInterval(() => {
-              if (node) {
+            if (node) {
+              intervalRef.current = setInterval(() => {
                 capture(node);
+              }, CAPTURE_DELAY_MS);
+            } else {
+              if (intervalRef.current) {
+                clearInterval(intervalRef.current);
               }
-            }, CAPTURE_DELAY_MS);
+            }
           }}
           videoConstraints={{
             facingMode: "environment",
