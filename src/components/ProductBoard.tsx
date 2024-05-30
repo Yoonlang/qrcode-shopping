@@ -8,6 +8,14 @@ import {
   StyledFlexDiv,
   StyledModal,
 } from "./DashboardItems";
+import ProductTable from "./ProductTable";
+import styled from "styled-components";
+
+const StyledProductBoard = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 
 const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [open, setOpen] = useState(false);
@@ -59,7 +67,7 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   };
 
   return (
-    <>
+    <StyledProductBoard>
       <Button onClick={handleModalOpen}>Add</Button>
       <StyledModal open={open} onClose={handleModalClose}>
         <ProductAddModal>
@@ -114,7 +122,8 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
           </StyledFlexDiv>
         </ProductAddModal>
       </StyledModal>
-    </>
+      <ProductTable />
+    </StyledProductBoard>
   );
 };
 
