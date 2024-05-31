@@ -59,27 +59,29 @@ const productListColumns: GridColDef[] = [
 ];
 
 const handleUserInfoListForTable = (userInfoList) => {
-  return userInfoList.map((userInfo) => {
-    const {
-      personalInfo: {
-        name,
-        companyName,
-        contactInfo: { email, phoneNumber },
-        businessType,
-      },
-      documentId,
-    } = userInfo;
+  return (
+    userInfoList?.map((userInfo) => {
+      const {
+        personalInfo: {
+          name,
+          companyName,
+          contactInfo: { email, phoneNumber },
+          businessType,
+        },
+        documentId,
+      } = userInfo;
 
-    return {
-      id: documentId,
-      name,
-      company: companyName,
-      email: email,
-      contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
-      type: businessType,
-      __user_info__: userInfo,
-    };
-  });
+      return {
+        id: documentId,
+        name,
+        company: companyName,
+        email: email,
+        contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
+        type: businessType,
+        __user_info__: userInfo,
+      };
+    }) ?? []
+  );
 };
 
 const StyledModalContainer = styled.div`
