@@ -200,11 +200,18 @@ const MainPage = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch(`${SERVER_URL}/products`, {
-        method: "get",
-      });
-      const data = await res.json();
-      setFetchedItems(data);
+      try {
+        const res = await fetch(`${SERVER_URL}/products`, {
+          method: "get",
+        });
+        const data = await res.json();
+        if (data?.error) {
+          throw data.error;
+        }
+        setFetchedItems(data);
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     getProducts();

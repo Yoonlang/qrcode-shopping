@@ -30,6 +30,9 @@ const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
         credentials: "include",
       });
       const data = await res.json();
+      if (data?.error) {
+        throw data.error;
+      }
       setUserInfoList(data);
     } catch (e) {
       console.log(e);

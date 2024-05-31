@@ -137,6 +137,9 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
         method: "GET",
       });
       const data = await res.json();
+      if (data?.error) {
+        throw data.error;
+      }
       setProductList(data);
     } catch (e) {
       console.log(e);
