@@ -32,16 +32,32 @@ const ManagerPage = () => {
       const formData = new FormData();
 
       Object.entries(newForm).forEach(([key, value]) => {
-        if (key === "image" && value instanceof File) {
-          formData.append(key, value);
-        } else {
-          formData.append(key, JSON.stringify(value));
+        if (key !== "method") {
+          if (key === "image") {
+            if (value instanceof File) {
+              formData.append(key, value);
+            } else if ((value as never as boolean) === true) {
+              formData.append(key, "null");
+            } else {
+              formData.append(key, "null");
+            }
+          } else {
+            formData.append(key, JSON.stringify(value));
+          }
         }
       });
 
+      if (newForm["method"] === "PUT") {
+        if (newForm["image"] === true) {
+          formData.append("useSameImage", "true");
+        } else {
+          formData.append("useSameImage", "false");
+        }
+      }
+
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
-          method: "POST",
+          method: newForm["method"],
           credentials: "include",
           body: formData,
         });

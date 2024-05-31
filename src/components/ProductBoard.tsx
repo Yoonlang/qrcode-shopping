@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { FileUploader } from "react-drag-drop-files";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form, FormikProps } from "formik";
 import {
   ProductAddModal,
@@ -161,9 +161,15 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     }
   };
 
+  const cachedFormikSubmit = useMemo(() => {
+    return formik.isSubmitting;
+  }, [formik.isSubmitting]);
+
   useEffect(() => {
-    getProductList();
-  }, []);
+    if (!cachedFormikSubmit) {
+      getProductList();
+    }
+  }, [cachedFormikSubmit]);
 
   return (
     <StyledProductBoard>
@@ -174,6 +180,7 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
       <ProductTable
         productList={productList}
         setSelectedProductList={setSelectedProductList}
+        formik={formik}
       />
       <ProductCreateModal
         open={open}

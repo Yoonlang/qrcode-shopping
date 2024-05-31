@@ -6,4 +6,5 @@ export const initialValues = {
   weightGPerM2: "",
   widthInch: "",
   price: null,
+  method: "POST",
 };
