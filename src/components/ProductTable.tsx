@@ -65,7 +65,7 @@ const StyledDetailModalContainer = styled.div`
   }
 `;
 
-const ProductDetail = ({ product }) => {
+const ProductDetail = ({ product, closeModal, openEditModal }) => {
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
     product;
 
@@ -109,8 +109,8 @@ const ProductDetail = ({ product }) => {
         </div>
       </div>
       <div className="buttonContainer">
-        <Button>수정</Button>
-        <Button>닫기</Button>
+        <Button onClick={openEditModal}>수정</Button>
+        <Button onClick={closeModal}>닫기</Button>
       </div>
     </StyledDetailModalContainer>
   );
@@ -122,13 +122,22 @@ const ProductEdit = () => {
 
 const ProductDetailModal = ({ isModalOpen, closeModal, modalProductData }) => {
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const openEditModal = () => {
+    setIsEditMode(true);
+  };
+
   return (
     <StyledModal open={isModalOpen} onClose={closeModal}>
       <>
         {isEditMode ? (
           <ProductEdit />
         ) : (
-          <ProductDetail product={modalProductData} />
+          <ProductDetail
+            product={modalProductData}
+            closeModal={closeModal}
+            openEditModal={openEditModal}
+          />
         )}
       </>
     </StyledModal>
