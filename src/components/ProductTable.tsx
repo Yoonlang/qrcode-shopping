@@ -1,9 +1,17 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
-import { StyledModal } from "./DashboardItems";
+import { useEffect, useRef, useState } from "react";
+import {
+  ProductAddModal,
+  ProductInput,
+  StyledFlexDiv,
+  StyledModal,
+} from "./DashboardItems";
 import styled from "styled-components";
 import Image from "next/image";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import { FileUploader } from "react-drag-drop-files";
+
+const fileTypes = ["JPG", "PNG"];
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Product ID", width: 200 },
@@ -116,22 +124,160 @@ const ProductDetail = ({ product, closeModal, openEditModal }) => {
   );
 };
 
-const ProductEdit = () => {
-  return <div>edit</div>;
+const ProductEdit = ({
+  handleModalClose,
+  formik,
+  openDetailModal,
+  product,
+}) => {
+  const colors = formik.values.colors;
+  const colorRefs = useRef<HTMLInputElement[]>([]);
+
+  const handleChangeFile = (file) => {
+    formik.setFieldValue("image", file);
+  };
+
+  const handleAddColor = () => {
+    const newColors = [...formik.values.colors, ""];
+    formik.setFieldValue("colors", newColors);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.code === "Enter" && !e.nativeEvent.isComposing) {
+      handleAddColor();
+    }
+  };
+
+  const handleDeleteColor = (
+    e: React.MouseEvent<HTMLElement>,
+    index: number
+  ) => {
+    const newColors = [...formik.values.colors];
+    newColors.splice(index, 1);
+    formik.setFieldValue("colors", newColors);
+  };
+
+  useEffect(() => {
+    if (
+      colors.length > 0 &&
+      colorRefs.current[colors.length - 1] &&
+      formik.values.productId !== ""
+    ) {
+      colorRefs.current[colors.length - 1].focus();
+    }
+  }, [colors.length]);
+
+  useEffect(() => {
+    const {
+      productId,
+      image,
+      colors,
+      price,
+      weightGPerM2,
+      widthInch,
+      composition,
+    } = product;
+    formik.setFieldValue("method", "PUT");
+    formik.setFieldValue("productId", productId);
+    formik.setFieldValue("weightGPerM2", weightGPerM2);
+    formik.setFieldValue("widthInch", widthInch);
+    formik.setFieldValue("composition", composition);
+    formik.setFieldValue("price", price);
+
+    if (image) {
+      formik.setFieldValue("image", true);
+    }
+
+    const handledColors = colors.map(({ colorName }) => colorName);
+    formik.setFieldValue("colors", handledColors);
+  }, [product]);
+
+  return (
+    <ProductAddModal>
+      <h2>Edit</h2>
+      <ProductInput label="Product ID" name="productId" formik={formik} />
+      <FileUploader
+        handleChange={handleChangeFile}
+        name="file"
+        types={fileTypes}
+        disabled={formik.values.image === true}
+      />
+      {formik.values.image === true ? (
+        <Button
+          onClick={() => {
+            handleChangeFile(null);
+          }}
+        >
+          기존 이미지 제거
+        </Button>
+      ) : (
+        formik.values.image !== null && <div>{formik.values.image.name}</div>
+      )}
+      <ProductInput label="Composition" name="composition" formik={formik} />
+      <ProductInput label="Weight" name="weightGPerM2" formik={formik} />
+      <ProductInput label="Width" name="widthInch" formik={formik} />
+      {colors.length > 0 &&
+        colors.map((color, index) => (
+          <StyledFlexDiv key={index}>
+            <TextField
+              label="Sample Yardage"
+              name={`colors.${index}`}
+              onChange={formik.handleChange}
+              onKeyDown={handleKeyDown}
+              value={color}
+              inputRef={(el) => (colorRefs.current[index] = el)}
+              fullWidth
+            />
+            {index !== colors.length - 1 ? (
+              <Button onClick={(e) => handleDeleteColor(e, index)}>
+                Delete
+              </Button>
+            ) : (
+              <Button onClick={handleAddColor}>Add</Button>
+            )}
+          </StyledFlexDiv>
+        ))}
+      <StyledFlexDiv>
+        <Button
+          onClick={async () => {
+            await formik.handleSubmit();
+            openDetailModal();
+          }}
+        >
+          Confirm
+        </Button>
+        <Button onClick={handleModalClose}>Cancel</Button>
+      </StyledFlexDiv>
+    </ProductAddModal>
+  );
 };
 
-const ProductDetailModal = ({ isModalOpen, closeModal, modalProductData }) => {
+const ProductDetailModal = ({
+  isModalOpen,
+  closeModal,
+  modalProductData,
+  formik,
+}) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const openEditModal = () => {
     setIsEditMode(true);
   };
 
+  const openDetailModal = () => {
+    setIsEditMode(false);
+  };
+
   return (
     <StyledModal open={isModalOpen} onClose={closeModal}>
       <>
         {isEditMode ? (
-          <ProductEdit />
+          <ProductEdit
+            handleModalClose={closeModal}
+            formik={formik}
+            openDetailModal={openDetailModal}
+            product={modalProductData}
+          />
         ) : (
           <ProductDetail
             product={modalProductData}
@@ -144,7 +290,7 @@ const ProductDetailModal = ({ isModalOpen, closeModal, modalProductData }) => {
   );
 };
 
-const ProductTable = ({ productList, setSelectedProductList }) => {
+const ProductTable = ({ productList, setSelectedProductList, formik }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalProductData, setModalProductData] = useState(null);
   const tableRows = handleProductListForTable(productList);
@@ -152,6 +298,12 @@ const ProductTable = ({ productList, setSelectedProductList }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      formik.resetForm();
+    }
+  }, [isModalOpen]);
 
   return (
     <>
@@ -178,11 +330,14 @@ const ProductTable = ({ productList, setSelectedProductList }) => {
           }}
         />
       </div>
-      <ProductDetailModal
-        isModalOpen={isModalOpen}
-        closeModal={closeModal}
-        modalProductData={modalProductData}
-      />
+      {isModalOpen && (
+        <ProductDetailModal
+          isModalOpen={isModalOpen}
+          closeModal={closeModal}
+          modalProductData={modalProductData}
+          formik={formik}
+        />
+      )}
     </>
   );
 };
