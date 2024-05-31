@@ -60,7 +60,10 @@ const ManagerPage = () => {
           method: "get",
           credentials: "include",
         });
-        await res.json();
+        const data = await res.json();
+        if (data.error) {
+          throw data.error;
+        }
         setHasAuth(true);
       } catch (e) {
         console.log(e);
