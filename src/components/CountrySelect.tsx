@@ -10,6 +10,7 @@ import { FormikProps } from "formik";
 import { SyntheticEvent } from "react";
 import Icons from "./Icons";
 import { MenuItem, Paper } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const StyledDiv = styled.div`
   margin-top: 8px;
@@ -51,6 +52,7 @@ const StyledPaper = styled(Paper)`
 `;
 
 const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
+  const { t } = useTranslation();
   const handleChangeCountry = (
     e: SyntheticEvent<Element>,
     option: CountryType | null
@@ -85,7 +87,7 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
           renderInput={(params) => (
             <StyledTextField
               {...params}
-              label="국가번호"
+              label={t("Country Code")}
               inputProps={{
                 ...params.inputProps,
                 autoComplete: "new-password",
@@ -103,7 +105,7 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
       {formik.errors.countryCode && formik.touched.countryCode ? (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{formik.errors.countryCode?.toString()}</p>
+          <p>{t(formik.errors.countryCode?.toString())}</p>
         </StyledErrorMessage>
       ) : null}
     </>

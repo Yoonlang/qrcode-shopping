@@ -16,9 +16,9 @@ export const initialValues = {
 };
 
 export const steps = [
-  { label: "주문자" },
-  { label: "회사 주소" },
-  { label: "배송지 주소" },
+  { label: "Orderer" },
+  { label: "Company Address" },
+  { label: "Shipping Address" },
 ];
 
 export const business = [
