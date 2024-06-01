@@ -18,6 +18,7 @@ const StyledDiv = styled.div`
 const StyledTitle = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 
   > p {
     font-size: 17px;
@@ -25,13 +26,6 @@ const StyledTitle = styled.div`
     margin: 0px;
     margin-left: 10px;
   }
-`;
-
-const FlexDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
 `;
 
 const EmptyTextDiv = styled.div`
@@ -136,13 +130,10 @@ const ToBuyListPage = ({
         setIsOpen={setSnackBarOpen}
         message={snackBarStatus}
       />
-      <FlexDiv>
-        <StyledTitle>
-          {Icons["list"]}
-          <p>제품목록</p>
-        </StyledTitle>
-        <StyledSwitch formik={formik} />
-      </FlexDiv>
+      <StyledTitle>
+        {Icons["list"]}
+        <p>제품목록</p>
+      </StyledTitle>
       {Object.keys(scannedItems).length <= 0 ? (
         <EmptyTextDiv>{EMPTY_TEXT}</EmptyTextDiv>
       ) : (
