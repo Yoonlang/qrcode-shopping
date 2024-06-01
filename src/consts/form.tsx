@@ -28,5 +28,3 @@ export const business = [
   "Brand",
   "Student",
 ];
-
-export const codes = ["+86", "+82"];
