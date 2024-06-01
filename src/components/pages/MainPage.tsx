@@ -162,22 +162,23 @@ const MainPage = () => {
         setSnackBarStatus(snackBarStatusMessage["multipleScan"]);
         setSnackBarOpen(true);
       } else {
-        let isAllSelected = true;
-        for (const key of Object.keys(scannedItems)) {
-          if (
-            !selectedInfos[key] ||
-            Object.keys(selectedInfos[key]).length <= 0
-          ) {
-            isAllSelected = false;
-            break;
-          }
-        }
-        if (isAllSelected) {
-          setPageIdx((pageIdx + 1) % 3);
-        } else {
-          setSnackBarStatus(snackBarStatusMessage["option"]);
-          setSnackBarOpen(true);
-        }
+        // let isAllSelected = true;
+        // for (const key of Object.keys(scannedItems)) {
+        //   if (
+        //     !selectedInfos[key] ||
+        //     Object.keys(selectedInfos[key]).length <= 0
+        //   ) {
+        //     isAllSelected = false;
+        //     break;
+        //   }
+        // }
+        // if (isAllSelected) {
+        setPageIdx((pageIdx + 1) % 3);
+        console.log(selectedInfos);
+        // } else {
+        //   setSnackBarStatus(snackBarStatusMessage["option"]);
+        //   setSnackBarOpen(true);
+        // }
       }
     } else {
       if (formik.isValid) {

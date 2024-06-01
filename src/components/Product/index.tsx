@@ -9,7 +9,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import Image from "next/image";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Counter,
   MenuItemDivider,
@@ -69,6 +69,23 @@ const Product = ({
     }
   );
   const count = selectedInfos[productId];
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setSelectedInfos((old) => {
+      const tempInfos = { ...old };
+      if (tempInfos.hasOwnProperty(productId)) {
+        return old;
+      } else {
+        tempInfos[productId] = {
+          "Color Card": 1,
+        };
+        return tempInfos;
+      }
+    });
+    setIsLoading(false);
+  }, []);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedInfos>) => {
     const {
@@ -154,15 +171,15 @@ const Product = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
-    if (count[name] <= 1) {
-      const temp = { ...selectedInfos[productId] };
-      delete temp[name];
-      setSelectedInfos({ ...selectedInfos, [productId]: temp });
-    } else {
+    if (count[name] > 1) {
       setSelectedInfos({
         ...selectedInfos,
         [productId]: { ...selectedInfos[productId], [name]: count[name] - 1 },
       });
+    } else {
+      // const temp = { ...selectedInfos[productId] };
+      // delete temp[name];
+      // setSelectedInfos({ ...selectedInfos, [productId]: temp });
     }
   };
 
@@ -186,7 +203,25 @@ const Product = ({
               {Icons["delete"]}
             </IconButton>
           </StyledNameDiv>
-          <Select
+          <SelectedOption>
+            <div>{COLOR_CARD_TEXT}</div>
+            <Counter>
+              <Button onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}>
+                -
+              </Button>
+              {!isLoading && (
+                <StyledInput
+                  value={count[COLOR_CARD_TEXT]}
+                  onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
+                  size="small"
+                />
+              )}
+              <Button onClick={(e) => handleClickAdd(e, COLOR_CARD_TEXT)}>
+                +
+              </Button>
+            </Counter>
+          </SelectedOption>
+          {/* <Select
             displayEmpty
             multiple
             fullWidth
@@ -217,10 +252,10 @@ const Product = ({
                 </StyledMenuItem>
               );
             })}
-          </Select>
+          </Select> */}
         </StyledRight>
       </StyledTop>
-      {selected?.length > 0 && (
+      {/* {selected?.length > 0 && (
         <>
           <Collapse in={open}>
             <Divider />
@@ -264,7 +299,7 @@ const Product = ({
             </IconButton>
           )}
         </>
-      )}
+      )} */}
     </StyledWrapper>
   );
 };
