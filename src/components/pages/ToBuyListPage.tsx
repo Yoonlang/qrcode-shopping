@@ -12,6 +12,7 @@ const StyledDiv = styled.div`
   padding: 80px 20px 0 20px;
   background-color: #f5f5f5;
   overflow: auto;
+  width: 100%;
   height: 100%;
 `;
 

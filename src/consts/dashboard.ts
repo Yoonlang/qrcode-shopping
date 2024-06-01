@@ -1,9 +1,10 @@
 export const initialValues = {
   productId: "",
-  image: "",
+  image: null,
   colors: [""],
   composition: "",
   weightGPerM2: "",
   widthInch: "",
   price: null,
+  method: "POST",
 };

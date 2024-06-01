@@ -1,10 +1,14 @@
-import GlobalStyle from "@/styles/global";
 import { useEffect, useState } from "react";
 import Dashboard from "../Dashboard";
 import LoginForm from "../LoginForm";
 import { SERVER_URL } from "@/consts/url";
 import { useFormik } from "formik";
 import { initialValues } from "@/consts/dashboard";
+import { Noto_Sans } from "next/font/google";
+
+const NotoSans = Noto_Sans({
+  subsets: ["latin"],
+});
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
@@ -24,14 +28,38 @@ const ManagerPage = () => {
         weightGPerM2: Number(form["weightGPerM2"]),
         widthInch: Number(form["widthInch"]),
       };
+
+      const formData = new FormData();
+
+      Object.entries(newForm).forEach(([key, value]) => {
+        if (key !== "method") {
+          if (key === "image") {
+            if (value instanceof File) {
+              formData.append(key, value);
+            } else if ((value as never as boolean) === true) {
+              formData.append(key, "null");
+            } else {
+              formData.append(key, "null");
+            }
+          } else {
+            formData.append(key, JSON.stringify(value));
+          }
+        }
+      });
+
+      if (newForm["method"] === "PUT") {
+        if (newForm["image"] === true) {
+          formData.append("useSameImage", "true");
+        } else {
+          formData.append("useSameImage", "false");
+        }
+      }
+
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
-          method: "POST",
+          method: newForm["method"],
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newForm),
+          body: formData,
         });
         const data = await res.json();
         resetForm();
@@ -49,9 +77,10 @@ const ManagerPage = () => {
           credentials: "include",
         });
         const data = await res.json();
-        if (data.hasAuth) {
-          setHasAuth(true);
+        if (data.error) {
+          throw data.error;
         }
+        setHasAuth(true);
       } catch (e) {
         console.log(e);
       } finally {
@@ -62,8 +91,7 @@ const ManagerPage = () => {
   }, []);
 
   return (
-    <div>
-      <GlobalStyle />
+    <main className={NotoSans.className}>
       {isLoading ? (
         <></>
       ) : hasAuth ? (
@@ -71,7 +99,7 @@ const ManagerPage = () => {
       ) : (
         <LoginForm setHasAuth={setHasAuth} />
       )}
-    </div>
+    </main>
   );
 };
 

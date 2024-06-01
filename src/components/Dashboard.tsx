@@ -7,15 +7,20 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FormikProps } from "formik";
-import {
-  StyledAppBar,
-  StyledDiv,
-  StyledDrawer,
-  StyledList,
-} from "./DashboardItems";
+import { StyledAppBar, StyledDrawer, StyledList } from "./DashboardItems";
 import Icons from "./Icons";
 import UserBoard from "./UserBoard";
 import ProductBoard from "./ProductBoard";
+import styled from "styled-components";
+
+const StyledBoardContainer = styled.div`
+  display: flex;
+  position: fixed;
+  left: 200px;
+  top: 70px;
+  width: calc(100% - 200px);
+  height: calc(100% - 70px);
+`;
 
 const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {
   const [menu, setMenu] = useState(0);
@@ -51,13 +56,13 @@ const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {
           ))}
         </StyledList>
       </StyledDrawer>
-      <StyledDiv>
+      <StyledBoardContainer>
         {menu === 0 ? (
           <UserBoard formik={formik} />
         ) : (
           <ProductBoard formik={formik} />
         )}
-      </StyledDiv>
+      </StyledBoardContainer>
     </>
   );
 };

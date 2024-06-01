@@ -24,7 +24,7 @@ const LoginForm = ({ setHasAuth }) => {
         }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.message) {
         setHasAuth(true);
       }
     } catch (e) {

@@ -1,4 +1,7 @@
 module.exports = {
+  images: {
+    domains: ["server.jojoywmaeil.com"],
+  },
   compiler: {
     styledComponents: true,
   },

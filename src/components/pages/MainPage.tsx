@@ -1,4 +1,3 @@
-import GlobalStyle from "@/styles/global";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import QrScannerPage from "./QrScannerPage";
@@ -10,6 +9,23 @@ import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
 import "@/i18n";
+import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
+import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
+
+const NotoSans = Noto_Sans({
+  subsets: ["latin"],
+});
+
+const NotoSansSc = Noto_Sans_SC({
+  subsets: ["latin"],
+});
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -39,6 +55,9 @@ const MainPage = () => {
   const [snackBarStatus, setSnackBarStatus] = useState(
     snackBarStatusMessage["default"]
   );
+  const [fontClassName, setFontClassName] = useState("");
+  const { i18n } = useTranslation();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -62,19 +81,13 @@ const MainPage = () => {
       } = form;
       try {
         const date = new Date();
-        const padSingleDigit = (num: number) => String(num).padStart(2, "0");
-        const submisstionTime = `${date.getFullYear()}-${padSingleDigit(
-          date.getMonth() + 1
-        )}-${padSingleDigit(date.getDate())} ${padSingleDigit(
-          date.getHours()
-        )}:${padSingleDigit(date.getMinutes())}`;
         const res = await fetch(`${SERVER_URL}/users-info`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            submissionTime: submisstionTime,
+            submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
             hopeProducts: Object.entries(selectedInfos).map(
               ([productId, items]) => {
                 return {
@@ -197,20 +210,34 @@ const MainPage = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch(`${SERVER_URL}/products`, {
-        method: "get",
-      });
-      const data = await res.json();
-      setFetchedItems(data);
+      try {
+        const res = await fetch(`${SERVER_URL}/products`, {
+          method: "get",
+        });
+        const data = await res.json();
+        if (data?.error) {
+          throw data.error;
+        }
+        setFetchedItems(data);
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     getProducts();
   }, []);
 
+  useEffect(() => {
+    if (i18n.language === "zh") {
+      setFontClassName(`${NotoSansSc.className}`);
+    } else {
+      setFontClassName(NotoSans.className);
+    }
+  }, [i18n.language]);
+
   return (
-    <>
+    <main className={fontClassName}>
       {isSplashed && <SplashScreen />}
-      <GlobalStyle />
       <TitleAppBar
         id={pageIds[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
@@ -248,7 +275,7 @@ const MainPage = () => {
         text={bottomText[pageIds[pageIdx]]}
         badgeNum={pageIdx === 0 ? Object.keys(scannedItems).length : null}
       />
-    </>
+    </main>
   );
 };
 
