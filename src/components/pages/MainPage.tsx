@@ -61,12 +61,20 @@ const MainPage = () => {
         productLengthUnit,
       } = form;
       try {
+        const date = new Date();
+        const padSingleDigit = (num: number) => String(num).padStart(2, "0");
+        const submisstionTime = `${date.getFullYear()}-${padSingleDigit(
+          date.getMonth() + 1
+        )}-${padSingleDigit(date.getDate())} ${padSingleDigit(
+          date.getHours()
+        )}:${padSingleDigit(date.getMinutes())}`;
         const res = await fetch(`${SERVER_URL}/users-info`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            submissionTime: submisstionTime,
             hopeProducts: Object.entries(selectedInfos).map(
               ([productId, items]) => {
                 return {
