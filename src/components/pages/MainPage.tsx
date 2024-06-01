@@ -11,6 +11,13 @@ import SplashScreen from "../SplashScreen";
 import "@/i18n";
 import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
 import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 const NotoSans = Noto_Sans({
   subsets: ["latin"],
@@ -79,6 +86,7 @@ const MainPage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
             hopeProducts: Object.entries(selectedInfos).map(
               ([productId, items]) => {
                 return {
