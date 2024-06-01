@@ -8,16 +8,6 @@ import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
-import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
-import { useTranslation } from "react-i18next";
-
-const NotoSans = Noto_Sans({
-  subsets: ["latin"],
-});
-
-const NotoSansSc = Noto_Sans_SC({
-  subsets: ["latin"],
-});
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -47,8 +37,6 @@ const MainPage = () => {
   const [snackBarStatus, setSnackBarStatus] = useState(
     snackBarStatusMessage["default"]
   );
-  const [fontClassName, setFontClassName] = useState("");
-  const { i18n } = useTranslation();
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -215,14 +203,6 @@ const MainPage = () => {
 
     getProducts();
   }, []);
-
-  useEffect(() => {
-    if (i18n.language === "zh") {
-      setFontClassName(`${NotoSansSc.className}`);
-    } else {
-      setFontClassName(NotoSans.className);
-    }
-  }, [i18n.language]);
 
   return (
     <main>
