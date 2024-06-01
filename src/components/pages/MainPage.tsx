@@ -8,26 +8,28 @@ import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
+import { useTranslation } from "react-i18next";
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
 const bottomText = {
-  main: "장바구니",
-  cart: "정보 입력",
-  info: "입력 완료",
+  main: "My Products",
+  cart: "Information",
+  info: "Submission",
 };
 
 const snackBarStatusMessage = {
   default: `Scan QR Code`,
-  empty: `장바구니가 비었습니다.`,
+  empty: `Your cart is empty`,
   scanned: `Scanned new item`,
-  multipleScan: `QR Code를 하나 이상 스캔해주세요.`,
-  option: `옵션을 하나 이상 선택해주세요.`,
-  invalid: `유효한 정보를 입력해주세요.`,
-  complete: `정상 제출됐습니다.`,
+  multipleScan: `Scan at least one QR Code`,
+  option: `Please select at least one option`,
+  invalid: `Please enter valid information`,
+  complete: `Successfully submitted`,
 };
 
 const MainPage = () => {
+  const { t } = useTranslation();
   const [pageIdx, setPageIdx] = useState(0);
   const [fetchedItems, setFetchedItems] = useState(null);
   const [scannedItems, setScannedItems] = useState({});
@@ -35,7 +37,7 @@ const MainPage = () => {
   const [selectedInfos, setSelectedInfos] = useState<Object>({});
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarStatus, setSnackBarStatus] = useState(
-    snackBarStatusMessage["default"]
+    t(snackBarStatusMessage["default"])
   );
 
   const formik = useFormik({
@@ -116,10 +118,10 @@ const MainPage = () => {
         setScannedItems({});
         setSelectedInfos({});
         resetForm();
-        setSnackBarStatus(snackBarStatusMessage["complete"]);
+        setSnackBarStatus(t(snackBarStatusMessage["complete"]));
         setSnackBarOpen(true);
         setTimeout(() => {
-          setSnackBarStatus(snackBarStatusMessage["default"]);
+          setSnackBarStatus(t(snackBarStatusMessage["default"]));
           setSnackBarOpen(true);
         }, 3500);
       } catch (e) {
@@ -134,7 +136,7 @@ const MainPage = () => {
       setTimeout(() => {
         setIsSplashed(false);
         sessionStorage.setItem("splash", "true");
-        setSnackBarStatus(snackBarStatusMessage["default"]);
+        setSnackBarStatus(t(snackBarStatusMessage["default"]));
         setSnackBarOpen(true);
       }, 2000);
     }
@@ -143,14 +145,14 @@ const MainPage = () => {
   const handleClickBottomAppBar = () => {
     if (pageIdx === 0) {
       if (Object.keys(scannedItems).length === 0) {
-        setSnackBarStatus(snackBarStatusMessage["empty"]);
+        setSnackBarStatus(t(snackBarStatusMessage["empty"]));
         setSnackBarOpen(true);
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
     } else if (pageIdx === 1) {
       if (Object.keys(scannedItems).length <= 0) {
-        setSnackBarStatus(snackBarStatusMessage["multipleScan"]);
+        setSnackBarStatus(t(snackBarStatusMessage["multipleScan"]));
         setSnackBarOpen(true);
       } else {
         let isAllSelected = true;
@@ -166,7 +168,7 @@ const MainPage = () => {
         if (isAllSelected) {
           setPageIdx((pageIdx + 1) % 3);
         } else {
-          setSnackBarStatus(snackBarStatusMessage["option"]);
+          setSnackBarStatus(t(snackBarStatusMessage["option"]));
           setSnackBarOpen(true);
         }
       }
@@ -175,7 +177,7 @@ const MainPage = () => {
         formik.handleSubmit();
         setPageIdx((pageIdx + 1) % 3);
       } else {
-        setSnackBarStatus(snackBarStatusMessage["invalid"]);
+        setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
         setSnackBarOpen(true);
       }
     }
@@ -241,7 +243,7 @@ const MainPage = () => {
       <BottomAppBar
         icon={icons[pageIdx]}
         handleClick={handleClickBottomAppBar}
-        text={bottomText[pageIds[pageIdx]]}
+        text={t(bottomText[pageIds[pageIdx]])}
         badgeNum={pageIdx === 0 ? Object.keys(scannedItems).length : null}
       />
     </main>

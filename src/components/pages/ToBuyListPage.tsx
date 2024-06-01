@@ -6,6 +6,7 @@ import { MessageSnackBar } from "../SnackBar";
 import { Box } from "@mui/material";
 import { SelectedBox, StyledBox, StyledButton } from "../Product/styled";
 import { FormikProps } from "formik";
+import { useTranslation } from "react-i18next";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -93,7 +94,7 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
   );
 };
 
-const EMPTY_TEXT = "스캔한 항목이 없습니다.";
+const EMPTY_TEXT = "No items scanned";
 
 const ToBuyListPage = ({
   scannedItems,
@@ -116,6 +117,8 @@ const ToBuyListPage = ({
   snackBarStatus: string;
   formik: FormikProps<any>;
 }) => {
+  const { t } = useTranslation();
+
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
@@ -140,12 +143,12 @@ const ToBuyListPage = ({
       <FlexDiv>
         <StyledTitle>
           {Icons["list"]}
-          <p>제품목록</p>
+          <p>{t("Product List")}</p>
         </StyledTitle>
         <StyledSwitch formik={formik} />
       </FlexDiv>
       {Object.keys(scannedItems).length <= 0 ? (
-        <EmptyTextDiv>{EMPTY_TEXT}</EmptyTextDiv>
+        <EmptyTextDiv>{t(EMPTY_TEXT)}</EmptyTextDiv>
       ) : (
         <ProductLists>
           {fetchedItems
