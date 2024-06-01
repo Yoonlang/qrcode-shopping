@@ -269,16 +269,16 @@ const UserInfoTable = ({ userInfoList, setSelectedUserList }) => {
 
   return (
     <>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 550, width: "100%" }}>
         <DataGrid
           rows={tableRows}
           columns={tableColumns}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+              paginationModel: { page: 0, pageSize: 100 },
             },
           }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10, 20, 50, 100]}
           checkboxSelection
           onRowSelectionModelChange={(selectedList) => {
             setSelectedUserList(selectedList);
