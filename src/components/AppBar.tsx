@@ -5,7 +5,6 @@ import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
 import { useState } from "react";
 import Info from "./Info";
 import LanguageSelector from "./LanguageSelector";
-import LanguageChanger from "./LanguageChanger";
 import { useTranslation } from "react-i18next";
 
 const StyledTitleAppBar = styled(AppBar)`
@@ -104,7 +103,7 @@ const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
           (anchorEl.getAttribute("data-anchor") === "info" ? (
             <Info />
           ) : (
-            <LanguageChanger />
+            <LanguageSelector />
           ))}
       </Popover>
     </StyledTitleAppBar>
