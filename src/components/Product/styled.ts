@@ -126,7 +126,7 @@ const SelectedOption = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 15px 0px;
+  // margin: 15px 0px;
   font-size: 10px;
   color: rgba(0, 0, 0, 0.6);
 

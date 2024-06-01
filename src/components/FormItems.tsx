@@ -214,10 +214,7 @@ const UserInput = ({
         }}
         disabled={disable}
       />
-      {name !== "countryCode" &&
-      name !== "phoneNumber" &&
-      formik.errors[name] &&
-      formik.touched[name] ? (
+      {formik.errors[name] && formik.touched[name] ? (
         <StyledErrorMessage>
           {Icons["error"]}
           <p>{formik.errors[name]?.toString()}</p>
@@ -254,7 +251,7 @@ const UserSelect = ({
       {items.map((item, index) => (
         <StyledMenuItem key={item} value={item}>
           {item}
-          {formik.values.businessType === item && (
+          {formik.values[name] === item && (
             <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
           )}
         </StyledMenuItem>
@@ -268,7 +265,9 @@ export {
   AddressBox,
   StyledStepper,
   StyledErrorMessage,
+  StyledTextField,
   AddressCheckbox,
   UserInput,
   UserSelect,
+  StyledIconButton,
 };

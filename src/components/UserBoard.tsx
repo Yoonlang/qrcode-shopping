@@ -12,7 +12,7 @@ const StyledUserBoard = styled.div`
 
   > .header {
     width: 100%;
-    height: 100px;
+    height: 60px;
     display: flex;
     align-items: end;
     justify-content: end;

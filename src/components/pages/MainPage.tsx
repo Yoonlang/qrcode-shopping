@@ -9,6 +9,13 @@ import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
 import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 const pageIds = ["main", "cart", "info"];
 const icons = ["cart", "person", "check"];
@@ -62,12 +69,14 @@ const MainPage = () => {
         productLengthUnit,
       } = form;
       try {
+        const date = new Date();
         const res = await fetch(`${SERVER_URL}/users-info`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
             hopeProducts: Object.entries(selectedInfos).map(
               ([productId, items]) => {
                 return {
@@ -155,22 +164,23 @@ const MainPage = () => {
         setSnackBarStatus(t(snackBarStatusMessage["multipleScan"]));
         setSnackBarOpen(true);
       } else {
-        let isAllSelected = true;
-        for (const key of Object.keys(scannedItems)) {
-          if (
-            !selectedInfos[key] ||
-            Object.keys(selectedInfos[key]).length <= 0
-          ) {
-            isAllSelected = false;
-            break;
-          }
-        }
-        if (isAllSelected) {
-          setPageIdx((pageIdx + 1) % 3);
-        } else {
-          setSnackBarStatus(t(snackBarStatusMessage["option"]));
-          setSnackBarOpen(true);
-        }
+        // let isAllSelected = true;
+        // for (const key of Object.keys(scannedItems)) {
+        //   if (
+        //     !selectedInfos[key] ||
+        //     Object.keys(selectedInfos[key]).length <= 0
+        //   ) {
+        //     isAllSelected = false;
+        //     break;
+        //   }
+        // }
+        // if (isAllSelected) {
+        setPageIdx((pageIdx + 1) % 3);
+        // console.log(selectedInfos);
+        // } else {
+        //   setSnackBarStatus(snackBarStatusMessage["option"]);
+        //   setSnackBarOpen(true);
+        // }
       }
     } else {
       if (formik.isValid) {

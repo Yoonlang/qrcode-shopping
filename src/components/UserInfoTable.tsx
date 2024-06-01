@@ -4,7 +4,7 @@ import { StyledModal } from "./DashboardItems";
 import styled from "styled-components";
 
 const tableColumns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 220 },
+  { field: "id", headerName: "ID", width: 120 },
   { field: "name", headerName: "Name", width: 107 },
   {
     field: "company",
@@ -14,11 +14,16 @@ const tableColumns: GridColDef[] = [
   {
     field: "email",
     headerName: "E-mail",
-    width: 275,
+    width: 200,
   },
   {
     field: "contactNumber",
     headerName: "Contact Number",
+    width: 150,
+  },
+  {
+    field: "submissionTime",
+    headerName: "Submission Time",
     width: 150,
   },
   {
@@ -62,6 +67,7 @@ const handleUserInfoListForTable = (userInfoList) => {
   return (
     userInfoList?.map((userInfo) => {
       const {
+        submissionTime,
         personalInfo: {
           name,
           companyName,
@@ -77,6 +83,7 @@ const handleUserInfoListForTable = (userInfoList) => {
         company: companyName,
         email: email,
         contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
+        submissionTime,
         type: businessType,
         __user_info__: userInfo,
       };
@@ -137,6 +144,7 @@ const UserInfoDetailModal = ({
 }) => {
   const {
     documentId,
+    submissionTime,
     productLengthUnit,
     hopeProducts,
     personalInfo: {
@@ -154,7 +162,7 @@ const UserInfoDetailModal = ({
   return (
     <StyledModal open={isModalOpen} onClose={closeModal}>
       <StyledModalContainer>
-        <h2>User Info</h2>
+        <h2>User Info - {submissionTime ?? ""}</h2>
         <h4>Personal Info</h4>
         <div>
           <DataGrid
@@ -269,16 +277,16 @@ const UserInfoTable = ({ userInfoList, setSelectedUserList }) => {
 
   return (
     <>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 550, width: "100%" }}>
         <DataGrid
           rows={tableRows}
           columns={tableColumns}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+              paginationModel: { page: 0, pageSize: 100 },
             },
           }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10, 20, 50, 100]}
           checkboxSelection
           onRowSelectionModelChange={(selectedList) => {
             setSelectedUserList(selectedList);
