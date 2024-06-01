@@ -8,7 +8,6 @@ import { validationSchema } from "@/consts/validation";
 import { initialValues } from "@/consts/form";
 import { SERVER_URL } from "@/consts/url";
 import SplashScreen from "../SplashScreen";
-import "@/i18n";
 import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
 import { useTranslation } from "react-i18next";
 
@@ -226,7 +225,7 @@ const MainPage = () => {
   }, [i18n.language]);
 
   return (
-    <main className={fontClassName}>
+    <main>
       {isSplashed && <SplashScreen />}
       <TitleAppBar
         id={pageIds[pageIdx]}

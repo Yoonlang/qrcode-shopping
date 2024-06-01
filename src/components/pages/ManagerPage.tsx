@@ -4,11 +4,6 @@ import LoginForm from "../LoginForm";
 import { SERVER_URL } from "@/consts/url";
 import { useFormik } from "formik";
 import { initialValues } from "@/consts/dashboard";
-import { Noto_Sans } from "next/font/google";
-
-const NotoSans = Noto_Sans({
-  subsets: ["latin"],
-});
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
@@ -91,7 +86,7 @@ const ManagerPage = () => {
   }, []);
 
   return (
-    <main className={NotoSans.className}>
+    <main>
       {isLoading ? (
         <></>
       ) : hasAuth ? (

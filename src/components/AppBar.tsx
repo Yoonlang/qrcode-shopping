@@ -5,6 +5,8 @@ import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
 import { useState } from "react";
 import Info from "./Info";
 import LanguageSelector from "./LanguageSelector";
+import LanguageChanger from "./LanguageChanger";
+import { useTranslation } from "react-i18next";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -50,6 +52,7 @@ const StyledSelectionIconButton = styled(
 `;
 
 const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,7 +72,7 @@ const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
           </StyledIconButton>
         )}
       </div>
-      <AppBarTitleText>{titleText[id]}</AppBarTitleText>
+      <AppBarTitleText>{t(titleText[id])}</AppBarTitleText>
       <div className="right">
         <StyledSelectionIconButton
           onClick={handleClick}
@@ -101,7 +104,7 @@ const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
           (anchorEl.getAttribute("data-anchor") === "info" ? (
             <Info />
           ) : (
-            <LanguageSelector />
+            <LanguageChanger />
           ))}
       </Popover>
     </StyledTitleAppBar>
