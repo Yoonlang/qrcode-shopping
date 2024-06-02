@@ -165,10 +165,11 @@ const AddressCheckbox = ({
   name: string;
   formik: FormikProps<any>;
 }) => {
+  const { t } = useTranslation();
   return (
     <StyledFormControlLabel
       control={<Checkbox />}
-      label="회사 주소와 동일"
+      label={t("Same as company address")}
       labelPlacement="start"
       name={name}
       value={formik.values[name]}
