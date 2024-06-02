@@ -133,6 +133,7 @@ const MainPage = () => {
           setSnackBarStatus(t(snackBarStatusMessage["default"]));
           setSnackBarOpen(true);
         }, 3500);
+        setPageIdx((pageIdx + 1) % 3);
       } catch (e) {
         console.log(e);
       }
@@ -185,7 +186,6 @@ const MainPage = () => {
     } else {
       if (formik.isValid) {
         formik.handleSubmit();
-        setPageIdx((pageIdx + 1) % 3);
       } else {
         setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
         setSnackBarOpen(true);
