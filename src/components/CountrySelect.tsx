@@ -64,7 +64,10 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
     <>
       <StyledDiv>
         <Autocomplete
-          options={countries}
+          options={countries.sort((a, b) => {
+            if (a.label < b.label) return -1;
+            else return 1;
+          })}
           autoHighlight
           getOptionLabel={(option) => `+${option.phone} ${option.label}`}
           renderOption={(props, option) => (
