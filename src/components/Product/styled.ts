@@ -41,6 +41,8 @@ const StyledTop = styled.div`
   & > img {
     margin-right: 20px;
     border-radius: 2px;
+    min-height: 71px;
+    min-width: 71px;
   }
 
   & .MuiInputBase-root {

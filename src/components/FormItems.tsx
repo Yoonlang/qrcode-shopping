@@ -240,27 +240,38 @@ const UserSelect = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <StyledTextField
-      select
-      label={label}
-      name={name}
-      value={formik.values[name]}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={formik.touched[name] && !!formik.errors[name]}
-      autoComplete="off"
-      margin="dense"
-      fullWidth
-    >
-      {items.map((item, index) => (
-        <StyledMenuItem key={item} value={item}>
-          {t(item)}
-          {formik.values[name] === item && (
-            <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
-          )}
-        </StyledMenuItem>
-      ))}
-    </StyledTextField>
+    <>
+      <StyledTextField
+        select
+        label={label}
+        name={name}
+        value={formik.values[name]}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched[name] && !!formik.errors[name]}
+        autoComplete="off"
+        margin="dense"
+        fullWidth
+        SelectProps={{
+          renderValue: (value: string) => <>{t(value)}</>,
+        }}
+      >
+        {items.map((item, index) => (
+          <StyledMenuItem key={item} value={item}>
+            {t(item)}
+            {formik.values[name] === item && (
+              <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
+            )}
+          </StyledMenuItem>
+        ))}
+      </StyledTextField>
+      {formik.errors[name] && formik.touched[name] ? (
+        <StyledErrorMessage>
+          {Icons["error"]}
+          <p>{t(formik.errors[name]?.toString() ?? "")}</p>
+        </StyledErrorMessage>
+      ) : null}
+    </>
   );
 };
 

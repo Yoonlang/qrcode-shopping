@@ -4,24 +4,27 @@ import Icons from "./Icons";
 const StyledDiv = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #323232;
+  background-color: #fff;
   position: absolute;
   z-index: 9999;
   justify-content: center;
 
   > p {
-    font-size: 19.8px;
-    font-weight: bold;
-    color: #fff;
+    font-size: 16.25px;
+    color: #000;
   }
 `;
+
+const YOUNGWON_TEXT = "YOUNGWON";
+const MAEIL_TEXT = "MAEIL";
 
 const SplashScreen = () => {
   return (
     <StyledDiv>
-      <p>YOUNGWON</p>
-      <div>{Icons["x"]}</div>
-      <p>MAEIL</p>
+      <div>{Icons["logo"]}</div>
+      <p>
+        {YOUNGWON_TEXT} {Icons["x"]} {MAEIL_TEXT}
+      </p>
     </StyledDiv>
   );
 };
