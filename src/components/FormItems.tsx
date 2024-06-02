@@ -11,6 +11,7 @@ import {
 import { FormikProps } from "formik";
 import styled from "styled-components";
 import Icons from "./Icons";
+import { useTranslation } from "react-i18next";
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -190,6 +191,7 @@ const UserInput = ({
   type?: string;
   disable?: boolean;
 }) => {
+  const { t } = useTranslation();
   return (
     <>
       <StyledTextField
@@ -217,7 +219,7 @@ const UserInput = ({
       {formik.errors[name] && formik.touched[name] ? (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{formik.errors[name]?.toString()}</p>
+          <p>{t(formik.errors[name]?.toString() ?? "")}</p>
         </StyledErrorMessage>
       ) : null}
     </>
@@ -235,6 +237,7 @@ const UserSelect = ({
   items: string[];
   formik: FormikProps<any>;
 }) => {
+  const { t } = useTranslation();
   return (
     <StyledTextField
       select
@@ -250,7 +253,7 @@ const UserSelect = ({
     >
       {items.map((item, index) => (
         <StyledMenuItem key={item} value={item}>
-          {item}
+          {t(item)}
           {formik.values[name] === item && (
             <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
           )}

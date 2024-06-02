@@ -1,8 +1,10 @@
 import { FormikProps } from "formik";
 import { UserInput } from "./FormItems";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const ShippingAddress = ({ formik }: { formik: FormikProps<any> }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     if (formik.values.isSameAddress) {
       formik.setValues({
@@ -29,19 +31,19 @@ const ShippingAddress = ({ formik }: { formik: FormikProps<any> }) => {
   return (
     <>
       <UserInput
-        label="우편번호"
+        label={t("Postal Code")}
         name="spPostalCode"
         formik={formik}
         disable={formik.values.isSameAddress}
       />
       <UserInput
-        label="주소"
+        label={t("Address")}
         name="spAddress"
         formik={formik}
         disable={formik.values.isSameAddress}
       />
       <UserInput
-        label="상세주소"
+        label={t("Detail Address")}
         name="spDetailAddress"
         formik={formik}
         disable={formik.values.isSameAddress}

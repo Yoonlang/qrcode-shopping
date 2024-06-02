@@ -23,6 +23,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "./styled";
+import { useTranslation } from "react-i18next";
 
 interface Color {
   colorId: string;
@@ -40,7 +41,7 @@ const COLOR_CARD_TEXT = "Color Card";
 const OPTION_TEXT = "Option";
 const SELECTED_OPTIONS_TEXT = "Selected Options";
 const IMG_SIZE = 71;
-const ALERT_MESSAGE = "숫자만 입력해 주세요.";
+const ALERT_MESSAGE = "Please enter only numbers";
 const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
 
 const Product = ({
@@ -57,6 +58,7 @@ const Product = ({
     id: string
   ) => void;
 }) => {
+  const { t } = useTranslation();
   if (product.name === undefined) {
     product.name = product.productId;
   }
@@ -154,7 +156,7 @@ const Product = ({
         },
       });
     } else {
-      alert(ALERT_MESSAGE);
+      alert(t(ALERT_MESSAGE));
     }
   };
 
@@ -212,7 +214,7 @@ const Product = ({
             </IconButton>
           </StyledNameDiv>
           <SelectedOption>
-            <div>{COLOR_CARD_TEXT}</div>
+            <div>{t(COLOR_CARD_TEXT)}</div>
             <Counter>
               <Button onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}>
                 -

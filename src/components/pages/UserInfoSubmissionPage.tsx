@@ -10,8 +10,10 @@ import { steps } from "@/consts/form";
 import OrdererInfo from "../OrdererInfo";
 import CompanyAddress from "../CompanyAddress";
 import ShippingAddress from "../ShippingAddress";
+import { useTranslation } from "react-i18next";
 
 const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
+  const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
@@ -53,10 +55,10 @@ const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
         {steps.map((step, index) => (
           <Step key={step.label} expanded>
             {index !== 2 ? (
-              <StepLabel>{step.label}</StepLabel>
+              <StepLabel>{t(step.label)}</StepLabel>
             ) : (
               <AddressBox>
-                <StepLabel>{step.label}</StepLabel>
+                <StepLabel>{t(step.label)}</StepLabel>
                 {formik.values.businessType !== "Student" && (
                   <AddressCheckbox name="isSameAddress" formik={formik} />
                 )}

@@ -1,13 +1,13 @@
 import * as Yup from "yup";
 
-const REQUIRED_TEXT = "값을 입력해주세요.";
-const STRING_TEXT = "문자만 입력 가능합니다.";
-const EMAIL_TEXT = "이메일 형식으로 입력해주세요.";
-const NUMBER_TEXT = "숫자만 입력 가능합니다.";
-const POSTAL_CODE_TEXT = "숫자와 -만 입력 가능합니다.";
+const REQUIRED_TEXT = "Please enter a value";
+const STRING_TEXT = "Only characters can be entered";
+const EMAIL_TEXT = "Please enter in email format";
+const NUMBER_TEXT = "Only numbers can be entered";
+const POSTAL_CODE_TEXT = "Only numbers and - can be entered";
 const MAX_TEXT = {
-  "30": "최대 30자까지 입력할 수 있습니다.",
-  "50": "최대 50자까지 입력할 수 있습니다.",
+  "30": "You can enter up to 30 characters",
+  "50": "You can enter up to 50 characters",
 };
 
 export const validationSchema = Yup.object().shape({

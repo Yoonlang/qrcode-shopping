@@ -1,8 +1,10 @@
 import { FormikProps } from "formik";
 import { UserInput } from "./FormItems";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const CompanyAddress = ({ formik }: { formik: FormikProps<any> }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     if (formik.values.businessType === "Student") {
       formik.setValues({
@@ -29,19 +31,19 @@ const CompanyAddress = ({ formik }: { formik: FormikProps<any> }) => {
   return (
     <>
       <UserInput
-        label="우편번호"
+        label={t("Postal Code")}
         name="coPostalCode"
         formik={formik}
         disable={formik.values.businessType === "Student"}
       />
       <UserInput
-        label="주소"
+        label={t("Address")}
         name="coAddress"
         formik={formik}
         disable={formik.values.businessType === "Student"}
       />
       <UserInput
-        label="상세주소"
+        label={t("Detail Address")}
         name="coDetailAddress"
         formik={formik}
         disable={formik.values.businessType === "Student"}
