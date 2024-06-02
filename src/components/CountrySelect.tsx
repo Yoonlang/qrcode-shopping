@@ -69,7 +69,7 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
           getOptionLabel={(option) => `+${option.phone} ${option.label}`}
           renderOption={(props, option) => (
             <MenuItem {...props} key={option.label}>
-              <div>
+              <div key={props.id}>
                 <img
                   key={option.label}
                   loading="lazy"
