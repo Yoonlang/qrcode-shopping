@@ -92,7 +92,9 @@ const QrCode = ({
             }
           }}
           videoConstraints={{
-            facingMode: "environment",
+            facingMode: {
+              ideal: "environment",
+            },
           }}
         />
       )}
