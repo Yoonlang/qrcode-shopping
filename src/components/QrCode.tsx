@@ -92,6 +92,8 @@ const QrCode = ({
             }
           }}
           videoConstraints={{
+            width: { max: 1280 },
+            height: { max: 720 },
             facingMode: {
               ideal: "environment",
             },
