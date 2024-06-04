@@ -1,6 +1,6 @@
 import Webcam from "react-webcam";
 import jsQR from "jsqr";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
@@ -26,6 +26,7 @@ const QrCode = ({
   fetchedItems: any[] | null;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [deviceId, setDeviceId] = useState(undefined);
   const imageScan = useCallback(
     (imageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
@@ -77,7 +78,9 @@ const QrCode = ({
   const handleDevices = (devices) => {
     devices.forEach((device: any) => {
       if (device.kind === "videoinput") {
-        alert(`${device.label} ${device.deviceId}`);
+        if (device.label === "camera2 0, facing back") {
+          setDeviceId(device.deviceId);
+        }
       }
     });
   };
@@ -103,6 +106,7 @@ const QrCode = ({
             navigator.mediaDevices.enumerateDevices().then(handleDevices);
           }}
           videoConstraints={{
+            deviceId: deviceId ? { exact: deviceId } : undefined,
             facingMode: {
               ideal: "environment",
             },
