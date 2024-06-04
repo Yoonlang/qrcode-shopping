@@ -74,6 +74,14 @@ const QrCode = ({
     [fetchedItems]
   );
 
+  const handleDevices = (devices) => {
+    devices.forEach((device) => {
+      if (device.kind === "videoinput") {
+        alert(device.label);
+      }
+    });
+  };
+
   return (
     <StyledQrCode>
       {fetchedItems && (
@@ -82,6 +90,7 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node) => {
             if (node) {
+              navigator.mediaDevices.enumerateDevices().then(handleDevices);
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
@@ -95,7 +104,7 @@ const QrCode = ({
             width: { max: 1280 },
             height: { max: 720 },
             facingMode: {
-              exact: "environment",
+              ideal: "environment",
             },
           }}
         />
