@@ -111,6 +111,7 @@ const QrCode = ({
               ideal: "environment",
             },
           }}
+          screenshotQuality={1}
         />
       )}
     </StyledQrCode>
