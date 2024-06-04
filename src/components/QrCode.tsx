@@ -95,13 +95,8 @@ const QrCode = ({
             width: { max: 1280 },
             height: { max: 720 },
             facingMode: {
-              ideal: "environment",
+              exact: "environment",
             },
-            advanced: [
-              { width: 1280, height: 720 },
-              { aspectRatio: 1.7778 },
-              { frameRate: { max: 30 } },
-            ],
           }}
         />
       )}
