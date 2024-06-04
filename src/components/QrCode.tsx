@@ -75,9 +75,9 @@ const QrCode = ({
   );
 
   const handleDevices = (devices) => {
-    devices.forEach((device) => {
+    devices.forEach((device: any) => {
       if (device.kind === "videoinput") {
-        alert(device.label);
+        alert(`${device.label} ${device.deviceId}`);
       }
     });
   };
@@ -90,7 +90,6 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node) => {
             if (node) {
-              navigator.mediaDevices.enumerateDevices().then(handleDevices);
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
@@ -100,9 +99,10 @@ const QrCode = ({
               }
             }
           }}
+          onUserMedia={() => {
+            navigator.mediaDevices.enumerateDevices().then(handleDevices);
+          }}
           videoConstraints={{
-            width: { max: 1280 },
-            height: { max: 720 },
             facingMode: {
               ideal: "environment",
             },
