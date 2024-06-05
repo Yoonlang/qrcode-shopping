@@ -87,16 +87,22 @@ const QrCode = ({
     });
   };
 
+  const [key, setKey] = useState(1);
   useEffect(() => {
-    setTimeout(() => {
-      router.push("/zh");
+    const id = setInterval(() => {
+      setKey((old) => old + 1);
     }, 7000);
+
+    return () => {
+      clearInterval(id);
+    };
   }, []);
 
   return (
     <StyledQrCode>
       {fetchedItems && (
         <Webcam
+          key={key}
           audio={false}
           screenshotFormat="image/png"
           ref={(node: any) => {
