@@ -92,6 +92,7 @@ const QrCode = ({
           audio={false}
           screenshotFormat="image/png"
           ref={(node) => {
+            alert(node);
             if (node) {
               intervalRef.current = setInterval(() => {
                 capture(node);
