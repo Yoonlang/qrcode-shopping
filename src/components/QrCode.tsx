@@ -118,11 +118,7 @@ const QrCode = ({
               }
             }
           }}
-          onUserMedia={() => {
-            navigator.mediaDevices.enumerateDevices().then(handleDevices);
-          }}
           videoConstraints={{
-            deviceId: deviceId ? { exact: deviceId } : undefined,
             facingMode: {
               ideal: "environment",
             },
