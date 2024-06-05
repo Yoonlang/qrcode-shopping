@@ -50,16 +50,17 @@ const QrScannerPage = ({
   return (
     <StyledContainer>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            <p>1. 选好你想要的面料 识别彩色卡上的二维码后 会自动放入购物车</p>
+            <p>
+              2. 选好您想要的产品后 请按购物车按钮 输入发货信息 最后点击提交
+            </p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary" autoFocus>
-            Agree
+            确认
           </Button>
         </DialogActions>
       </Dialog>
