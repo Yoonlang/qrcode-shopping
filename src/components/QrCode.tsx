@@ -92,6 +92,7 @@ const QrCode = ({
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
         });
+        alert(stream);
         setHasPermission(true);
       } catch (e) {
         console.log(e);
