@@ -128,12 +128,14 @@ const ToBuyListPage = ({
 
   return (
     <StyledDiv>
-      <MessageSnackBar
-        key={`${Object.keys(selectedInfos).length} ${snackBarStatus}`}
-        isOpen={snackBarOpen}
-        setIsOpen={setSnackBarOpen}
-        message={snackBarStatus}
-      />
+      {snackBarStatus !== t("Scanned new item") && (
+        <MessageSnackBar
+          key={`${Object.keys(selectedInfos).length} ${snackBarStatus}`}
+          isOpen={snackBarOpen}
+          setIsOpen={setSnackBarOpen}
+          message={snackBarStatus}
+        />
+      )}
       <StyledTitle>
         {Icons["list"]}
         <p>{t("Product List")}</p>

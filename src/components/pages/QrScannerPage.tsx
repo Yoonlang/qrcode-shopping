@@ -34,6 +34,9 @@ const QrScannerPage = ({
     if (Object.keys(scannedItems).length > 0) {
       setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
       setSnackBarOpen(true);
+    } else {
+      setSnackBarStatus(t(snackBarStatusMessage["default"]));
+      setSnackBarOpen(true);
     }
   }, [scannedItems]);
 

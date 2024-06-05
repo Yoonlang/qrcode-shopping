@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
-const CAPTURE_DELAY_MS = 8000;
+const CAPTURE_DELAY_MS = 100;
 
 const StyledQrCode = styled.div`
   width: 100%;

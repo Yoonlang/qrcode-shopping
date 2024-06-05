@@ -21,8 +21,8 @@ const pageIds = ["info", "main", "cart"];
 const icons = ["person", "cart", "check"];
 const bottomText = {
   main: "My Products",
-  cart: "Information",
-  info: "Submission",
+  cart: "Submission",
+  info: "Information",
 };
 
 const snackBarStatusMessage = {
@@ -129,10 +129,10 @@ const MainPage = () => {
         resetForm();
         setSnackBarStatus(t(snackBarStatusMessage["complete"]));
         setSnackBarOpen(true);
-        setTimeout(() => {
-          setSnackBarStatus(t(snackBarStatusMessage["default"]));
-          setSnackBarOpen(true);
-        }, 3500);
+        // setTimeout(() => {
+        //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
+        //   setSnackBarOpen(true);
+        // }, 3500);
         setPageIdx((pageIdx + 1) % 3);
       } catch (e) {
         console.log(e);
@@ -146,8 +146,8 @@ const MainPage = () => {
       setTimeout(() => {
         setIsSplashed(false);
         sessionStorage.setItem("splash", "true");
-        setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        setSnackBarOpen(true);
+        // setSnackBarStatus(t(snackBarStatusMessage["default"]));
+        // setSnackBarOpen(true);
       }, 2000);
     }
   }, []);
@@ -234,7 +234,12 @@ const MainPage = () => {
         handleClickBack={handleClickBackButton}
       />
       {pageIdx === 0 ? (
-        <UserInfoSubmissionPage formik={formik} />
+        <UserInfoSubmissionPage
+          formik={formik}
+          snackBarOpen={snackBarOpen}
+          setSnackBarOpen={setSnackBarOpen}
+          snackBarStatus={snackBarStatus}
+        />
       ) : pageIdx === 1 ? (
         <QrScannerPage
           scannedItems={scannedItems}
