@@ -102,6 +102,10 @@ const QrCode = ({
     requestCameraAccess();
   }, []);
 
+  useEffect(() => {
+    alert(hasPermission);
+  }, [hasPermission]);
+
   return (
     <StyledQrCode>
       {fetchedItems && hasPermission && (
