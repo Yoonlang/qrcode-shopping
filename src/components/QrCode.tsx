@@ -1,9 +1,8 @@
 import Webcam from "react-webcam";
 import jsQR from "jsqr";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
 
 const CAPTURE_DELAY_MS = 8000;
 
@@ -32,7 +31,6 @@ const QrCode = ({
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState(undefined);
-  const router = useRouter();
   const imageScan = useCallback(
     (imageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
@@ -99,7 +97,6 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
-              console.log(node);
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
