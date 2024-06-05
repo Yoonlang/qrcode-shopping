@@ -94,8 +94,16 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
+              // console.log(node);
               alert("clientWidth " + node.video.clientWidth);
               alert("clientHeight " + node.video.clientHeight);
+
+              alert("videoWidth " + node.video.videoWidth);
+              alert("videoHeight " + node.video.videoHeight);
+
+              alert("scrollWidth " + node.video.scrollWidth);
+              alert("scrollHeight " + node.video.scrollHeight);
+
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
