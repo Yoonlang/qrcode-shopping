@@ -94,12 +94,12 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
-              // const onLoadedMetadata = () => {
-              //   alert(node.video.videoWidth);
-              //   alert(node.video.videoHeight);
-              // };
+              const onLoadedMetadata = () => {
+                alert(node.video.videoWidth);
+                alert(node.video.videoHeight);
+              };
 
-              // node.video.addEventListener("loadedmetadata", onLoadedMetadata);
+              node.video.addEventListener("loadedmetadata", onLoadedMetadata);
 
               intervalRef.current = setInterval(() => {
                 capture(node);
