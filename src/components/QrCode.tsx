@@ -92,7 +92,6 @@ const QrCode = ({
           audio={false}
           screenshotFormat="image/png"
           ref={(node) => {
-            alert(node);
             if (node) {
               intervalRef.current = setInterval(() => {
                 capture(node);
@@ -104,7 +103,12 @@ const QrCode = ({
             }
           }}
           onUserMedia={() => {
-            navigator.mediaDevices.enumerateDevices().then(handleDevices);
+            navigator.mediaDevices
+              .enumerateDevices()
+              .then(handleDevices)
+              .catch((e) => {
+                alert(e);
+              });
           }}
           videoConstraints={{
             deviceId: deviceId ? { exact: deviceId } : undefined,
