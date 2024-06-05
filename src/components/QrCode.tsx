@@ -17,6 +17,10 @@ const StyledQrCode = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  > button {
+    visibility: hidden;
+  }
 `;
 
 const QrCode = ({
@@ -87,34 +91,49 @@ const QrCode = ({
     });
   };
 
+  const buttonRef = useRef<any>(null);
+  const test = () => {
+    console.log("hi");
+  };
+  useEffect(() => {
+    if (fetchedItems && buttonRef) {
+      buttonRef?.current?.click();
+    }
+  }, [fetchedItems]);
+
   return (
     <StyledQrCode>
       {fetchedItems && (
-        <Webcam
-          audio={false}
-          screenshotFormat="image/png"
-          ref={(node: any) => {
-            if (node) {
-              intervalRef.current = setInterval(() => {
-                capture(node);
-              }, CAPTURE_DELAY_MS);
-            } else {
-              if (intervalRef.current) {
-                clearInterval(intervalRef.current);
+        <>
+          <Webcam
+            audio={false}
+            screenshotFormat="image/png"
+            ref={(node: any) => {
+              if (node) {
+                intervalRef.current = setInterval(() => {
+                  capture(node);
+                }, CAPTURE_DELAY_MS);
+              } else {
+                if (intervalRef.current) {
+                  clearInterval(intervalRef.current);
+                }
               }
-            }
-          }}
-          onUserMedia={() => {
-            navigator.mediaDevices.enumerateDevices().then(handleDevices);
-          }}
-          videoConstraints={{
-            deviceId: deviceId ? { exact: deviceId } : undefined,
-            facingMode: {
-              ideal: "environment",
-            },
-          }}
-          screenshotQuality={1}
-        />
+            }}
+            onUserMedia={() => {
+              navigator.mediaDevices.enumerateDevices().then(handleDevices);
+            }}
+            videoConstraints={{
+              deviceId: deviceId ? { exact: deviceId } : undefined,
+              facingMode: {
+                ideal: "environment",
+              },
+            }}
+            screenshotQuality={1}
+          />
+          <button ref={buttonRef} onClick={test}>
+            test
+          </button>
+        </>
       )}
     </StyledQrCode>
   );
