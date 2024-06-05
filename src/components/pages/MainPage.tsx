@@ -175,6 +175,7 @@ const MainPage = () => {
         //     break;
         //   }
         // }
+
         // if (isAllSelected) {
         setPageIdx((pageIdx + 1) % 3);
         // console.log(selectedInfos);
