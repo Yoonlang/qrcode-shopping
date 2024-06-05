@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import i18nConfig from "@/i18nConfig";
+import { useEffect, useRef } from "react";
 
 const StyledLanguageSelector = styled.div`
   display: flex;
@@ -39,9 +40,18 @@ const LanguageSelector = () => {
     router.refresh();
   };
 
+  const btnRef = useRef<any>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      btnRef.current.click();
+    }, 7000);
+  }, []);
+
   return (
     <StyledLanguageSelector>
       <Button
+        ref={btnRef}
         sx={{
           justifyContent: "space-between",
           color: "#000",
