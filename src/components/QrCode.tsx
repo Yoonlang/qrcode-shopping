@@ -26,8 +26,6 @@ const QrCode = ({
   fetchedItems: any[] | null;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const webcamRef = useRef<any>(null);
-  const [hasPermission, setHasPermission] = useState(false);
   const [deviceId, setDeviceId] = useState(undefined);
   const imageScan = useCallback(
     (imageData) => {
@@ -87,33 +85,15 @@ const QrCode = ({
     });
   };
 
-  useEffect(() => {
-    const requestCameraAccess = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        setHasPermission(true);
-        if (webcamRef.current) {
-          webcamRef.current.srcObject = stream;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    requestCameraAccess();
-  }, []);
-
   return (
     <StyledQrCode>
-      {fetchedItems && hasPermission && (
+      {fetchedItems && (
         <Webcam
+          key={deviceId}
           audio={false}
           screenshotFormat="image/png"
           ref={(node) => {
             if (node) {
-              webcamRef.current = node;
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
