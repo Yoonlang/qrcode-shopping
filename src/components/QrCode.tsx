@@ -94,6 +94,8 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node) => {
             if (node) {
+              alert("clientWidth " + node.video.clientWidth);
+              alert("clientHeight " + node.video.clientHeight);
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
@@ -107,6 +109,8 @@ const QrCode = ({
             navigator.mediaDevices.enumerateDevices().then(handleDevices);
           }}
           videoConstraints={{
+            width: { max: 1280, min: 1280 },
+            height: { max: 720, min: 720 },
             deviceId: deviceId ? { exact: deviceId } : undefined,
             facingMode: {
               ideal: "environment",
