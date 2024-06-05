@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
-const CAPTURE_DELAY_MS = 100;
+const CAPTURE_DELAY_MS = 8000;
 
 const StyledQrCode = styled.div`
   width: 100%;
@@ -94,17 +94,22 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
-              // console.log(node);
-              alert("clientWidth " + node.video.clientWidth);
-              alert("clientHeight " + node.video.clientHeight);
+              console.log(node);
+              // alert("clientWidth " + node.video.clientWidth);
+              // alert("clientHeight " + node.video.clientHeight);
 
-              alert("videoWidth " + node.video.videoWidth);
-              alert("videoHeight " + node.video.videoHeight);
+              // alert("videoWidth " + node.video.videoWidth);
+              // alert("videoHeight " + node.video.videoHeight);
 
-              alert("scrollWidth " + node.video.scrollWidth);
-              alert("scrollHeight " + node.video.scrollHeight);
+              // alert("scrollWidth " + node.video.scrollWidth);
+              // alert("scrollHeight " + node.video.scrollHeight);
+
+              // alert("offsetWidth " + node.video.offsetWidth);
+              // alert("offsetHeight " + node.video.offsetHeight);
 
               intervalRef.current = setInterval(() => {
+                alert(node.video.videoWidth);
+                alert(node.video.videoHeight);
                 capture(node);
               }, CAPTURE_DELAY_MS);
             } else {
