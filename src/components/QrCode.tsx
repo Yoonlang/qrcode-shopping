@@ -94,22 +94,14 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
-              console.log(node);
-              // alert("clientWidth " + node.video.clientWidth);
-              // alert("clientHeight " + node.video.clientHeight);
+              // const onLoadedMetadata = () => {
+              //   alert(node.video.videoWidth);
+              //   alert(node.video.videoHeight);
+              // };
 
-              // alert("videoWidth " + node.video.videoWidth);
-              // alert("videoHeight " + node.video.videoHeight);
-
-              // alert("scrollWidth " + node.video.scrollWidth);
-              // alert("scrollHeight " + node.video.scrollHeight);
-
-              // alert("offsetWidth " + node.video.offsetWidth);
-              // alert("offsetHeight " + node.video.offsetHeight);
+              // node.video.addEventListener("loadedmetadata", onLoadedMetadata);
 
               intervalRef.current = setInterval(() => {
-                alert(node.video.videoWidth);
-                alert(node.video.videoHeight);
                 capture(node);
               }, CAPTURE_DELAY_MS);
             } else {
@@ -122,6 +114,8 @@ const QrCode = ({
             navigator.mediaDevices.enumerateDevices().then(handleDevices);
           }}
           videoConstraints={{
+            width: { min: 640 },
+            height: { min: 480 },
             deviceId: deviceId ? { exact: deviceId } : undefined,
             facingMode: {
               ideal: "environment",
