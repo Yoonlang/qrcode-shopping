@@ -17,8 +17,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-const pageIds = ["main", "cart", "info"];
-const icons = ["cart", "person", "check"];
+const pageIds = ["info", "main", "cart"];
+const icons = ["person", "cart", "check"];
 const bottomText = {
   main: "My Products",
   cart: "Information",
@@ -154,13 +154,28 @@ const MainPage = () => {
 
   const handleClickBottomAppBar = () => {
     if (pageIdx === 0) {
+      if (formik.isValid) {
+        setPageIdx((pageIdx + 1) % 3);
+        // formik.handleSubmit();
+      } else {
+        setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
+        setSnackBarOpen(true);
+      }
+    } else if (pageIdx === 1) {
       if (Object.keys(scannedItems).length === 0) {
         setSnackBarStatus(t(snackBarStatusMessage["empty"]));
         setSnackBarOpen(true);
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
-    } else if (pageIdx === 1) {
+    } else {
+      // if (formik.isValid) {
+      //   formik.handleSubmit();
+      // } else {
+      //   setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
+      //   setSnackBarOpen(true);
+      // }
+
       if (Object.keys(scannedItems).length <= 0) {
         setSnackBarStatus(t(snackBarStatusMessage["multipleScan"]));
         setSnackBarOpen(true);
@@ -176,19 +191,13 @@ const MainPage = () => {
         //   }
         // }
         // if (isAllSelected) {
-        setPageIdx((pageIdx + 1) % 3);
+        formik.handleSubmit();
+        // setPageIdx((pageIdx + 1) % 3);
         // console.log(selectedInfos);
         // } else {
         //   setSnackBarStatus(snackBarStatusMessage["option"]);
         //   setSnackBarOpen(true);
         // }
-      }
-    } else {
-      if (formik.isValid) {
-        formik.handleSubmit();
-      } else {
-        setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
-        setSnackBarOpen(true);
       }
     }
   };
@@ -225,6 +234,8 @@ const MainPage = () => {
         handleClickBack={handleClickBackButton}
       />
       {pageIdx === 0 ? (
+        <UserInfoSubmissionPage formik={formik} />
+      ) : pageIdx === 1 ? (
         <QrScannerPage
           scannedItems={scannedItems}
           setScannedItems={setScannedItems}
@@ -235,7 +246,7 @@ const MainPage = () => {
           setSnackBarStatus={setSnackBarStatus}
           snackBarStatusMessage={snackBarStatusMessage}
         />
-      ) : pageIdx === 1 ? (
+      ) : (
         <ToBuyListPage
           scannedItems={scannedItems}
           setScannedItems={setScannedItems}
@@ -247,14 +258,12 @@ const MainPage = () => {
           snackBarStatus={snackBarStatus}
           formik={formik}
         />
-      ) : (
-        <UserInfoSubmissionPage formik={formik} />
       )}
       <BottomAppBar
         icon={icons[pageIdx]}
         handleClick={handleClickBottomAppBar}
         text={t(bottomText[pageIds[pageIdx]])}
-        badgeNum={pageIdx === 0 ? Object.keys(scannedItems).length : null}
+        badgeNum={pageIdx === 1 ? Object.keys(scannedItems).length : null}
       />
     </main>
   );
