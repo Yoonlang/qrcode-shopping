@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import i18nConfig from "@/i18nConfig";
+import { useEffect } from "react";
 
 const StyledLanguageSelector = styled.div`
   display: flex;
@@ -38,6 +39,10 @@ const LanguageSelector = () => {
 
     router.refresh();
   };
+
+  useEffect(() => {
+    router.push("/en");
+  }, []);
 
   return (
     <StyledLanguageSelector>
