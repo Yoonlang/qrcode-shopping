@@ -1,6 +1,6 @@
 import Webcam from "react-webcam";
 import jsQR from "jsqr";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
@@ -26,7 +26,6 @@ const QrCode = ({
   fetchedItems: any[] | null;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [hasPermission, setHasPermission] = useState(false);
   const [deviceId, setDeviceId] = useState(undefined);
   const imageScan = useCallback(
     (imageData) => {
@@ -86,28 +85,13 @@ const QrCode = ({
     });
   };
 
-  useEffect(() => {
-    const requestCameraAccess = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        setHasPermission(true);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    requestCameraAccess();
-  }, []);
-
   return (
     <StyledQrCode>
-      {fetchedItems && hasPermission && (
+      {fetchedItems && (
         <Webcam
           audio={false}
           screenshotFormat="image/png"
-          ref={(node) => {
+          ref={(node: any) => {
             if (node) {
               intervalRef.current = setInterval(() => {
                 capture(node);
