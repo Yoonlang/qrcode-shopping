@@ -35,8 +35,9 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
+        .notRequired()
         .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
-        .required(REQUIRED_TEXT)
+        // .required(REQUIRED_TEXT)
         .max(30, MAX_TEXT["30"]),
   }),
   coAddress: Yup.string().when("businessType", {
@@ -62,9 +63,10 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
+        .notRequired()
         .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
-        .required(REQUIRED_TEXT)
-        .typeError(POSTAL_CODE_TEXT)
+        // .required(REQUIRED_TEXT)
+        // .typeError(POSTAL_CODE_TEXT)
         .max(30, MAX_TEXT["30"]),
   }),
   spAddress: Yup.string().when("isSameAddress", {
