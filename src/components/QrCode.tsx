@@ -89,11 +89,11 @@ const QrCode = ({
     <StyledQrCode>
       {fetchedItems && (
         <Webcam
-          key={deviceId}
           audio={false}
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
+              alert(node.video.autoplay);
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
