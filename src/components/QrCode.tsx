@@ -85,6 +85,10 @@ const QrCode = ({
     });
   };
 
+  useEffect(() => {
+    alert(navigator.userAgent);
+  }, []);
+
   return (
     <StyledQrCode>
       {fetchedItems && (
@@ -94,13 +98,6 @@ const QrCode = ({
           screenshotFormat="image/png"
           ref={(node: any) => {
             if (node) {
-              const onLoadedMetadata = () => {
-                alert(node.video.videoWidth);
-                alert(node.video.videoHeight);
-              };
-
-              node.video.addEventListener("loadedmetadata", onLoadedMetadata);
-
               intervalRef.current = setInterval(() => {
                 capture(node);
               }, CAPTURE_DELAY_MS);
@@ -114,8 +111,6 @@ const QrCode = ({
             navigator.mediaDevices.enumerateDevices().then(handleDevices);
           }}
           videoConstraints={{
-            width: { min: 640 },
-            height: { min: 480 },
             deviceId: deviceId ? { exact: deviceId } : undefined,
             facingMode: {
               ideal: "environment",
