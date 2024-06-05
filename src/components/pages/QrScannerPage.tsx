@@ -1,6 +1,6 @@
 import QrCode from "@/components/QrCode";
 import { MessageSnackBar } from "@/components/SnackBar";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
