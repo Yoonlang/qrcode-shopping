@@ -41,7 +41,9 @@ const LanguageSelector = () => {
   };
 
   useEffect(() => {
-    router.push("/en");
+    setTimeout(() => {
+      changeLang("en");
+    }, 5000);
   }, []);
 
   return (
