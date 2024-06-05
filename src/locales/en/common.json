@@ -42,5 +42,8 @@
   "Brand": "Brand",
   "Student": "Student",
   "METER": "METER",
-  "YARD": "YARD"
+  "YARD": "YARD",
+  "Confirm": "Confirm",
+  "Dialog1": "Choose the fabric you want, identify the QR code on the color card, and it's automatically added to your cart.",
+  "Dialog2": "After selecting the product you want, please click the shopping cart button, enter the shipping information, and finally click submit."
 }

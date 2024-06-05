@@ -1,5 +1,10 @@
 import QrCode from "@/components/QrCode";
 import { MessageSnackBar } from "@/components/SnackBar";
+import { Button, Dialog } from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -28,7 +33,12 @@ const QrScannerPage = ({
   setSnackBarStatus: Dispatch<SetStateAction<string>>;
   snackBarStatusMessage: object;
 }) => {
+  const [openDialog, setOpenDialog] = useState(true);
   const { t } = useTranslation();
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   useEffect(() => {
     if (Object.keys(scannedItems).length > 0) {
@@ -39,13 +49,33 @@ const QrScannerPage = ({
 
   return (
     <StyledContainer>
-      <MessageSnackBar
-        key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
-        isOpen={snackBarOpen}
-        setIsOpen={setSnackBarOpen}
-        message={snackBarStatus}
-      />
-      <QrCode setScannedItems={setScannedItems} fetchedItems={fetchedItems} />
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogContent>
+          <DialogContentText>
+            <p>1. {t("Dialog1")}</p>
+            <p>2. {t("Dialog2")}</p>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            {t("Confirm")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {!openDialog && (
+        <>
+          <MessageSnackBar
+            key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
+            isOpen={snackBarOpen}
+            setIsOpen={setSnackBarOpen}
+            message={snackBarStatus}
+          />
+          <QrCode
+            setScannedItems={setScannedItems}
+            fetchedItems={fetchedItems}
+          />
+        </>
+      )}
     </StyledContainer>
   );
 };
