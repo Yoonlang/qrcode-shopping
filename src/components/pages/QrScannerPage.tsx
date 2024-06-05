@@ -52,15 +52,13 @@ const QrScannerPage = ({
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogContent>
           <DialogContentText>
-            <p>1. 选好你想要的面料 识别彩色卡上的二维码后 会自动放入购物车</p>
-            <p>
-              2. 选好您想要的产品后 请按购物车按钮 输入发货信息 最后点击提交
-            </p>
+            <p>1. {t("Dialog1")}</p>
+            <p>2. {t("Dialog2")}</p>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary" autoFocus>
-            确认
+            {t("Confirm")}
           </Button>
         </DialogActions>
       </Dialog>
