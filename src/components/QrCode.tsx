@@ -92,7 +92,7 @@ const QrCode = ({
           key={deviceId}
           audio={false}
           screenshotFormat="image/png"
-          ref={(node) => {
+          ref={(node: any) => {
             if (node) {
               alert("clientWidth " + node.video.clientWidth);
               alert("clientHeight " + node.video.clientHeight);
@@ -109,8 +109,6 @@ const QrCode = ({
             navigator.mediaDevices.enumerateDevices().then(handleDevices);
           }}
           videoConstraints={{
-            width: { max: 1280, min: 1280 },
-            height: { max: 720, min: 720 },
             deviceId: deviceId ? { exact: deviceId } : undefined,
             facingMode: {
               ideal: "environment",
