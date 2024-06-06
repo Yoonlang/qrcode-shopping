@@ -66,7 +66,7 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
     <>
       <StyledDiv>
         <Autocomplete
-          value={formik.values.countryCode}
+          defaultValue={formik.values.countryCode}
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
@@ -74,7 +74,7 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
           autoHighlight
           getOptionLabel={(option) =>
             formik.values.countryCode.phone
-              ? `+${option.phone} ${option.label}`
+              ? `${option.label} +${option.phone}`
               : ""
           }
           renderOption={(props, option) => (
@@ -94,6 +94,13 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
               )}
             </MenuItem>
           )}
+          filterOptions={(options, { inputValue }) => {
+            return options.filter(({ label, phone }) =>
+              `${label} +${phone}`
+                .toLowerCase()
+                .includes(inputValue.toLowerCase())
+            );
+          }}
           renderInput={(params) => {
             return (
               <StyledTextField
