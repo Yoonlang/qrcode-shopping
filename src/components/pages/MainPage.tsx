@@ -47,6 +47,10 @@ const MainPage = () => {
     t(snackBarStatusMessage["default"])
   );
 
+  const goToNextPage = () => {
+    setPageIdx((pageIdx + 1) % 3);
+  };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -128,11 +132,11 @@ const MainPage = () => {
         resetForm();
         setSnackBarStatus(t(snackBarStatusMessage["complete"]));
         setSnackBarOpen(true);
-        setTimeout(() => {
-          setSnackBarStatus(t(snackBarStatusMessage["default"]));
-          setSnackBarOpen(true);
-        }, 3500);
-        setPageIdx((pageIdx + 1) % 3);
+        // setTimeout(() => {
+        //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
+        //   setSnackBarOpen(true);
+        // }, 3500);
+        // setPageIdx((pageIdx + 1) % 3);
       } catch (e) {
         console.log(e);
       }
@@ -261,7 +265,7 @@ const MainPage = () => {
           formik={formik}
         />
       ) : (
-        <UserInfoSubmissionPage formik={formik} />
+        <UserInfoSubmissionPage formik={formik} goToNextPage={goToNextPage} />
       )}
       <BottomAppBar
         icon={icons[pageIdx]}

@@ -1,7 +1,8 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { StyledModal } from "./DashboardItems";
 import styled from "styled-components";
+import { Button } from "@mui/material";
 
 const tableColumns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 120 },
@@ -110,6 +111,16 @@ const StyledModalContainer = styled.div`
   }
 `;
 
+const FlexDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const StyledCopyButton = styled(Button)`
+  height: 30px;
+`;
+
 const handleUserInfoForOrder = (hopeProducts) => {
   return hopeProducts
     .map((product) => {
@@ -158,6 +169,19 @@ const UserInfoDetailModal = ({
   } = modalUserInfoData;
 
   const orderRows = handleUserInfoForOrder(hopeProducts);
+  const copyButtonRef = useRef<HTMLButtonElement>(null);
+
+  const handleCopyClipBoard = async () => {
+    const text = hopeProducts.map((product) => product.productId).join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      if (copyButtonRef.current) {
+        copyButtonRef.current.textContent = "복사됨";
+      }
+    } catch (e) {
+      alert("복사에 실패하였습니다");
+    }
+  };
 
   return (
     <StyledModal open={isModalOpen} onClose={closeModal}>
@@ -246,7 +270,12 @@ const UserInfoDetailModal = ({
           />
         </div>
 
-        <h2>Order - {productLengthUnit.toLowerCase()}</h2>
+        <FlexDiv>
+          <h2>Order - {productLengthUnit.toLowerCase()}</h2>
+          <StyledCopyButton onClick={handleCopyClipBoard} ref={copyButtonRef}>
+            복사
+          </StyledCopyButton>
+        </FlexDiv>
         <div>
           <DataGrid
             getRowId={({ productId, type }) => `${productId}-${type}`}
