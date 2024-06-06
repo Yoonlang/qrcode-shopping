@@ -12,6 +12,8 @@ const StyledDiv = styled.div`
   > p {
     font-size: 16.25px;
     color: #000;
+    width: 100%;
+    text-align: center;
   }
 `;
 
