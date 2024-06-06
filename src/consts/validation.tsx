@@ -25,6 +25,10 @@ export const validationSchema = Yup.object().shape({
     // .required(REQUIRED_TEXT)
     .max(50, MAX_TEXT["50"]),
   countryCode: Yup.object().required(REQUIRED_TEXT),
+  weChatId: Yup.string().when("countryCode.label", {
+    is: "China",
+    then: () => Yup.string().required(REQUIRED_TEXT),
+  }),
   phoneNumber: Yup.string()
     .matches(/^[0-9]+$/, NUMBER_TEXT)
     .required(REQUIRED_TEXT)
