@@ -78,12 +78,7 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
         </DialogActions>
       </Dialog>
 
-      <form
-        onSubmit={(e) => {
-          setOpenDialog(true);
-          formik.handleSubmit(e);
-        }}
-      >
+      <form onSubmit={formik.handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
             <Step key={step.label} expanded>
