@@ -61,6 +61,7 @@ const MainPage = () => {
         companyName,
         businessType,
         countryCode,
+        weChatId,
         phoneNumber,
         email,
         coPostalCode,
@@ -109,6 +110,7 @@ const MainPage = () => {
                   number: phoneNumber,
                 },
                 email,
+                weChatId,
               },
               companyAddress: {
                 postalCode: coPostalCode,

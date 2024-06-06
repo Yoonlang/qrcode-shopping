@@ -6,6 +6,7 @@ interface FormType {
   businessType: string;
   email: string;
   countryCode: CountryType;
+  weChatId: string;
   phoneNumber: string;
   coPostalCode: string;
   coAddress: string;
@@ -27,6 +28,7 @@ export const initialValues: FormType = {
     label: "",
     phone: "",
   },
+  weChatId: "",
   phoneNumber: "",
   coPostalCode: "",
   coAddress: "",
