@@ -1,9 +1,32 @@
-export const initialValues = {
+import { CountryType } from "./countries";
+
+interface FormType {
+  name: string;
+  companyName: string;
+  businessType: string;
+  email: string;
+  countryCode: CountryType;
+  phoneNumber: string;
+  coPostalCode: string;
+  coAddress: string;
+  coDetailAddress: string;
+  spPostalCode: string;
+  spAddress: string;
+  spDetailAddress: string;
+  isSameAddress: boolean;
+  productLengthUnit: string;
+}
+
+export const initialValues: FormType = {
   name: "",
   companyName: "",
   businessType: "",
   email: "",
-  countryCode: "",
+  countryCode: {
+    code: "",
+    label: "",
+    phone: "",
+  },
   phoneNumber: "",
   coPostalCode: "",
   coAddress: "",
