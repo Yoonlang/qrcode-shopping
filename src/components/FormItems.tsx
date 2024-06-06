@@ -172,6 +172,7 @@ const AddressCheckbox = ({
       label={t("Same as company address")}
       labelPlacement="start"
       name={name}
+      checked={formik.values[name]}
       value={formik.values[name]}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}

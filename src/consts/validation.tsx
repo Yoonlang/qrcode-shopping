@@ -24,7 +24,7 @@ export const validationSchema = Yup.object().shape({
     .email(EMAIL_TEXT)
     .required(REQUIRED_TEXT)
     .max(50, MAX_TEXT["50"]),
-  countryCode: Yup.string().required(REQUIRED_TEXT),
+  countryCode: Yup.object().required(REQUIRED_TEXT),
   phoneNumber: Yup.string()
     .matches(/^[0-9]+$/, NUMBER_TEXT)
     .required(REQUIRED_TEXT)

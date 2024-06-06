@@ -60,6 +60,10 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
   });
 
   useEffect(() => {
+    localStorage.setItem("form", JSON.stringify(formik.values));
+  }, [formik.values]);
+        
+  useEffect(() => {
     if (formik.isSubmitting) {
       setOpenDialog(true);
     }
