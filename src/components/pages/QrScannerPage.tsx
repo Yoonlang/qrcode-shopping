@@ -51,10 +51,8 @@ const QrScannerPage = ({
     <StyledContainer>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogContent>
-          <DialogContentText>
-            <p>1. {t("Dialog1")}</p>
-            <p>2. {t("Dialog2")}</p>
-          </DialogContentText>
+          <DialogContentText>1. {t("Dialog1")}</DialogContentText>
+          <DialogContentText>2. {t("Dialog2")}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary" autoFocus>
