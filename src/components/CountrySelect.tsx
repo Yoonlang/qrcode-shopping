@@ -57,19 +57,28 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
     e: SyntheticEvent<Element>,
     option: CountryType | null
   ) => {
-    formik.setFieldValue("countryCode", option ? `+${option.phone}` : "");
+    formik.setFieldValue("countryCode", option ? JSON.stringify(option) : null);
   };
 
   return (
     <>
       <StyledDiv>
         <Autocomplete
+          value={
+            formik.values.countryCode !== ""
+              ? JSON.parse(formik.values.countryCode)
+              : {}
+          }
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
           })}
           autoHighlight
-          getOptionLabel={(option) => `+${option.phone} ${option.label}`}
+          getOptionLabel={(option) =>
+            formik.values.countryCode !== ""
+              ? `+${option.phone} ${option.label}`
+              : ""
+          }
           renderOption={(props, option) => (
             <MenuItem {...props} key={option.label}>
               <div key={props.id}>

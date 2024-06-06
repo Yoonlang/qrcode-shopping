@@ -44,6 +44,7 @@ const QrScannerPage = ({
     if (Object.keys(scannedItems).length > 0) {
       setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
       setSnackBarOpen(true);
+      localStorage.setItem("scannedItems", JSON.stringify(scannedItems));
     }
   }, [scannedItems]);
 

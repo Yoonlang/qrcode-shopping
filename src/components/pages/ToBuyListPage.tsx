@@ -120,6 +120,7 @@ const ToBuyListPage = ({
     const newScannedItems = { ...scannedItems };
     delete newScannedItems[id];
     setScannedItems(newScannedItems);
+    localStorage.setItem("scannedItems", JSON.stringify(newScannedItems));
 
     const newSelectedInfos = { ...selectedInfos };
     delete newSelectedInfos[id];

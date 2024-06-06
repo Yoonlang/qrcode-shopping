@@ -69,7 +69,6 @@ const MainPage = () => {
         productLengthUnit,
       } = form;
       try {
-        const date = new Date();
         const res = await fetch(`${SERVER_URL}/users-info`, {
           method: "POST",
           headers: {
@@ -102,7 +101,7 @@ const MainPage = () => {
               businessType,
               contactInfo: {
                 phoneNumber: {
-                  countryCode,
+                  countryCode: `+${JSON.parse(countryCode).phone}`,
                   number: phoneNumber,
                 },
                 email,
@@ -150,6 +149,16 @@ const MainPage = () => {
         setSnackBarOpen(true);
       }, 2000);
     }
+
+    if (localStorage.getItem("scannedItems")) {
+      setScannedItems(JSON.parse(localStorage.getItem("scannedItems") || ""));
+    }
+    if (localStorage.getItem("selectedInfos")) {
+      setSelectedInfos(JSON.parse(localStorage.getItem("selectedInfos") || ""));
+    }
+    if (localStorage.getItem("form")) {
+      formik.setValues(JSON.parse(localStorage.getItem("form") || ""));
+    }
   }, []);
 
   const handleClickBottomAppBar = () => {
@@ -187,6 +196,9 @@ const MainPage = () => {
     } else {
       if (formik.isValid) {
         formik.handleSubmit();
+        localStorage.removeItem("scannedItems");
+        localStorage.removeItem("selectedInfos");
+        localStorage.removeItem("form");
       } else {
         setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
         setSnackBarOpen(true);

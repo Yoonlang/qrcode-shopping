@@ -90,6 +90,10 @@ const Product = ({
     setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("selectedInfos", JSON.stringify(selectedInfos));
+  }, [selectedInfos]);
+
   const handleChange = (event: SelectChangeEvent<typeof selectedInfos>) => {
     const {
       target: { value },

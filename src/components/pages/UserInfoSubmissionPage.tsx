@@ -49,6 +49,10 @@ const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
     }
   });
 
+  useEffect(() => {
+    localStorage.setItem("form", JSON.stringify(formik.values));
+  }, [formik.values]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <StyledStepper activeStep={activeStep} orientation="vertical">
