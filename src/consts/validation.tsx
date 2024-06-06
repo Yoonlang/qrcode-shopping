@@ -22,7 +22,7 @@ export const validationSchema = Yup.object().shape({
   businessType: Yup.string().required(REQUIRED_TEXT),
   email: Yup.string()
     .email(EMAIL_TEXT)
-    .required(REQUIRED_TEXT)
+    // .required(REQUIRED_TEXT)
     .max(50, MAX_TEXT["50"]),
   countryCode: Yup.object().required(REQUIRED_TEXT),
   phoneNumber: Yup.string()
@@ -45,7 +45,7 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
-        .required(REQUIRED_TEXT)
+        // .required(REQUIRED_TEXT)
         .typeError(STRING_TEXT)
         .max(50, MAX_TEXT["50"]),
   }),
@@ -54,7 +54,7 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
-        .required(REQUIRED_TEXT)
+        // .required(REQUIRED_TEXT)
         .typeError(STRING_TEXT)
         .max(50, MAX_TEXT["50"]),
   }),
@@ -74,7 +74,7 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
-        .required(REQUIRED_TEXT)
+        // .required(REQUIRED_TEXT)
         .typeError(STRING_TEXT)
         .max(50, MAX_TEXT["50"]),
   }),
@@ -83,7 +83,7 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
-        .required(REQUIRED_TEXT)
+        // .required(REQUIRED_TEXT)
         .typeError(STRING_TEXT)
         .max(50, MAX_TEXT["50"]),
   }),

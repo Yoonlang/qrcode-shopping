@@ -51,7 +51,13 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
+const CountrySelect = ({
+  formik,
+  required = false,
+}: {
+  formik: FormikProps<any>;
+  required?: boolean;
+}) => {
   const { t } = useTranslation();
   const handleChangeCountry = (
     e: SyntheticEvent<Element>,
@@ -104,6 +110,7 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
           renderInput={(params) => {
             return (
               <StyledTextField
+                required={required}
                 {...params}
                 label={t("Country Code")}
                 inputProps={{

@@ -53,6 +53,8 @@ const StyledStepper = styled(Stepper)`
   }
 `;
 
+const BLUE = "#2196f3";
+
 const StyledTextField = styled(TextField)`
   &.MuiFormControl-root {
     & label.Mui-error {
@@ -69,12 +71,13 @@ const StyledTextField = styled(TextField)`
     }
 
     &.Mui-focused fieldset {
-      border-color: #000;
+      border-color: ${(props) => (props.required ? BLUE : "#000")};
     }
 
     & fieldSet {
       border-radius: 6px;
-      border-color: rgba(0, 0, 0, 0.1);
+      border-color: ${(props) =>
+        props.required ? BLUE : "rgba(0, 0, 0, 0.1)"};
     }
 
     &.Mui-error {
@@ -90,12 +93,12 @@ const StyledTextField = styled(TextField)`
 
   & label {
     &.Mui-focused {
-      color: #000;
+      color: ${(props) => (props.required ? BLUE : "#000")};
     }
   }
 
   & .MuiInput-underline:after {
-    border-bottom-color: #000;
+    border-bottom-color: ${(props) => (props.required ? BLUE : "#000")};
   }
 
   & .MuiFormHelperText-root.Mui-error {
@@ -186,17 +189,20 @@ const UserInput = ({
   formik,
   type = "text",
   disable = false,
+  required = false,
 }: {
   label: string;
   name: string;
   formik: FormikProps<any>;
   type?: string;
   disable?: boolean;
+  required?: boolean;
 }) => {
   const { t } = useTranslation();
   return (
     <>
       <StyledTextField
+        required={required}
         label={label}
         name={name}
         value={formik.values[name]}
@@ -207,15 +213,17 @@ const UserInput = ({
         type={type}
         margin="dense"
         fullWidth
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              {!formik.errors[name] && formik.touched[name] && (
-                <>{Icons["select"]}</>
-              )}
-            </InputAdornment>
-          ),
-        }}
+        InputProps={
+          {
+            // endAdornment: (
+            //   <InputAdornment position="end">
+            //     {!formik.errors[name] && formik.touched[name] && (
+            //       <>{Icons["select"]}</>
+            //     )}
+            //   </InputAdornment>
+            // ),
+          }
+        }
         disabled={disable}
       />
       {formik.errors[name] && formik.touched[name] ? (
@@ -233,17 +241,20 @@ const UserSelect = ({
   name,
   items,
   formik,
+  required = false,
 }: {
   label: string;
   name: string;
   items: string[];
   formik: FormikProps<any>;
+  required?: boolean;
 }) => {
   const { t } = useTranslation();
   return (
     <>
       <StyledTextField
         select
+        required={required}
         label={label}
         name={name}
         value={formik.values[name]}
