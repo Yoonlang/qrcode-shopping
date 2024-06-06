@@ -11,10 +11,20 @@ import OrdererInfo from "../OrdererInfo";
 import CompanyAddress from "../CompanyAddress";
 import ShippingAddress from "../ShippingAddress";
 import { useTranslation } from "react-i18next";
+import { Button, Dialog } from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 
-const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
+const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
+  const [openDialog, setOpenDialog] = useState(false);
   const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    goToNextPage();
+  };
 
   useEffect(() => {
     if (
@@ -49,34 +59,53 @@ const UserInfoSubmissionPage = ({ formik }: { formik: FormikProps<any> }) => {
     }
   });
 
+  useEffect(() => {
+    if (formik.isSubmitting) {
+      setOpenDialog(true);
+    }
+  }, [formik.isSubmitting]);
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <StyledStepper activeStep={activeStep} orientation="vertical">
-        {steps.map((step, index) => (
-          <Step key={step.label} expanded>
-            {index !== 2 ? (
-              <StepLabel>{t(step.label)}</StepLabel>
-            ) : (
-              <AddressBox>
+    <>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogContent>
+          <DialogContentText>{t("Submission Complete")}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            {t("Confirm")}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <form onSubmit={formik.handleSubmit}>
+        <StyledStepper activeStep={activeStep} orientation="vertical">
+          {steps.map((step, index) => (
+            <Step key={step.label} expanded>
+              {index !== 2 ? (
                 <StepLabel>{t(step.label)}</StepLabel>
-                {formik.values.businessType !== "Student" && (
-                  <AddressCheckbox name="isSameAddress" formik={formik} />
-                )}
-              </AddressBox>
-            )}
-            <StepContent>
-              {index === 0 ? (
-                <OrdererInfo formik={formik} />
-              ) : index === 1 ? (
-                <CompanyAddress formik={formik} />
               ) : (
-                <ShippingAddress formik={formik} />
+                <AddressBox>
+                  <StepLabel>{t(step.label)}</StepLabel>
+                  {formik.values.businessType !== "Student" && (
+                    <AddressCheckbox name="isSameAddress" formik={formik} />
+                  )}
+                </AddressBox>
               )}
-            </StepContent>
-          </Step>
-        ))}
-      </StyledStepper>
-    </form>
+              <StepContent>
+                {index === 0 ? (
+                  <OrdererInfo formik={formik} />
+                ) : index === 1 ? (
+                  <CompanyAddress formik={formik} />
+                ) : (
+                  <ShippingAddress formik={formik} />
+                )}
+              </StepContent>
+            </Step>
+          ))}
+        </StyledStepper>
+      </form>
+    </>
   );
 };
 
