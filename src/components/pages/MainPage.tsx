@@ -101,7 +101,7 @@ const MainPage = () => {
               businessType,
               contactInfo: {
                 phoneNumber: {
-                  countryCode: `+${JSON.parse(countryCode).phone}`,
+                  countryCode: `+${countryCode.phone}`,
                   number: phoneNumber,
                 },
                 email,

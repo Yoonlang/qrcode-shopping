@@ -57,25 +57,23 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
     e: SyntheticEvent<Element>,
     option: CountryType | null
   ) => {
-    formik.setFieldValue("countryCode", option ? JSON.stringify(option) : null);
+    if (option) {
+      formik.setFieldValue("countryCode", option);
+    }
   };
 
   return (
     <>
       <StyledDiv>
         <Autocomplete
-          value={
-            formik.values.countryCode !== ""
-              ? JSON.parse(formik.values.countryCode)
-              : {}
-          }
+          value={formik.values.countryCode}
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
           })}
           autoHighlight
           getOptionLabel={(option) =>
-            formik.values.countryCode !== ""
+            formik.values.countryCode.phone
               ? `+${option.phone} ${option.label}`
               : ""
           }
@@ -91,25 +89,29 @@ const CountrySelect = ({ formik }: { formik: FormikProps<any> }) => {
                 />
                 {option.label} +{option.phone}
               </div>
-              {formik.values.countryCode === `+${option.phone}` && (
+              {formik.values.countryCode.phone === option.phone && (
                 <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
               )}
             </MenuItem>
           )}
-          renderInput={(params) => (
-            <StyledTextField
-              {...params}
-              label={t("Country Code")}
-              inputProps={{
-                ...params.inputProps,
-                autoComplete: "new-password",
-              }}
-              name="countryCode"
-              value={formik.values.countryCode}
-              onBlur={formik.handleBlur}
-              error={formik.touched.countryCode && !!formik.errors.countryCode}
-            />
-          )}
+          renderInput={(params) => {
+            return (
+              <StyledTextField
+                {...params}
+                label={t("Country Code")}
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password",
+                }}
+                name="countryCode"
+                value={formik.values.countryCode}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.countryCode && !!formik.errors.countryCode
+                }
+              />
+            );
+          }}
           PaperComponent={(props) => <StyledPaper {...props} />}
           onChange={(e, option) => handleChangeCountry(e, option)}
         />
