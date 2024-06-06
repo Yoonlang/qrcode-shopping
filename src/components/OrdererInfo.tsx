@@ -35,6 +35,14 @@ const OrdererInfo = ({ formik }: { formik: FormikProps<any> }) => {
         formik={formik}
         required={true}
       />
+      {formik.values.countryCode.label === "China" && (
+        <UserInput
+          label="WeChat ID"
+          name="weChatId"
+          formik={formik}
+          required={true}
+        />
+      )}
     </>
   );
 };
