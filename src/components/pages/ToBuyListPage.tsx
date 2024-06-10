@@ -95,21 +95,21 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
 const EMPTY_TEXT = "No items scanned";
 
 const ToBuyListPage = ({
-  scannedItems,
-  setScannedItems,
-  fetchedItems,
-  selectedInfos,
-  setSelectedInfos,
+  scannedItemList,
+  setScannedItemList,
+  fetchedItemList,
+  selectedInfoList,
+  setSelectedInfoList,
   snackBarOpen,
   setSnackBarOpen,
   snackBarStatus,
   formik,
 }: {
-  scannedItems: Object;
-  setScannedItems: Dispatch<SetStateAction<Object>>;
-  fetchedItems: any[];
-  selectedInfos: Object;
-  setSelectedInfos: Dispatch<SetStateAction<Object>>;
+  scannedItemList: Object;
+  setScannedItemList: Dispatch<SetStateAction<Object>>;
+  fetchedItemList: any[];
+  selectedInfoList: Object;
+  setSelectedInfoList: Dispatch<SetStateAction<Object>>;
   snackBarOpen: boolean;
   setSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
@@ -121,20 +121,20 @@ const ToBuyListPage = ({
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
   ) => {
-    const newScannedItems = { ...scannedItems };
-    delete newScannedItems[id];
-    setScannedItems(newScannedItems);
-    localStorage.setItem("scannedItems", JSON.stringify(newScannedItems));
+    const newScannedItemList = { ...scannedItemList };
+    delete newScannedItemList[id];
+    setScannedItemList(newScannedItemList);
+    localStorage.setItem("scannedItems", JSON.stringify(newScannedItemList));
 
-    const newSelectedInfos = { ...selectedInfos };
-    delete newSelectedInfos[id];
-    setSelectedInfos(newSelectedInfos);
+    const newSelectedInfoList = { ...selectedInfoList };
+    delete newSelectedInfoList[id];
+    setSelectedInfoList(newSelectedInfoList);
   };
 
   return (
     <StyledDiv>
       <MessageSnackBar
-        key={`${Object.keys(selectedInfos).length} ${snackBarStatus}`}
+        key={`${Object.keys(selectedInfoList).length} ${snackBarStatus}`}
         isOpen={snackBarOpen}
         setIsOpen={setSnackBarOpen}
         message={snackBarStatus}
@@ -143,21 +143,21 @@ const ToBuyListPage = ({
         {Icons["list"]}
         <p>{t("Product List")}</p>
       </StyledTitle>
-      {Object.keys(scannedItems).length <= 0 ? (
+      {Object.keys(scannedItemList).length <= 0 ? (
         <EmptyTextDiv>{t(EMPTY_TEXT)}</EmptyTextDiv>
       ) : (
         <ProductLists>
-          {fetchedItems
+          {fetchedItemList
             .filter((item) =>
-              Object.keys(scannedItems).some((pid) => pid === item.productId)
+              Object.keys(scannedItemList).some((pid) => pid === item.productId)
             )
             .map((product, index) => {
               return (
                 <Product
                   key={product.productId}
                   product={product}
-                  selectedInfos={selectedInfos}
-                  setSelectedInfos={setSelectedInfos}
+                  selectedInfoList={selectedInfoList}
+                  setSelectedInfoList={setSelectedInfoList}
                   handleDelete={handleDelete}
                 />
               );

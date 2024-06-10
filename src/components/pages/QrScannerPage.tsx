@@ -15,18 +15,18 @@ const StyledContainer = styled.div`
 `;
 
 const QrScannerPage = ({
-  scannedItems,
-  setScannedItems,
-  fetchedItems,
+  scannedItemList,
+  setScannedItemList,
+  fetchedItemList,
   snackBarOpen,
   setSnackBarOpen,
   snackBarStatus,
   setSnackBarStatus,
   snackBarStatusMessage,
 }: {
-  scannedItems: Object;
-  setScannedItems: Dispatch<SetStateAction<{}>>;
-  fetchedItems: any[] | null;
+  scannedItemList: Object;
+  setScannedItemList: Dispatch<SetStateAction<{}>>;
+  fetchedItemList: any[] | null;
   snackBarOpen: boolean;
   setSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
@@ -41,12 +41,12 @@ const QrScannerPage = ({
   };
 
   useEffect(() => {
-    if (Object.keys(scannedItems).length > 0) {
+    if (Object.keys(scannedItemList).length > 0) {
       setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
       setSnackBarOpen(true);
-      localStorage.setItem("scannedItems", JSON.stringify(scannedItems));
+      localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
     }
-  }, [scannedItems]);
+  }, [scannedItemList]);
 
   return (
     <StyledContainer>
@@ -64,14 +64,14 @@ const QrScannerPage = ({
       {!openDialog && (
         <>
           <MessageSnackBar
-            key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
+            key={`${Object.keys(scannedItemList).length} ${snackBarStatus}`}
             isOpen={snackBarOpen}
             setIsOpen={setSnackBarOpen}
             message={snackBarStatus}
           />
           <QrCode
-            setScannedItems={setScannedItems}
-            fetchedItems={fetchedItems}
+            setScannedItemList={setScannedItemList}
+            fetchedItemList={fetchedItemList}
           />
         </>
       )}
