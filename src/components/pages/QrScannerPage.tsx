@@ -33,11 +33,11 @@ const QrScannerPage = ({
   setSnackBarStatus: Dispatch<SetStateAction<string>>;
   snackBarStatusMessage: object;
 }) => {
-  const [openDialog, setOpenDialog] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    setIsDialogOpen(false);
   };
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const QrScannerPage = ({
 
   return (
     <StyledContainer>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
+      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <DialogContent>
           <DialogContentText>1. {t("Dialog1")}</DialogContentText>
           <DialogContentText>2. {t("Dialog2")}</DialogContentText>
@@ -61,7 +61,7 @@ const QrScannerPage = ({
           </Button>
         </DialogActions>
       </Dialog>
-      {!openDialog && (
+      {!isDialogOpen && (
         <>
           <MessageSnackBar
             key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
