@@ -40,9 +40,9 @@ const MainPage = () => {
   const [pageIdx, setPageIdx] = useState(0);
   const [fetchedItemList, setFetchedItemList] = useState(null);
   const [scannedItemList, setScannedItemList] = useState({});
-  const [isSplashed, setIsSplashed] = useState(false);
+  const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
   const [selectedInfoList, setSelectedInfoList] = useState<Object>({});
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
   const [snackBarStatus, setSnackBarStatus] = useState(
     t(snackBarStatusMessage["default"])
   );
@@ -133,7 +133,7 @@ const MainPage = () => {
         setSelectedInfoList({});
         resetForm();
         setSnackBarStatus(t(snackBarStatusMessage["complete"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
         // setTimeout(() => {
         //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
         //   setSnackBarOpen(true);
@@ -147,12 +147,12 @@ const MainPage = () => {
 
   useEffect(() => {
     if (!sessionStorage.getItem("splash")) {
-      setIsSplashed(true);
+      setIsSplashScreenOpen(true);
       setTimeout(() => {
-        setIsSplashed(false);
+        setIsSplashScreenOpen(false);
         sessionStorage.setItem("splash", "true");
         setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       }, 2000);
     }
 
@@ -175,14 +175,14 @@ const MainPage = () => {
     if (pageIdx === 0) {
       if (Object.keys(scannedItemList).length === 0) {
         setSnackBarStatus(t(snackBarStatusMessage["empty"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
     } else if (pageIdx === 1) {
       if (Object.keys(scannedItemList).length <= 0) {
         setSnackBarStatus(t(snackBarStatusMessage["multipleScan"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       } else {
         // let isAllSelected = true;
         // for (const key of Object.keys(scannedItems)) {
@@ -211,7 +211,7 @@ const MainPage = () => {
         localStorage.removeItem("form");
       } else {
         setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       }
     }
   };
@@ -241,7 +241,7 @@ const MainPage = () => {
 
   return (
     <main>
-      {isSplashed && <SplashScreen />}
+      {isSplashScreenOpen && <SplashScreen />}
       <TitleAppBar
         id={pageIdList[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
@@ -252,8 +252,8 @@ const MainPage = () => {
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
           fetchedItemList={fetchedItemList}
-          snackBarOpen={snackBarOpen}
-          setSnackBarOpen={setSnackBarOpen}
+          isSnackBarOpen={isSnackBarOpen}
+          setIsSnackBarOpen={setIsSnackBarOpen}
           snackBarStatus={snackBarStatus}
           setSnackBarStatus={setSnackBarStatus}
           snackBarStatusMessage={snackBarStatusMessage}
@@ -265,8 +265,8 @@ const MainPage = () => {
           fetchedItemList={fetchedItemList ?? []}
           selectedInfoList={selectedInfoList}
           setSelectedInfoList={setSelectedInfoList}
-          snackBarOpen={snackBarOpen}
-          setSnackBarOpen={setSnackBarOpen}
+          isSnackBarOpen={isSnackBarOpen}
+          setIsSnackBarOpen={setIsSnackBarOpen}
           snackBarStatus={snackBarStatus}
           formik={formik}
         />

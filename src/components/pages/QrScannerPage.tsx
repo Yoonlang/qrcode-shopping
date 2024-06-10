@@ -18,8 +18,8 @@ const QrScannerPage = ({
   scannedItemList,
   setScannedItemList,
   fetchedItemList,
-  snackBarOpen,
-  setSnackBarOpen,
+  isSnackBarOpen,
+  setIsSnackBarOpen,
   snackBarStatus,
   setSnackBarStatus,
   snackBarStatusMessage,
@@ -27,8 +27,8 @@ const QrScannerPage = ({
   scannedItemList: Object;
   setScannedItemList: Dispatch<SetStateAction<{}>>;
   fetchedItemList: any[] | null;
-  snackBarOpen: boolean;
-  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
+  isSnackBarOpen: boolean;
+  setIsSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
   setSnackBarStatus: Dispatch<SetStateAction<string>>;
   snackBarStatusMessage: object;
@@ -43,7 +43,7 @@ const QrScannerPage = ({
   useEffect(() => {
     if (Object.keys(scannedItemList).length > 0) {
       setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
-      setSnackBarOpen(true);
+      setIsSnackBarOpen(true);
       localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
     }
   }, [scannedItemList]);
@@ -65,8 +65,8 @@ const QrScannerPage = ({
         <>
           <MessageSnackBar
             key={`${Object.keys(scannedItemList).length} ${snackBarStatus}`}
-            isOpen={snackBarOpen}
-            setIsOpen={setSnackBarOpen}
+            isOpen={isSnackBarOpen}
+            setIsOpen={setIsSnackBarOpen}
             message={snackBarStatus}
           />
           <QrCode

@@ -100,8 +100,8 @@ const ToBuyListPage = ({
   fetchedItemList,
   selectedInfoList,
   setSelectedInfoList,
-  snackBarOpen,
-  setSnackBarOpen,
+  isSnackBarOpen,
+  setIsSnackBarOpen,
   snackBarStatus,
   formik,
 }: {
@@ -110,8 +110,8 @@ const ToBuyListPage = ({
   fetchedItemList: any[];
   selectedInfoList: Object;
   setSelectedInfoList: Dispatch<SetStateAction<Object>>;
-  snackBarOpen: boolean;
-  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
+  isSnackBarOpen: boolean;
+  setIsSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
   formik: FormikProps<any>;
 }) => {
@@ -135,8 +135,8 @@ const ToBuyListPage = ({
     <StyledDiv>
       <MessageSnackBar
         key={`${Object.keys(selectedInfoList).length} ${snackBarStatus}`}
-        isOpen={snackBarOpen}
-        setIsOpen={setSnackBarOpen}
+        isOpen={isSnackBarOpen}
+        setIsOpen={setIsSnackBarOpen}
         message={snackBarStatus}
       />
       <StyledTitle>
