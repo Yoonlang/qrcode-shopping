@@ -75,7 +75,7 @@ const QrCode = ({
     [fetchedItems]
   );
 
-  const handleDevices = (devices) => {
+  const handleDevicesWideAngle = (devices) => {
     devices.forEach((device: any) => {
       if (device.kind === "videoinput") {
         if (device.label === "camera2 0, facing back") {
@@ -103,7 +103,9 @@ const QrCode = ({
             }
           }}
           onUserMedia={() => {
-            navigator.mediaDevices.enumerateDevices().then(handleDevices);
+            navigator.mediaDevices
+              .enumerateDevices()
+              .then(handleDevicesWideAngle);
           }}
           videoConstraints={{
             deviceId: deviceId ? { exact: deviceId } : undefined,

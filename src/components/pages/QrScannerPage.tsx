@@ -36,7 +36,7 @@ const QrScannerPage = ({
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();
 
-  const handleCloseDialog = () => {
+  const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
 
@@ -50,13 +50,13 @@ const QrScannerPage = ({
 
   return (
     <StyledContainer>
-      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+      <Dialog open={isDialogOpen} onClose={handleDialogClose}>
         <DialogContent>
           <DialogContentText>1. {t("Dialog1")}</DialogContentText>
           <DialogContentText>2. {t("Dialog2")}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+          <Button onClick={handleDialogClose} color="primary" autoFocus>
             {t("Confirm")}
           </Button>
         </DialogActions>
