@@ -1,7 +1,7 @@
 import { FormikProps } from "formik";
 import UserInfoTable from "./UserInfoTable";
 import { useEffect, useState } from "react";
-import { SERVER_URL } from "@/consts/url";
+import { SERVER_URL } from "@/components/const";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 

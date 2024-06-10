@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FormikProps } from "formik";
 import styled from "styled-components";
-import Icons from "./Icons";
+import Icons from "../Icons";
 import { useTranslation } from "react-i18next";
 
 const StyledBox = styled(Box)`

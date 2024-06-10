@@ -1,4 +1,4 @@
-import QrCode from "@/components/QrCode";
+import QrCode from "@/components/QrScanner/QrCode";
 import { MessageSnackBar } from "@/components/SnackBar";
 import { Button, Dialog } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";

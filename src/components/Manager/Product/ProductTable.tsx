@@ -5,7 +5,7 @@ import {
   ProductInput,
   StyledFlexDiv,
   StyledModal,
-} from "./DashboardItems";
+} from "../DashboardItems";
 import styled from "styled-components";
 import Image from "next/image";
 import { Button, TextField } from "@mui/material";

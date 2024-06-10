@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useRef, useState } from "react";
-import { StyledModal } from "./DashboardItems";
+import { StyledModal } from "@/components/Manager/DashboardItems";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 

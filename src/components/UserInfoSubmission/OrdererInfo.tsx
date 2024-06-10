@@ -1,4 +1,4 @@
-import { business } from "@/consts/form";
+import { business } from "@/components/UserInfoSubmission/const";
 import { UserInput, UserSelect } from "./FormItems";
 import { FormikProps } from "formik";
 import CountrySelect from "./CountrySelect";

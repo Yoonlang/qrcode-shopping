@@ -8,9 +8,9 @@ import {
 import { useState } from "react";
 import { FormikProps } from "formik";
 import { StyledAppBar, StyledDrawer, StyledList } from "./DashboardItems";
-import Icons from "./Icons";
-import UserBoard from "./UserBoard";
-import ProductBoard from "./ProductBoard";
+import Icons from "../Icons";
+import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
+import ProductBoard from "./Product/ProductBoard";
 import styled from "styled-components";
 
 const StyledBoardContainer = styled.div`
