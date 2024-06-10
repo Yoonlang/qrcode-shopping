@@ -1,7 +1,7 @@
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
 import Icons from "@/components/Icons";
 import styled from "styled-components";
-import { PRIMARY, PRIMARY_DARK } from "@/consts/colors";
+import { PRIMARY, PRIMARY_DARK } from "@/components/const";
 import { useState } from "react";
 import Info from "./Info";
 import LanguageSelector from "./LanguageSelector";

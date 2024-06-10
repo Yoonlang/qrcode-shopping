@@ -1,4 +1,4 @@
-import { META } from "@/consts/metadata";
+import { META } from "@/components/const";
 import i18nConfig from "@/i18nConfig";
 import { dir } from "i18next";
 import { Metadata } from "next";

@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { SERVER_URL } from "@/consts/url";
+import { SERVER_URL } from "@/components/const";
 
 const LoginForm = ({ setHasAuth }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

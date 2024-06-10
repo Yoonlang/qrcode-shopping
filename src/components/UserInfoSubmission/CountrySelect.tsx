@@ -1,5 +1,8 @@
 import Autocomplete from "@mui/material/Autocomplete";
-import { CountryType, countries } from "@/consts/countries";
+import {
+  CountryType,
+  countries,
+} from "@/components/UserInfoSubmission/countries";
 import {
   StyledErrorMessage,
   StyledIconButton,
@@ -8,7 +11,7 @@ import {
 import styled from "styled-components";
 import { FormikProps } from "formik";
 import { SyntheticEvent } from "react";
-import Icons from "./Icons";
+import Icons from "../Icons";
 import { MenuItem, Paper } from "@mui/material";
 import { useTranslation } from "react-i18next";
 

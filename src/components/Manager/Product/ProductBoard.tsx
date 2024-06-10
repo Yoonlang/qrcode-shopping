@@ -7,10 +7,10 @@ import {
   ProductInput,
   StyledFlexDiv,
   StyledModal,
-} from "./DashboardItems";
+} from "../DashboardItems";
 import ProductTable from "./ProductTable";
 import styled from "styled-components";
-import { SERVER_URL } from "@/consts/url";
+import { SERVER_URL } from "@/components/const";
 
 const fileTypes = ["JPG", "PNG"];
 

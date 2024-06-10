@@ -5,11 +5,11 @@ import {
   AddressBox,
   AddressCheckbox,
   StyledStepper,
-} from "@/components/FormItems";
-import { steps } from "@/consts/form";
-import OrdererInfo from "../OrdererInfo";
-import CompanyAddress from "../CompanyAddress";
-import ShippingAddress from "../ShippingAddress";
+} from "@/components/UserInfoSubmission/FormItems";
+import { steps } from "@/components/UserInfoSubmission/const";
+import OrdererInfo from "../UserInfoSubmission/OrdererInfo";
+import CompanyAddress from "../UserInfoSubmission/CompanyAddress";
+import ShippingAddress from "../UserInfoSubmission/ShippingAddress";
 import { useTranslation } from "react-i18next";
 import { Button, Dialog } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
@@ -62,7 +62,7 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
   useEffect(() => {
     localStorage.setItem("form", JSON.stringify(formik.values));
   }, [formik.values]);
-        
+
   useEffect(() => {
     if (formik.isSubmitting) {
       setOpenDialog(true);
