@@ -1,9 +1,10 @@
 "use client";
 
 import MainPage from "@/components/pages/MainPage";
-import GlobalStyle from "@/styles/global";
-import initTranslations from "../i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
+import GlobalStyle from "@/styles/global";
+
+import initTranslations from "../i18n";
 
 const i18nNamespaces = ["common"];
 

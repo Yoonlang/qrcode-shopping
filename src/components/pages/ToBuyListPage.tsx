@@ -1,16 +1,17 @@
-import styled from "styled-components";
-import Icons from "../Icons";
-import { Dispatch, SetStateAction } from "react";
-import Product from "../ToBuyList/ToBuyItem";
-import { MessageSnackBar } from "../SnackBar";
 import { Box } from "@mui/material";
+import { FormikProps } from "formik";
+import { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import Icons from "../Icons";
+import { MessageSnackBar } from "../SnackBar";
+import Product from "../ToBuyList/ToBuyItem";
 import {
   SelectedBox,
   StyledBox,
   StyledButton,
 } from "../ToBuyList/ToBuyItem/styled";
-import { FormikProps } from "formik";
-import { useTranslation } from "react-i18next";
 
 const StyledDiv = styled.div`
   align-items: normal;

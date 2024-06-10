@@ -1,15 +1,16 @@
+import { Button, TextField } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { FileUploader } from "react-drag-drop-files";
+import styled from "styled-components";
+
 import {
   ProductAddModal,
   ProductInput,
   StyledFlexDiv,
   StyledModal,
 } from "../DashboardItems";
-import styled from "styled-components";
-import Image from "next/image";
-import { Button, TextField } from "@mui/material";
-import { FileUploader } from "react-drag-drop-files";
 
 const fileTypes = ["JPG", "PNG"];
 

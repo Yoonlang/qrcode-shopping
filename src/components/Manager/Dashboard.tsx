@@ -5,13 +5,15 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import { useState } from "react";
 import { FormikProps } from "formik";
-import { StyledAppBar, StyledDrawer, StyledList } from "./DashboardItems";
-import Icons from "../Icons";
-import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
-import ProductBoard from "./Product/ProductBoard";
+import { useState } from "react";
 import styled from "styled-components";
+
+import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
+
+import { StyledAppBar, StyledDrawer, StyledList } from "./DashboardItems";
+import ProductBoard from "./Product/ProductBoard";
+import Icons from "../Icons";
 
 const StyledBoardContainer = styled.div`
   display: flex;

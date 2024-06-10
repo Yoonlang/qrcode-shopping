@@ -1,9 +1,11 @@
+import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+
+import { SERVER_URL } from "@/components/const";
+import { initialValues } from "@/components/Manager/const";
+
 import Dashboard from "../Manager/Dashboard";
 import LoginForm from "../Manager/LoginForm";
-import { SERVER_URL } from "@/components/const";
-import { useFormik } from "formik";
-import { initialValues } from "@/components/Manager/const";
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);

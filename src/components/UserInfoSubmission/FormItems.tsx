@@ -9,9 +9,10 @@ import {
   TextField,
 } from "@mui/material";
 import { FormikProps } from "formik";
-import styled from "styled-components";
-import Icons from "../Icons";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import Icons from "../Icons";
 
 const StyledBox = styled(Box)`
   display: grid;

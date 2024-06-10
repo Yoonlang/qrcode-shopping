@@ -1,11 +1,13 @@
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
-import Icons from "@/components/Icons";
-import styled from "styled-components";
-import { PRIMARY, PRIMARY_DARK } from "@/components/const";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import { PRIMARY, PRIMARY_DARK } from "@/components/const";
+import Icons from "@/components/Icons";
+
 import Info from "./Info";
 import LanguageSelector from "./LanguageSelector";
-import { useTranslation } from "react-i18next";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;

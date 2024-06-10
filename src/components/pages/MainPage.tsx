@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { useFormik } from "formik";
-import QrScannerPage from "./QrScannerPage";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
+import { initialValues, SERVER_URL } from "@/components/const";
+import QrScannerPage from "@/components/pages/QrScannerPage";
+import { validationSchema } from "@/components/validation";
+
 import ToBuyListPage from "./ToBuyListPage";
 import UserInfoSubmissionPage from "./UserInfoSubmissionPage";
-import { BottomAppBar, TitleAppBar } from "../AppBar";
-import { validationSchema } from "@/components/validation";
-import { initialValues } from "@/components/const";
-import { SERVER_URL } from "@/components/const";
 import SplashScreen from "../SplashScreen";
-import { useTranslation } from "react-i18next";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

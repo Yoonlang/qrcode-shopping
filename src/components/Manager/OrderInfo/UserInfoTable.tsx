@@ -1,8 +1,9 @@
+import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useRef, useState } from "react";
-import { StyledModal } from "@/components/Manager/DashboardItems";
 import styled from "styled-components";
-import { Button } from "@mui/material";
+
+import { StyledModal } from "@/components/Manager/DashboardItems";
 
 const tableColumns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 120 },

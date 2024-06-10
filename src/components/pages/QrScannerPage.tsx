@@ -1,5 +1,3 @@
-import QrCode from "@/components/QrScanner/QrCode";
-import { MessageSnackBar } from "@/components/SnackBar";
 import { Button, Dialog } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -8,6 +6,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+
+import QrCode from "@/components/QrScanner/QrCode";
+import { MessageSnackBar } from "@/components/SnackBar";
 
 const StyledContainer = styled.div`
   width: 100%;

@@ -1,8 +1,10 @@
-import { business } from "@/components/UserInfoSubmission/const";
-import { UserInput, UserSelect } from "./FormItems";
 import { FormikProps } from "formik";
-import CountrySelect from "./CountrySelect";
 import { useTranslation } from "react-i18next";
+
+import { business } from "@/components/UserInfoSubmission/const";
+
+import CountrySelect from "./CountrySelect";
+import { UserInput, UserSelect } from "./FormItems";
 
 const OrdererInfo = ({ formik }: { formik: FormikProps<any> }) => {
   const { t } = useTranslation();

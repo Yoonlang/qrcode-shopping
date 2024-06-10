@@ -1,7 +1,8 @@
 import { FormikProps } from "formik";
-import { UserInput } from "./FormItems";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+
+import { UserInput } from "./FormItems";
 
 const CompanyAddress = ({ formik }: { formik: FormikProps<any> }) => {
   const { t } = useTranslation();
