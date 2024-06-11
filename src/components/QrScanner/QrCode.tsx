@@ -18,11 +18,11 @@ const StyledQrCode = styled.div`
 `;
 
 const QrCode = ({
-  setScannedItems,
-  fetchedItems,
+  setScannedItemList,
+  fetchedItemList,
 }: {
-  setScannedItems: Dispatch<SetStateAction<{}>>;
-  fetchedItems: any[] | null;
+  setScannedItemList: Dispatch<SetStateAction<{}>>;
+  fetchedItemList: any[] | null;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState(undefined);
@@ -33,17 +33,17 @@ const QrCode = ({
         const [pre, pid] = code.data.split("/");
         if (
           pre === "products" &&
-          fetchedItems &&
-          fetchedItems.some(({ productId }) => pid === productId)
+          fetchedItemList &&
+          fetchedItemList.some(({ productId }) => pid === productId)
         )
-          setScannedItems((old) => {
-            const newScannedItems = { ...old };
-            newScannedItems[pid] = true;
-            return newScannedItems;
+          setScannedItemList((old) => {
+            const newScannedItemList = { ...old };
+            newScannedItemList[pid] = true;
+            return newScannedItemList;
           });
       }
     },
-    [fetchedItems]
+    [fetchedItemList]
   );
 
   const capture = useCallback(
@@ -71,11 +71,11 @@ const QrCode = ({
         image.src = imageSrc;
       }
     },
-    [fetchedItems]
+    [fetchedItemList]
   );
 
-  const handleDevices = (devices) => {
-    devices.forEach((device: any) => {
+  const handleDevicesWideAngle = (deviceList) => {
+    deviceList.forEach((device: any) => {
       if (device.kind === "videoinput") {
         if (device.label === "camera2 0, facing back") {
           setDeviceId(device.deviceId);
@@ -86,7 +86,7 @@ const QrCode = ({
 
   return (
     <StyledQrCode>
-      {fetchedItems && (
+      {fetchedItemList && (
         <Webcam
           audio={false}
           screenshotFormat="image/png"
@@ -102,7 +102,9 @@ const QrCode = ({
             }
           }}
           onUserMedia={() => {
-            navigator.mediaDevices.enumerateDevices().then(handleDevices);
+            navigator.mediaDevices
+              .enumerateDevices()
+              .then(handleDevicesWideAngle);
           }}
           videoConstraints={{
             deviceId: deviceId ? { exact: deviceId } : undefined,
