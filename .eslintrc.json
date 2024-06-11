@@ -26,6 +26,7 @@
         "alphabetize": { "order": "asc", "caseInsensitive": true },
         "newlines-between": "always"
       }
-    ]
+    ],
+    "import/no-relative-parent-imports": "error"
   }
 }
