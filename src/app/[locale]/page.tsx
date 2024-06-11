@@ -4,6 +4,8 @@ import MainPage from "@/components/pages/MainPage";
 import GlobalStyle from "@/styles/global";
 import initTranslations from "../i18n";
 import TranslationsProvider from "@/components/TranslationsProvider";
+import { RecoilRoot } from "recoil";
+import MessageSnackBar from "@/components/MessageSnackBar";
 
 const i18nNamespaces = ["common"];
 
@@ -15,8 +17,11 @@ const Home = async ({ params: { locale } }) => {
       locale={locale}
       resources={resources}
     >
-      <GlobalStyle />
-      <MainPage />
+      <RecoilRoot>
+        <GlobalStyle />
+        <MessageSnackBar />
+        <MainPage />
+      </RecoilRoot>
     </TranslationsProvider>
   );
 };
