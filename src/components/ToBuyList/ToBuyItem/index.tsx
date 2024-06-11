@@ -46,13 +46,13 @@ const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
 
 const Product = ({
   product,
-  selectedInfos,
-  setSelectedInfos,
+  selectedInfoList,
+  setSelectedInfoList,
   handleDelete,
 }: {
   product: ProductType;
-  selectedInfos: Object;
-  setSelectedInfos: Dispatch<SetStateAction<Object>>;
+  selectedInfoList: Object;
+  setSelectedInfoList: Dispatch<SetStateAction<Object>>;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
@@ -64,19 +64,19 @@ const Product = ({
   }
   const { productId, colors, name } = product;
   const [open, setOpen] = useState<boolean>(true);
-  let selected: string[] = Object.keys(selectedInfos[productId] || []).sort(
+  let selected: string[] = Object.keys(selectedInfoList[productId] || []).sort(
     (a, b) => {
       if (a === COLOR_CARD_TEXT) return -1;
       if (b === COLOR_CARD_TEXT) return 1;
       return +a.split(" ")[0] - +b.split(" ")[0];
     }
   );
-  const count = selectedInfos[productId];
+  const count = selectedInfoList[productId];
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setSelectedInfos((old) => {
+    setSelectedInfoList((old) => {
       const tempInfos = { ...old };
       if (tempInfos.hasOwnProperty(productId)) {
         return old;
@@ -91,10 +91,10 @@ const Product = ({
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("selectedInfos", JSON.stringify(selectedInfos));
-  }, [selectedInfos]);
+    localStorage.setItem("selectedInfos", JSON.stringify(selectedInfoList));
+  }, [selectedInfoList]);
 
-  const handleChange = (event: SelectChangeEvent<typeof selectedInfos>) => {
+  const handleChange = (event: SelectChangeEvent<typeof selectedInfoList>) => {
     const {
       target: { value },
     } = event;
@@ -123,9 +123,12 @@ const Product = ({
           i === sortedValue.length - 1 ||
           sortedValue[i] !== sortedSelected[i]
         ) {
-          setSelectedInfos({
-            ...selectedInfos,
-            [productId]: { ...selectedInfos[productId], [sortedValue[i]]: 1 },
+          setSelectedInfoList({
+            ...selectedInfoList,
+            [productId]: {
+              ...selectedInfoList[productId],
+              [sortedValue[i]]: 1,
+            },
           });
           break;
         }
@@ -136,9 +139,9 @@ const Product = ({
           i === sortedSelected.length - 1 ||
           sortedValue[i] !== sortedSelected[i]
         ) {
-          const temp = { ...selectedInfos[productId] };
+          const temp = { ...selectedInfoList[productId] };
           delete temp[sortedSelected[i]];
-          setSelectedInfos({ ...selectedInfos, [productId]: temp });
+          setSelectedInfoList({ ...selectedInfoList, [productId]: temp });
           break;
         }
       }
@@ -152,10 +155,10 @@ const Product = ({
     const value = e.target.value;
     const regex = /^[0-9]*$/;
     if (regex.test(value)) {
-      setSelectedInfos({
-        ...selectedInfos,
+      setSelectedInfoList({
+        ...selectedInfoList,
         [productId]: {
-          ...selectedInfos[productId],
+          ...selectedInfoList[productId],
           [name]: `${Number(e.target.value)}`,
         },
       });
@@ -168,9 +171,9 @@ const Product = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
-    setSelectedInfos({
-      ...selectedInfos,
-      [productId]: { ...selectedInfos[productId], [name]: +count[name] + 1 },
+    setSelectedInfoList({
+      ...selectedInfoList,
+      [productId]: { ...selectedInfoList[productId], [name]: +count[name] + 1 },
     });
   };
 
@@ -179,9 +182,12 @@ const Product = ({
     name: string
   ) => {
     if (count[name] > 1) {
-      setSelectedInfos({
-        ...selectedInfos,
-        [productId]: { ...selectedInfos[productId], [name]: count[name] - 1 },
+      setSelectedInfoList({
+        ...selectedInfoList,
+        [productId]: {
+          ...selectedInfoList[productId],
+          [name]: count[name] - 1,
+        },
       });
     } else {
       // const temp = { ...selectedInfos[productId] };
@@ -194,9 +200,9 @@ const Product = ({
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     name: string
   ) => {
-    const temp = { ...selectedInfos[productId] };
+    const temp = { ...selectedInfoList[productId] };
     delete temp[name];
-    setSelectedInfos({ ...selectedInfos, [productId]: temp });
+    setSelectedInfoList({ ...selectedInfoList, [productId]: temp });
   };
 
   return (

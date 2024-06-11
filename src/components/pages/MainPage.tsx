@@ -17,8 +17,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-const pageIds = ["main", "cart", "info"];
-const icons = ["cart", "person", "check"];
+const pageIdList = ["main", "cart", "info"];
+const iconList = ["cart", "person", "check"];
 const bottomText = {
   main: "My Products",
   cart: "Information",
@@ -38,11 +38,11 @@ const snackBarStatusMessage = {
 const MainPage = () => {
   const { t } = useTranslation();
   const [pageIdx, setPageIdx] = useState(0);
-  const [fetchedItems, setFetchedItems] = useState(null);
-  const [scannedItems, setScannedItems] = useState({});
-  const [isSplashed, setIsSplashed] = useState(false);
-  const [selectedInfos, setSelectedInfos] = useState<Object>({});
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [fetchedItemList, setFetchedItemList] = useState(null);
+  const [scannedItemList, setScannedItemList] = useState({});
+  const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
+  const [selectedInfoList, setSelectedInfoList] = useState<Object>({});
+  const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
   const [snackBarStatus, setSnackBarStatus] = useState(
     t(snackBarStatusMessage["default"])
   );
@@ -81,7 +81,7 @@ const MainPage = () => {
           },
           body: JSON.stringify({
             submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
-            hopeProducts: Object.entries(selectedInfos).map(
+            hopeProducts: Object.entries(selectedInfoList).map(
               ([productId, items]) => {
                 return {
                   productId,
@@ -129,11 +129,11 @@ const MainPage = () => {
         });
         const data = await res.json();
 
-        setScannedItems({});
-        setSelectedInfos({});
+        setScannedItemList({});
+        setSelectedInfoList({});
         resetForm();
         setSnackBarStatus(t(snackBarStatusMessage["complete"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
         // setTimeout(() => {
         //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
         //   setSnackBarOpen(true);
@@ -147,20 +147,24 @@ const MainPage = () => {
 
   useEffect(() => {
     if (!sessionStorage.getItem("splash")) {
-      setIsSplashed(true);
+      setIsSplashScreenOpen(true);
       setTimeout(() => {
-        setIsSplashed(false);
+        setIsSplashScreenOpen(false);
         sessionStorage.setItem("splash", "true");
         setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       }, 2000);
     }
 
     if (localStorage.getItem("scannedItems")) {
-      setScannedItems(JSON.parse(localStorage.getItem("scannedItems") || ""));
+      setScannedItemList(
+        JSON.parse(localStorage.getItem("scannedItems") || "")
+      );
     }
     if (localStorage.getItem("selectedInfos")) {
-      setSelectedInfos(JSON.parse(localStorage.getItem("selectedInfos") || ""));
+      setSelectedInfoList(
+        JSON.parse(localStorage.getItem("selectedInfos") || "")
+      );
     }
     if (localStorage.getItem("form")) {
       formik.setValues(JSON.parse(localStorage.getItem("form") || ""));
@@ -169,16 +173,16 @@ const MainPage = () => {
 
   const handleClickBottomAppBar = () => {
     if (pageIdx === 0) {
-      if (Object.keys(scannedItems).length === 0) {
+      if (Object.keys(scannedItemList).length === 0) {
         setSnackBarStatus(t(snackBarStatusMessage["empty"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
     } else if (pageIdx === 1) {
-      if (Object.keys(scannedItems).length <= 0) {
+      if (Object.keys(scannedItemList).length <= 0) {
         setSnackBarStatus(t(snackBarStatusMessage["multipleScan"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       } else {
         // let isAllSelected = true;
         // for (const key of Object.keys(scannedItems)) {
@@ -207,7 +211,7 @@ const MainPage = () => {
         localStorage.removeItem("form");
       } else {
         setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
-        setSnackBarOpen(true);
+        setIsSnackBarOpen(true);
       }
     }
   };
@@ -217,7 +221,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const getProducts = async () => {
+    const getProductList = async () => {
       try {
         const res = await fetch(`${SERVER_URL}/products`, {
           method: "get",
@@ -226,43 +230,43 @@ const MainPage = () => {
         if (data?.error) {
           throw data.error;
         }
-        setFetchedItems(data);
+        setFetchedItemList(data);
       } catch (e) {
         console.log(e);
       }
     };
 
-    getProducts();
+    getProductList();
   }, []);
 
   return (
     <main>
-      {isSplashed && <SplashScreen />}
+      {isSplashScreenOpen && <SplashScreen />}
       <TitleAppBar
-        id={pageIds[pageIdx]}
+        id={pageIdList[pageIdx]}
         hasBack={pageIdx === 0 ? false : true}
         handleClickBack={handleClickBackButton}
       />
       {pageIdx === 0 ? (
         <QrScannerPage
-          scannedItems={scannedItems}
-          setScannedItems={setScannedItems}
-          fetchedItems={fetchedItems}
-          snackBarOpen={snackBarOpen}
-          setSnackBarOpen={setSnackBarOpen}
+          scannedItemList={scannedItemList}
+          setScannedItemList={setScannedItemList}
+          fetchedItemList={fetchedItemList}
+          isSnackBarOpen={isSnackBarOpen}
+          setIsSnackBarOpen={setIsSnackBarOpen}
           snackBarStatus={snackBarStatus}
           setSnackBarStatus={setSnackBarStatus}
           snackBarStatusMessage={snackBarStatusMessage}
         />
       ) : pageIdx === 1 ? (
         <ToBuyListPage
-          scannedItems={scannedItems}
-          setScannedItems={setScannedItems}
-          fetchedItems={fetchedItems ?? []}
-          selectedInfos={selectedInfos}
-          setSelectedInfos={setSelectedInfos}
-          snackBarOpen={snackBarOpen}
-          setSnackBarOpen={setSnackBarOpen}
+          scannedItemList={scannedItemList}
+          setScannedItemList={setScannedItemList}
+          fetchedItemList={fetchedItemList ?? []}
+          selectedInfoList={selectedInfoList}
+          setSelectedInfoList={setSelectedInfoList}
+          isSnackBarOpen={isSnackBarOpen}
+          setIsSnackBarOpen={setIsSnackBarOpen}
           snackBarStatus={snackBarStatus}
           formik={formik}
         />
@@ -270,10 +274,10 @@ const MainPage = () => {
         <UserInfoSubmissionPage formik={formik} goToNextPage={goToNextPage} />
       )}
       <BottomAppBar
-        icon={icons[pageIdx]}
+        icon={iconList[pageIdx]}
         handleClick={handleClickBottomAppBar}
-        text={t(bottomText[pageIds[pageIdx]])}
-        badgeNum={pageIdx === 0 ? Object.keys(scannedItems).length : null}
+        text={t(bottomText[pageIdList[pageIdx]])}
+        badgeNum={pageIdx === 0 ? Object.keys(scannedItemList).length : null}
       />
     </main>
   );

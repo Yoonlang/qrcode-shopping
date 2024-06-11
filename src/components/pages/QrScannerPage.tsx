@@ -15,20 +15,20 @@ const StyledContainer = styled.div`
 `;
 
 const QrScannerPage = ({
-  scannedItems,
-  setScannedItems,
-  fetchedItems,
-  snackBarOpen,
-  setSnackBarOpen,
+  scannedItemList,
+  setScannedItemList,
+  fetchedItemList,
+  isSnackBarOpen,
+  setIsSnackBarOpen,
   snackBarStatus,
   setSnackBarStatus,
   snackBarStatusMessage,
 }: {
-  scannedItems: Object;
-  setScannedItems: Dispatch<SetStateAction<{}>>;
-  fetchedItems: any[] | null;
-  snackBarOpen: boolean;
-  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
+  scannedItemList: Object;
+  setScannedItemList: Dispatch<SetStateAction<{}>>;
+  fetchedItemList: any[] | null;
+  isSnackBarOpen: boolean;
+  setIsSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
   setSnackBarStatus: Dispatch<SetStateAction<string>>;
   snackBarStatusMessage: object;
@@ -41,12 +41,12 @@ const QrScannerPage = ({
   };
 
   useEffect(() => {
-    if (Object.keys(scannedItems).length > 0) {
+    if (Object.keys(scannedItemList).length > 0) {
       setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
-      setSnackBarOpen(true);
-      localStorage.setItem("scannedItems", JSON.stringify(scannedItems));
+      setIsSnackBarOpen(true);
+      localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
     }
-  }, [scannedItems]);
+  }, [scannedItemList]);
 
   return (
     <StyledContainer>
@@ -64,14 +64,14 @@ const QrScannerPage = ({
       {!isDialogOpen && (
         <>
           <MessageSnackBar
-            key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
-            isOpen={snackBarOpen}
-            setIsOpen={setSnackBarOpen}
+            key={`${Object.keys(scannedItemList).length} ${snackBarStatus}`}
+            isOpen={isSnackBarOpen}
+            setIsOpen={setIsSnackBarOpen}
             message={snackBarStatus}
           />
           <QrCode
-            setScannedItems={setScannedItems}
-            fetchedItems={fetchedItems}
+            setScannedItemList={setScannedItemList}
+            fetchedItemList={fetchedItemList}
           />
         </>
       )}

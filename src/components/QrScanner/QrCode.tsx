@@ -19,11 +19,11 @@ const StyledQrCode = styled.div`
 `;
 
 const QrCode = ({
-  setScannedItems,
-  fetchedItems,
+  setScannedItemList,
+  fetchedItemList,
 }: {
-  setScannedItems: Dispatch<SetStateAction<{}>>;
-  fetchedItems: any[] | null;
+  setScannedItemList: Dispatch<SetStateAction<{}>>;
+  fetchedItemList: any[] | null;
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState(undefined);
@@ -34,17 +34,17 @@ const QrCode = ({
         const [pre, pid] = code.data.split("/");
         if (
           pre === "products" &&
-          fetchedItems &&
-          fetchedItems.some(({ productId }) => pid === productId)
+          fetchedItemList &&
+          fetchedItemList.some(({ productId }) => pid === productId)
         )
-          setScannedItems((old) => {
-            const newScannedItems = { ...old };
-            newScannedItems[pid] = true;
-            return newScannedItems;
+          setScannedItemList((old) => {
+            const newScannedItemList = { ...old };
+            newScannedItemList[pid] = true;
+            return newScannedItemList;
           });
       }
     },
-    [fetchedItems]
+    [fetchedItemList]
   );
 
   const capture = useCallback(
@@ -72,7 +72,7 @@ const QrCode = ({
         image.src = imageSrc;
       }
     },
-    [fetchedItems]
+    [fetchedItemList]
   );
 
   const handleDevicesWideAngle = (deviceList) => {
@@ -87,7 +87,7 @@ const QrCode = ({
 
   return (
     <StyledQrCode>
-      {fetchedItems && (
+      {fetchedItemList && (
         <Webcam
           audio={false}
           screenshotFormat="image/png"
