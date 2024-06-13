@@ -252,10 +252,6 @@ const MainPage = () => {
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
           fetchedItemList={fetchedItemList}
-          isSnackBarOpen={isSnackBarOpen}
-          setIsSnackBarOpen={setIsSnackBarOpen}
-          snackBarStatus={snackBarStatus}
-          setSnackBarStatus={setSnackBarStatus}
           snackBarStatusMessage={snackBarStatusMessage}
         />
       ) : pageIdx === 1 ? (

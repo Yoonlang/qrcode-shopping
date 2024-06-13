@@ -1,5 +1,5 @@
 import QrCode from "@/components/QrScanner/QrCode";
-import { MessageSnackBar } from "@/components/SnackBar";
+import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { Button, Dialog } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
@@ -18,23 +19,16 @@ const QrScannerPage = ({
   scannedItemList,
   setScannedItemList,
   fetchedItemList,
-  isSnackBarOpen,
-  setIsSnackBarOpen,
-  snackBarStatus,
-  setSnackBarStatus,
   snackBarStatusMessage,
 }: {
   scannedItemList: Object;
   setScannedItemList: Dispatch<SetStateAction<{}>>;
   fetchedItemList: any[] | null;
-  isSnackBarOpen: boolean;
-  setIsSnackBarOpen: Dispatch<SetStateAction<Object>>;
-  snackBarStatus: string;
-  setSnackBarStatus: Dispatch<SetStateAction<string>>;
   snackBarStatusMessage: object;
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();
+  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -42,9 +36,16 @@ const QrScannerPage = ({
 
   useEffect(() => {
     if (Object.keys(scannedItemList).length > 0) {
-      setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
-      setIsSnackBarOpen(true);
+      setMessageSnackBarState({
+        message: t(snackBarStatusMessage["scanned"]),
+        isOpen: true,
+      });
       localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
+    } else {
+      setMessageSnackBarState({
+        message: t(snackBarStatusMessage["default"]),
+        isOpen: true,
+      });
     }
   }, [scannedItemList]);
 
@@ -62,18 +63,10 @@ const QrScannerPage = ({
         </DialogActions>
       </Dialog>
       {!isDialogOpen && (
-        <>
-          <MessageSnackBar
-            key={`${Object.keys(scannedItemList).length} ${snackBarStatus}`}
-            isOpen={isSnackBarOpen}
-            setIsOpen={setIsSnackBarOpen}
-            message={snackBarStatus}
-          />
-          <QrCode
-            setScannedItemList={setScannedItemList}
-            fetchedItemList={fetchedItemList}
-          />
-        </>
+        <QrCode
+          setScannedItemList={setScannedItemList}
+          fetchedItemList={fetchedItemList}
+        />
       )}
     </StyledContainer>
   );
