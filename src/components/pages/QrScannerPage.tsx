@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { snackBarStatusMessage } from "@/components/const";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -19,12 +20,10 @@ const QrScannerPage = ({
   scannedItemList,
   setScannedItemList,
   fetchedItemList,
-  snackBarStatusMessage,
 }: {
   scannedItemList: Object;
   setScannedItemList: Dispatch<SetStateAction<{}>>;
   fetchedItemList: any[] | null;
-  snackBarStatusMessage: object;
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();

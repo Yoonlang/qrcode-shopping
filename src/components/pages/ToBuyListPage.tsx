@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Icons from "../Icons";
 import { Dispatch, SetStateAction } from "react";
 import Product from "../ToBuyList/ToBuyItem";
-import { MessageSnackBar } from "../SnackBar";
 import { Box } from "@mui/material";
 import {
   SelectedBox,
@@ -100,9 +99,6 @@ const ToBuyListPage = ({
   fetchedItemList,
   selectedInfoList,
   setSelectedInfoList,
-  isSnackBarOpen,
-  setIsSnackBarOpen,
-  snackBarStatus,
   formik,
 }: {
   scannedItemList: Object;
@@ -110,9 +106,6 @@ const ToBuyListPage = ({
   fetchedItemList: any[];
   selectedInfoList: Object;
   setSelectedInfoList: Dispatch<SetStateAction<Object>>;
-  isSnackBarOpen: boolean;
-  setIsSnackBarOpen: Dispatch<SetStateAction<Object>>;
-  snackBarStatus: string;
   formik: FormikProps<any>;
 }) => {
   const { t } = useTranslation();
@@ -133,12 +126,6 @@ const ToBuyListPage = ({
 
   return (
     <StyledDiv>
-      <MessageSnackBar
-        key={`${Object.keys(selectedInfoList).length} ${snackBarStatus}`}
-        isOpen={isSnackBarOpen}
-        setIsOpen={setIsSnackBarOpen}
-        message={snackBarStatus}
-      />
       <StyledTitle>
         {Icons["list"]}
         <p>{t("Product List")}</p>
