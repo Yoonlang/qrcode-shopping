@@ -25,7 +25,6 @@
     "@typescript-eslint/no-explicit-any": "off",
     "no-prototype-builtins": "off",
     "prefer-const": "off",
-    "eact-hooks/exhaustive-deps": "off",
     "import/order": [
       "error",
       {

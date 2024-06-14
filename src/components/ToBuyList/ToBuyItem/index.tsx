@@ -53,13 +53,13 @@ const Product = ({
   }
   const { productId, colors, name } = product;
   const [open, setOpen] = useState<boolean>(true);
-  let selected: string[] = Object.keys(selectedInfoList[productId] || []).sort(
-    (a, b) => {
-      if (a === COLOR_CARD_TEXT) return -1;
-      if (b === COLOR_CARD_TEXT) return 1;
-      return +a.split(" ")[0] - +b.split(" ")[0];
-    }
-  );
+  const selected: string[] = Object.keys(
+    selectedInfoList[productId] || []
+  ).sort((a, b) => {
+    if (a === COLOR_CARD_TEXT) return -1;
+    if (b === COLOR_CARD_TEXT) return 1;
+    return +a.split(" ")[0] - +b.split(" ")[0];
+  });
   const count = selectedInfoList[productId];
 
   const [isLoading, setIsLoading] = useState(true);
