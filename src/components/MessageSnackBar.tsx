@@ -20,12 +20,12 @@ const StyledSnackBar = styled(Snackbar)`
 `;
 
 const MessageSnackBar = () => {
-  const [{ message, isOpen }, setMessageSnackBarState] =
+  const [{ message, isMessageSnackBarOpen }, setMessageSnackBarState] =
     useRecoilState(messageSnackBarState);
 
   return (
     <StyledSnackBar
-      open={isOpen}
+      open={isMessageSnackBarOpen}
       autoHideDuration={3000}
       onClose={() => {
         setMessageSnackBarState({
