@@ -16,63 +16,63 @@ const StyledContainer = styled.div`
 `;
 
 const QrScannerPage = ({
-  scannedItems,
-  setScannedItems,
-  fetchedItems,
-  snackBarOpen,
-  setSnackBarOpen,
+  scannedItemList,
+  setScannedItemList,
+  fetchedItemList,
+  isSnackBarOpen,
+  setIsSnackBarOpen,
   snackBarStatus,
   setSnackBarStatus,
   snackBarStatusMessage,
 }: {
-  scannedItems: Object;
-  setScannedItems: Dispatch<SetStateAction<{}>>;
-  fetchedItems: any[] | null;
-  snackBarOpen: boolean;
-  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
+  scannedItemList: Object;
+  setScannedItemList: Dispatch<SetStateAction<{}>>;
+  fetchedItemList: any[] | null;
+  isSnackBarOpen: boolean;
+  setIsSnackBarOpen: Dispatch<SetStateAction<Object>>;
   snackBarStatus: string;
   setSnackBarStatus: Dispatch<SetStateAction<string>>;
   snackBarStatusMessage: object;
 }) => {
-  const [openDialog, setOpenDialog] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
   };
 
   useEffect(() => {
-    if (Object.keys(scannedItems).length > 0) {
+    if (Object.keys(scannedItemList).length > 0) {
       setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
-      setSnackBarOpen(true);
-      localStorage.setItem("scannedItems", JSON.stringify(scannedItems));
+      setIsSnackBarOpen(true);
+      localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
     }
-  }, [scannedItems]);
+  }, [scannedItemList]);
 
   return (
     <StyledContainer>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
+      <Dialog open={isDialogOpen} onClose={handleDialogClose}>
         <DialogContent>
           <DialogContentText>1. {t("Dialog1")}</DialogContentText>
           <DialogContentText>2. {t("Dialog2")}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+          <Button onClick={handleDialogClose} color="primary" autoFocus>
             {t("Confirm")}
           </Button>
         </DialogActions>
       </Dialog>
-      {!openDialog && (
+      {!isDialogOpen && (
         <>
           <MessageSnackBar
-            key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
-            isOpen={snackBarOpen}
-            setIsOpen={setSnackBarOpen}
+            key={`${Object.keys(scannedItemList).length} ${snackBarStatus}`}
+            isOpen={isSnackBarOpen}
+            setIsOpen={setIsSnackBarOpen}
             message={snackBarStatus}
           />
           <QrCode
-            setScannedItems={setScannedItems}
-            fetchedItems={fetchedItems}
+            setScannedItemList={setScannedItemList}
+            fetchedItemList={fetchedItemList}
           />
         </>
       )}
