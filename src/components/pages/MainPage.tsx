@@ -8,11 +8,10 @@ import { useTranslation } from "react-i18next";
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import { initialValues, SERVER_URL } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
+import ToBuyListPage from "@/components/pages/ToBuyListPage";
+import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
+import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
-
-import ToBuyListPage from "./ToBuyListPage";
-import UserInfoSubmissionPage from "./UserInfoSubmissionPage";
-import SplashScreen from "../SplashScreen";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

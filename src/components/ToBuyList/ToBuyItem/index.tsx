@@ -1,31 +1,18 @@
-import {
-  Button,
-  Collapse,
-  Divider,
-  IconButton,
-  ListItemText,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Button, IconButton, SelectChangeEvent } from "@mui/material";
 import Image from "next/image";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/Icons";
-
 import {
   Counter,
-  MenuItemDivider,
   SelectedOption,
-  StyledBottom,
   StyledInput,
-  StyledInputLabel,
-  StyledMenuItem,
   StyledNameDiv,
   StyledRight,
   StyledTop,
   StyledWrapper,
-} from "./styled";
+} from "@/components/ToBuyList/ToBuyItem/styled";
 
 interface Color {
   colorId: string;

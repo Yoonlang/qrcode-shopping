@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { SERVER_URL } from "@/components/const";
-
-import UserInfoTable from "./UserInfoTable";
+import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
 
 const StyledUserBoard = styled.div`
   display: flex;

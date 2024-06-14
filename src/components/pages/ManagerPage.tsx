@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 
 import { SERVER_URL } from "@/components/const";
 import { initialValues } from "@/components/Manager/const";
-
-import Dashboard from "../Manager/Dashboard";
-import LoginForm from "../Manager/LoginForm";
+import Dashboard from "@/components/Manager/Dashboard";
+import LoginForm from "@/components/Manager/LoginForm";
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);

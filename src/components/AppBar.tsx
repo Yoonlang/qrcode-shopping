@@ -5,9 +5,8 @@ import styled from "styled-components";
 
 import { PRIMARY, PRIMARY_DARK } from "@/components/const";
 import Icons from "@/components/Icons";
-
-import Info from "./Info";
-import LanguageSelector from "./LanguageSelector";
+import Info from "@/components/Info";
+import LanguageSelector from "@/components/LanguageSelector";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -167,4 +166,4 @@ const BottomAppBar = ({
   );
 };
 
-export { TitleAppBar, BottomAppBar };
+export { BottomAppBar, TitleAppBar };

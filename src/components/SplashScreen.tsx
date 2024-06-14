@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Icons from "./Icons";
+import Icons from "@/components/Icons";
 
 const StyledDiv = styled.div`
   width: 100%;

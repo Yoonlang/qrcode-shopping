@@ -5,17 +5,16 @@ import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import Icons from "@/components/Icons";
 import {
   CountryType,
   countries,
 } from "@/components/UserInfoSubmission/countries";
-
 import {
   StyledErrorMessage,
   StyledIconButton,
   StyledTextField,
-} from "./FormItems";
-import Icons from "../Icons";
+} from "@/components/UserInfoSubmission/FormItems";
 
 const StyledDiv = styled.div`
   margin-top: 8px;

@@ -10,7 +10,7 @@ import {
   ProductInput,
   StyledFlexDiv,
   StyledModal,
-} from "../DashboardItems";
+} from "@/components/Manager/DashboardItems";
 
 const fileTypes = ["JPG", "PNG"];
 

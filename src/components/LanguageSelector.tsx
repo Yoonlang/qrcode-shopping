@@ -1,11 +1,10 @@
 import { Button } from "@mui/material";
-import { useRouter , usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import Icons from "@/components/Icons";
 import i18nConfig from "@/i18nConfig";
-
-import Icons from "./Icons";
 
 const StyledLanguageSelector = styled.div`
   display: flex;

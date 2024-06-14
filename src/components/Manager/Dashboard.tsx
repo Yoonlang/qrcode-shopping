@@ -9,11 +9,14 @@ import { FormikProps } from "formik";
 import { useState } from "react";
 import styled from "styled-components";
 
+import Icons from "@/components/Icons";
+import {
+  StyledAppBar,
+  StyledDrawer,
+  StyledList,
+} from "@/components/Manager/DashboardItems";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
-
-import { StyledAppBar, StyledDrawer, StyledList } from "./DashboardItems";
-import ProductBoard from "./Product/ProductBoard";
-import Icons from "../Icons";
+import ProductBoard from "@/components/Manager/Product/ProductBoard";
 
 const StyledBoardContainer = styled.div`
   display: flex;
