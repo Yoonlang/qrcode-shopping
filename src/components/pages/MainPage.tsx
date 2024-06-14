@@ -5,13 +5,18 @@ import ToBuyListPage from "./ToBuyListPage";
 import UserInfoSubmissionPage from "./UserInfoSubmissionPage";
 import { BottomAppBar, TitleAppBar } from "../AppBar";
 import { validationSchema } from "@/components/validation";
-import { initialValues } from "@/components/const";
-import { SERVER_URL } from "@/components/const";
+import {
+  initialValues,
+  snackBarStatusMessage,
+  SERVER_URL,
+} from "@/components/const";
 import SplashScreen from "../SplashScreen";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { useSetRecoilState } from "recoil";
+import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -25,16 +30,6 @@ const bottomText = {
   info: "Submission",
 };
 
-const snackBarStatusMessage = {
-  default: `Scan QR Code`,
-  empty: `Your cart is empty`,
-  scanned: `Scanned new item`,
-  multipleScan: `Scan at least one QR Code`,
-  option: `Please select at least one option`,
-  invalid: `Please enter valid information`,
-  complete: `Successfully submitted`,
-};
-
 const MainPage = () => {
   const { t } = useTranslation();
   const [pageIdx, setPageIdx] = useState(0);
@@ -42,10 +37,7 @@ const MainPage = () => {
   const [scannedItemList, setScannedItemList] = useState({});
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
   const [selectedInfoList, setSelectedInfoList] = useState<Object>({});
-  const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-  const [snackBarStatus, setSnackBarStatus] = useState(
-    t(snackBarStatusMessage["default"])
-  );
+  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
 
   const goToNextPage = () => {
     setPageIdx((pageIdx + 1) % 3);
@@ -132,8 +124,10 @@ const MainPage = () => {
         setScannedItemList({});
         setSelectedInfoList({});
         resetForm();
-        setSnackBarStatus(t(snackBarStatusMessage["complete"]));
-        setIsSnackBarOpen(true);
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["complete"]),
+          isMessageSnackBarOpen: true,
+        });
         // setTimeout(() => {
         //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
         //   setSnackBarOpen(true);
@@ -151,8 +145,10 @@ const MainPage = () => {
       setTimeout(() => {
         setIsSplashScreenOpen(false);
         sessionStorage.setItem("splash", "true");
-        setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        setIsSnackBarOpen(true);
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["default"]),
+          isMessageSnackBarOpen: true,
+        });
       }, 2000);
     }
 
@@ -174,15 +170,19 @@ const MainPage = () => {
   const handleClickBottomAppBar = () => {
     if (pageIdx === 0) {
       if (Object.keys(scannedItemList).length === 0) {
-        setSnackBarStatus(t(snackBarStatusMessage["empty"]));
-        setIsSnackBarOpen(true);
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["empty"]),
+          isMessageSnackBarOpen: true,
+        });
       } else {
         setPageIdx((pageIdx + 1) % 3);
       }
     } else if (pageIdx === 1) {
-      if (Object.keys(scannedItemList).length <= 0) {
-        setSnackBarStatus(t(snackBarStatusMessage["multipleScan"]));
-        setIsSnackBarOpen(true);
+      if (Object.keys(scannedItemList).length === 0) {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["multipleScan"]),
+          isMessageSnackBarOpen: true,
+        });
       } else {
         // let isAllSelected = true;
         // for (const key of Object.keys(scannedItems)) {
@@ -210,8 +210,10 @@ const MainPage = () => {
         localStorage.removeItem("selectedInfos");
         localStorage.removeItem("form");
       } else {
-        setSnackBarStatus(t(snackBarStatusMessage["invalid"]));
-        setIsSnackBarOpen(true);
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["invalid"]),
+          isMessageSnackBarOpen: true,
+        });
       }
     }
   };
@@ -252,11 +254,6 @@ const MainPage = () => {
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
           fetchedItemList={fetchedItemList}
-          isSnackBarOpen={isSnackBarOpen}
-          setIsSnackBarOpen={setIsSnackBarOpen}
-          snackBarStatus={snackBarStatus}
-          setSnackBarStatus={setSnackBarStatus}
-          snackBarStatusMessage={snackBarStatusMessage}
         />
       ) : pageIdx === 1 ? (
         <ToBuyListPage
@@ -265,9 +262,6 @@ const MainPage = () => {
           fetchedItemList={fetchedItemList ?? []}
           selectedInfoList={selectedInfoList}
           setSelectedInfoList={setSelectedInfoList}
-          isSnackBarOpen={isSnackBarOpen}
-          setIsSnackBarOpen={setIsSnackBarOpen}
-          snackBarStatus={snackBarStatus}
           formik={formik}
         />
       ) : (
