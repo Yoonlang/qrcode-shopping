@@ -249,13 +249,14 @@ const MainPage = () => {
         hasBack={pageIdx === 0 ? false : true}
         handleClickBack={handleClickBackButton}
       />
-      {pageIdx === 0 ? (
+      {pageIdx === 0 && (
         <QrScannerPage
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
           fetchedItemList={fetchedItemList}
         />
-      ) : pageIdx === 1 ? (
+      )}
+      {pageIdx === 1 && (
         <ToBuyListPage
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
@@ -264,7 +265,8 @@ const MainPage = () => {
           setSelectedInfoList={setSelectedInfoList}
           formik={formik}
         />
-      ) : (
+      )}
+      {pageIdx === 2 && (
         <UserInfoSubmissionPage formik={formik} goToNextPage={goToNextPage} />
       )}
       <BottomAppBar
