@@ -54,3 +54,13 @@ export const initialValues: FormType = {
   isSameAddress: false,
   productLengthUnit: "METER",
 };
+
+export const snackBarStatusMessage = {
+  default: `Scan QR Code`,
+  empty: `Your cart is empty`,
+  scanned: `Scanned new item`,
+  multipleScan: `Scan at least one QR Code`,
+  option: `Please select at least one option`,
+  invalid: `Please enter valid information`,
+  complete: `Successfully submitted`,
+};
