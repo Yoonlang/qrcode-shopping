@@ -30,7 +30,7 @@ const MessageSnackBar = () => {
       onClose={() => {
         setMessageSnackBarState({
           message: "",
-          isOpen: false,
+          isMessageSnackBarOpen: false,
         });
       }}
       message={message}

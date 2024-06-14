@@ -37,13 +37,13 @@ const QrScannerPage = ({
     if (Object.keys(scannedItemList).length > 0) {
       setMessageSnackBarState({
         message: t(snackBarStatusMessage["scanned"]),
-        isOpen: true,
+        isMessageSnackBarOpen: true,
       });
       localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
     } else {
       setMessageSnackBarState({
         message: t(snackBarStatusMessage["default"]),
-        isOpen: true,
+        isMessageSnackBarOpen: true,
       });
     }
   }, [scannedItemList]);

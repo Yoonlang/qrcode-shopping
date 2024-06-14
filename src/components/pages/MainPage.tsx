@@ -126,7 +126,7 @@ const MainPage = () => {
         resetForm();
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["complete"]),
-          isOpen: true,
+          isMessageSnackBarOpen: true,
         });
         // setTimeout(() => {
         //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
@@ -147,7 +147,7 @@ const MainPage = () => {
         sessionStorage.setItem("splash", "true");
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["default"]),
-          isOpen: true,
+          isMessageSnackBarOpen: true,
         });
       }, 2000);
     }
@@ -172,7 +172,7 @@ const MainPage = () => {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["empty"]),
-          isOpen: true,
+          isMessageSnackBarOpen: true,
         });
       } else {
         setPageIdx((pageIdx + 1) % 3);
@@ -181,7 +181,7 @@ const MainPage = () => {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["multipleScan"]),
-          isOpen: true,
+          isMessageSnackBarOpen: true,
         });
       } else {
         // let isAllSelected = true;
@@ -212,7 +212,7 @@ const MainPage = () => {
       } else {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["invalid"]),
-          isOpen: true,
+          isMessageSnackBarOpen: true,
         });
       }
     }
