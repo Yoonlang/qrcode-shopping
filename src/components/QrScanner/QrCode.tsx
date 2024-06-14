@@ -1,7 +1,6 @@
-import Webcam from "react-webcam";
 import jsQR from "jsqr";
-import { useCallback, useRef, useState } from "react";
-import { Dispatch, SetStateAction } from "react";
+import { useCallback, useRef, useState , Dispatch, SetStateAction } from "react";
+import Webcam from "react-webcam";
 import styled from "styled-components";
 
 const CAPTURE_DELAY_MS = 100;

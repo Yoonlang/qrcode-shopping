@@ -1,16 +1,18 @@
 import { Button, TextField } from "@mui/material";
-import { FileUploader } from "react-drag-drop-files";
+import { FormikProps } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Form, FormikProps } from "formik";
+import { FileUploader } from "react-drag-drop-files";
+import styled from "styled-components";
+
+import { SERVER_URL } from "@/components/const";
 import {
   ProductAddModal,
   ProductInput,
   StyledFlexDiv,
   StyledModal,
-} from "../DashboardItems";
-import ProductTable from "./ProductTable";
-import styled from "styled-components";
-import { SERVER_URL } from "@/components/const";
+} from "@/components/Manager/DashboardItems";
+import ProductTable from "@/components/Manager/Product/ProductTable";
+
 
 const fileTypes = ["JPG", "PNG"];
 

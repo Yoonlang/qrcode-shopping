@@ -3,15 +3,15 @@ import {
   Checkbox,
   FormControlLabel,
   IconButton,
-  InputAdornment,
   MenuItem,
   Stepper,
   TextField,
 } from "@mui/material";
 import { FormikProps } from "formik";
-import styled from "styled-components";
-import Icons from "../Icons";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import Icons from "@/components/Icons";
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -288,13 +288,13 @@ const UserSelect = ({
 };
 
 export {
-  StyledBox,
   AddressBox,
-  StyledStepper,
-  StyledErrorMessage,
-  StyledTextField,
   AddressCheckbox,
+  StyledBox,
+  StyledErrorMessage,
+  StyledIconButton,
+  StyledStepper,
+  StyledTextField,
   UserInput,
   UserSelect,
-  StyledIconButton,
 };

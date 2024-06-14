@@ -1,20 +1,19 @@
-import { FormikProps } from "formik";
+import { Button, Dialog, Step, StepContent, StepLabel } from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import { useEffect, useState } from "react";
-import { Step, StepContent, StepLabel } from "@mui/material";
+import { useTranslation } from "react-i18next";
+
+import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
+import { steps } from "@/components/UserInfoSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
   StyledStepper,
 } from "@/components/UserInfoSubmission/FormItems";
-import { steps } from "@/components/UserInfoSubmission/const";
-import OrdererInfo from "../UserInfoSubmission/OrdererInfo";
-import CompanyAddress from "../UserInfoSubmission/CompanyAddress";
-import ShippingAddress from "../UserInfoSubmission/ShippingAddress";
-import { useTranslation } from "react-i18next";
-import { Button, Dialog } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
+import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
 
 const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
   const [openDialog, setOpenDialog] = useState(false);

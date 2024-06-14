@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
-import styled from "styled-components";
-import Icons from "./Icons";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import Icons from "@/components/Icons";
 import i18nConfig from "@/i18nConfig";
 
 const StyledLanguageSelector = styled.div`

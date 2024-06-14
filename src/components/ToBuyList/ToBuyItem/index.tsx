@@ -1,29 +1,18 @@
-import Icons from "@/components/Icons";
-import {
-  Button,
-  Collapse,
-  Divider,
-  IconButton,
-  ListItemText,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Button, IconButton, SelectChangeEvent } from "@mui/material";
 import Image from "next/image";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import Icons from "@/components/Icons";
 import {
   Counter,
-  MenuItemDivider,
   SelectedOption,
-  StyledBottom,
   StyledInput,
-  StyledInputLabel,
-  StyledMenuItem,
   StyledNameDiv,
   StyledRight,
   StyledTop,
   StyledWrapper,
-} from "./styled";
-import { useTranslation } from "react-i18next";
+} from "@/components/ToBuyList/ToBuyItem/styled";
 
 interface Color {
   colorId: string;
@@ -64,13 +53,13 @@ const Product = ({
   }
   const { productId, colors, name } = product;
   const [open, setOpen] = useState<boolean>(true);
-  let selected: string[] = Object.keys(selectedInfoList[productId] || []).sort(
-    (a, b) => {
-      if (a === COLOR_CARD_TEXT) return -1;
-      if (b === COLOR_CARD_TEXT) return 1;
-      return +a.split(" ")[0] - +b.split(" ")[0];
-    }
-  );
+  const selected: string[] = Object.keys(
+    selectedInfoList[productId] || []
+  ).sort((a, b) => {
+    if (a === COLOR_CARD_TEXT) return -1;
+    if (b === COLOR_CARD_TEXT) return 1;
+    return +a.split(" ")[0] - +b.split(" ")[0];
+  });
   const count = selectedInfoList[productId];
 
   const [isLoading, setIsLoading] = useState(true);
@@ -99,8 +88,8 @@ const Product = ({
       target: { value },
     } = event;
 
-    let sortedValue = (value as string[]).sort();
-    let sortedSelected = selected.sort();
+    const sortedValue = (value as string[]).sort();
+    const sortedSelected = selected.sort();
 
     let colorCardIdx = sortedValue.indexOf(COLOR_CARD_TEXT);
     if (colorCardIdx > -1) {

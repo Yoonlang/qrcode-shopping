@@ -1,8 +1,9 @@
-import { META } from "@/components/const";
-import i18nConfig from "@/i18nConfig";
 import { dir } from "i18next";
 import { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
+
+import { META } from "@/components/const";
+import i18nConfig from "@/i18nConfig";
 
 export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));

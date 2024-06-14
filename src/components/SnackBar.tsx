@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import { Snackbar } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
+import styled from "styled-components";
 
 const StyledSnackBar = styled(Snackbar)`
   display: flex;
