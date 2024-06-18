@@ -3,10 +3,21 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { PRIMARY, PRIMARY_DARK } from "@/components/const";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import {
+  PRIMARY,
+  PRIMARY_DARK,
+  bottomText,
+  iconList,
+  pageIdList,
+  snackBarStatusMessage,
+} from "@/components/const";
+import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
+import { pageIdxState } from "@/recoil/atoms/pageIdxState";
+import { FormikProps } from "formik";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -51,9 +62,14 @@ const StyledSelectionIconButton = styled(
   }
 `;
 
-const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
+const TitleAppBar = () => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
+
+  const goToPreviousPage = () => {
+    setPageIdx((pageIdx - 1) % 3);
+  };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
@@ -66,13 +82,13 @@ const TitleAppBar = ({ id, hasBack, handleClickBack }) => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {hasBack && (
-          <StyledIconButton onClick={handleClickBack} edge="start">
+        {pageIdx !== 0 && (
+          <StyledIconButton onClick={goToPreviousPage} edge="start">
             {Icons["back"]}
           </StyledIconButton>
         )}
       </div>
-      <AppBarTitleText>{t(titleText[id])}</AppBarTitleText>
+      <AppBarTitleText>{t(titleText[pageIdList[pageIdx]])}</AppBarTitleText>
       <div className="right">
         <StyledSelectionIconButton
           onClick={handleClick}
@@ -144,23 +160,80 @@ const BottomAppBarTitleText = styled.div`
 `;
 
 const BottomAppBar = ({
-  icon,
-  handleClick,
-  text,
-  badgeNum,
+  scannedItemList,
+  formik,
 }: {
-  icon: string;
-  handleClick: () => void;
-  text: string;
-  badgeNum: number | null;
+  scannedItemList: {};
+  formik: FormikProps<any>;
 }) => {
+  const { t } = useTranslation();
+  const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
+  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+
+  const handleBottomAppBarClick = () => {
+    if (pageIdx === 0) {
+      if (Object.keys(scannedItemList).length === 0) {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["empty"]),
+          isMessageSnackBarOpen: true,
+        });
+      } else {
+        setPageIdx((pageIdx + 1) % 3);
+      }
+    } else if (pageIdx === 1) {
+      if (Object.keys(scannedItemList).length === 0) {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["multipleScan"]),
+          isMessageSnackBarOpen: true,
+        });
+      } else {
+        // let isAllSelected = true;
+        // for (const key of Object.keys(scannedItems)) {
+        //   if (
+        //     !selectedInfos[key] ||
+        //     Object.keys(selectedInfos[key]).length <= 0
+        //   ) {
+        //     isAllSelected = false;
+        //     break;
+        //   }
+        // }
+
+        // if (isAllSelected) {
+        setPageIdx((pageIdx + 1) % 3);
+        // console.log(selectedInfos);
+        // } else {
+        //   setSnackBarStatus(snackBarStatusMessage["option"]);
+        //   setSnackBarOpen(true);
+        // }
+      }
+    } else {
+      if (formik.isValid) {
+        formik.handleSubmit();
+        localStorage.removeItem("scannedItems");
+        localStorage.removeItem("selectedInfos");
+        localStorage.removeItem("form");
+      } else {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["invalid"]),
+          isMessageSnackBarOpen: true,
+        });
+      }
+    }
+  };
+
   return (
     <StyledBottomAppBar>
-      <button onClick={handleClick}>
-        <StyledBadge badgeContent={badgeNum === null ? null : badgeNum}>
-          {Icons[icon]}
+      <button onClick={handleBottomAppBarClick}>
+        <StyledBadge
+          badgeContent={
+            pageIdx === 0 ? Object.keys(scannedItemList).length : null
+          }
+        >
+          {Icons[iconList[pageIdx]]}
         </StyledBadge>
-        <BottomAppBarTitleText>{text}</BottomAppBarTitleText>
+        <BottomAppBarTitleText>
+          {t(bottomText[pageIdList[pageIdx]])}
+        </BottomAppBarTitleText>
       </button>
     </StyledBottomAppBar>
   );

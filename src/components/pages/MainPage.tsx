@@ -4,14 +4,11 @@ import utc from "dayjs/plugin/utc";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import {
-  bottomText,
-  iconList,
   initialValues,
-  pageIdList,
   SERVER_URL,
   snackBarStatusMessage,
 } from "@/components/const";
@@ -21,6 +18,7 @@ import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
+import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -28,7 +26,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { t } = useTranslation();
-  const [pageIdx, setPageIdx] = useState(0);
+  const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
   const [fetchedItemList, setFetchedItemList] = useState(null);
   const [scannedItemList, setScannedItemList] = useState({});
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
@@ -163,61 +161,6 @@ const MainPage = () => {
     }
   }, []);
 
-  const handleClickBottomAppBar = () => {
-    if (pageIdx === 0) {
-      if (Object.keys(scannedItemList).length === 0) {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["empty"]),
-          isMessageSnackBarOpen: true,
-        });
-      } else {
-        setPageIdx((pageIdx + 1) % 3);
-      }
-    } else if (pageIdx === 1) {
-      if (Object.keys(scannedItemList).length === 0) {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["multipleScan"]),
-          isMessageSnackBarOpen: true,
-        });
-      } else {
-        // let isAllSelected = true;
-        // for (const key of Object.keys(scannedItems)) {
-        //   if (
-        //     !selectedInfos[key] ||
-        //     Object.keys(selectedInfos[key]).length <= 0
-        //   ) {
-        //     isAllSelected = false;
-        //     break;
-        //   }
-        // }
-
-        // if (isAllSelected) {
-        setPageIdx((pageIdx + 1) % 3);
-        // console.log(selectedInfos);
-        // } else {
-        //   setSnackBarStatus(snackBarStatusMessage["option"]);
-        //   setSnackBarOpen(true);
-        // }
-      }
-    } else {
-      if (formik.isValid) {
-        formik.handleSubmit();
-        localStorage.removeItem("scannedItems");
-        localStorage.removeItem("selectedInfos");
-        localStorage.removeItem("form");
-      } else {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["invalid"]),
-          isMessageSnackBarOpen: true,
-        });
-      }
-    }
-  };
-
-  const handleClickBackButton = () => {
-    setPageIdx((pageIdx - 1) % 3);
-  };
-
   useEffect(() => {
     const getProductList = async () => {
       try {
@@ -240,11 +183,7 @@ const MainPage = () => {
   return (
     <main>
       {isSplashScreenOpen && <SplashScreen />}
-      <TitleAppBar
-        id={pageIdList[pageIdx]}
-        hasBack={pageIdx === 0 ? false : true}
-        handleClickBack={handleClickBackButton}
-      />
+      <TitleAppBar />
       {pageIdx === 0 && (
         <QrScannerPage
           scannedItemList={scannedItemList}
@@ -265,12 +204,7 @@ const MainPage = () => {
       {pageIdx === 2 && (
         <UserInfoSubmissionPage formik={formik} goToNextPage={goToNextPage} />
       )}
-      <BottomAppBar
-        icon={iconList[pageIdx]}
-        handleClick={handleClickBottomAppBar}
-        text={t(bottomText[pageIdList[pageIdx]])}
-        badgeNum={pageIdx === 0 ? Object.keys(scannedItemList).length : null}
-      />
+      <BottomAppBar scannedItemList={scannedItemList} formik={formik} />
     </main>
   );
 };
