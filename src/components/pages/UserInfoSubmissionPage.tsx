@@ -1,12 +1,9 @@
-import { Button, Dialog, Step, StepContent, StepLabel } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+import { Step, StepContent, StepLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import MessageDialog from "@/components/MessageDialog";
 import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
-import { steps } from "@/components/UserInfoSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
@@ -14,14 +11,15 @@ import {
 } from "@/components/UserInfoSubmission/FormItems";
 import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
+import { steps } from "@/components/UserInfoSubmission/const";
 
 const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
     goToNextPage();
   };
 
@@ -64,23 +62,17 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
 
   useEffect(() => {
     if (formik.isSubmitting) {
-      setOpenDialog(true);
+      setIsDialogOpen(true);
     }
   }, [formik.isSubmitting]);
 
   return (
     <>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogContent>
-          <DialogContentText>{t("Submission Complete")}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
-            {t("Confirm")}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+      <MessageDialog
+        dialogOpen={isDialogOpen}
+        onDialogClose={handleDialogClose}
+        messageList={["Submittion Complete"]}
+      />
       <form onSubmit={formik.handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
