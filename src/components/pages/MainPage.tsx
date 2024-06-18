@@ -18,6 +18,7 @@ import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
+import useProductList from "@/hooks/useProductList";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -34,11 +35,11 @@ const bottomText = {
 const MainPage = () => {
   const { t } = useTranslation();
   const [pageIdx, setPageIdx] = useState(0);
-  const [fetchedItemList, setFetchedItemList] = useState(null);
   const [scannedItemList, setScannedItemList] = useState({});
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
   const [selectedInfoList, setSelectedInfoList] = useState<Object>({});
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+  const { productList } = useProductList();
 
   const goToNextPage = () => {
     setPageIdx((pageIdx + 1) % 3);
@@ -223,25 +224,6 @@ const MainPage = () => {
     setPageIdx((pageIdx - 1) % 3);
   };
 
-  useEffect(() => {
-    const getProductList = async () => {
-      try {
-        const res = await fetch(`${SERVER_URL}/products`, {
-          method: "get",
-        });
-        const data = await res.json();
-        if (data?.error) {
-          throw data.error;
-        }
-        setFetchedItemList(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getProductList();
-  }, []);
-
   return (
     <main>
       {isSplashScreenOpen && <SplashScreen />}
@@ -254,14 +236,14 @@ const MainPage = () => {
         <QrScannerPage
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
-          fetchedItemList={fetchedItemList}
+          fetchedItemList={productList}
         />
       )}
       {pageIdx === 1 && (
         <ToBuyListPage
           scannedItemList={scannedItemList}
           setScannedItemList={setScannedItemList}
-          fetchedItemList={fetchedItemList ?? []}
+          fetchedItemList={productList ?? []}
           selectedInfoList={selectedInfoList}
           setSelectedInfoList={setSelectedInfoList}
           formik={formik}
