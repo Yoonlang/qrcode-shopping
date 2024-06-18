@@ -8,21 +8,21 @@ import {
 import { useTranslation } from "react-i18next";
 
 const MessageDialog = ({
-  dialogOpen,
+  isDialogOpen,
   onDialogClose,
   messageList,
 }: {
-  dialogOpen: boolean;
+  isDialogOpen: boolean;
   onDialogClose: () => void;
   messageList: string[];
 }) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog open={dialogOpen} onClose={onDialogClose}>
+    <Dialog open={isDialogOpen} onClose={onDialogClose}>
       <DialogContent>
         {messageList.map((message, idx) => (
-          <DialogContentText key={idx}>{t(message)}</DialogContentText>
+          <DialogContentText key={idx}>{message}</DialogContentText>
         ))}
       </DialogContent>
       <DialogActions>

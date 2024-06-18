@@ -69,9 +69,9 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
   return (
     <>
       <MessageDialog
-        dialogOpen={isDialogOpen}
+        isDialogOpen={isDialogOpen}
         onDialogClose={handleDialogClose}
-        messageList={["Submittion Complete"]}
+        messageList={[t("Submittion Complete")]}
       />
       <form onSubmit={formik.handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">

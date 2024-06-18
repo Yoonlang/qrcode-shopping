@@ -48,9 +48,9 @@ const QrScannerPage = ({
   return (
     <StyledContainer>
       <MessageDialog
-        dialogOpen={isDialogOpen}
+        isDialogOpen={isDialogOpen}
         onDialogClose={handleDialogClose}
-        messageList={["Dialog1", "Dialog2"]}
+        messageList={[t("Dialog1"), t("Dialog2")]}
       />
       {!isDialogOpen && (
         <QrCode
