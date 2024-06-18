@@ -97,13 +97,9 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
                 </AddressBox>
               )}
               <StepContent>
-                {index === 0 ? (
-                  <OrdererInfo formik={formik} />
-                ) : index === 1 ? (
-                  <CompanyAddress formik={formik} />
-                ) : (
-                  <ShippingAddress formik={formik} />
-                )}
+                {index === 0 && <OrdererInfo formik={formik} />}
+                {index === 1 && <CompanyAddress formik={formik} />}
+                {index === 2 && <ShippingAddress formik={formik} />}
               </StepContent>
             </Step>
           ))}
