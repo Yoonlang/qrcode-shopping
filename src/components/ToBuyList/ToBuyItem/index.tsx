@@ -1,9 +1,11 @@
 import { Button, IconButton, SelectChangeEvent } from "@mui/material";
 import Image from "next/image";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
 
 import Icons from "@/components/Icons";
+import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 import {
   Counter,
   SelectedOption,
@@ -13,18 +15,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-
-interface Color {
-  colorId: string;
-  colorName: string;
-}
-
-interface ProductType {
-  productId: string;
-  name: string | undefined;
-  colors: Color[];
-  image: string | null;
-}
+import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
 
 const COLOR_CARD_TEXT = "Color Card";
 const OPTION_TEXT = "Option";
@@ -35,23 +26,18 @@ const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
 
 const Product = ({
   product,
-  selectedInfoList,
-  setSelectedInfoList,
   handleDelete,
 }: {
   product: ProductType;
-  selectedInfoList: Object;
-  setSelectedInfoList: Dispatch<SetStateAction<Object>>;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
   ) => void;
 }) => {
   const { t } = useTranslation();
-  if (product.name === undefined) {
-    product.name = product.productId;
-  }
-  const { productId, colors, name } = product;
+  const [selectedInfoList, setSelectedInfoList] =
+    useRecoilState(selectedInfoState);
+  const { productId, colors, name = productId } = product;
   const [open, setOpen] = useState<boolean>(true);
   const selected: string[] = Object.keys(
     selectedInfoList[productId] || []
@@ -88,7 +74,7 @@ const Product = ({
       target: { value },
     } = event;
 
-    const sortedValue = (value as string[]).sort();
+    const sortedValue = (value as unknown as string[]).sort();
     const sortedSelected = selected.sort();
 
     let colorCardIdx = sortedValue.indexOf(COLOR_CARD_TEXT);
@@ -148,7 +134,7 @@ const Product = ({
         ...selectedInfoList,
         [productId]: {
           ...selectedInfoList[productId],
-          [name]: `${Number(e.target.value)}`,
+          [name]: Number(value),
         },
       });
     } else {

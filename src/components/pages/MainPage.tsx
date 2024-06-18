@@ -8,8 +8,8 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import {
-  initialValues,
   SERVER_URL,
+  initialValues,
   snackBarStatusMessage,
 } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
@@ -17,8 +17,11 @@ import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
+import { fetchedItemState } from "@/recoil/atoms/fetchedItemState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
+import { scannedItemState } from "@/recoil/atoms/scannedItemState";
+import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -27,10 +30,11 @@ dayjs.tz.setDefault("Asia/Seoul");
 const MainPage = () => {
   const { t } = useTranslation();
   const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
-  const [fetchedItemList, setFetchedItemList] = useState(null);
-  const [scannedItemList, setScannedItemList] = useState({});
+  const setFetchedItemList = useSetRecoilState(fetchedItemState);
+  const setScannedItemList = useSetRecoilState(scannedItemState);
+  const [selectedInfoList, setSelectedInfoList] =
+    useRecoilState(selectedInfoState);
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
-  const [selectedInfoList, setSelectedInfoList] = useState<Object>({});
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
 
   const goToNextPage = () => {
@@ -184,26 +188,12 @@ const MainPage = () => {
     <main>
       {isSplashScreenOpen && <SplashScreen />}
       <TitleAppBar />
-      {pageIdx === 0 && (
-        <QrScannerPage
-          scannedItemList={scannedItemList}
-          setScannedItemList={setScannedItemList}
-          fetchedItemList={fetchedItemList}
-        />
-      )}
-      {pageIdx === 1 && (
-        <ToBuyListPage
-          scannedItemList={scannedItemList}
-          setScannedItemList={setScannedItemList}
-          fetchedItemList={fetchedItemList ?? []}
-          selectedInfoList={selectedInfoList}
-          setSelectedInfoList={setSelectedInfoList}
-        />
-      )}
+      {pageIdx === 0 && <QrScannerPage />}
+      {pageIdx === 1 && <ToBuyListPage />}
       {pageIdx === 2 && (
         <UserInfoSubmissionPage formik={formik} goToNextPage={goToNextPage} />
       )}
-      <BottomAppBar scannedItemList={scannedItemList} formik={formik} />
+      <BottomAppBar formik={formik} />
     </main>
   );
 };

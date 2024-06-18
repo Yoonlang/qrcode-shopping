@@ -1,11 +1,10 @@
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
+import { FormikProps } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Icons from "@/components/Icons";
-import Info from "@/components/Info";
-import LanguageSelector from "@/components/LanguageSelector";
 import {
   PRIMARY,
   PRIMARY_DARK,
@@ -14,10 +13,12 @@ import {
   pageIdList,
   snackBarStatusMessage,
 } from "@/components/const";
+import Icons from "@/components/Icons";
+import Info from "@/components/Info";
+import LanguageSelector from "@/components/LanguageSelector";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
-import { FormikProps } from "formik";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { scannedItemState } from "@/recoil/atoms/scannedItemState";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -159,16 +160,11 @@ const BottomAppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const BottomAppBar = ({
-  scannedItemList,
-  formik,
-}: {
-  scannedItemList: {};
-  formik: FormikProps<any>;
-}) => {
+const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
   const { t } = useTranslation();
   const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+  const scannedItemList = useRecoilValue(scannedItemState);
 
   const handleBottomAppBarClick = () => {
     if (pageIdx === 0) {
