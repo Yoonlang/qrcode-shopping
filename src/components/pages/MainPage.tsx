@@ -8,8 +8,11 @@ import { useSetRecoilState } from "recoil";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import {
-  SERVER_URL,
+  bottomText,
+  iconList,
   initialValues,
+  pageIdList,
+  SERVER_URL,
   snackBarStatusMessage,
 } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
@@ -22,14 +25,6 @@ import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
-
-const pageIdList = ["main", "cart", "info"];
-const iconList = ["cart", "person", "check"];
-const bottomText = {
-  main: "My Products",
-  cart: "Information",
-  info: "Submission",
-};
 
 const MainPage = () => {
   const { t } = useTranslation();
