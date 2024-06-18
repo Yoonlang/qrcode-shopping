@@ -7,7 +7,7 @@ import { initialValues } from "@/components/Manager/const";
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isCookieAuthChecking, setIsCookieAuthChecking] = useState(true);
   const formik = useFormik({
     initialValues: initialValues,
     validateOnMount: true,
@@ -79,13 +79,13 @@ const ManagerPage = () => {
       } catch (e) {
         console.log(e);
       } finally {
-        setIsLoading(false);
+        setIsCookieAuthChecking(false);
       }
     };
     checkCookieAuth();
   }, []);
 
-  if (isLoading) {
+  if (isCookieAuthChecking) {
     return <main />;
   }
 
