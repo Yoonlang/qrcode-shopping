@@ -17,8 +17,8 @@ import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
-import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import useProductList from "@/hooks/useProductList";
+import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
