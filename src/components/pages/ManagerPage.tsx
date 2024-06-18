@@ -85,11 +85,13 @@ const ManagerPage = () => {
     checkCookieAuth();
   }, []);
 
+  if (isLoading) {
+    return <main />;
+  }
+
   return (
     <main>
-      {isLoading ? (
-        <></>
-      ) : hasAuth ? (
+      {hasAuth ? (
         <Dashboard formik={formik} />
       ) : (
         <LoginForm setHasAuth={setHasAuth} />
