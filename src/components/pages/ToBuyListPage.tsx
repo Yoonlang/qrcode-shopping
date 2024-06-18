@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import Icons from "@/components/Icons";
-import { MessageSnackBar } from "@/components/SnackBar";
 import Product from "@/components/ToBuyList/ToBuyItem";
 import {
   SelectedBox,

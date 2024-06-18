@@ -1,9 +1,7 @@
-
 import { Button, Dialog } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -11,7 +9,6 @@ import styled from "styled-components";
 
 import { snackBarStatusMessage } from "@/components/const";
 import QrCode from "@/components/QrScanner/QrCode";
-import { MessageSnackBar } from "@/components/SnackBar";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledContainer = styled.div`
