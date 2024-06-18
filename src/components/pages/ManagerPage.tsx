@@ -8,7 +8,7 @@ import LoginForm from "@/components/Manager/LoginForm";
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isCookieAuthChecking, setIsCookieAuthChecking] = useState(true);
   const formik = useFormik({
     initialValues: initialValues,
     validateOnMount: true,
@@ -80,17 +80,19 @@ const ManagerPage = () => {
       } catch (e) {
         console.log(e);
       } finally {
-        setIsLoading(false);
+        setIsCookieAuthChecking(false);
       }
     };
     checkCookieAuth();
   }, []);
 
+  if (isCookieAuthChecking) {
+    return <main />;
+  }
+
   return (
     <main>
-      {isLoading ? (
-        <></>
-      ) : hasAuth ? (
+      {hasAuth ? (
         <Dashboard formik={formik} />
       ) : (
         <LoginForm setHasAuth={setHasAuth} />
