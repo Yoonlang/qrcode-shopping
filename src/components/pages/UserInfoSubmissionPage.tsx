@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import MessageDialog from "@/components/MessageDialog";
 import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
+import { steps } from "@/components/UserInfoSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
@@ -11,7 +12,6 @@ import {
 } from "@/components/UserInfoSubmission/FormItems";
 import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
-import { steps } from "@/components/UserInfoSubmission/const";
 
 const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

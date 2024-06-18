@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import { snackBarStatusMessage } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";
 import QrCode from "@/components/QrScanner/QrCode";
-import { snackBarStatusMessage } from "@/components/const";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledContainer = styled.div`
