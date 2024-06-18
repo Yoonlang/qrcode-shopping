@@ -100,14 +100,12 @@ const ToBuyListPage = ({
   fetchedItemList,
   selectedInfoList,
   setSelectedInfoList,
-  formik,
 }: {
   scannedItemList: Object;
   setScannedItemList: Dispatch<SetStateAction<Object>>;
   fetchedItemList: any[];
   selectedInfoList: Object;
   setSelectedInfoList: Dispatch<SetStateAction<Object>>;
-  formik: FormikProps<any>;
 }) => {
   const { t } = useTranslation();
 

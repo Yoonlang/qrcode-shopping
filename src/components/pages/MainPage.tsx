@@ -198,7 +198,6 @@ const MainPage = () => {
           fetchedItemList={fetchedItemList ?? []}
           selectedInfoList={selectedInfoList}
           setSelectedInfoList={setSelectedInfoList}
-          formik={formik}
         />
       )}
       {pageIdx === 2 && (
