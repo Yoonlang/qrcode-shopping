@@ -1,13 +1,10 @@
-import { Button, Dialog } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { snackBarStatusMessage } from "@/components/const";
+import MessageDialog from "@/components/MessageDialog";
 import QrCode from "@/components/QrScanner/QrCode";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
@@ -50,17 +47,11 @@ const QrScannerPage = ({
 
   return (
     <StyledContainer>
-      <Dialog open={isDialogOpen} onClose={handleDialogClose}>
-        <DialogContent>
-          <DialogContentText>1. {t("Dialog1")}</DialogContentText>
-          <DialogContentText>2. {t("Dialog2")}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="primary" autoFocus>
-            {t("Confirm")}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <MessageDialog
+        isDialogOpen={isDialogOpen}
+        onDialogClose={handleDialogClose}
+        messageList={[t("Dialog1"), t("Dialog2")]}
+      />
       {!isDialogOpen && (
         <QrCode
           setScannedItemList={setScannedItemList}
