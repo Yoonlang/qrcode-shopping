@@ -6,12 +6,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
+import { getProductList, submitOrdererInfo } from "@/api";
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
-import {
-  SERVER_URL,
-  initialValues,
-  snackBarStatusMessage,
-} from "@/components/const";
+import { initialValues, snackBarStatusMessage } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
 import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
@@ -63,77 +60,70 @@ const MainPage = () => {
         isSameAddress,
         productLengthUnit,
       } = form;
-      try {
-        const res = await fetch(`${SERVER_URL}/users-info`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
-            hopeProducts: Object.entries(selectedInfoList).map(
-              ([productId, items]) => {
-                return {
-                  productId,
-                  colorCardQuantity: items["Color Card"] ?? 0,
-                  sampleYardages: Object.entries(items)
-                    .filter(([colorInfo, b]) => colorInfo !== "Color Card")
-                    .map(([colorInfo, quantity]) => {
-                      const [colorId, colorName] = colorInfo.split(". ");
-                      return {
-                        colorId,
-                        colorName,
-                        yardageQuantity: quantity,
-                      };
-                    }),
-                };
-              }
-            ),
-            productLengthUnit: productLengthUnit,
-            personalInfo: {
-              name,
-              companyName,
-              businessType,
-              contactInfo: {
-                phoneNumber: {
-                  countryCode: `+${countryCode.phone}`,
-                  number: phoneNumber,
-                },
-                email,
-                weChatId,
+      submitOrdererInfo(
+        JSON.stringify({
+          submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
+          hopeProducts: Object.entries(selectedInfoList).map(
+            ([productId, items]) => {
+              return {
+                productId,
+                colorCardQuantity: items["Color Card"] ?? 0,
+                sampleYardages: Object.entries(items)
+                  .filter(([colorInfo, b]) => colorInfo !== "Color Card")
+                  .map(([colorInfo, quantity]) => {
+                    const [colorId, colorName] = colorInfo.split(". ");
+                    return {
+                      colorId,
+                      colorName,
+                      yardageQuantity: quantity,
+                    };
+                  }),
+              };
+            }
+          ),
+          productLengthUnit: productLengthUnit,
+          personalInfo: {
+            name,
+            companyName,
+            businessType,
+            contactInfo: {
+              phoneNumber: {
+                countryCode: `+${countryCode.phone}`,
+                number: phoneNumber,
               },
-              companyAddress: {
-                postalCode: coPostalCode,
-                address: coAddress,
-                detailAddress: coDetailAddress,
-              },
-              shippingAddress: {
-                postalCode: isSameAddress ? coPostalCode : spPostalCode,
-                address: isSameAddress ? coAddress : spAddress,
-                detailAddress: isSameAddress
-                  ? coDetailAddress
-                  : spDetailAddress,
-              },
+              email,
+              weChatId,
             },
-          }),
-        });
-        const data = await res.json();
-
-        setScannedItemList({});
-        setSelectedInfoList({});
-        resetForm();
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["complete"]),
-          isMessageSnackBarOpen: true,
-        });
-        // setTimeout(() => {
-        //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        //   setSnackBarOpen(true);
-        // }, 3500);
-        // setPageIdx((pageIdx + 1) % 3);
-      } catch (e) {
-        console.log(e);
-      }
+            companyAddress: {
+              postalCode: coPostalCode,
+              address: coAddress,
+              detailAddress: coDetailAddress,
+            },
+            shippingAddress: {
+              postalCode: isSameAddress ? coPostalCode : spPostalCode,
+              address: isSameAddress ? coAddress : spAddress,
+              detailAddress: isSameAddress ? coDetailAddress : spDetailAddress,
+            },
+          },
+        }),
+        () => {
+          setScannedItemList({});
+          setSelectedInfoList({});
+          resetForm();
+          setMessageSnackBarState({
+            message: t(snackBarStatusMessage["complete"]),
+            isMessageSnackBarOpen: true,
+          });
+          // setTimeout(() => {
+          //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
+          //   setSnackBarOpen(true);
+          // }, 3500);
+          // setPageIdx((pageIdx + 1) % 3);
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
     },
   });
 
@@ -166,22 +156,14 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    const getProductList = async () => {
-      try {
-        const res = await fetch(`${SERVER_URL}/products`, {
-          method: "get",
-        });
-        const data = await res.json();
-        if (data?.error) {
-          throw data.error;
-        }
+    getProductList(
+      (data) => {
         setFetchedItemList(data);
-      } catch (e) {
+      },
+      (e) => {
         console.log(e);
       }
-    };
-
-    getProductList();
+    );
   }, []);
 
   return (
