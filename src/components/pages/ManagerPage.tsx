@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 
+import { postProduct, putProduct } from "@/api";
 import { SERVER_URL } from "@/components/const";
 import { initialValues } from "@/components/Manager/const";
 import Dashboard from "@/components/Manager/Dashboard";
@@ -51,17 +52,17 @@ const ManagerPage = () => {
         }
       }
 
-      try {
-        const res = await fetch(`${SERVER_URL}/products`, {
-          method: newForm["method"],
-          credentials: "include",
-          body: formData,
-        });
-        const data = await res.json();
-        resetForm();
-      } catch (e) {
-        console.log(e);
-      }
+      const submitProduct =
+        newForm["method"] === "PUT" ? putProduct : postProduct;
+      submitProduct(
+        formData,
+        () => {
+          resetForm();
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
     },
   });
 

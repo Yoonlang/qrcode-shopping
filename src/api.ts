@@ -1,44 +1,72 @@
 import { SERVER_URL } from "@/components/const";
 
+const handleResponse = (res) =>
+  res.json().then((data) => {
+    if (!res.ok) {
+      throw new Error(data.error);
+    }
+    return data;
+  });
+
 const http = {
-  get: (path, onSuccess, onFail) =>
+  get: (path, options = {}, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "GET",
+      ...options,
     })
-      .then((res) =>
-        res.json().then((data) => {
-          if (!res.ok) {
-            throw new Error(data.error);
-          }
-          return data;
-        })
-      )
+      .then(handleResponse)
       .then(onSuccess)
       .catch(onFail),
-  post: (path, headers, body, onSuccess, onFail) =>
+  post: (path, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "POST",
-      headers: headers ?? {
+      headers: {
         "Content-Type": "application/json",
       },
+      ...options,
       body,
     })
-      .then((res) =>
-        res.json().then((data) => {
-          if (!res.ok) {
-            throw new Error(data.error);
-          }
-          return data;
-        })
-      )
+      .then(handleResponse)
+      .then(onSuccess)
+      .catch(onFail),
+  put: (path, options = {}, body, onSuccess, onFail) =>
+    fetch(`${SERVER_URL}${path}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      ...options,
+      body,
+    })
+      .then(handleResponse)
       .then(onSuccess)
       .catch(onFail),
 };
 
 export const getProductList = (onSuccess, onFail) => {
-  return http.get(`/products`, onSuccess, onFail);
+  return http.get(`/products`, undefined, onSuccess, onFail);
 };
 
 export const submitOrdererInfo = (body, onSuccess, onFail) => {
-  return http.post(`/users-info`, null, body, onSuccess, onFail);
+  return http.post(`/users-info`, undefined, body, onSuccess, onFail);
+};
+
+export const postProduct = (body, onSuccess, onFail) => {
+  return http.post(
+    `/products`,
+    { credentials: "include", headers: {} },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
+export const putProduct = (body, onSuccess, onFail) => {
+  return http.put(
+    `/products`,
+    { credentials: "include", headers: {} },
+    body,
+    onSuccess,
+    onFail
+  );
 };
