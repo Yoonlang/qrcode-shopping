@@ -64,3 +64,11 @@ export const snackBarStatusMessage = {
   invalid: `Please enter valid information`,
   complete: `Successfully submitted`,
 };
+
+export const pageIdList = ["main", "cart", "info"];
+export const iconList = ["cart", "person", "check"];
+export const bottomText = {
+  main: "My Products",
+  cart: "Information",
+  info: "Submission",
+};

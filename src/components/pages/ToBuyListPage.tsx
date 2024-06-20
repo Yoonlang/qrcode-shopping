@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { FormikProps } from "formik";
-import { Dispatch, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import Icons from "@/components/Icons";
@@ -11,6 +11,9 @@ import {
   StyledBox,
   StyledButton,
 } from "@/components/ToBuyList/ToBuyItem/styled";
+import { fetchedItemState } from "@/recoil/atoms/fetchedItemState";
+import { scannedItemState } from "@/recoil/atoms/scannedItemState";
+import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -94,22 +97,13 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
 
 const EMPTY_TEXT = "No items scanned";
 
-const ToBuyListPage = ({
-  scannedItemList,
-  setScannedItemList,
-  fetchedItemList,
-  selectedInfoList,
-  setSelectedInfoList,
-  formik,
-}: {
-  scannedItemList: Object;
-  setScannedItemList: Dispatch<SetStateAction<Object>>;
-  fetchedItemList: any[];
-  selectedInfoList: Object;
-  setSelectedInfoList: Dispatch<SetStateAction<Object>>;
-  formik: FormikProps<any>;
-}) => {
+const ToBuyListPage = () => {
   const { t } = useTranslation();
+  const [scannedItemList, setScannedItemList] =
+    useRecoilState(scannedItemState);
+  const [selectedInfoList, setSelectedInfoList] =
+    useRecoilState(selectedInfoState);
+  const fetchedItemList = useRecoilValue(fetchedItemState);
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -144,8 +138,6 @@ const ToBuyListPage = ({
                 <Product
                   key={product.productId}
                   product={product}
-                  selectedInfoList={selectedInfoList}
-                  setSelectedInfoList={setSelectedInfoList}
                   handleDelete={handleDelete}
                 />
               );
