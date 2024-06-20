@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import { SERVER_URL } from "@/components/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
+import { deleteOrdererList } from "@/api";
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -40,22 +41,16 @@ const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
     }
   };
 
-  const deleteUsers = async () => {
-    try {
-      const deletePromises = selectedUserList.map((user) => {
-        return fetch(`${SERVER_URL}/users-info`, {
-          method: "DELETE",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user }),
-        });
-      });
-
-      await Promise.all(deletePromises);
-      await getUserInfoList();
-    } catch (e) {
-      console.log(e);
-    }
+  const handleUserDeletionButtonClick = () => {
+    deleteOrdererList(
+      selectedUserList,
+      () => {
+        getUserInfoList();
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
   };
 
   useEffect(() => {
@@ -65,7 +60,7 @@ const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
   return (
     <StyledUserBoard>
       <div className="header">
-        <Button onClick={deleteUsers}>Delete</Button>
+        <Button onClick={handleUserDeletionButtonClick}>Delete</Button>
       </div>
       <UserInfoTable
         userInfoList={userInfoList}
