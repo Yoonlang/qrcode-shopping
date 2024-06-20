@@ -4,12 +4,12 @@ import utc from "dayjs/plugin/utc";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import {
-  SERVER_URL,
   initialValues,
+  SERVER_URL,
   snackBarStatusMessage,
 } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
@@ -29,17 +29,13 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { t } = useTranslation();
-  const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
+  const pageIdx = useRecoilValue(pageIdxState);
   const setFetchedItemList = useSetRecoilState(fetchedItemState);
   const setScannedItemList = useSetRecoilState(scannedItemState);
   const [selectedInfoList, setSelectedInfoList] =
     useRecoilState(selectedInfoState);
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-
-  const goToNextPage = () => {
-    setPageIdx((pageIdx + 1) % 3);
-  };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -190,9 +186,7 @@ const MainPage = () => {
       <TitleAppBar />
       {pageIdx === 0 && <QrScannerPage />}
       {pageIdx === 1 && <ToBuyListPage />}
-      {pageIdx === 2 && (
-        <UserInfoSubmissionPage formik={formik} goToNextPage={goToNextPage} />
-      )}
+      {pageIdx === 2 && <UserInfoSubmissionPage formik={formik} />}
       <BottomAppBar formik={formik} />
     </main>
   );

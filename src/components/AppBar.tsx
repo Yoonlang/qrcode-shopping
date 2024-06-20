@@ -13,6 +13,7 @@ import {
   pageIdList,
   snackBarStatusMessage,
 } from "@/components/const";
+import usePageRouter from "@/components/hooks/usePageRouter";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -66,11 +67,8 @@ const StyledSelectionIconButton = styled(
 const TitleAppBar = () => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
-
-  const goToPreviousPage = () => {
-    setPageIdx((pageIdx - 1) % 3);
-  };
+  const pageIdx = useRecoilValue(pageIdxState);
+  const { goToPreviousPage } = usePageRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
