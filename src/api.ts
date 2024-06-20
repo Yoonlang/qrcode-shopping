@@ -70,3 +70,7 @@ export const putProduct = (body, onSuccess, onFail) => {
     onFail
   );
 };
+
+export const checkCookieAuth = (onSuccess, onFail) => {
+  return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
+};

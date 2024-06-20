@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 
-import { postProduct, putProduct } from "@/api";
+import { checkCookieAuth, postProduct, putProduct } from "@/api";
 import { SERVER_URL } from "@/components/const";
 import { initialValues } from "@/components/Manager/const";
 import Dashboard from "@/components/Manager/Dashboard";
@@ -67,24 +67,16 @@ const ManagerPage = () => {
   });
 
   useEffect(() => {
-    const checkCookieAuth = async () => {
-      try {
-        const res = await fetch(`${SERVER_URL}/cookie`, {
-          method: "get",
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) {
-          throw data.error;
-        }
+    checkCookieAuth(
+      () => {
         setHasAuth(true);
-      } catch (e) {
+        setIsCookieAuthChecking(false);
+      },
+      (e) => {
         console.log(e);
-      } finally {
         setIsCookieAuthChecking(false);
       }
-    };
-    checkCookieAuth();
+    );
   }, []);
 
   if (isCookieAuthChecking) {
