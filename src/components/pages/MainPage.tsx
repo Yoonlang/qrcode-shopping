@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
+import { getProductList, submitOrdererInfo } from "@/api";
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import { initialValues, snackBarStatusMessage } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
@@ -18,7 +19,6 @@ import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 import { scannedItemState } from "@/recoil/atoms/scannedItemState";
 import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
-import { getProductList, submitOrdererInfo } from "@/api";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
