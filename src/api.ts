@@ -59,10 +59,6 @@ export const getProductList = (onSuccess, onFail) => {
   return http.get(`/products`, undefined, onSuccess, onFail);
 };
 
-export const submitOrdererInfo = (body, onSuccess, onFail) => {
-  return http.post(`/users-info`, undefined, body, onSuccess, onFail);
-};
-
 export const postProduct = (body, onSuccess, onFail) => {
   return http.post(
     `/products`,
@@ -83,8 +79,8 @@ export const putProduct = (body, onSuccess, onFail) => {
   );
 };
 
-export const checkCookieAuth = (onSuccess, onFail) => {
-  return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
+export const submitOrdererInfo = (body, onSuccess, onFail) => {
+  return http.post(`/users-info`, undefined, body, onSuccess, onFail);
 };
 
 const deleteOrderer = (body, onSuccess, onFail) => {
@@ -105,4 +101,8 @@ export const deleteOrdererList = (ordererList, onSuccess, onFail) => {
   });
 
   Promise.all(deletePromises).then(onSuccess).catch(onFail);
+};
+
+export const checkCookieAuth = (onSuccess, onFail) => {
+  return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
 };

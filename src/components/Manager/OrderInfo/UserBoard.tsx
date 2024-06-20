@@ -3,9 +3,9 @@ import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { deleteOrdererList } from "@/api";
 import { SERVER_URL } from "@/components/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
-import { deleteOrdererList } from "@/api";
 
 const StyledUserBoard = styled.div`
   display: flex;
