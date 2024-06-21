@@ -79,6 +79,26 @@ export const putProduct = (body, onSuccess, onFail) => {
   );
 };
 
+const deleteProduct = (body, onSuccess, onFail) => {
+  return http.delete(
+    `/products`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
+export const deleteProductList = (productList, onSuccess, onFail) => {
+  const deletePromises = productList.map((product) => {
+    return new Promise((resolve, reject) => {
+      deleteProduct(JSON.stringify({ productId: product }), resolve, reject);
+    });
+  });
+
+  Promise.all(deletePromises).then(onSuccess).catch(onFail);
+};
+
 export const getOrdererInfoList = (onSuccess, onFail) => {
   return http.get(`/users-info`, { credentials: "include" }, onSuccess, onFail);
 };
