@@ -2,8 +2,8 @@ import { useRecoilState } from "recoil";
 
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 
-type PageName = "main" | "cart" | "info" | "error";
-const pageNameList: PageName[] = ["main", "cart", "info"];
+type PageName = "qrcode" | "cart" | "info" | "error";
+const pageNameList: PageName[] = ["qrcode", "cart", "info"];
 
 const usePageRouter = () => {
   const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);

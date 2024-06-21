@@ -166,7 +166,7 @@ const MainPage = () => {
     <main>
       {isSplashScreenOpen && <SplashScreen />}
       <TitleAppBar />
-      {isPageName("main") && <QrScannerPage />}
+      {isPageName("qrcode") && <QrScannerPage />}
       {isPageName("cart") && <ToBuyListPage />}
       {isPageName("info") && <UserInfoSubmissionPage formik={formik} />}
       <BottomAppBar formik={formik} />

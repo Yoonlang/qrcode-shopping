@@ -88,7 +88,7 @@ const TitleAppBar = () => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {!isPageName("main") && (
+        {!isPageName("qrcode") && (
           <StyledIconButton onClick={goToPreviousPage} edge="start">
             {Icons["back"]}
           </StyledIconButton>
@@ -172,7 +172,7 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
   const scannedItemList = useRecoilValue(scannedItemState);
 
   const handleBottomAppBarClick = () => {
-    if (isPageName("main")) {
+    if (isPageName("qrcode")) {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["empty"]),
@@ -227,7 +227,7 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
       <button onClick={handleBottomAppBarClick}>
         <StyledBadge
           badgeContent={
-            isPageName("main") ? Object.keys(scannedItemList).length : null
+            isPageName("qrcode") ? Object.keys(scannedItemList).length : null
           }
         >
           {Icons[bottomAppBarIconList[pageName]]}
