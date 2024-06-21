@@ -79,6 +79,10 @@ export const putProduct = (body, onSuccess, onFail) => {
   );
 };
 
+export const getOrdererInfoList = (onSuccess, onFail) => {
+  return http.get(`/users-info`, { credentials: "include" }, onSuccess, onFail);
+};
+
 export const submitOrdererInfo = (body, onSuccess, onFail) => {
   return http.post(`/users-info`, undefined, body, onSuccess, onFail);
 };

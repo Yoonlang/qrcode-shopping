@@ -3,7 +3,7 @@ import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { deleteOrdererList } from "@/api";
+import { deleteOrdererList, getOrdererInfoList } from "@/api";
 import { SERVER_URL } from "@/components/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
 
@@ -25,27 +25,22 @@ const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [userInfoList, setUserInfoList] = useState([]);
   const [selectedUserList, setSelectedUserList] = useState([]);
 
-  const getUserInfoList = async () => {
-    try {
-      const res = await fetch(`${SERVER_URL}/users-info`, {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await res.json();
-      if (data?.error) {
-        throw data.error;
+  const updateOrdererInfoList = () => {
+    getOrdererInfoList(
+      (data) => {
+        setUserInfoList(data);
+      },
+      (e) => {
+        console.log(e);
       }
-      setUserInfoList(data);
-    } catch (e) {
-      console.log(e);
-    }
+    );
   };
 
   const handleUserDeletionButtonClick = () => {
     deleteOrdererList(
       selectedUserList,
       () => {
-        getUserInfoList();
+        updateOrdererInfoList();
       },
       (e) => {
         console.log(e);
@@ -54,7 +49,7 @@ const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
   };
 
   useEffect(() => {
-    getUserInfoList();
+    updateOrdererInfoList();
   }, []);
 
   return (
