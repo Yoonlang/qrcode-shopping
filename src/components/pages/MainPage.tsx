@@ -4,7 +4,7 @@ import utc from "dayjs/plugin/utc";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { getProductList, submitOrdererInfo } from "@/api";
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
@@ -14,9 +14,9 @@ import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
+import usePageRouter from "@/hooks/usePageRouter";
 import { fetchedItemState } from "@/recoil/atoms/fetchedItemState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 import { scannedItemState } from "@/recoil/atoms/scannedItemState";
 import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
 
@@ -26,7 +26,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { t } = useTranslation();
-  const pageIdx = useRecoilValue(pageIdxState);
+  const { isPageName } = usePageRouter();
   const setFetchedItemList = useSetRecoilState(fetchedItemState);
   const setScannedItemList = useSetRecoilState(scannedItemState);
   const [selectedInfoList, setSelectedInfoList] =
@@ -166,9 +166,9 @@ const MainPage = () => {
     <main>
       {isSplashScreenOpen && <SplashScreen />}
       <TitleAppBar />
-      {pageIdx === 0 && <QrScannerPage />}
-      {pageIdx === 1 && <ToBuyListPage />}
-      {pageIdx === 2 && <UserInfoSubmissionPage formik={formik} />}
+      {isPageName("qrcode") && <QrScannerPage />}
+      {isPageName("cart") && <ToBuyListPage />}
+      {isPageName("info") && <UserInfoSubmissionPage formik={formik} />}
       <BottomAppBar formik={formik} />
     </main>
   );
