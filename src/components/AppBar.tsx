@@ -13,7 +13,7 @@ import {
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
-import usePageRouter from "@/hooks/usePageRouter";
+import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { scannedItemState } from "@/recoil/atoms/scannedItemState";
 
@@ -38,20 +38,24 @@ const AppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const bottomText = {
-  main: "My Products",
+type PageObject = {
+  [key in PageName]: string;
+};
+
+const bottomText: PageObject = {
+  qrcode: "My Products",
   cart: "Information",
   info: "Submission",
 };
 
-const titleText = {
-  main: "QR code",
+const titleText: PageObject = {
+  qrcode: "QR code",
   cart: "Cart",
   info: "Info",
 };
 
-const bottomAppBarIconList = {
-  main: "cart",
+const bottomAppBarIconList: PageObject = {
+  qrcode: "cart",
   cart: "person",
   info: "check",
 };
