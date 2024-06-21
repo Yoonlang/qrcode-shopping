@@ -2,21 +2,18 @@ import { AppBar, Badge, IconButton, Popover } from "@mui/material";
 import { FormikProps } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import {
   PRIMARY,
   PRIMARY_DARK,
-  bottomText,
-  iconList,
-  pageIdList,
   snackBarStatusMessage,
 } from "@/components/const";
-import usePageRouter from "@/components/hooks/usePageRouter";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
@@ -42,10 +39,26 @@ const AppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const titleText = {
-  main: "QR code",
+type PageObject = {
+  [key in PageName]: string;
+};
+
+const bottomText: PageObject = {
+  qrcode: "My Products",
+  cart: "Information",
+  info: "Submission",
+};
+
+const titleText: PageObject = {
+  qrcode: "QR code",
   cart: "Cart",
   info: "Info",
+};
+
+const bottomAppBarIconList: PageObject = {
+  qrcode: "cart",
+  cart: "person",
+  info: "check",
 };
 
 const StyledIconButton = styled(IconButton)`
@@ -67,8 +80,7 @@ const StyledSelectionIconButton = styled(
 const TitleAppBar = () => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const pageIdx = useRecoilValue(pageIdxState);
-  const { goToPreviousPage } = usePageRouter();
+  const { pageName, isPageName, goToPreviousPage } = usePageRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
@@ -81,13 +93,13 @@ const TitleAppBar = () => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {pageIdx !== 0 && (
+        {!isPageName("qrcode") && (
           <StyledIconButton onClick={goToPreviousPage} edge="start">
             {Icons["back"]}
           </StyledIconButton>
         )}
       </div>
-      <AppBarTitleText>{t(titleText[pageIdList[pageIdx]])}</AppBarTitleText>
+      <AppBarTitleText>{t(titleText[pageName])}</AppBarTitleText>
       <div className="right">
         <StyledSelectionIconButton
           onClick={handleClick}
@@ -160,27 +172,28 @@ const BottomAppBarTitleText = styled.div`
 
 const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
   const { t } = useTranslation();
-  const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
+  const { pageName, isPageName, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const scannedItemList = useRecoilValue(scannedItemListState);
 
   const handleBottomAppBarClick = () => {
-    if (pageIdx === 0) {
+    if (isPageName("qrcode")) {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["empty"]),
           isMessageSnackBarOpen: true,
         });
       } else {
-        setPageIdx((pageIdx + 1) % 3);
+        goToNextPage();
       }
-    } else if (pageIdx === 1) {
+    } else if (isPageName("cart")) {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["multipleScan"]),
           isMessageSnackBarOpen: true,
         });
       } else {
+        goToNextPage();
         // let isAllSelected = true;
         // for (const key of Object.keys(scannedItems)) {
         //   if (
@@ -193,7 +206,6 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
         // }
 
         // if (isAllSelected) {
-        setPageIdx((pageIdx + 1) % 3);
         // console.log(selectedInfos);
         // } else {
         //   setSnackBarStatus(snackBarStatusMessage["option"]);
@@ -217,14 +229,12 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
       <button onClick={handleBottomAppBarClick}>
         <StyledBadge
           badgeContent={
-            pageIdx === 0 ? Object.keys(scannedItemList).length : null
+            isPageName("qrcode") ? Object.keys(scannedItemList).length : null
           }
         >
-          {Icons[iconList[pageIdx]]}
+          {Icons[bottomAppBarIconList[pageName]]}
         </StyledBadge>
-        <BottomAppBarTitleText>
-          {t(bottomText[pageIdList[pageIdx]])}
-        </BottomAppBarTitleText>
+        <BottomAppBarTitleText>{t(bottomText[pageName])}</BottomAppBarTitleText>
       </button>
     </StyledBottomAppBar>
   );

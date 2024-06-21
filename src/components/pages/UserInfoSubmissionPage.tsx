@@ -2,7 +2,6 @@ import { Step, StepContent, StepLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import usePageRouter from "@/components/hooks/usePageRouter";
 import MessageDialog from "@/components/MessageDialog";
 import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
 import { steps } from "@/components/UserInfoSubmission/const";
@@ -13,6 +12,7 @@ import {
 } from "@/components/UserInfoSubmission/FormItems";
 import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
+import usePageRouter from "@/hooks/usePageRouter";
 
 const UserInfoSubmissionPage = ({ formik }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
