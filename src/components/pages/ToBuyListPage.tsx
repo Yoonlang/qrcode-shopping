@@ -11,9 +11,9 @@ import {
   StyledBox,
   StyledButton,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-import { fetchedItemState } from "@/recoil/atoms/fetchedItemState";
-import { scannedItemState } from "@/recoil/atoms/scannedItemState";
-import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
+import { fetchedItemListState } from "@/recoil/atoms/fetchedItemListState";
+import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
+import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -100,10 +100,11 @@ const EMPTY_TEXT = "No items scanned";
 const ToBuyListPage = () => {
   const { t } = useTranslation();
   const [scannedItemList, setScannedItemList] =
-    useRecoilState(scannedItemState);
-  const [selectedInfoList, setSelectedInfoList] =
-    useRecoilState(selectedInfoState);
-  const fetchedItemList = useRecoilValue(fetchedItemState);
+    useRecoilState(scannedItemListState);
+  const [selectedInfoList, setSelectedInfoList] = useRecoilState(
+    selectedInfoListState
+  );
+  const fetchedItemList = useRecoilValue(fetchedItemListState);
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -112,7 +113,6 @@ const ToBuyListPage = () => {
     const newScannedItemList = { ...scannedItemList };
     delete newScannedItemList[id];
     setScannedItemList(newScannedItemList);
-    localStorage.setItem("scannedItems", JSON.stringify(newScannedItemList));
 
     const newSelectedInfoList = { ...selectedInfoList };
     delete newSelectedInfoList[id];

@@ -15,10 +15,11 @@ import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
 import usePageRouter from "@/hooks/usePageRouter";
-import { fetchedItemState } from "@/recoil/atoms/fetchedItemState";
+import { fetchedItemListState } from "@/recoil/atoms/fetchedItemListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { scannedItemState } from "@/recoil/atoms/scannedItemState";
-import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
+import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
+import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -26,11 +27,12 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { t } = useTranslation();
-  const { isPageName } = usePageRouter();
-  const setFetchedItemList = useSetRecoilState(fetchedItemState);
-  const setScannedItemList = useSetRecoilState(scannedItemState);
-  const [selectedInfoList, setSelectedInfoList] =
-    useRecoilState(selectedInfoState);
+    const { isPageName } = usePageRouter();
+  const setFetchedItemList = useSetRecoilState(fetchedItemListState);
+  const setScannedItemList = useSetRecoilState(scannedItemListState);
+  const [selectedInfoList, setSelectedInfoList] = useRecoilState(
+    selectedInfoListState
+  );
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(false);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
 
@@ -136,16 +138,6 @@ const MainPage = () => {
       }, 2000);
     }
 
-    if (localStorage.getItem("scannedItems")) {
-      setScannedItemList(
-        JSON.parse(localStorage.getItem("scannedItems") || "")
-      );
-    }
-    if (localStorage.getItem("selectedInfos")) {
-      setSelectedInfoList(
-        JSON.parse(localStorage.getItem("selectedInfos") || "")
-      );
-    }
     if (localStorage.getItem("form")) {
       formik.setValues(JSON.parse(localStorage.getItem("form") || ""));
     }

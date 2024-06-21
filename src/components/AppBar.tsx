@@ -15,7 +15,8 @@ import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { scannedItemState } from "@/recoil/atoms/scannedItemState";
+import { pageIdxState } from "@/recoil/atoms/pageIdxState";
+import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -173,7 +174,7 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
   const { t } = useTranslation();
   const { pageName, isPageName, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const scannedItemList = useRecoilValue(scannedItemState);
+  const scannedItemList = useRecoilValue(scannedItemListState);
 
   const handleBottomAppBarClick = () => {
     if (isPageName("qrcode")) {
@@ -214,9 +215,6 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
     } else {
       if (formik.isValid) {
         formik.handleSubmit();
-        localStorage.removeItem("scannedItems");
-        localStorage.removeItem("selectedInfos");
-        localStorage.removeItem("form");
       } else {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["invalid"]),
