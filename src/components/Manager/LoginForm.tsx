@@ -8,29 +8,24 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-import { SERVER_URL } from "@/components/const";
+import { postLogin } from "@/api";
 
 const LoginForm = ({ setHasAuth }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const inputData = new FormData(event.currentTarget);
-    try {
-      const res = await fetch(`${SERVER_URL}/login`, {
-        method: "post",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: inputData.get("email"),
-          password: inputData.get("password"),
-        }),
-      });
-      const data = await res.json();
-      if (data.message) {
+    postLogin(
+      JSON.stringify({
+        email: inputData.get("email"),
+        password: inputData.get("password"),
+      }),
+      () => {
         setHasAuth(true);
+      },
+      (e) => {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
-    }
+    );
   };
 
   return (

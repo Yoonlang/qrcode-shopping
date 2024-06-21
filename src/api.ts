@@ -130,3 +130,13 @@ export const deleteOrdererList = (ordererList, onSuccess, onFail) => {
 export const checkCookieAuth = (onSuccess, onFail) => {
   return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
 };
+
+export const postLogin = (body, onSuccess, onFail) => {
+  return http.post(
+    `/login`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
