@@ -13,10 +13,10 @@ import {
   pageIdList,
   snackBarStatusMessage,
 } from "@/components/const";
-import usePageRouter from "@/components/hooks/usePageRouter";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import usePageRouter from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 import { scannedItemState } from "@/recoil/atoms/scannedItemState";
