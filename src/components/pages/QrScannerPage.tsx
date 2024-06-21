@@ -6,9 +6,9 @@ import styled from "styled-components";
 import { snackBarStatusMessage } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";
 import QrCode from "@/components/QrScanner/QrCode";
-import { fetchedItemState } from "@/recoil/atoms/fetchedItemState";
+import { fetchedItemListState } from "@/recoil/atoms/fetchedItemListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { scannedItemState } from "@/recoil/atoms/scannedItemState";
+import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -20,8 +20,8 @@ const QrScannerPage = () => {
   const { t } = useTranslation();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const [scannedItemList, setScannedItemList] =
-    useRecoilState(scannedItemState);
-  const fetchedItemList = useRecoilValue(fetchedItemState);
+    useRecoilState(scannedItemListState);
+  const fetchedItemList = useRecoilValue(fetchedItemListState);
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -33,7 +33,6 @@ const QrScannerPage = () => {
         message: t(snackBarStatusMessage["scanned"]),
         isMessageSnackBarOpen: true,
       });
-      localStorage.setItem("scannedItems", JSON.stringify(scannedItemList));
     } else {
       setMessageSnackBarState({
         message: t(snackBarStatusMessage["default"]),

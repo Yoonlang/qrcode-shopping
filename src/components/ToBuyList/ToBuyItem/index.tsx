@@ -15,7 +15,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-import { selectedInfoState } from "@/recoil/atoms/selectedInfoState";
+import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
 
 const COLOR_CARD_TEXT = "Color Card";
 const OPTION_TEXT = "Option";
@@ -35,8 +35,9 @@ const Product = ({
   ) => void;
 }) => {
   const { t } = useTranslation();
-  const [selectedInfoList, setSelectedInfoList] =
-    useRecoilState(selectedInfoState);
+  const [selectedInfoList, setSelectedInfoList] = useRecoilState(
+    selectedInfoListState
+  );
   const { productId, colors, name = productId } = product;
   const [open, setOpen] = useState<boolean>(true);
   const selected: string[] = Object.keys(
@@ -64,10 +65,6 @@ const Product = ({
     });
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("selectedInfos", JSON.stringify(selectedInfoList));
-  }, [selectedInfoList]);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedInfoList>) => {
     const {
