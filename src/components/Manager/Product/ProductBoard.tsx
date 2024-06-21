@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import styled from "styled-components";
 
+import { deleteProductList, getProductList } from "@/api";
 import { SERVER_URL } from "@/components/const";
 import {
   ProductAddModal,
@@ -12,7 +13,6 @@ import {
   StyledModal,
 } from "@/components/Manager/DashboardItems";
 import ProductTable from "@/components/Manager/Product/ProductTable";
-
 
 const fileTypes = ["JPG", "PNG"];
 
@@ -133,37 +133,27 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
     setOpen(false);
   };
 
-  const getProductList = async () => {
-    try {
-      const res = await fetch(`${SERVER_URL}/products`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      if (data?.error) {
-        throw data.error;
+  const updateProductList = () => {
+    getProductList(
+      (data) => {
+        setProductList(data);
+      },
+      (e) => {
+        console.log(e);
       }
-      setProductList(data);
-    } catch (e) {
-      console.log(e);
-    }
+    );
   };
 
-  const deleteProducts = async () => {
-    try {
-      const deletePromises = selectedProductList.map((product) => {
-        return fetch(`${SERVER_URL}/products`, {
-          method: "DELETE",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId: product }),
-        });
-      });
-
-      await Promise.all(deletePromises);
-      await getProductList();
-    } catch (e) {
-      console.log(e);
-    }
+  const handleProductDeletionButtonClick = () => {
+    deleteProductList(
+      selectedProductList,
+      () => {
+        updateProductList();
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
   };
 
   const cachedFormikSubmit = useMemo(() => {
@@ -172,14 +162,14 @@ const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
 
   useEffect(() => {
     if (!cachedFormikSubmit) {
-      getProductList();
+      updateProductList();
     }
   }, [cachedFormikSubmit]);
 
   return (
     <StyledProductBoard>
       <div className="header">
-        <Button onClick={deleteProducts}>Delete</Button>
+        <Button onClick={handleProductDeletionButtonClick}>Delete</Button>
         <Button onClick={handleModalOpen}>Add</Button>
       </div>
       <ProductTable
