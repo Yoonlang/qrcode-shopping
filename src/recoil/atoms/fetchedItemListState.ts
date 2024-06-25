@@ -1,7 +1,7 @@
 import { selector } from "recoil";
 
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 import { getProductList } from "@/api";
+import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 
 export const fetchedItemListSelector = selector<ProductType[]>({
   key: "fetchedItemListSelector",

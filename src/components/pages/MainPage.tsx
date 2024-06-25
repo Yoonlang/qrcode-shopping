@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-import { getProductList, submitOrdererInfo } from "@/api";
+import { submitOrdererInfo } from "@/api";
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import { initialValues, snackBarStatusMessage } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
@@ -15,11 +15,9 @@ import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import { validationSchema } from "@/components/validation";
 import usePageRouter from "@/hooks/usePageRouter";
-import { fetchedItemListState } from "@/recoil/atoms/fetchedItemListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
-
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -27,8 +25,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { t } = useTranslation();
-    const { isPageName } = usePageRouter();
-  const setFetchedItemList = useSetRecoilState(fetchedItemListState);
+  const { isPageName } = usePageRouter();
   const setScannedItemList = useSetRecoilState(scannedItemListState);
   const [selectedInfoList, setSelectedInfoList] = useRecoilState(
     selectedInfoListState
@@ -141,17 +138,6 @@ const MainPage = () => {
     if (localStorage.getItem("form")) {
       formik.setValues(JSON.parse(localStorage.getItem("form") || ""));
     }
-  }, []);
-
-  useEffect(() => {
-    getProductList(
-      (data) => {
-        setFetchedItemList(data);
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
   }, []);
 
   return (
