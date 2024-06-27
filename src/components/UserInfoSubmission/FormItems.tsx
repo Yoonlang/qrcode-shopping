@@ -7,13 +7,14 @@ import {
   Stepper,
   TextField,
 } from "@mui/material";
+import { FormikContextType, useFormikContext } from "formik";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
-import { FormikContextType, useFormikContext } from "formik";
-import { useEffect, useState } from "react";
-import { FormType } from "../const";
+
 
 const StyledBox = styled(Box)`
   display: grid;

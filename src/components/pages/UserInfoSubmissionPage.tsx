@@ -1,9 +1,12 @@
 import { Step, StepContent, StepLabel } from "@mui/material";
+import { FormikContextType, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { FormType } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";
 import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
+import { steps } from "@/components/UserInfoSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
@@ -11,10 +14,8 @@ import {
 } from "@/components/UserInfoSubmission/FormItems";
 import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
-import { steps } from "@/components/UserInfoSubmission/const";
 import usePageRouter from "@/hooks/usePageRouter";
-import { FormikContextType, useFormikContext } from "formik";
-import { FormType } from "../const";
+
 
 const UserInfoSubmissionPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

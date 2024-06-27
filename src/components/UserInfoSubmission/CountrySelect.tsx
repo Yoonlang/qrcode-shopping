@@ -1,21 +1,22 @@
 import { MenuItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import { FormikContextType, useFormikContext } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
+import {
+  CountryType,
+  countries,
+} from "@/components/UserInfoSubmission/countries";
 import {
   StyledErrorMessage,
   StyledIconButton,
   StyledTextField,
 } from "@/components/UserInfoSubmission/FormItems";
-import {
-  CountryType,
-  countries,
-} from "@/components/UserInfoSubmission/countries";
-import { FormikContextType, useFormikContext } from "formik";
-import { FormType } from "../const";
+
 
 const StyledDiv = styled.div`
   margin-top: 8px;

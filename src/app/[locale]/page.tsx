@@ -1,14 +1,14 @@
 "use client";
 
+import { FormikProvider } from "formik";
 import { RecoilRoot } from "recoil";
 
 import initTranslations from "@/app/i18n";
 import MessageSnackBar from "@/components/MessageSnackBar";
-import TranslationsProvider from "@/components/TranslationsProvider";
 import MainPage from "@/components/pages/MainPage";
+import TranslationsProvider from "@/components/TranslationsProvider";
 import useInitialFormikValues from "@/hooks/useInitialFormikValues";
 import GlobalStyle from "@/styles/global";
-import { FormikProvider } from "formik";
 
 const i18nNamespaces = ["common"];
 

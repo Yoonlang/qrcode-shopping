@@ -1,13 +1,14 @@
+import { FormikContextType, useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 
+import { FormType } from "@/components/const";
+import { business } from "@/components/UserInfoSubmission/const";
 import CountrySelect from "@/components/UserInfoSubmission/CountrySelect";
 import {
   UserInput,
   UserSelect,
 } from "@/components/UserInfoSubmission/FormItems";
-import { business } from "@/components/UserInfoSubmission/const";
-import { FormikContextType, useFormikContext } from "formik";
-import { FormType } from "../const";
+
 
 const OrdererInfo = () => {
   const { t } = useTranslation();

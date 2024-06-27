@@ -1,21 +1,21 @@
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
+import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Icons from "@/components/Icons";
-import Info from "@/components/Info";
-import LanguageSelector from "@/components/LanguageSelector";
 import {
   PRIMARY,
   PRIMARY_DARK,
   snackBarStatusMessage,
 } from "@/components/const";
+import Icons from "@/components/Icons";
+import Info from "@/components/Info";
+import LanguageSelector from "@/components/LanguageSelector";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
-import { useFormikContext } from "formik";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
