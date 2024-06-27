@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import MessageDialog from "@/components/MessageDialog";
 import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
-import { steps } from "@/components/UserInfoSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
@@ -12,13 +11,22 @@ import {
 } from "@/components/UserInfoSubmission/FormItems";
 import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
+import { steps } from "@/components/UserInfoSubmission/const";
 import usePageRouter from "@/hooks/usePageRouter";
+import { FormikContextType, useFormikContext } from "formik";
+import { FormType } from "../const";
 
-const UserInfoSubmissionPage = ({ formik }) => {
+const UserInfoSubmissionPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
   const { goToNextPage } = usePageRouter();
+  const {
+    values,
+    errors,
+    isSubmitting,
+    handleSubmit,
+  }: FormikContextType<FormType> = useFormikContext();
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -27,28 +35,26 @@ const UserInfoSubmissionPage = ({ formik }) => {
 
   useEffect(() => {
     if (
-      !formik.errors["userName"] &&
-      !formik.errors["companyName"] &&
-      !formik.errors["business"] &&
-      !formik.errors["countryCode"] &&
-      !formik.errors["phoneNumber"] &&
-      !formik.errors["email"]
+      !errors["userName"] &&
+      !errors["companyName"] &&
+      !errors["business"] &&
+      !errors["countryCode"] &&
+      !errors["phoneNumber"] &&
+      !errors["email"]
     ) {
       setActiveStep(1);
 
       if (
-        formik.values.business === "Student" ||
-        (!formik.errors["coZipCode"] &&
-          !formik.errors["coAddress1"] &&
-          !formik.errors["coAddress2"])
+        values.businessType === "Student" ||
+        (!errors["coZipCode"] && !errors["coAddress1"] && !errors["coAddress2"])
       ) {
         setActiveStep(2);
 
         if (
-          formik.values.isSameAddress ||
-          (!formik.errors["spZipCode"] &&
-            !formik.errors["spAddress1"] &&
-            !formik.errors["spAddress2"])
+          values.isSameAddress ||
+          (!errors["spZipCode"] &&
+            !errors["spAddress1"] &&
+            !errors["spAddress2"])
         ) {
           setActiveStep(3);
         }
@@ -59,14 +65,10 @@ const UserInfoSubmissionPage = ({ formik }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem("form", JSON.stringify(formik.values));
-  }, [formik.values]);
-
-  useEffect(() => {
-    if (formik.isSubmitting) {
+    if (isSubmitting) {
       setIsDialogOpen(true);
     }
-  }, [formik.isSubmitting]);
+  }, [isSubmitting]);
 
   return (
     <>
@@ -75,7 +77,7 @@ const UserInfoSubmissionPage = ({ formik }) => {
         onDialogClose={handleDialogClose}
         messageList={[t("Submittion Complete")]}
       />
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
             <Step key={step.label} expanded>
@@ -84,15 +86,15 @@ const UserInfoSubmissionPage = ({ formik }) => {
               ) : (
                 <AddressBox>
                   <StepLabel>{t(step.label)}</StepLabel>
-                  {formik.values.businessType !== "Student" && (
-                    <AddressCheckbox name="isSameAddress" formik={formik} />
+                  {values.businessType !== "Student" && (
+                    <AddressCheckbox name="isSameAddress" />
                   )}
                 </AddressBox>
               )}
               <StepContent>
-                {index === 0 && <OrdererInfo formik={formik} />}
-                {index === 1 && <CompanyAddress formik={formik} />}
-                {index === 2 && <ShippingAddress formik={formik} />}
+                {index === 0 && <OrdererInfo />}
+                {index === 1 && <CompanyAddress />}
+                {index === 2 && <ShippingAddress />}
               </StepContent>
             </Step>
           ))}
