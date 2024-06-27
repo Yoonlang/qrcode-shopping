@@ -12,7 +12,6 @@ import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
 
-
 const initialValues: FormType = {
   name: "",
   companyName: "",
@@ -115,6 +114,7 @@ const useInitialFormikValues = () => {
         setScannedItemList({});
         setSelectedInfoList({});
         resetForm();
+        handleUpdateForm(initialValues);
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["complete"]),
           isMessageSnackBarOpen: true,
