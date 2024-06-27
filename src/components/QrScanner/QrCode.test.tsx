@@ -1,6 +1,6 @@
-import { RecoilRoot, useRecoilValueLoadable } from "recoil";
-import { act, render } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { act, render } from "@testing-library/react";
+import { RecoilRoot, useRecoilValueLoadable } from "recoil";
 
 import QrCode from "@/components/QrScanner/QrCode";
 
