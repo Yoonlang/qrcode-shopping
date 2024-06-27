@@ -1,7 +1,11 @@
 import jsQR from "jsqr";
-import { useCallback, useRef, useState , Dispatch, SetStateAction } from "react";
+import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
+import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
+import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
+import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 
 const CAPTURE_DELAY_MS = 100;
 
@@ -17,15 +21,14 @@ const StyledQrCode = styled.div`
   }
 `;
 
-const QrCode = ({
-  setScannedItemList,
-  fetchedItemList,
-}: {
-  setScannedItemList: Dispatch<SetStateAction<{}>>;
-  fetchedItemList: any[] | null;
-}) => {
+const QrCode = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState(undefined);
+  const fetchedItemListLoadable = useRecoilValueLoadable(
+    fetchedItemListSelector
+  );
+  const setScannedItemList = useSetRecoilState(scannedItemListState);
+
   const imageScan = useCallback(
     (imageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
@@ -33,8 +36,10 @@ const QrCode = ({
         const [pre, pid] = code.data.split("/");
         if (
           pre === "products" &&
-          fetchedItemList &&
-          fetchedItemList.some(({ productId }) => pid === productId)
+          fetchedItemListLoadable.state === "hasValue" &&
+          fetchedItemListLoadable.contents.some(
+            ({ productId }) => pid === productId
+          )
         )
           setScannedItemList((old) => {
             const newScannedItemList = { ...old };
@@ -43,7 +48,7 @@ const QrCode = ({
           });
       }
     },
-    [fetchedItemList]
+    [fetchedItemListLoadable.state]
   );
 
   const capture = useCallback(
@@ -71,7 +76,7 @@ const QrCode = ({
         image.src = imageSrc;
       }
     },
-    [fetchedItemList]
+    [fetchedItemListLoadable.state]
   );
 
   const handleDevicesWideAngle = (deviceList) => {
@@ -84,37 +89,39 @@ const QrCode = ({
     });
   };
 
+  if (fetchedItemListLoadable.state !== "hasValue") {
+    return <></>;
+  }
+
   return (
     <StyledQrCode>
-      {fetchedItemList && (
-        <Webcam
-          audio={false}
-          screenshotFormat="image/png"
-          ref={(node: any) => {
-            if (node) {
-              intervalRef.current = setInterval(() => {
-                capture(node);
-              }, CAPTURE_DELAY_MS);
-            } else {
-              if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-              }
+      <Webcam
+        audio={false}
+        screenshotFormat="image/png"
+        ref={(node: any) => {
+          if (node) {
+            intervalRef.current = setInterval(() => {
+              capture(node);
+            }, CAPTURE_DELAY_MS);
+          } else {
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
             }
-          }}
-          onUserMedia={() => {
-            navigator.mediaDevices
-              .enumerateDevices()
-              .then(handleDevicesWideAngle);
-          }}
-          videoConstraints={{
-            deviceId: deviceId ? { exact: deviceId } : undefined,
-            facingMode: {
-              ideal: "environment",
-            },
-          }}
-          screenshotQuality={1}
-        />
-      )}
+          }
+        }}
+        onUserMedia={() => {
+          navigator.mediaDevices
+            .enumerateDevices()
+            .then(handleDevicesWideAngle);
+        }}
+        videoConstraints={{
+          deviceId: deviceId ? { exact: deviceId } : undefined,
+          facingMode: {
+            ideal: "environment",
+          },
+        }}
+        screenshotQuality={1}
+      />
     </StyledQrCode>
   );
 };

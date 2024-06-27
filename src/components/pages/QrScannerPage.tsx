@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { snackBarStatusMessage } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";
 import QrCode from "@/components/QrScanner/QrCode";
-import { fetchedItemListState } from "@/recoil/atoms/fetchedItemListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 
@@ -19,9 +18,7 @@ const QrScannerPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const [scannedItemList, setScannedItemList] =
-    useRecoilState(scannedItemListState);
-  const fetchedItemList = useRecoilValue(fetchedItemListState);
+  const scannedItemList = useRecoilValue(scannedItemListState);
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -48,12 +45,7 @@ const QrScannerPage = () => {
         onDialogClose={handleDialogClose}
         messageList={[t("Dialog1"), t("Dialog2")]}
       />
-      {!isDialogOpen && (
-        <QrCode
-          setScannedItemList={setScannedItemList}
-          fetchedItemList={fetchedItemList}
-        />
-      )}
+      {!isDialogOpen && <QrCode />}
     </StyledContainer>
   );
 };
