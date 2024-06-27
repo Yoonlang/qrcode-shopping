@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -45,7 +45,11 @@ const QrScannerPage = () => {
         onDialogClose={handleDialogClose}
         messageList={[t("Dialog1"), t("Dialog2")]}
       />
-      {!isDialogOpen && <QrCode />}
+      {!isDialogOpen && (
+        <Suspense fallback={<></>}>
+          <QrCode />
+        </Suspense>
+      )}
     </StyledContainer>
   );
 };

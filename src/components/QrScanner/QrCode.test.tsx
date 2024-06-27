@@ -1,25 +1,28 @@
 import "@testing-library/jest-dom";
 import { act, render } from "@testing-library/react";
-import { RecoilRoot, useRecoilValueLoadable } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 
 import QrCode from "@/components/QrScanner/QrCode";
+import { Suspense } from "react";
 
 jest.mock("recoil", () => ({
   ...jest.requireActual("recoil"),
-  useRecoilValueLoadable: jest.fn(),
+  useRecoilValue: jest.fn(),
 }));
 
 describe("QrCode loading 확인", () => {
   it("fetchedItemList가 로딩 중일 때, Fragment 반환", () => {
     // Given
-    (useRecoilValueLoadable as jest.Mock).mockReturnValue({
-      state: "loading",
+    (useRecoilValue as jest.Mock).mockImplementation(() => {
+      throw new Promise(() => {});
     });
 
     // When
     const { container } = render(
       <RecoilRoot>
-        <QrCode />
+        <Suspense fallback={<></>}>
+          <QrCode />
+        </Suspense>
       </RecoilRoot>
     );
 
@@ -27,23 +30,22 @@ describe("QrCode loading 확인", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("fetchedItemList 불러오기 성공 시, camera DOMElement 반환", async () => {
+  it("fetchedItemList 불러오기 성공 시, video DOMElement 반환", async () => {
     // Given
-    (useRecoilValueLoadable as jest.Mock).mockReturnValue({
-      state: "hasValue",
-      contents: [
-        {
-          productId: "test",
-        },
-      ],
-    });
+    (useRecoilValue as jest.Mock).mockReturnValue([
+      {
+        productId: "test",
+      },
+    ]);
 
     // When
     let container;
     await act(async () => {
       const renderResult = render(
         <RecoilRoot>
-          <QrCode />
+          <Suspense fallback={<></>}>
+            <QrCode />
+          </Suspense>
         </RecoilRoot>
       );
 
