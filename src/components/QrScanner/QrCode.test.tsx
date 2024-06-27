@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 import { act, render } from "@testing-library/react";
+import { Suspense } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
 
 import QrCode from "@/components/QrScanner/QrCode";
-import { Suspense } from "react";
 
 jest.mock("recoil", () => ({
   ...jest.requireActual("recoil"),
