@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "secure": "next dev --experimental-https",
-    "test": "jest"
+    "pretest": "node scripts/set-react-jsx.js",
+    "test": "jest",
+    "posttest": "node scripts/reset-jsx.js"
   },
   "dependencies": {
     "@emotion/styled": "^11.11.5",
