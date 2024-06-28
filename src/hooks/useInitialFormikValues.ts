@@ -8,9 +8,11 @@ import { submitOrdererInfo } from "@/api";
 import { FormType, snackBarStatusMessage } from "@/components/const";
 import { validationSchema } from "@/components/validation";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
+import useScannedItemList from "@/hooks/useScannedItemList";
+import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
+
 
 const initialValues: FormType = {
   name: "",
@@ -39,12 +41,13 @@ const useInitialFormikValues = () => {
   const [selectedInfoList, setSelectedInfoList] = useRecoilState(
     selectedInfoListState
   );
-  const setScannedItemList = useSetRecoilState(scannedItemListState);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const [localStorageValues, handleUpdateForm] = useLocalStorageState({
     key: "form",
     value: initialValues,
   });
+  const { handleScannedItemListUpdate } = useScannedItemList();
+  const { handleSelectedItemListUpdate } = useSelectedInfoList();
 
   const handleSubmit = async (form, { resetForm }) => {
     const {
@@ -111,8 +114,8 @@ const useInitialFormikValues = () => {
         },
       }),
       () => {
-        setScannedItemList({});
-        setSelectedInfoList({});
+        handleScannedItemListUpdate({});
+        handleSelectedItemListUpdate({});
         resetForm();
         handleUpdateForm(initialValues);
         setMessageSnackBarState({

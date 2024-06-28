@@ -1,7 +1,9 @@
 import jsQR from "jsqr";
-import { useCallback, useRef, useState , Dispatch, SetStateAction } from "react";
+import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
+
+import useScannedItemList from "@/hooks/useScannedItemList";
 
 const CAPTURE_DELAY_MS = 100;
 
@@ -17,15 +19,10 @@ const StyledQrCode = styled.div`
   }
 `;
 
-const QrCode = ({
-  setScannedItemList,
-  fetchedItemList,
-}: {
-  setScannedItemList: Dispatch<SetStateAction<{}>>;
-  fetchedItemList: any[] | null;
-}) => {
+const QrCode = ({ fetchedItemList }: { fetchedItemList: any[] | null }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState(undefined);
+  const { setScannedItemList } = useScannedItemList();
   const imageScan = useCallback(
     (imageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
