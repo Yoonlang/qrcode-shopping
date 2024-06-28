@@ -7,12 +7,12 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
-import RetryButton from "@/components/RetryButton";
-import SplashScreen from "@/components/SplashScreen";
 import { snackBarStatusMessage } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
 import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
+import RetryButton from "@/components/RetryButton";
+import SplashScreen from "@/components/SplashScreen";
 import usePageRouter from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 

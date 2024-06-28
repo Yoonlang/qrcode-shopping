@@ -1,6 +1,7 @@
-import { fetchedItemListCounter } from "@/recoil/atoms/fetchedItemListState";
 import { Button } from "@mui/material";
 import { useSetRecoilState } from "recoil";
+
+import { fetchedItemListCounter } from "@/recoil/atoms/fetchedItemListState";
 
 const RetryButton = ({ resetErrorBoundary }) => {
   const setCounter = useSetRecoilState(fetchedItemListCounter);

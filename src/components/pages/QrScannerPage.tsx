@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import { snackBarStatusMessage } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";
 import QrCode from "@/components/QrScanner/QrCode";
 import RetryButton from "@/components/RetryButton";
-import { snackBarStatusMessage } from "@/components/const";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
