@@ -102,7 +102,7 @@ const ToBuyListPage = () => {
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const fetchedItemList = useRecoilValue(fetchedItemListState);
-  let productList = fetchedItemList.filter((item) =>
+  const productList = fetchedItemList.filter((item) =>
     Object.keys(scannedItemList).some((pid) => pid === item.productId)
   );
 
