@@ -103,6 +103,7 @@ const ToBuyListPage = () => {
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const fetchedItemListLoadable = useRecoilValueLoadable(
     fetchedItemListSelector
+  );
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
