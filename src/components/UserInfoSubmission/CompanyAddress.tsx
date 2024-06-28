@@ -1,53 +1,61 @@
-import { FormikProps } from "formik";
+import { FormikContextType, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { FormType } from "@/components/const";
 import { UserInput } from "@/components/UserInfoSubmission/FormItems";
 
-const CompanyAddress = ({ formik }: { formik: FormikProps<any> }) => {
+
+const CompanyAddress = () => {
   const { t } = useTranslation();
+  const {
+    values,
+    errors,
+    touched,
+    setValues,
+    setErrors,
+    setTouched,
+  }: FormikContextType<FormType> = useFormikContext();
+
   useEffect(() => {
-    if (formik.values.businessType === "Student") {
-      formik.setValues({
-        ...formik.values,
+    if (values.businessType === "Student") {
+      setValues({
+        ...values,
         coPostalCode: "",
         coAddress: "",
         coDetailAddress: "",
         isSameAddress: false,
       });
-      formik.setErrors({
-        ...formik.errors,
+      setErrors({
+        ...errors,
         coPostalCode: undefined,
         coAddress: undefined,
         coDetailAddress: undefined,
       });
-      formik.setTouched({
-        ...formik.touched,
+      setTouched({
+        ...touched,
         coPostalCode: false,
         coAddress: false,
         coDetailAddress: false,
       });
     }
-  }, [formik.values.businessType]);
+  }, [values.businessType]);
   return (
     <>
       <UserInput
         label={t("Postal Code")}
         name="coPostalCode"
-        formik={formik}
-        disable={formik.values.businessType === "Student"}
+        disable={values.businessType === "Student"}
       />
       <UserInput
         label={t("Address")}
         name="coAddress"
-        formik={formik}
-        disable={formik.values.businessType === "Student"}
+        disable={values.businessType === "Student"}
       />
       <UserInput
         label={t("Detail Address")}
         name="coDetailAddress"
-        formik={formik}
-        disable={formik.values.businessType === "Student"}
+        disable={values.businessType === "Student"}
       />
     </>
   );

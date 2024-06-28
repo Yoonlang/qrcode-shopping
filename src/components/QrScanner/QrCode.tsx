@@ -4,8 +4,7 @@ import Webcam from "react-webcam";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
-import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
+import useScannedItemList from "@/hooks/useScannedItemList";
 
 const CAPTURE_DELAY_MS = 100;
 
@@ -25,8 +24,8 @@ const QrCode = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState(undefined);
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
-  const setScannedItemList = useSetRecoilState(scannedItemListState);
-
+  const { setScannedItemList } = useScannedItemList();
+  
   const imageScan = useCallback((imageData) => {
     const code = jsQR(imageData.data, imageData.width, imageData.height);
     if (code) {

@@ -7,11 +7,14 @@ import {
   Stepper,
   TextField,
 } from "@mui/material";
-import { FormikProps } from "formik";
+import { FormikContextType, useFormikContext } from "formik";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
+
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -161,24 +164,21 @@ const StyledIconButton = styled(IconButton)`
   padding: 0;
 `;
 
-const AddressCheckbox = ({
-  name,
-  formik,
-}: {
-  name: string;
-  formik: FormikProps<any>;
-}) => {
+const AddressCheckbox = ({ name }: { name: string }) => {
   const { t } = useTranslation();
+  const { values, handleBlur, handleChange }: FormikContextType<FormType> =
+    useFormikContext();
+
   return (
     <StyledFormControlLabel
       control={<Checkbox />}
       label={t("Same as company address")}
       labelPlacement="start"
       name={name}
-      checked={formik.values[name]}
-      value={formik.values[name]}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
+      checked={values[name]}
+      value={values[name]}
+      onChange={handleChange}
+      onBlur={handleBlur}
     />
   );
 };
@@ -186,29 +186,35 @@ const AddressCheckbox = ({
 const UserInput = ({
   label,
   name,
-  formik,
   type = "text",
   disable = false,
   required = false,
 }: {
   label: string;
   name: string;
-  formik: FormikProps<any>;
   type?: string;
   disable?: boolean;
   required?: boolean;
 }) => {
   const { t } = useTranslation();
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+  }: FormikContextType<FormType> = useFormikContext();
+
   return (
     <>
       <StyledTextField
         required={required}
         label={label}
         name={name}
-        value={formik.values[name]}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched[name] && !!formik.errors[name]}
+        value={values[name]}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={touched[name] && !!errors[name]}
         autoComplete="off"
         type={type}
         margin="dense"
@@ -217,7 +223,7 @@ const UserInput = ({
           {
             // endAdornment: (
             //   <InputAdornment position="end">
-            //     {!formik.errors[name] && formik.touched[name] && (
+            //     {!errors[name] && touched[name] && (
             //       <>{Icons["select"]}</>
             //     )}
             //   </InputAdornment>
@@ -226,10 +232,10 @@ const UserInput = ({
         }
         disabled={disable}
       />
-      {formik.errors[name] && formik.touched[name] ? (
+      {errors[name] && touched[name] ? (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{t(formik.errors[name]?.toString() ?? "")}</p>
+          <p>{t(errors[name]?.toString() ?? "")}</p>
         </StyledErrorMessage>
       ) : null}
     </>
@@ -240,16 +246,26 @@ const UserSelect = ({
   label,
   name,
   items,
-  formik,
+
   required = false,
 }: {
   label: string;
   name: string;
   items: string[];
-  formik: FormikProps<any>;
+
   required?: boolean;
 }) => {
   const { t } = useTranslation();
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+  }: FormikContextType<FormType> = useFormikContext();
+  const [v, setV] = useState("");
+  useEffect(() => setV(values[name]), [values[name]]);
+
   return (
     <>
       <StyledTextField
@@ -257,10 +273,10 @@ const UserSelect = ({
         required={required}
         label={label}
         name={name}
-        value={formik.values[name]}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched[name] && !!formik.errors[name]}
+        value={v}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={touched[name] && !!errors[name]}
         autoComplete="off"
         margin="dense"
         fullWidth
@@ -271,16 +287,16 @@ const UserSelect = ({
         {items.map((item, index) => (
           <StyledMenuItem key={item} value={item}>
             {t(item)}
-            {formik.values[name] === item && (
+            {values[name] === item && (
               <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
             )}
           </StyledMenuItem>
         ))}
       </StyledTextField>
-      {formik.errors[name] && formik.touched[name] ? (
+      {errors[name] && touched[name] ? (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{t(formik.errors[name]?.toString() ?? "")}</p>
+          <p>{t(errors[name]?.toString() ?? "")}</p>
         </StyledErrorMessage>
       ) : null}
     </>

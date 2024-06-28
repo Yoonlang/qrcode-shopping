@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { FormikProps } from "formik";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import styled from "styled-components";
 
 import Icons from "@/components/Icons";
@@ -11,9 +11,9 @@ import {
   StyledBox,
   StyledButton,
 } from "@/components/ToBuyList/ToBuyItem/styled";
+import useScannedItemList from "@/hooks/useScannedItemList";
+import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
-import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
-import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -99,14 +99,10 @@ const EMPTY_TEXT = "No items scanned";
 
 const ToBuyListPage = () => {
   const { t } = useTranslation();
-  const [scannedItemList, setScannedItemList] =
-    useRecoilState(scannedItemListState);
-  const [selectedInfoList, setSelectedInfoList] = useRecoilState(
-    selectedInfoListState
-  );
+  const { scannedItemList, setScannedItemList } = useScannedItemList();
+  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const fetchedItemListLoadable = useRecoilValueLoadable(
     fetchedItemListSelector
-  );
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
