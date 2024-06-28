@@ -9,7 +9,7 @@ export const fetchedItemListSelector = selector<ProductType[]>({
     try {
       const getProductListPromise = () =>
         new Promise<ProductType[]>((resolve, reject) => {
-          return getProductList(
+          getProductList(
             (data) => resolve(data),
             (e) => reject(e)
           );
