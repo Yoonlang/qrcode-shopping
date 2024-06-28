@@ -1,6 +1,3 @@
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
 import { Suspense } from "react";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
@@ -9,10 +6,6 @@ import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import SplashScreen from "@/components/SplashScreen";
 import usePageRouter from "@/hooks/usePageRouter";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { isPageName } = usePageRouter();
