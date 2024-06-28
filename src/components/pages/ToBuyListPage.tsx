@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { FormikProps } from "formik";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import styled from "styled-components";
 
 import Icons from "@/components/Icons";
@@ -13,7 +13,7 @@ import {
 } from "@/components/ToBuyList/ToBuyItem/styled";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
-import { fetchedItemListState } from "@/recoil/atoms/fetchedItemListState";
+import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -101,10 +101,8 @@ const ToBuyListPage = () => {
   const { t } = useTranslation();
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
-  const fetchedItemList = useRecoilValue(fetchedItemListState);
-  const productList = fetchedItemList.filter((item) =>
-    Object.keys(scannedItemList).some((pid) => pid === item.productId)
-  );
+  const fetchedItemListLoadable = useRecoilValueLoadable(
+    fetchedItemListSelector
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -129,15 +127,22 @@ const ToBuyListPage = () => {
         <EmptyTextDiv>{t(EMPTY_TEXT)}</EmptyTextDiv>
       ) : (
         <ProductLists>
-          {productList.map((product, index) => {
-            return (
-              <Product
-                key={product.productId}
-                product={product}
-                handleDelete={handleDelete}
-              />
-            );
-          })}
+          {fetchedItemListLoadable.state === "hasValue" &&
+            fetchedItemListLoadable.contents
+              .filter((item) =>
+                Object.keys(scannedItemList).some(
+                  (pid) => pid === item.productId
+                )
+              )
+              .map((product, index) => {
+                return (
+                  <Product
+                    key={product.productId}
+                    product={product}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })}
         </ProductLists>
       )}
     </StyledDiv>
