@@ -1,53 +1,61 @@
-import { FormikProps } from "formik";
+import { FormikContextType, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { FormType } from "@/components/const";
 import { UserInput } from "@/components/UserInfoSubmission/FormItems";
 
-const ShippingAddress = ({ formik }: { formik: FormikProps<any> }) => {
+
+const ShippingAddress = () => {
   const { t } = useTranslation();
+  const {
+    values,
+    errors,
+    touched,
+    setValues,
+    setErrors,
+    setTouched,
+  }: FormikContextType<FormType> = useFormikContext();
+
   useEffect(() => {
-    if (formik.values.isSameAddress) {
-      formik.setValues({
-        ...formik.values,
+    if (values.isSameAddress) {
+      setValues({
+        ...values,
         spPostalCode: "",
         spAddress: "",
         spDetailAddress: "",
       });
-      formik.setErrors({
-        ...formik.errors,
+      setErrors({
+        ...errors,
         spPostalCode: undefined,
         spAddress: undefined,
         spDetailAddress: undefined,
       });
-      formik.setTouched({
-        ...formik.touched,
+      setTouched({
+        ...touched,
         spPostalCode: false,
         spAddress: false,
         spDetailAddress: false,
       });
     }
-  }, [formik.values.isSameAddress]);
+  }, [values.isSameAddress]);
 
   return (
     <>
       <UserInput
         label={t("Postal Code")}
         name="spPostalCode"
-        formik={formik}
-        disable={formik.values.isSameAddress}
+        disable={values.isSameAddress}
       />
       <UserInput
         label={t("Address")}
         name="spAddress"
-        formik={formik}
-        disable={formik.values.isSameAddress}
+        disable={values.isSameAddress}
       />
       <UserInput
         label={t("Detail Address")}
         name="spDetailAddress"
-        formik={formik}
-        disable={formik.values.isSameAddress}
+        disable={values.isSameAddress}
       />
     </>
   );

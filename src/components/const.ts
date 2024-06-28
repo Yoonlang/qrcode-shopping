@@ -15,7 +15,7 @@ export const SERVER_URL = `${process.env.SERVER_URL}`;
 
 import { CountryType } from "@/components/UserInfoSubmission/countries";
 
-interface FormType {
+export interface FormType {
   name: string;
   companyName: string;
   businessType: string;
@@ -32,28 +32,6 @@ interface FormType {
   isSameAddress: boolean;
   productLengthUnit: string;
 }
-
-export const initialValues: FormType = {
-  name: "",
-  companyName: "",
-  businessType: "",
-  email: "",
-  countryCode: {
-    code: "",
-    label: "",
-    phone: "",
-  },
-  weChatId: "",
-  phoneNumber: "",
-  coPostalCode: "",
-  coAddress: "",
-  coDetailAddress: "",
-  spPostalCode: "",
-  spAddress: "",
-  spDetailAddress: "",
-  isSameAddress: false,
-  productLengthUnit: "METER",
-};
 
 export const snackBarStatusMessage = {
   default: `Scan QR Code`,

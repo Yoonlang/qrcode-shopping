@@ -1,10 +1,11 @@
 import { MenuItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FormikProps } from "formik";
+import { FormikContextType, useFormikContext } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
 import {
   CountryType,
@@ -15,6 +16,7 @@ import {
   StyledIconButton,
   StyledTextField,
 } from "@/components/UserInfoSubmission/FormItems";
+
 
 const StyledDiv = styled.div`
   margin-top: 8px;
@@ -55,20 +57,22 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const CountrySelect = ({
-  formik,
-  required = false,
-}: {
-  formik: FormikProps<any>;
-  required?: boolean;
-}) => {
+const CountrySelect = ({ required = false }: { required?: boolean }) => {
   const { t } = useTranslation();
+  const {
+    values,
+    errors,
+    touched,
+    setValues,
+    handleBlur,
+  }: FormikContextType<FormType> = useFormikContext();
+
   const handleChangeCountry = (
     e: SyntheticEvent<Element>,
-    option: CountryType | null
+    option: CountryType
   ) => {
     if (option) {
-      formik.setFieldValue("countryCode", option);
+      setValues({ ...values, countryCode: option });
     }
   };
 
@@ -76,14 +80,14 @@ const CountrySelect = ({
     <>
       <StyledDiv>
         <Autocomplete
-          defaultValue={formik.values.countryCode}
+          defaultValue={values.countryCode}
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
           })}
           autoHighlight
           getOptionLabel={(option) =>
-            formik.values.countryCode.phone
+            values.countryCode.phone !== ""
               ? `${option.label} +${option.phone}`
               : ""
           }
@@ -99,7 +103,7 @@ const CountrySelect = ({
                 />
                 {option.label} +{option.phone}
               </div>
-              {formik.values.countryCode.phone === option.phone && (
+              {values.countryCode.phone === option.phone && (
                 <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
               )}
             </MenuItem>
@@ -122,24 +126,22 @@ const CountrySelect = ({
                   autoComplete: "new-password",
                 }}
                 name="countryCode"
-                value={formik.values.countryCode}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.countryCode && !!formik.errors.countryCode
-                }
+                value={values.countryCode}
+                onBlur={handleBlur}
+                error={touched.countryCode && !!errors.countryCode}
               />
             );
           }}
           PaperComponent={(props) => <StyledPaper {...props} />}
-          onChange={(e, option) => handleChangeCountry(e, option)}
+          onChange={(e, option) => option && handleChangeCountry(e, option)}
         />
       </StyledDiv>
-      {formik.errors.countryCode && formik.touched.countryCode ? (
+      {errors.countryCode && touched.countryCode && (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{t(formik.errors.countryCode?.toString())}</p>
+          <p>{t(errors.countryCode?.toString())}</p>
         </StyledErrorMessage>
-      ) : null}
+      )}
     </>
   );
 };

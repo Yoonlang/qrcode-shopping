@@ -1,9 +1,10 @@
 import { atom } from "recoil";
 
-import { localStorageEffect } from "@/recoil/effects/localStorageEffect";
+export interface ScannedItemList {
+  [productId: string]: boolean;
+}
 
-export const scannedItemListState = atom({
+export const scannedItemListState = atom<ScannedItemList>({
   key: "scannedItemListState",
-  default: [],
-  effects: [localStorageEffect<Object>("scannedItemList")],
+  default: {},
 });

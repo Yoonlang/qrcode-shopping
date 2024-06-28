@@ -1,5 +1,5 @@
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
-import { FormikProps } from "formik";
+import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -15,7 +15,6 @@ import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 
 const StyledTitleAppBar = styled(AppBar)`
@@ -170,11 +169,12 @@ const BottomAppBarTitleText = styled.div`
   font-weight: 700;
 `;
 
-const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
+const BottomAppBar = () => {
   const { t } = useTranslation();
   const { pageName, isPageName, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const scannedItemList = useRecoilValue(scannedItemListState);
+  const { isValid, handleSubmit } = useFormikContext();
 
   const handleBottomAppBarClick = () => {
     if (isPageName("qrcode")) {
@@ -213,8 +213,8 @@ const BottomAppBar = ({ formik }: { formik: FormikProps<any> }) => {
         // }
       }
     } else {
-      if (formik.isValid) {
-        formik.handleSubmit();
+      if (isValid) {
+        handleSubmit();
       } else {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["invalid"]),

@@ -1,8 +1,7 @@
 import { Button, IconButton, SelectChangeEvent } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
 
 import Icons from "@/components/Icons";
 import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
@@ -15,7 +14,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
+import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const COLOR_CARD_TEXT = "Color Card";
 const OPTION_TEXT = "Option";
@@ -35,9 +34,7 @@ const Product = ({
   ) => void;
 }) => {
   const { t } = useTranslation();
-  const [selectedInfoList, setSelectedInfoList] = useRecoilState(
-    selectedInfoListState
-  );
+  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const { productId, colors, name = productId } = product;
   const [open, setOpen] = useState<boolean>(true);
   const selected: string[] = Object.keys(
@@ -47,24 +44,6 @@ const Product = ({
     if (b === COLOR_CARD_TEXT) return 1;
     return +a.split(" ")[0] - +b.split(" ")[0];
   });
-  const count = selectedInfoList[productId];
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setSelectedInfoList((old) => {
-      const tempInfos = { ...old };
-      if (tempInfos.hasOwnProperty(productId)) {
-        return old;
-      } else {
-        tempInfos[productId] = {
-          "Color Card": 1,
-        };
-        return tempInfos;
-      }
-    });
-    setIsLoading(false);
-  }, []);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedInfoList>) => {
     const {
@@ -145,7 +124,10 @@ const Product = ({
   ) => {
     setSelectedInfoList({
       ...selectedInfoList,
-      [productId]: { ...selectedInfoList[productId], [name]: +count[name] + 1 },
+      [productId]: {
+        ...selectedInfoList[productId],
+        [name]: +selectedInfoList[productId][name] + 1,
+      },
     });
   };
 
@@ -153,12 +135,12 @@ const Product = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
-    if (count[name] > 1) {
+    if (selectedInfoList[productId][name] > 1) {
       setSelectedInfoList({
         ...selectedInfoList,
         [productId]: {
           ...selectedInfoList[productId],
-          [name]: count[name] - 1,
+          [name]: selectedInfoList[productId][name] - 1,
         },
       });
     } else {
@@ -201,13 +183,12 @@ const Product = ({
               <Button onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}>
                 -
               </Button>
-              {!isLoading && (
-                <StyledInput
-                  value={count[COLOR_CARD_TEXT]}
-                  onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
-                  size="small"
-                />
-              )}
+              <StyledInput
+                value={selectedInfoList[productId][COLOR_CARD_TEXT]}
+                onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
+                size="small"
+              />
+
               <Button onClick={(e) => handleClickAdd(e, COLOR_CARD_TEXT)}>
                 +
               </Button>
@@ -262,7 +243,7 @@ const Product = ({
                         -
                       </Button>
                       <StyledInput
-                        value={count[select]}
+                        value={selectedInfoList[productId][select]}
                         onChange={(e) => handleChangeCount(e, select)}
                         size="small"
                       />
