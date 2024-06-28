@@ -42,3 +42,6 @@ export const snackBarStatusMessage = {
   invalid: `Please enter valid information`,
   complete: `Successfully submitted`,
 };
+
+export const YOUNGWON_TEXT = "YOUNGWON";
+export const MAEIL_TEXT = "MAEIL";
