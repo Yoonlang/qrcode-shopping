@@ -1,23 +1,50 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { useFormik } from "formik";
 import { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
+import SplashScreen from "@/components/SplashScreen";
 import { snackBarStatusMessage } from "@/components/const";
 import QrScannerPage from "@/components/pages/QrScannerPage";
 import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
-import SplashScreen from "@/components/SplashScreen";
 import usePageRouter from "@/hooks/usePageRouter";
+import { fetchedItemListCounter } from "@/recoil/atoms/fetchedItemListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
+import { Button } from "@mui/material";
+import { ErrorBoundary } from "react-error-boundary";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
+
+const RetryButton = ({ resetErrorBoundary }) => {
+  const setCounter = useSetRecoilState(fetchedItemListCounter);
+
+  const updateFetchedItemList = () => {
+    setCounter((old) => old + 1);
+  };
+
+  return (
+    <Button
+      color="error"
+      variant="contained"
+      onClick={() => {
+        updateFetchedItemList();
+        resetErrorBoundary();
+      }}
+    >
+      retry
+    </Button>
+  );
+};
+
+const fallbackRender = ({ resetErrorBoundary }) => {
+  return <RetryButton resetErrorBoundary={resetErrorBoundary} />;
+};
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -45,9 +72,11 @@ const MainPage = () => {
       <TitleAppBar />
       {isPageName("qrcode") && <QrScannerPage />}
       {isPageName("cart") && (
-        <Suspense fallback={<></>}>
-          <ToBuyListPage />
-        </Suspense>
+        <ErrorBoundary fallbackRender={fallbackRender}>
+          <Suspense fallback={<></>}>
+            <ToBuyListPage />
+          </Suspense>
+        </ErrorBoundary>
       )}
       {isPageName("info") && <UserInfoSubmissionPage />}
       <BottomAppBar />
