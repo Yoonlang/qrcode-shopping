@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import { submitOrdererInfo } from "@/api";
 import { FormType, snackBarStatusMessage } from "@/components/const";
@@ -11,8 +11,6 @@ import useLocalStorageState from "@/hooks/useLocalStorageState";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { selectedInfoListState } from "@/recoil/atoms/selectedInfoListState";
-
 
 const initialValues: FormType = {
   name: "",
@@ -38,16 +36,14 @@ const initialValues: FormType = {
 
 const useInitialFormikValues = () => {
   const { t } = useTranslation();
-  const [selectedInfoList, setSelectedInfoList] = useRecoilState(
-    selectedInfoListState
-  );
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const [localStorageValues, handleUpdateForm] = useLocalStorageState({
+  const [storedFormikValues, handleFormikValuesUpdate] = useLocalStorageState({
     key: "form",
     value: initialValues,
   });
   const { handleScannedItemListUpdate } = useScannedItemList();
-  const { handleSelectedItemListUpdate } = useSelectedInfoList();
+  const { selectedInfoList, handleSelectedItemListUpdate } =
+    useSelectedInfoList();
 
   const handleSubmit = async (form, { resetForm }) => {
     const {
@@ -117,7 +113,7 @@ const useInitialFormikValues = () => {
         handleScannedItemListUpdate({});
         handleSelectedItemListUpdate({});
         resetForm();
-        handleUpdateForm(initialValues);
+        handleFormikValuesUpdate(initialValues);
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["complete"]),
           isMessageSnackBarOpen: true,
@@ -135,14 +131,14 @@ const useInitialFormikValues = () => {
   };
 
   const formik = useFormik({
-    initialValues: localStorageValues,
+    initialValues: storedFormikValues,
     validateOnMount: true,
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
   });
 
   useEffect(() => {
-    handleUpdateForm(formik.values);
+    handleFormikValuesUpdate(formik.values);
   }, [formik.values]);
 
   return formik;
