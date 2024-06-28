@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
@@ -43,7 +44,11 @@ const MainPage = () => {
       {isSplashScreenOpen && <SplashScreen />}
       <TitleAppBar />
       {isPageName("qrcode") && <QrScannerPage />}
-      {isPageName("cart") && <ToBuyListPage />}
+      {isPageName("cart") && (
+        <Suspense fallback={<></>}>
+          <ToBuyListPage />
+        </Suspense>
+      )}
       {isPageName("info") && <UserInfoSubmissionPage />}
       <BottomAppBar />
     </main>

@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { FormikProps } from "formik";
 import { useTranslation } from "react-i18next";
-import { useRecoilValueLoadable } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import Icons from "@/components/Icons";
@@ -99,11 +99,9 @@ const EMPTY_TEXT = "No items scanned";
 
 const ToBuyListPage = () => {
   const { t } = useTranslation();
+  const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
-  const fetchedItemListLoadable = useRecoilValueLoadable(
-    fetchedItemListSelector
-  );
 
   const handleDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -128,22 +126,19 @@ const ToBuyListPage = () => {
         <EmptyTextDiv>{t(EMPTY_TEXT)}</EmptyTextDiv>
       ) : (
         <ProductLists>
-          {fetchedItemListLoadable.state === "hasValue" &&
-            fetchedItemListLoadable.contents
-              .filter((item) =>
-                Object.keys(scannedItemList).some(
-                  (pid) => pid === item.productId
-                )
-              )
-              .map((product, index) => {
-                return (
-                  <Product
-                    key={product.productId}
-                    product={product}
-                    handleDelete={handleDelete}
-                  />
-                );
-              })}
+          {fetchedItemList
+            .filter((item) =>
+              Object.keys(scannedItemList).some((pid) => pid === item.productId)
+            )
+            .map((product, index) => {
+              return (
+                <Product
+                  key={product.productId}
+                  product={product}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
         </ProductLists>
       )}
     </StyledDiv>
