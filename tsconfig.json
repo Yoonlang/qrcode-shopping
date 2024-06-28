@@ -30,7 +30,8 @@
     "src/middleware.js",
     "src/app/i18n.js",
     "src/components/TranslationsProvider.js",
-    "src/i18nConfig.js"
+    "src/i18nConfig.js",
+    "jest.config.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
