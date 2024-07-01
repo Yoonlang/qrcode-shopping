@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +6,7 @@ import { useSetRecoilState } from "recoil";
 import { submitOrdererInfo } from "@/api";
 import { FormType, snackBarStatusMessage } from "@/components/const";
 import { validationSchema } from "@/components/validation";
+import dayjs from "@/dayjsConfig";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
