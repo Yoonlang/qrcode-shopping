@@ -1,17 +1,23 @@
+import { CircularProgress } from "@mui/material";
 import { Suspense, useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { snackBarStatusMessage } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";
 import QrCode from "@/components/QrScanner/QrCode";
+import RetryButton from "@/components/RetryButton";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledContainer = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const QrScannerPage = () => {
@@ -46,9 +52,15 @@ const QrScannerPage = () => {
         messageList={[t("Dialog1"), t("Dialog2")]}
       />
       {!isDialogOpen && (
-        <Suspense fallback={<></>}>
-          <QrCode />
-        </Suspense>
+        <ErrorBoundary
+          fallbackRender={({ resetErrorBoundary }) => (
+            <RetryButton resetErrorBoundary={resetErrorBoundary} />
+          )}
+        >
+          <Suspense fallback={<CircularProgress />}>
+            <QrCode />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </StyledContainer>
   );
