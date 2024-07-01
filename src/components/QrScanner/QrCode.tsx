@@ -23,7 +23,7 @@ const StyledQrCode = styled.div`
 
 const QrCode = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [deviceId, setDeviceId] = useState(undefined);
+  const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { setScannedItemList } = useScannedItemList();
 
@@ -68,8 +68,8 @@ const QrCode = () => {
     }
   }, []);
 
-  const handleDevicesWideAngle = (deviceList) => {
-    deviceList.forEach((device: any) => {
+  const handleDevicesWideAngle = (deviceList: MediaDeviceInfo[]) => {
+    deviceList.forEach((device) => {
       if (device.kind === "videoinput") {
         if (device.label === "camera2 0, facing back") {
           setDeviceId(device.deviceId);
