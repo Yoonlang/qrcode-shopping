@@ -7,6 +7,7 @@ import initTranslations from "@/app/i18n";
 import MessageSnackBar from "@/components/MessageSnackBar";
 import MainPage from "@/components/pages/MainPage";
 import TranslationsProvider from "@/components/TranslationsProvider";
+import "@/dayjsConfig";
 import useInitialFormikValues from "@/hooks/useInitialFormikValues";
 import GlobalStyle from "@/styles/global";
 

@@ -1,6 +1,3 @@
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -11,10 +8,6 @@ import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import RetryButton from "@/components/RetryButton";
 import SplashScreen from "@/components/SplashScreen";
 import usePageRouter from "@/hooks/usePageRouter";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault("Asia/Seoul");
 
 const MainPage = () => {
   const { isPageName } = usePageRouter();
