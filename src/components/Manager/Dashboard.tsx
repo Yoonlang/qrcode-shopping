@@ -62,11 +62,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {
         </StyledList>
       </StyledDrawer>
       <StyledBoardContainer>
-        {menu === 0 ? (
-          <UserBoard formik={formik} />
-        ) : (
-          <ProductBoard formik={formik} />
-        )}
+        {menu === 0 ? <UserBoard /> : <ProductBoard formik={formik} />}
       </StyledBoardContainer>
     </>
   );

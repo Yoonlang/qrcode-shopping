@@ -130,7 +130,7 @@ const ToBuyListPage = () => {
             .filter((item) =>
               Object.keys(scannedItemList).some((pid) => pid === item.productId)
             )
-            .map((product, index) => {
+            .map((product) => {
               return (
                 <Product
                   key={product.productId}

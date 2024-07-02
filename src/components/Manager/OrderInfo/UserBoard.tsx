@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
@@ -20,7 +19,7 @@ const StyledUserBoard = styled.div`
   }
 `;
 
-const UserBoard = ({ formik }: { formik: FormikProps<any> }) => {
+const UserBoard = () => {
   const [userInfoList, setUserInfoList] = useState([]);
   const [selectedUserList, setSelectedUserList] = useState([]);
 

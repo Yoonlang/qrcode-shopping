@@ -283,7 +283,7 @@ const UserSelect = ({
           renderValue: (value: string) => <>{t(value)}</>,
         }}
       >
-        {items.map((item, index) => (
+        {items.map((item) => (
           <StyledMenuItem key={item} value={item}>
             {t(item)}
             {values[name] === item && (
