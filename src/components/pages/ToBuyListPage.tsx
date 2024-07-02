@@ -103,7 +103,7 @@ const ToBuyListPage = () => {
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
 
-  const handleDelete = (
+  const handleToBuyItemDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
   ) => {
@@ -136,7 +136,7 @@ const ToBuyListPage = () => {
                 <Product
                   key={product.productId}
                   product={product}
-                  handleDelete={handleDelete}
+                  handleDelete={handleToBuyItemDelete}
                 />
               );
             })}

@@ -50,7 +50,8 @@ const ToBuyItem = ({
   const { t } = useTranslation();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const { productId, colors, name = productId } = product;
-  const [open, setOpen] = useState<boolean>(true);
+  const [isOptionListExpanded, setIsOptionListExpanded] =
+    useState<boolean>(true);
   const selected = Object.keys(selectedInfoList[productId] || []).sort(
     (a, b) => {
       if (a === COLOR_CARD_TEXT) return -1;
@@ -59,7 +60,7 @@ const ToBuyItem = ({
     }
   );
 
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
+  const handleOptionChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
@@ -113,7 +114,7 @@ const ToBuyItem = ({
     }
   };
 
-  const handleChangeCount = (
+  const handleCountChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     name: string
   ) => {
@@ -132,7 +133,7 @@ const ToBuyItem = ({
     }
   };
 
-  const handleClickAdd = (
+  const handleCountAddButtonClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
@@ -145,7 +146,7 @@ const ToBuyItem = ({
     });
   };
 
-  const handleClickSubtract = (
+  const handleCountSubtractButtonClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
@@ -166,7 +167,7 @@ const ToBuyItem = ({
     }
   };
 
-  const handleDeleteOption = (
+  const handleOptionDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     name: string
   ) => {
@@ -198,17 +199,21 @@ const ToBuyItem = ({
               <div>{t(COLOR_CARD_TEXT)}</div>
               <Counter>
                 <Button
-                  onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}
+                  onClick={(e) =>
+                    handleCountSubtractButtonClick(e, COLOR_CARD_TEXT)
+                  }
                 >
                   -
                 </Button>
                 <StyledInput
                   value={selectedInfoList[productId][COLOR_CARD_TEXT]}
-                  onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
+                  onChange={(e) => handleCountChange(e, COLOR_CARD_TEXT)}
                   size="small"
                 />
 
-                <Button onClick={(e) => handleClickAdd(e, COLOR_CARD_TEXT)}>
+                <Button
+                  onClick={(e) => handleCountAddButtonClick(e, COLOR_CARD_TEXT)}
+                >
                   +
                 </Button>
               </Counter>
@@ -220,7 +225,7 @@ const ToBuyItem = ({
               multiple
               fullWidth
               value={selected}
-              onChange={handleChange}
+              onChange={handleOptionChange}
               renderValue={() => <>{OPTION_TEXT}</>}
               size="small"
             >
@@ -251,7 +256,7 @@ const ToBuyItem = ({
       </StyledTop>
       {IS_USING_SY && selected?.length > 0 && (
         <>
-          <Collapse in={open}>
+          <Collapse in={isOptionListExpanded}>
             <Divider />
             <StyledBottom>
               <p>{SELECTED_OPTIONS_TEXT}</p>
@@ -260,19 +265,25 @@ const ToBuyItem = ({
                   <SelectedOption>
                     <div>{select}</div>
                     <Counter>
-                      <Button onClick={(e) => handleClickSubtract(e, select)}>
+                      <Button
+                        onClick={(e) =>
+                          handleCountSubtractButtonClick(e, select)
+                        }
+                      >
                         -
                       </Button>
                       <StyledInput
                         value={selectedInfoList[productId][select]}
-                        onChange={(e) => handleChangeCount(e, select)}
+                        onChange={(e) => handleCountChange(e, select)}
                         size="small"
                       />
-                      <Button onClick={(e) => handleClickAdd(e, select)}>
+                      <Button
+                        onClick={(e) => handleCountAddButtonClick(e, select)}
+                      >
                         +
                       </Button>
                       <IconButton
-                        onClick={(e) => handleDeleteOption(e, select)}
+                        onClick={(e) => handleOptionDelete(e, select)}
                       >
                         {Icons["delete"]}
                       </IconButton>
@@ -283,12 +294,12 @@ const ToBuyItem = ({
               ))}
             </StyledBottom>
           </Collapse>
-          {open ? (
-            <IconButton onClick={() => setOpen(false)}>
+          {isOptionListExpanded ? (
+            <IconButton onClick={() => setIsOptionListExpanded(false)}>
               {Icons["close"]}
             </IconButton>
           ) : (
-            <IconButton onClick={() => setOpen(true)}>
+            <IconButton onClick={() => setIsOptionListExpanded(true)}>
               {Icons["open"]}
             </IconButton>
           )}
