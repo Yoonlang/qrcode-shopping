@@ -4,8 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
+import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
 import Product from "@/components/ToBuyList/ToBuyItem";
+import { IS_USING_SY } from "@/components/ToBuyList/ToBuyItem/const";
 import {
   SelectedBox,
   StyledBox,
@@ -14,8 +16,7 @@ import {
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
-import { IS_USING_SY } from "../ToBuyList/ToBuyItem/const";
-import { FormType } from "../const";
+
 
 const StyledDiv = styled.div`
   align-items: normal;

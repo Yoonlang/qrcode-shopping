@@ -1,8 +1,9 @@
-import usePageRouter from "@/hooks/usePageRouter";
-import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 import { renderHook } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
+
+import usePageRouter from "@/hooks/usePageRouter";
+import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 
 describe("usePageRouter goToNextPage 확인", () => {
   it("0번 페이지에서 1번 페이지로 이동", () => {
