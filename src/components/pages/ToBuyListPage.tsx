@@ -1,9 +1,10 @@
 import { Box } from "@mui/material";
-import { FormikProps } from "formik";
+import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 
+import { FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
 import Product from "@/components/ToBuyList/ToBuyItem";
 import {
@@ -51,14 +52,16 @@ const ProductLists = styled.div`
   padding-bottom: 85px;
 `;
 
-const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
+const StyledSwitch = () => {
+  const { values, setFieldValue } = useFormikContext<FormType>();
+
   return (
     <Box sx={{ display: "flex" }}>
       <StyledBox>
         <SelectedBox
           style={{
             transform: `translateX(${
-              formik.values.productLengthUnit === "METER" ? 0 : "62px"
+              values.productLengthUnit === "METER" ? 0 : "62px"
             })`,
           }}
         />
@@ -66,13 +69,13 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
           disableRipple
           sx={{
             color:
-              formik.values.productLengthUnit === "METER"
+              values.productLengthUnit === "METER"
                 ? "#FBFBFB"
                 : "rgba(0, 0, 0, 0.87)",
             fontWeight:
-              formik.values.productLengthUnit === "METER" ? "bold" : "normal",
+              values.productLengthUnit === "METER" ? "bold" : "normal",
           }}
-          onClick={() => formik.setFieldValue("productLengthUnit", "METER")}
+          onClick={() => setFieldValue("productLengthUnit", "METER")}
         >
           METER
         </StyledButton>
@@ -80,13 +83,12 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
           disableRipple
           sx={{
             color:
-              formik.values.productLengthUnit === "YARD"
+              values.productLengthUnit === "YARD"
                 ? "#FBFBFB"
                 : "rgba(0, 0, 0, 0.87)",
-            fontWeight:
-              formik.values.productLengthUnit === "YARD" ? "bold" : "normal",
+            fontWeight: values.productLengthUnit === "YARD" ? "bold" : "normal",
           }}
-          onClick={() => formik.setFieldValue("productLengthUnit", "YARD")}
+          onClick={() => setFieldValue("productLengthUnit", "YARD")}
         >
           YARD
         </StyledButton>
@@ -121,6 +123,7 @@ const ToBuyListPage = () => {
       <StyledTitle>
         {Icons["list"]}
         <p>{t("Product List")}</p>
+        {IS_USING_SY && <StyledSwitch />}
       </StyledTitle>
       {Object.keys(scannedItemList).length <= 0 ? (
         <EmptyTextDiv>{t(EMPTY_TEXT)}</EmptyTextDiv>

@@ -10,5 +10,6 @@ module.exports = {
       process.env.NODE_ENV === "production"
         ? `https://server.jojoywmaeil.com:5001`
         : `https://localhost:5001`,
+    IS_USING_SY: true,
   },
 };

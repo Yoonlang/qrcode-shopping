@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
+import { IS_USING_SY } from "@/components/const";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import {
@@ -20,14 +21,16 @@ const useSelectedInfoList = () => {
   }, []);
 
   useEffect(() => {
-    Object.keys(scannedItemList).forEach((item) => {
-      if (!selectedInfoList[item]) {
-        setSelectedInfoList({
-          ...selectedInfoList,
-          [item]: { ["Color Card"]: 1 },
-        });
-      }
-    });
+    if (!IS_USING_SY) {
+      Object.keys(scannedItemList).forEach((item) => {
+        if (!selectedInfoList[item]) {
+          setSelectedInfoList({
+            ...selectedInfoList,
+            [item]: { ["Color Card"]: 1 },
+          });
+        }
+      });
+    }
   }, [scannedItemList]);
 
   useEffect(() => {
