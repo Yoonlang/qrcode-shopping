@@ -12,6 +12,7 @@ import {
   StyledModal,
 } from "@/components/Manager/DashboardItems";
 import ProductTable from "@/components/Manager/Product/ProductTable";
+import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 
 const fileTypes = ["JPG", "PNG"];
 
@@ -121,8 +122,10 @@ const ProductCreateModal = ({ open, handleModalClose, formik }) => {
 
 const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [open, setOpen] = useState(false);
-  const [productList, setProductList] = useState([]);
-  const [selectedProductList, setSelectedProductList] = useState([]);
+  const [productList, setProductList] = useState<ProductType[]>([]);
+  const [selectedProductList, setSelectedProductList] = useState<ProductType[]>(
+    []
+  );
 
   const handleModalOpen = () => {
     setOpen(true);

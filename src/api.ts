@@ -1,6 +1,17 @@
 import { SERVER_URL } from "@/components/const";
+import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 
-const handleResponse = (res) =>
+type SuccessCallback<T> = (data: T) => void;
+type FailCallback = (error: unknown) => void;
+
+type getAPI<T> = (onSuccess: SuccessCallback<T>, onFail: FailCallback) => {};
+type postAPI<T, U> = (
+  body: U,
+  onSuccess: SuccessCallback<T>,
+  onFail: FailCallback
+) => {};
+
+const handleResponse = (res: Response) =>
   res.json().then((data) => {
     if (!res.ok) {
       throw new Error(data.error);
@@ -9,7 +20,7 @@ const handleResponse = (res) =>
   });
 
 const http = {
-  get: (path, options = {}, onSuccess, onFail) =>
+  get: (path: string, options = {}, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "GET",
       ...options,
@@ -17,7 +28,7 @@ const http = {
       .then(handleResponse)
       .then(onSuccess)
       .catch(onFail),
-  post: (path, options = {}, body, onSuccess, onFail) =>
+  post: (path: string, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "POST",
       headers: {
@@ -29,7 +40,7 @@ const http = {
       .then(handleResponse)
       .then(onSuccess)
       .catch(onFail),
-  put: (path, options = {}, body, onSuccess, onFail) =>
+  put: (path: string, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
@@ -41,7 +52,7 @@ const http = {
       .then(handleResponse)
       .then(onSuccess)
       .catch(onFail),
-  delete: (path, options = {}, body, onSuccess, onFail) =>
+  delete: (path: string, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "DELETE",
       headers: {
@@ -55,11 +66,15 @@ const http = {
       .catch(onFail),
 };
 
-export const getProductList = (onSuccess, onFail) => {
+export const getProductList: getAPI<ProductType[]> = (onSuccess, onFail) => {
   return http.get(`/products`, undefined, onSuccess, onFail);
 };
 
-export const postProduct = (body, onSuccess, onFail) => {
+export const postProduct: postAPI<undefined, FormData> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.post(
     `/products`,
     { credentials: "include", headers: {} },
@@ -69,7 +84,11 @@ export const postProduct = (body, onSuccess, onFail) => {
   );
 };
 
-export const putProduct = (body, onSuccess, onFail) => {
+export const putProduct: postAPI<undefined, FormData> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.put(
     `/products`,
     { credentials: "include", headers: {} },
@@ -79,7 +98,7 @@ export const putProduct = (body, onSuccess, onFail) => {
   );
 };
 
-const deleteProduct = (body, onSuccess, onFail) => {
+const deleteProduct: postAPI<unknown, string> = (body, onSuccess, onFail) => {
   return http.delete(
     `/products`,
     { credentials: "include" },
@@ -89,7 +108,11 @@ const deleteProduct = (body, onSuccess, onFail) => {
   );
 };
 
-export const deleteProductList = (productList, onSuccess, onFail) => {
+export const deleteProductList = (
+  productList: ProductType[],
+  onSuccess: SuccessCallback<unknown[]>,
+  onFail: FailCallback
+) => {
   const deletePromises = productList.map((product) => {
     return new Promise((resolve, reject) => {
       deleteProduct(JSON.stringify({ productId: product }), resolve, reject);
