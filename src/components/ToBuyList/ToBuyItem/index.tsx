@@ -1,14 +1,29 @@
-import { Button, IconButton, SelectChangeEvent } from "@mui/material";
+import {
+  Button,
+  Collapse,
+  Divider,
+  IconButton,
+  ListItemText,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/Icons";
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
+import {
+  IS_USING_SY,
+  ProductType,
+} from "@/components/ToBuyList/ToBuyItem/const";
 import {
   Counter,
+  MenuItemDivider,
   SelectedOption,
+  StyledBottom,
   StyledInput,
+  StyledInputLabel,
+  StyledMenuItem,
   StyledNameDiv,
   StyledRight,
   StyledTop,
@@ -37,15 +52,15 @@ const Product = ({
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const { productId, colors, name = productId } = product;
   const [open, setOpen] = useState<boolean>(true);
-  const selected: string[] = Object.keys(
-    selectedInfoList[productId] || []
-  ).sort((a, b) => {
-    if (a === COLOR_CARD_TEXT) return -1;
-    if (b === COLOR_CARD_TEXT) return 1;
-    return +a.split(" ")[0] - +b.split(" ")[0];
-  });
+  const selected = Object.keys(selectedInfoList[productId] || []).sort(
+    (a, b) => {
+      if (a === COLOR_CARD_TEXT) return -1;
+      if (b === COLOR_CARD_TEXT) return 1;
+      return +a.split(" ")[0] - +b.split(" ")[0];
+    }
+  );
 
-  const handleChange = (event: SelectChangeEvent<typeof selectedInfoList>) => {
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
@@ -144,9 +159,11 @@ const Product = ({
         },
       });
     } else {
-      // const temp = { ...selectedInfos[productId] };
-      // delete temp[name];
-      // setSelectedInfos({ ...selectedInfos, [productId]: temp });
+      if (IS_USING_SY) {
+        const temp = { ...selectedInfoList[productId] };
+        delete temp[name];
+        setSelectedInfoList({ ...selectedInfoList, [productId]: temp });
+      }
     }
   };
 
@@ -177,58 +194,63 @@ const Product = ({
               {Icons["delete"]}
             </IconButton>
           </StyledNameDiv>
-          <SelectedOption>
-            <div>{t(COLOR_CARD_TEXT)}</div>
-            <Counter>
-              <Button onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}>
-                -
-              </Button>
-              <StyledInput
-                value={selectedInfoList[productId][COLOR_CARD_TEXT]}
-                onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
-                size="small"
-              />
-
-              <Button onClick={(e) => handleClickAdd(e, COLOR_CARD_TEXT)}>
-                +
-              </Button>
-            </Counter>
-          </SelectedOption>
-          {/* <Select
-            displayEmpty
-            multiple
-            fullWidth
-            value={selected}
-            onChange={handleChange}
-            renderValue={() => <>{OPTION_TEXT}</>}
-            size="small"
-          >
-            <StyledMenuItem value={COLOR_CARD_TEXT}>
-              <ListItemText>{COLOR_CARD_TEXT}</ListItemText>
-              {selected?.findIndex((item) => item === COLOR_CARD_TEXT) > -1 && (
-                <IconButton>{Icons["select"]}</IconButton>
-              )}
-            </StyledMenuItem>
-            <MenuItemDivider />
-            <StyledInputLabel>{SAMPLE_YARDAGE_TEXT}</StyledInputLabel>
-            {colors.map((color) => {
-              const { colorId, colorName } = color;
-              return (
-                <StyledMenuItem
-                  key={colorId}
-                  value={`${colorId}. ${colorName}`}
+          {!IS_USING_SY && (
+            <SelectedOption>
+              <div>{t(COLOR_CARD_TEXT)}</div>
+              <Counter>
+                <Button
+                  onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}
                 >
-                  <ListItemText primary={`${colorId}. ${colorName}`} />
-                  {selected?.findIndex(
-                    (item) => item === `${colorId}. ${colorName}`
-                  ) > -1 && <IconButton>{Icons["select"]}</IconButton>}
-                </StyledMenuItem>
-              );
-            })}
-          </Select> */}
+                  -
+                </Button>
+                <StyledInput
+                  value={selectedInfoList[productId][COLOR_CARD_TEXT]}
+                  onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
+                  size="small"
+                />
+
+                <Button onClick={(e) => handleClickAdd(e, COLOR_CARD_TEXT)}>
+                  +
+                </Button>
+              </Counter>
+            </SelectedOption>
+          )}
+          {IS_USING_SY && (
+            <Select
+              displayEmpty
+              multiple
+              fullWidth
+              value={selected}
+              onChange={handleChange}
+              renderValue={() => <>{OPTION_TEXT}</>}
+              size="small"
+            >
+              <StyledMenuItem value={COLOR_CARD_TEXT}>
+                <ListItemText>{COLOR_CARD_TEXT}</ListItemText>
+                {selected?.findIndex((item) => item === COLOR_CARD_TEXT) >
+                  -1 && <IconButton>{Icons["select"]}</IconButton>}
+              </StyledMenuItem>
+              <MenuItemDivider />
+              <StyledInputLabel>{SAMPLE_YARDAGE_TEXT}</StyledInputLabel>
+              {colors.map((color) => {
+                const { colorId, colorName } = color;
+                return (
+                  <StyledMenuItem
+                    key={colorId}
+                    value={`${colorId}. ${colorName}`}
+                  >
+                    <ListItemText primary={`${colorId}. ${colorName}`} />
+                    {selected?.findIndex(
+                      (item) => item === `${colorId}. ${colorName}`
+                    ) > -1 && <IconButton>{Icons["select"]}</IconButton>}
+                  </StyledMenuItem>
+                );
+              })}
+            </Select>
+          )}
         </StyledRight>
       </StyledTop>
-      {/* {selected?.length > 0 && (
+      {IS_USING_SY && selected?.length > 0 && (
         <>
           <Collapse in={open}>
             <Divider />
@@ -272,7 +294,7 @@ const Product = ({
             </IconButton>
           )}
         </>
-      )} */}
+      )}
     </StyledWrapper>
   );
 };
