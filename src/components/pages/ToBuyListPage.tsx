@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import Product from "@/components/ToBuyList/ToBuyItem";
@@ -134,7 +134,7 @@ const ToBuyListPage = () => {
             .filter((item) =>
               Object.keys(scannedItemList).some((pid) => pid === item.productId)
             )
-            .map((product, index) => {
+            .map((product) => {
               return (
                 <Product
                   key={product.productId}

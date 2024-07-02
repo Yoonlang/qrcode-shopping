@@ -11,7 +11,7 @@ import React from "react";
 import { postLogin } from "@/api";
 
 const LoginForm = ({ setHasAuth }) => {
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const inputData = new FormData(event.currentTarget);
     postLogin(

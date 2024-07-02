@@ -6,7 +6,7 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 const StyledWrapper = styled.div`
   border: 0.5px solid rgba(0, 0, 0, 0.08);
@@ -241,18 +241,18 @@ const StyledButton = styled(Button)`
 `;
 
 export {
-  StyledWrapper,
-  MenuItemDivider,
-  StyledTop,
-  StyledRight,
-  StyledNameDiv,
-  StyledMenuItem,
-  StyledBottom,
-  SelectedOption,
-  StyledInput,
   Counter,
-  StyledInputLabel,
-  StyledBox,
+  MenuItemDivider,
   SelectedBox,
+  SelectedOption,
+  StyledBottom,
+  StyledBox,
   StyledButton,
+  StyledInput,
+  StyledInputLabel,
+  StyledMenuItem,
+  StyledNameDiv,
+  StyledRight,
+  StyledTop,
+  StyledWrapper,
 };
