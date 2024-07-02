@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import { FormikProps } from "formik";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
-import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import Product from "@/components/ToBuyList/ToBuyItem";

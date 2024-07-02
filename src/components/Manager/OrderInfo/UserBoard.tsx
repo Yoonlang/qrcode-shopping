@@ -1,10 +1,9 @@
 import { Button } from "@mui/material";
 import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { deleteOrdererList, getOrdererInfoList } from "@/api";
-import { SERVER_URL } from "@/components/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
 
 const StyledUserBoard = styled.div`

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import {
   MAEIL_TEXT,

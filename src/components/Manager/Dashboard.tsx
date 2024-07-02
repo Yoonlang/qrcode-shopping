@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { FormikProps } from "formik";
 import { useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import {

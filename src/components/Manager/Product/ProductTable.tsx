@@ -3,7 +3,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import {
   ProductAddModal,

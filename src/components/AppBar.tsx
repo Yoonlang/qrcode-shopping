@@ -3,7 +3,7 @@ import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import {
   PRIMARY,

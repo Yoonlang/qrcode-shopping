@@ -2,7 +2,7 @@ import jsQR from "jsqr";
 import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import useScannedItemList from "@/hooks/useScannedItemList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
