@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 
+import { FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
 import Product from "@/components/ToBuyList/ToBuyItem";
 import {
@@ -11,7 +12,6 @@ import {
   StyledBox,
   StyledButton,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-import { FormType, IS_USING_SY } from "@/components/const";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";

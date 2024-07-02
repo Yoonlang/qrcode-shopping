@@ -11,6 +11,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
 import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 import {
@@ -26,7 +27,6 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-import { IS_USING_SY } from "@/components/const";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const COLOR_CARD_TEXT = "Color Card";
