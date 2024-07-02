@@ -45,7 +45,7 @@ const useInitialFormikValues = () => {
   const { selectedInfoList, handleSelectedItemListUpdate } =
     useSelectedInfoList();
 
-  const handleSubmit = async (form, { resetForm }) => {
+  const handleSubmit = (form, { resetForm }) => {
     const {
       name,
       companyName,

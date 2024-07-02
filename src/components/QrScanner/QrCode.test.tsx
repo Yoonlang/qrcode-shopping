@@ -30,7 +30,7 @@ describe("QrCode loading 확인", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("fetchedItemList 불러오기 성공 시, video DOMElement 반환", async () => {
+  it("fetchedItemList 불러오기 성공 시, video DOMElement 반환", () => {
     // Given
     (useRecoilValue as jest.Mock).mockReturnValue([
       {
@@ -40,7 +40,7 @@ describe("QrCode loading 확인", () => {
 
     // When
     let container;
-    await act(async () => {
+    act(() => {
       const renderResult = render(
         <RecoilRoot>
           <Suspense fallback={<></>}>
