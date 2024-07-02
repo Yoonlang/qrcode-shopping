@@ -44,7 +44,7 @@ const SplashScreen = () => {
         });
       }, 2000);
     }
-  }, [t, setMessageSnackBarState, setIsSplashScreenOpen]);
+  }, [setIsSplashScreenOpen, setMessageSnackBarState, t]);
 
   return (
     isSplashScreenOpen && (

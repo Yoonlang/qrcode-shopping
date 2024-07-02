@@ -4,7 +4,7 @@
   "parserOptions": {
     "project": true
   },
-  "plugins": ["@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint", "import", "sort-react-dependency-arrays"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
@@ -37,6 +37,7 @@
     "no-useless-escape": "warn",
     "no-prototype-builtins": "warn",
     "prefer-const": "warn",
+    "sort-react-dependency-arrays/sort": "error",
     "import/order": [
       "error",
       {

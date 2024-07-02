@@ -42,7 +42,7 @@ const QrScannerPage = () => {
         isMessageSnackBarOpen: true,
       });
     }
-  }, [t, setMessageSnackBarState, scannedItemList]);
+  }, [scannedItemList, setMessageSnackBarState, t]);
 
   return (
     <StyledContainer>
