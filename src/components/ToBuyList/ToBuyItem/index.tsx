@@ -12,10 +12,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/Icons";
-import {
-  IS_USING_SY,
-  ProductType,
-} from "@/components/ToBuyList/ToBuyItem/const";
+import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 import {
   Counter,
   MenuItemDivider,
@@ -29,6 +26,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
+import { IS_USING_SY } from "@/components/const";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const COLOR_CARD_TEXT = "Color Card";

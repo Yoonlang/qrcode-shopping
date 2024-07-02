@@ -9,5 +9,3 @@ export interface ProductType {
   colors: Color[];
   image: string | null;
 }
-
-export const IS_USING_SY = process.env.IS_USING_SY;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-import { IS_USING_SY } from "@/components/ToBuyList/ToBuyItem/const";
+import { IS_USING_SY } from "@/components/const";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import {
