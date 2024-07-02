@@ -13,7 +13,15 @@ import { useTranslation } from "react-i18next";
 
 import { IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
-import { ProductType } from "@/components/ToBuyList/const";
+import {
+  ALERT_MESSAGE,
+  COLOR_CARD_TEXT,
+  IMG_SIZE,
+  OPTION_TEXT,
+  ProductType,
+  SAMPLE_YARDAGE_TEXT,
+  SELECTED_OPTIONS_TEXT,
+} from "@/components/ToBuyList/const";
 import {
   Counter,
   MenuItemDivider,
@@ -28,13 +36,6 @@ import {
   StyledWrapper,
 } from "@/components/ToBuyList/styled";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
-
-const COLOR_CARD_TEXT = "Color Card";
-const OPTION_TEXT = "Option";
-const SELECTED_OPTIONS_TEXT = "Selected Options";
-const IMG_SIZE = 71;
-const ALERT_MESSAGE = "Please enter only numbers";
-const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
 
 const ToBuyItem = ({
   product,

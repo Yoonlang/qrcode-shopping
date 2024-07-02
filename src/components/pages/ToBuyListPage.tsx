@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 
-import { FormType, IS_USING_SY } from "@/components/const";
+import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
 import Product from "@/components/ToBuyList/ToBuyItem";
 import {
@@ -96,8 +96,6 @@ const StyledSwitch = () => {
     </Box>
   );
 };
-
-const EMPTY_TEXT = "No items scanned";
 
 const ToBuyListPage = () => {
   const { t } = useTranslation();
