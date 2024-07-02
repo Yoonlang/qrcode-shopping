@@ -10,11 +10,10 @@ import {
 import { FormikContextType, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
-
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -284,7 +283,7 @@ const UserSelect = ({
           renderValue: (value: string) => <>{t(value)}</>,
         }}
       >
-        {items.map((item, index) => (
+        {items.map((item) => (
           <StyledMenuItem key={item} value={item}>
             {t(item)}
             {values[name] === item && (

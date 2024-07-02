@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 
 import { checkCookieAuth, postProduct, putProduct } from "@/api";
-import { SERVER_URL } from "@/components/const";
 import { initialValues } from "@/components/Manager/const";
 import Dashboard from "@/components/Manager/Dashboard";
 import LoginForm from "@/components/Manager/LoginForm";
@@ -13,7 +12,7 @@ const ManagerPage = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validateOnMount: true,
-    onSubmit: async (form, { resetForm }) => {
+    onSubmit: (form, { resetForm }) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {

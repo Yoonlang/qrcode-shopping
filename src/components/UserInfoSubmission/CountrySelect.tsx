@@ -3,7 +3,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { FormikContextType, useFormikContext } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
@@ -16,7 +16,6 @@ import {
   StyledIconButton,
   StyledTextField,
 } from "@/components/UserInfoSubmission/FormItems";
-
 
 const StyledDiv = styled.div`
   margin-top: 8px;

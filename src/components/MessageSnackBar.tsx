@@ -1,6 +1,6 @@
 import { Snackbar } from "@mui/material";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 

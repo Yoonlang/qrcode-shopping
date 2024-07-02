@@ -2,7 +2,7 @@ import jsQR from "jsqr";
 import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import useScannedItemList from "@/hooks/useScannedItemList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
@@ -27,46 +27,52 @@ const QrCode = () => {
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { setScannedItemList } = useScannedItemList();
 
-  const imageScan = useCallback((imageData) => {
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
-    if (code) {
-      const [pre, pid] = code.data.split("/");
-      if (
-        pre === "products" &&
-        fetchedItemList.some(({ productId }) => pid === productId)
-      )
-        setScannedItemList((old) => {
-          const newScannedItemList = { ...old };
-          newScannedItemList[pid] = true;
-          return newScannedItemList;
-        });
-    }
-  }, []);
+  const imageScan = useCallback(
+    (imageData) => {
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+        const [pre, pid] = code.data.split("/");
+        if (
+          pre === "products" &&
+          fetchedItemList.some(({ productId }) => pid === productId)
+        )
+          setScannedItemList((old) => {
+            const newScannedItemList = { ...old };
+            newScannedItemList[pid] = true;
+            return newScannedItemList;
+          });
+      }
+    },
+    [fetchedItemList, setScannedItemList]
+  );
 
-  const capture = useCallback((webcam) => {
-    const imageSrc = webcam.getScreenshot();
-    if (imageSrc) {
-      const image = new Image();
-      image.onload = () => {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        if (!context) {
-          return;
-        }
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context.drawImage(image, 0, 0, image.width, image.height);
-        const imageData = context.getImageData(
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-        imageScan(imageData);
-      };
-      image.src = imageSrc;
-    }
-  }, []);
+  const capture = useCallback(
+    (webcam) => {
+      const imageSrc = webcam.getScreenshot();
+      if (imageSrc) {
+        const image = new Image();
+        image.onload = () => {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          if (!context) {
+            return;
+          }
+          canvas.width = image.width;
+          canvas.height = image.height;
+          context.drawImage(image, 0, 0, image.width, image.height);
+          const imageData = context.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+          imageScan(imageData);
+        };
+        image.src = imageSrc;
+      }
+    },
+    [imageScan]
+  );
 
   const handleDevicesWideAngle = (deviceList: MediaDeviceInfo[]) => {
     deviceList.forEach((device) => {

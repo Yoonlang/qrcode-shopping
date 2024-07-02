@@ -8,7 +8,6 @@ import {
   selectedInfoListState,
 } from "@/recoil/atoms/selectedInfoListState";
 
-
 const useSelectedInfoList = () => {
   const [storedSelectedItemList, handleSelectedItemListUpdate] =
     useLocalStorageState({ key: "selectedInfoList", value: {} });

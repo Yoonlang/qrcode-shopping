@@ -1,7 +1,7 @@
 import { AppBar, Drawer, List, Modal, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import { MutableRefObject } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 const StyledAppBar = styled(AppBar)`
   &.MuiAppBar-root {
@@ -103,12 +103,12 @@ const ProductInput = ({
 };
 
 export {
-  StyledAppBar,
-  StyledDrawer,
-  StyledList,
-  StyledDiv,
-  StyledModal,
   ProductAddModal,
-  StyledFlexDiv,
   ProductInput,
+  StyledAppBar,
+  StyledDiv,
+  StyledDrawer,
+  StyledFlexDiv,
+  StyledList,
+  StyledModal,
 };

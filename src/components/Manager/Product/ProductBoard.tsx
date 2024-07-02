@@ -2,10 +2,9 @@ import { Button, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 import { deleteProductList, getProductList } from "@/api";
-import { SERVER_URL } from "@/components/const";
 import {
   ProductAddModal,
   ProductInput,
