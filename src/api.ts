@@ -1,4 +1,9 @@
 import { SERVER_URL } from "@/components/const";
+import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
+
+interface SucceedResponse {
+  message: string;
+}
 
 interface ErrorResponse {
   error: string;
@@ -64,11 +69,11 @@ const http = {
 };
 
 export const getProductList = (onSuccess, onFail) => {
-  return http.get(`/products`, undefined, onSuccess, onFail);
+  return http.get<ProductType[]>(`/products`, undefined, onSuccess, onFail);
 };
 
 export const postProduct = (body, onSuccess, onFail) => {
-  return http.post(
+  return http.post<SucceedResponse>(
     `/products`,
     { credentials: "include", headers: {} },
     body,
@@ -78,7 +83,7 @@ export const postProduct = (body, onSuccess, onFail) => {
 };
 
 export const putProduct = (body, onSuccess, onFail) => {
-  return http.put(
+  return http.put<SucceedResponse>(
     `/products`,
     { credentials: "include", headers: {} },
     body,
@@ -88,7 +93,7 @@ export const putProduct = (body, onSuccess, onFail) => {
 };
 
 const deleteProduct = (body, onSuccess, onFail) => {
-  return http.delete(
+  return http.delete<SucceedResponse>(
     `/products`,
     { credentials: "include" },
     body,
