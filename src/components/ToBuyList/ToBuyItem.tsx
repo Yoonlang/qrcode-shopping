@@ -14,6 +14,15 @@ import { useTranslation } from "react-i18next";
 import { IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
 import {
+  ALERT_MESSAGE,
+  COLOR_CARD_TEXT,
+  IMG_SIZE,
+  OPTION_TEXT,
+  ProductType,
+  SAMPLE_YARDAGE_TEXT,
+  SELECTED_OPTIONS_TEXT,
+} from "@/components/ToBuyList/const";
+import {
   Counter,
   MenuItemDivider,
   SelectedOption,
@@ -25,22 +34,14 @@ import {
   StyledRight,
   StyledTop,
   StyledWrapper,
-} from "@/components/ToBuyList/ToBuyItem/styled";
-import { Product } from "@/const";
+} from "@/components/ToBuyList/styled";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
-const COLOR_CARD_TEXT = "Color Card";
-const OPTION_TEXT = "Option";
-const SELECTED_OPTIONS_TEXT = "Selected Options";
-const IMG_SIZE = 71;
-const ALERT_MESSAGE = "Please enter only numbers";
-const SAMPLE_YARDAGE_TEXT = "Sample Yardage";
-
-const Product = ({
+const ToBuyItem = ({
   product,
   handleDelete,
 }: {
-  product: Product;
+  product: ProductType;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
@@ -49,7 +50,8 @@ const Product = ({
   const { t } = useTranslation();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const { productId, colors, name = productId } = product;
-  const [open, setOpen] = useState<boolean>(true);
+  const [isOptionListExpanded, setIsOptionListExpanded] =
+    useState<boolean>(true);
   const selected = Object.keys(selectedInfoList[productId] || []).sort(
     (a, b) => {
       if (a === COLOR_CARD_TEXT) return -1;
@@ -58,7 +60,7 @@ const Product = ({
     }
   );
 
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
+  const handleOptionChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
@@ -112,7 +114,7 @@ const Product = ({
     }
   };
 
-  const handleChangeCount = (
+  const handleCountChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     name: string
   ) => {
@@ -131,7 +133,7 @@ const Product = ({
     }
   };
 
-  const handleClickAdd = (
+  const handleCountAddButtonClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
@@ -144,7 +146,7 @@ const Product = ({
     });
   };
 
-  const handleClickSubtract = (
+  const handleCountSubtractButtonClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     name: string
   ) => {
@@ -165,7 +167,7 @@ const Product = ({
     }
   };
 
-  const handleDeleteOption = (
+  const handleOptionDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     name: string
   ) => {
@@ -197,17 +199,21 @@ const Product = ({
               <div>{t(COLOR_CARD_TEXT)}</div>
               <Counter>
                 <Button
-                  onClick={(e) => handleClickSubtract(e, COLOR_CARD_TEXT)}
+                  onClick={(e) =>
+                    handleCountSubtractButtonClick(e, COLOR_CARD_TEXT)
+                  }
                 >
                   -
                 </Button>
                 <StyledInput
                   value={selectedInfoList[productId][COLOR_CARD_TEXT]}
-                  onChange={(e) => handleChangeCount(e, COLOR_CARD_TEXT)}
+                  onChange={(e) => handleCountChange(e, COLOR_CARD_TEXT)}
                   size="small"
                 />
 
-                <Button onClick={(e) => handleClickAdd(e, COLOR_CARD_TEXT)}>
+                <Button
+                  onClick={(e) => handleCountAddButtonClick(e, COLOR_CARD_TEXT)}
+                >
                   +
                 </Button>
               </Counter>
@@ -219,7 +225,7 @@ const Product = ({
               multiple
               fullWidth
               value={selected}
-              onChange={handleChange}
+              onChange={handleOptionChange}
               renderValue={() => <>{OPTION_TEXT}</>}
               size="small"
             >
@@ -250,7 +256,7 @@ const Product = ({
       </StyledTop>
       {IS_USING_SY && selected?.length > 0 && (
         <>
-          <Collapse in={open}>
+          <Collapse in={isOptionListExpanded}>
             <Divider />
             <StyledBottom>
               <p>{SELECTED_OPTIONS_TEXT}</p>
@@ -259,19 +265,25 @@ const Product = ({
                   <SelectedOption>
                     <div>{select}</div>
                     <Counter>
-                      <Button onClick={(e) => handleClickSubtract(e, select)}>
+                      <Button
+                        onClick={(e) =>
+                          handleCountSubtractButtonClick(e, select)
+                        }
+                      >
                         -
                       </Button>
                       <StyledInput
                         value={selectedInfoList[productId][select]}
-                        onChange={(e) => handleChangeCount(e, select)}
+                        onChange={(e) => handleCountChange(e, select)}
                         size="small"
                       />
-                      <Button onClick={(e) => handleClickAdd(e, select)}>
+                      <Button
+                        onClick={(e) => handleCountAddButtonClick(e, select)}
+                      >
                         +
                       </Button>
                       <IconButton
-                        onClick={(e) => handleDeleteOption(e, select)}
+                        onClick={(e) => handleOptionDelete(e, select)}
                       >
                         {Icons["delete"]}
                       </IconButton>
@@ -282,12 +294,12 @@ const Product = ({
               ))}
             </StyledBottom>
           </Collapse>
-          {open ? (
-            <IconButton onClick={() => setOpen(false)}>
+          {isOptionListExpanded ? (
+            <IconButton onClick={() => setIsOptionListExpanded(false)}>
               {Icons["close"]}
             </IconButton>
           ) : (
-            <IconButton onClick={() => setOpen(true)}>
+            <IconButton onClick={() => setIsOptionListExpanded(true)}>
               {Icons["open"]}
             </IconButton>
           )}
@@ -297,4 +309,4 @@ const Product = ({
   );
 };
 
-export default Product;
+export default ToBuyItem;
