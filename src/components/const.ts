@@ -47,3 +47,5 @@ export const YOUNGWON_TEXT = "YOUNGWON";
 export const MAEIL_TEXT = "MAEIL";
 
 export const IS_USING_SY = process.env.IS_USING_SY;
+
+export const EMPTY_TEXT = "No items scanned";
