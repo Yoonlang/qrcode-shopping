@@ -1,5 +1,5 @@
 import { SERVER_URL } from "@/components/const";
-import { Product } from "@/const";
+import { OrdererInfo, Product } from "@/const";
 
 interface SucceedResponse {
   message: string;
@@ -113,15 +113,26 @@ export const deleteProductList = (productList, onSuccess, onFail) => {
 };
 
 export const getOrdererInfoList = (onSuccess, onFail) => {
-  return http.get(`/users-info`, { credentials: "include" }, onSuccess, onFail);
+  return http.get<OrdererInfo[]>(
+    `/users-info`,
+    { credentials: "include" },
+    onSuccess,
+    onFail
+  );
 };
 
 export const submitOrdererInfo = (body, onSuccess, onFail) => {
-  return http.post(`/users-info`, undefined, body, onSuccess, onFail);
+  return http.post<SucceedResponse>(
+    `/users-info`,
+    undefined,
+    body,
+    onSuccess,
+    onFail
+  );
 };
 
 const deleteOrderer = (body, onSuccess, onFail) => {
-  return http.delete(
+  return http.delete<SucceedResponse>(
     `/users-info`,
     { credentials: "include" },
     body,
@@ -141,11 +152,16 @@ export const deleteOrdererList = (ordererList, onSuccess, onFail) => {
 };
 
 export const checkCookieAuth = (onSuccess, onFail) => {
-  return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
+  return http.get<SucceedResponse>(
+    `/cookie`,
+    { credentials: "include" },
+    onSuccess,
+    onFail
+  );
 };
 
 export const postLogin = (body, onSuccess, onFail) => {
-  return http.post(
+  return http.post<SucceedResponse>(
     `/login`,
     { credentials: "include" },
     body,
