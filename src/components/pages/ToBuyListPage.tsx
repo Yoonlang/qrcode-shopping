@@ -6,15 +6,16 @@ import { styled } from "styled-components";
 
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
-import Product from "@/components/ToBuyList/ToBuyItem";
 import {
   SelectedBox,
   StyledBox,
   StyledButton,
-} from "@/components/ToBuyList/ToBuyItem/styled";
+} from "@/components/ToBuyList/styled";
+import Product from "@/components/ToBuyList/ToBuyItem";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
+
 
 const StyledDiv = styled.div`
   align-items: normal;
