@@ -1,23 +1,31 @@
 import { SERVER_URL } from "@/components/const";
 
-const handleResponse = (res: Response) =>
-  res.json().then((data) => {
-    if (!res.ok) {
+interface ErrorResponse {
+  error: string;
+}
+
+const isErrorResponse = (data: any): data is ErrorResponse => {
+  return typeof data === "object" && data !== null && "error" in data;
+};
+
+const handleResponse = <T>(res: Response): Promise<T> =>
+  res.json().then((data: T | ErrorResponse) => {
+    if (!res.ok && isErrorResponse(data)) {
       throw new Error(data.error);
     }
-    return data;
+    return data as T;
   });
 
 const http = {
-  get: (path: string, options = {}, onSuccess, onFail) =>
+  get: <T = unknown>(path: string, options = {}, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "GET",
       ...options,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  post: (path: string, options = {}, body, onSuccess, onFail) =>
+  post: <T = unknown>(path: string, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "POST",
       headers: {
@@ -26,10 +34,10 @@ const http = {
       ...options,
       body,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  put: (path: string, options = {}, body, onSuccess, onFail) =>
+  put: <T = unknown>(path: string, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
@@ -38,10 +46,10 @@ const http = {
       ...options,
       body,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  delete: (path: string, options = {}, body, onSuccess, onFail) =>
+  delete: <T = unknown>(path: string, options = {}, body, onSuccess, onFail) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "DELETE",
       headers: {
@@ -50,7 +58,7 @@ const http = {
       ...options,
       body,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
 };
