@@ -9,6 +9,9 @@ interface ErrorResponse {
   error: string;
 }
 
+type SuccessCallback<T> = (data: T) => void;
+type FailCallback = (error: Error) => void;
+
 const isErrorResponse = (data: any): data is ErrorResponse => {
   return typeof data === "object" && data !== null && "error" in data;
 };
@@ -22,7 +25,12 @@ const handleResponse = <T>(res: Response): Promise<T> =>
   });
 
 const http = {
-  get: <T = unknown>(path: string, options = {}, onSuccess, onFail) =>
+  get: <T = unknown>(
+    path: string,
+    options = {},
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "GET",
       ...options,
@@ -30,7 +38,13 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  post: <T = unknown>(path: string, options = {}, body, onSuccess, onFail) =>
+  post: <T = unknown>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "POST",
       headers: {
@@ -42,7 +56,13 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  put: <T = unknown>(path: string, options = {}, body, onSuccess, onFail) =>
+  put: <T = unknown>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
@@ -54,7 +74,13 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  delete: <T = unknown>(path: string, options = {}, body, onSuccess, onFail) =>
+  delete: <T = unknown>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "DELETE",
       headers: {
