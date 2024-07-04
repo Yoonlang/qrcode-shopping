@@ -12,7 +12,7 @@ import {
   StyledModal,
 } from "@/components/Manager/DashboardItems";
 import ProductTable from "@/components/Manager/Product/ProductTable";
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
+import { ProductType } from "@/const";
 
 const fileTypes = ["JPG", "PNG"];
 

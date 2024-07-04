@@ -1,5 +1,5 @@
 import { SERVER_URL } from "@/components/const";
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
+import { ProductType } from "@/const";
 
 interface SucceedResponse {
   message: string;

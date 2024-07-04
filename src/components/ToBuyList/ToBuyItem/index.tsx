@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/Icons";
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
 import {
   Counter,
   SelectedOption,
@@ -14,6 +13,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
+import { ProductType } from "@/const";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const COLOR_CARD_TEXT = "Color Card";
