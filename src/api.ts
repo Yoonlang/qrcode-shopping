@@ -1,15 +1,4 @@
 import { SERVER_URL } from "@/components/const";
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
-
-type SuccessCallback<T> = (data: T) => void;
-type FailCallback = (error: unknown) => void;
-
-type getAPI<T> = (onSuccess: SuccessCallback<T>, onFail: FailCallback) => {};
-type postAPI<T, U> = (
-  body: U,
-  onSuccess: SuccessCallback<T>,
-  onFail: FailCallback
-) => {};
 
 const handleResponse = (res: Response) =>
   res.json().then((data) => {
@@ -66,15 +55,11 @@ const http = {
       .catch(onFail),
 };
 
-export const getProductList: getAPI<ProductType[]> = (onSuccess, onFail) => {
+export const getProductList = (onSuccess, onFail) => {
   return http.get(`/products`, undefined, onSuccess, onFail);
 };
 
-export const postProduct: postAPI<undefined, FormData> = (
-  body,
-  onSuccess,
-  onFail
-) => {
+export const postProduct = (body, onSuccess, onFail) => {
   return http.post(
     `/products`,
     { credentials: "include", headers: {} },
@@ -84,11 +69,7 @@ export const postProduct: postAPI<undefined, FormData> = (
   );
 };
 
-export const putProduct: postAPI<undefined, FormData> = (
-  body,
-  onSuccess,
-  onFail
-) => {
+export const putProduct = (body, onSuccess, onFail) => {
   return http.put(
     `/products`,
     { credentials: "include", headers: {} },
@@ -98,7 +79,7 @@ export const putProduct: postAPI<undefined, FormData> = (
   );
 };
 
-const deleteProduct: postAPI<unknown, string> = (body, onSuccess, onFail) => {
+const deleteProduct = (body, onSuccess, onFail) => {
   return http.delete(
     `/products`,
     { credentials: "include" },
@@ -108,11 +89,7 @@ const deleteProduct: postAPI<unknown, string> = (body, onSuccess, onFail) => {
   );
 };
 
-export const deleteProductList = (
-  productList: ProductType[],
-  onSuccess: SuccessCallback<unknown[]>,
-  onFail: FailCallback
-) => {
+export const deleteProductList = (productList, onSuccess, onFail) => {
   const deletePromises = productList.map((product) => {
     return new Promise((resolve, reject) => {
       deleteProduct(JSON.stringify({ productId: product }), resolve, reject);
