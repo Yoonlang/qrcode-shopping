@@ -3,7 +3,7 @@ interface Color {
   colorName: string;
 }
 
-export interface ProductType {
+export interface Product {
   documentId: string;
   productId: string;
   name: string | undefined;

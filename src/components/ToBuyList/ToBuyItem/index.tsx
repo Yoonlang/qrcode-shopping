@@ -13,7 +13,7 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/ToBuyItem/styled";
-import { ProductType } from "@/const";
+import { Product } from "@/const";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const COLOR_CARD_TEXT = "Color Card";
@@ -27,7 +27,7 @@ const Product = ({
   product,
   handleDelete,
 }: {
-  product: ProductType;
+  product: Product;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string

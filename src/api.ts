@@ -1,5 +1,5 @@
 import { SERVER_URL } from "@/components/const";
-import { ProductType } from "@/const";
+import { Product } from "@/const";
 
 interface SucceedResponse {
   message: string;
@@ -69,7 +69,7 @@ const http = {
 };
 
 export const getProductList = (onSuccess, onFail) => {
-  return http.get<ProductType[]>(`/products`, undefined, onSuccess, onFail);
+  return http.get<Product[]>(`/products`, undefined, onSuccess, onFail);
 };
 
 export const postProduct = (body, onSuccess, onFail) => {
