@@ -14,13 +14,13 @@ type FailCallback = (error: Error) => void;
 
 type ApiGetFunction<T> = (
   onSuccess: SuccessCallback<T>,
-  onFail: ErrorCallback
+  onFail: FailCallback
 ) => Promise<void>;
 
 type ApiModifyFunction<T> = (
   body: BodyInit | null | undefined,
   onSuccess: SuccessCallback<T>,
-  onFail: ErrorCallback
+  onFail: FailCallback
 ) => Promise<void>;
 
 const isErrorResponse = (data: unknown): data is ErrorResponse => {
