@@ -155,13 +155,13 @@ const deleteProduct: ApiModifyFunction<SucceedResponse> = (
 };
 
 export const deleteProductList = (
-  productList: Product[],
+  productList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback
 ) => {
-  const deletePromises = productList.map((product) => {
+  const deletePromises = productList.map((productId) => {
     return new Promise((resolve, reject) => {
-      deleteProduct(JSON.stringify({ productId: product }), resolve, reject);
+      deleteProduct(JSON.stringify({ productId }), resolve, reject);
     });
   });
 

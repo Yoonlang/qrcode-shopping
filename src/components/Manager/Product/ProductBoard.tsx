@@ -123,7 +123,7 @@ const ProductCreateModal = ({ open, handleModalClose, formik }) => {
 const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
-  const [selectedProductList, setSelectedProductList] = useState<Product[]>([]);
+  const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
 
   const handleModalOpen = () => {
     setOpen(true);
