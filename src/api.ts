@@ -198,13 +198,13 @@ const deleteOrderer: ApiModifyFunction<SucceedResponse> = (
 };
 
 export const deleteOrdererList = (
-  ordererList: OrdererInfo[],
+  ordererList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback
 ) => {
-  const deletePromises = ordererList.map((orderer) => {
+  const deletePromises = ordererList.map((ordererId) => {
     return new Promise((resolve, reject) => {
-      deleteOrderer(JSON.stringify({ userId: orderer }), resolve, reject);
+      deleteOrderer(JSON.stringify({ userId: ordererId }), resolve, reject);
     });
   });
 

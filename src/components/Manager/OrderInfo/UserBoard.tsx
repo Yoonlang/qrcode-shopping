@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 
 import { deleteOrdererList, getOrdererInfoList } from "@/api";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
+import { OrdererInfo } from "@/const";
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -20,8 +21,8 @@ const StyledUserBoard = styled.div`
 `;
 
 const UserBoard = () => {
-  const [userInfoList, setUserInfoList] = useState([]);
-  const [selectedUserList, setSelectedUserList] = useState([]);
+  const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
+  const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
 
   const updateOrdererInfoList = () => {
     getOrdererInfoList(
