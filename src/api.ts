@@ -23,7 +23,7 @@ type ApiModifyFunction<T> = (
   onFail: ErrorCallback
 ) => Promise<void>;
 
-const isErrorResponse = (data: any): data is ErrorResponse => {
+const isErrorResponse = (data: unknown): data is ErrorResponse => {
   return typeof data === "object" && data !== null && "error" in data;
 };
 
@@ -36,7 +36,7 @@ const handleResponse = <T>(res: Response): Promise<T> =>
   });
 
 const http = {
-  get: <T = unknown>(
+  get: <T>(
     path: string,
     options = {},
     onSuccess: SuccessCallback<T>,
@@ -49,7 +49,7 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  post: <T = unknown>(
+  post: <T>(
     path: string,
     options = {},
     body: BodyInit | null | undefined,
@@ -67,7 +67,7 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  put: <T = unknown>(
+  put: <T>(
     path: string,
     options = {},
     body: BodyInit | null | undefined,
@@ -85,7 +85,7 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  delete: <T = unknown>(
+  delete: <T>(
     path: string,
     options = {},
     body: BodyInit | null | undefined,
