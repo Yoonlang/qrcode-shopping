@@ -18,7 +18,6 @@ import {
   COLOR_CARD_TEXT,
   IMG_SIZE,
   OPTION_TEXT,
-  ProductType,
   SAMPLE_YARDAGE_TEXT,
   SELECTED_OPTIONS_TEXT,
 } from "@/components/ToBuyList/const";
@@ -35,13 +34,14 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/styled";
+import { Product } from "@/const";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const ToBuyItem = ({
   product,
   handleDelete,
 }: {
-  product: ProductType;
+  product: Product;
   handleDelete: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
