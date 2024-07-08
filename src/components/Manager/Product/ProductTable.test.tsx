@@ -2,31 +2,8 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
+import { mockProductList } from "@/components/Manager/Product/const";
 import ProductTable from "@/components/Manager/Product/ProductTable";
-import { Product } from "@/const";
-
-const mockProductList: Product[] = [
-  {
-    colors: [{ colorName: "", colorId: "1" }],
-    composition: "",
-    documentId: "JQ 12370SIQ",
-    image: "",
-    price: null,
-    productId: "JQ 12370SIQ",
-    weightGPerM2: 64,
-    widthInch: 58,
-  },
-  {
-    colors: [{ colorName: "", colorId: "1" }],
-    composition: "",
-    documentId: "JQ 11370SIE",
-    image: "",
-    price: null,
-    productId: "JQ 11370SIE",
-    weightGPerM2: 64,
-    widthInch: 58,
-  },
-];
 
 const mockSetSelectedProductList = jest.fn();
 

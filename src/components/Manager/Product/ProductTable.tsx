@@ -118,7 +118,12 @@ export const ProductDetail = ({ product, closeModal, openEditModal }) => {
         </div>
       </div>
       <div className="buttonContainer">
-        <Button onClick={openEditModal}>수정</Button>
+        <Button
+          onClick={openEditModal}
+          data-testid={"product-detail-open-edit-modal-button"}
+        >
+          수정
+        </Button>
         <Button onClick={closeModal}>닫기</Button>
       </div>
     </StyledDetailModalContainer>
@@ -194,7 +199,7 @@ export const ProductEdit = ({
   }, [product]);
 
   return (
-    <ProductAddModal>
+    <ProductAddModal data-testid={"product-edit-modal"}>
       <h2>Edit</h2>
       <ProductInput label="Product ID" name="productId" formik={formik} />
       <FileUploader
