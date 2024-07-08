@@ -1,7 +1,9 @@
-import { ALERT_MESSAGE } from "@/components/ToBuyList/const";
-import { IS_USING_SY } from "@/components/const";
-import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { useTranslation } from "react-i18next";
+
+import { IS_USING_SY } from "@/components/const";
+import { ALERT_MESSAGE } from "@/components/ToBuyList/const";
+import useSelectedInfoList from "@/hooks/useSelectedInfoList";
+
 
 const useCounter = () => {
   const { t } = useTranslation();

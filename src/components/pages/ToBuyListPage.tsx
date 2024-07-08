@@ -6,19 +6,19 @@ import { styled } from "styled-components";
 
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
+import { COLOR_CARD_TEXT } from "@/components/ToBuyList/const";
 import {
   SelectedBox,
   StyledBox,
   StyledButton,
   StyledWrapper,
 } from "@/components/ToBuyList/styled";
+import ToBuyItemMain from "@/components/ToBuyList/ToBuyItemMain";
+import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
 
-import { COLOR_CARD_TEXT } from "@/components/ToBuyList/const";
-import ToBuyItemMain from "@/components/ToBuyList/ToBuyItemMain";
-import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
 
 const StyledDiv = styled.div`
   align-items: normal;
