@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { Formik } from "formik";
 
 import ProductTable from "@/components/Manager/Product/ProductTable";
 import { Product } from "@/const";
-import { Formik } from "formik";
 
 const mockProductList: Product[] = [
   {
