@@ -5,11 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 
-import {
-  PRIMARY,
-  PRIMARY_DARK,
-  snackBarStatusMessage,
-} from "@/components/const";
+import { snackBarStatusMessage } from "@/components/const";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -22,7 +18,7 @@ const StyledTitleAppBar = styled(AppBar)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: var(--color-white);
   width: 100%;
   height: 56px;
 
@@ -33,7 +29,7 @@ const StyledTitleAppBar = styled(AppBar)`
 `;
 
 const AppBarTitleText = styled.div`
-  color: #000;
+  color: var(--color-black);
   font-size: 19px;
   font-weight: 700;
 `;
@@ -138,7 +134,7 @@ const TitleAppBar = () => {
 };
 
 const StyledBottomAppBar = styled(AppBar)`
-  background-color: ${PRIMARY_DARK};
+  background-color: var(--color-app-bar-primary);
   top: calc(100% - 65px);
 
   > button {
@@ -157,14 +153,14 @@ const StyledBottomAppBar = styled(AppBar)`
 
 const StyledBadge = styled(Badge)`
   .MuiBadge-badge {
-    color: #000;
-    background-color: ${PRIMARY};
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
+    color: var(--color-black);
+    background-color: var(--color-badge-primary);
+    box-shadow: 0 2px 2px 0 var(--color-badge-secondary);
   }
 `;
 
 const BottomAppBarTitleText = styled.div`
-  color: #fff;
+  color: var(--color-white);
   font-size: 18px;
   font-weight: 700;
 `;

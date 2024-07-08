@@ -36,7 +36,7 @@ const StyledDetailModalContainer = styled.div`
   width: 730px;
   height: 520px;
   padding: 30px 30px 50px 30px;
-  background-color: #fff;
+  background-color: var(--color-white);
 
   .productContainer {
     display: flex;
@@ -52,8 +52,8 @@ const StyledDetailModalContainer = styled.div`
       }
       > div {
         max-width: 276px;
-        background-color: #fafafa;
-        filter: drop-shadow(0 1px 2px #00000024);
+        background-color: var(--color-gray-10);
+        filter: drop-shadow(0 1px 2px var(--color-black));
         height: 100%;
         padding: 16px;
         overflow: auto;

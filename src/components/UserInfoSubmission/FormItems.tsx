@@ -37,13 +37,13 @@ const StyledStepper = styled(Stepper)`
   }
 
   & .MuiStepIcon-root.Mui-active {
-    color: #000;
+    color: var(--color-black);
   }
 
   & .MuiStepLabel-label {
     font-size: 17px;
     font-weight: 700;
-    color: #000;
+    color: var(--color-black);
   }
 
   & .MuiStepIcon-text {
@@ -51,19 +51,18 @@ const StyledStepper = styled(Stepper)`
   }
 
   & .Mui-completed {
-    color: #000;
+    color: var(--color-black);
   }
 `;
-
-const BLUE = "#2196f3";
 
 const StyledTextField = styled(TextField)`
   &.MuiFormControl-root {
     & label.Mui-error {
-      color: #ff0000;
+      color: var(--color-text-field-error);
     }
 
-    background-color: ${(props) => props.disabled && "#f7f7f7"};
+    background-color: ${(props) =>
+      props.disabled && "var(--color-text-field-disabled)"};
   }
 
   & .MuiInputBase-root.MuiOutlinedInput-root {
@@ -73,62 +72,73 @@ const StyledTextField = styled(TextField)`
     }
 
     &.Mui-focused fieldset {
-      border-color: ${(props) => (props.required ? BLUE : "#000")};
+      border-color: ${(props) =>
+        props.required
+          ? "var(--color-text-field-required)"
+          : "var(--color-black)"};
     }
 
     & fieldSet {
       border-radius: 6px;
       border-color: ${(props) =>
-        props.required ? BLUE : "rgba(0, 0, 0, 0.1)"};
+        props.required
+          ? "var(--color-text-field-required)"
+          : "var(--color-text-field-primary"};
     }
 
     &.Mui-error {
       & fieldSet {
-        border-color: #ff0000;
+        border-color: var(--color-text-field-error);
       }
 
       & label {
-        color: #ff0000;
+        color: var(--color-text-field-error);
       }
     }
   }
 
   & label {
     &.Mui-focused {
-      color: ${(props) => (props.required ? BLUE : "#000")};
+      color: ${(props) =>
+        props.required
+          ? "var(--color-text-field-required)"
+          : "var(--color-black)"};
     }
   }
 
   & .MuiInput-underline:after {
-    border-bottom-color: ${(props) => (props.required ? BLUE : "#000")};
+    border-bottom-color: ${(props) =>
+      props.required
+        ? "var(--color-text-field-required)"
+        : "var(--color-black)"};
   }
 
   & .MuiFormHelperText-root.Mui-error {
-    color: #ff0000;
+    color: var(--color-text-field-error);
   }
 `;
 
 const StyledMenuItem = styled(MenuItem)`
-  background-color: #e7e7e7;
+  background-color: var(--color-li-primary);
   font-size: 17px;
-  border-bottom: 0.5px solid rgba(60, 60, 67, 0.36);
+  border-bottom: 0.5px solid var(--color-li-secondary);
   display: flex;
   justify-content: space-between;
 
   &:hover {
-    background-color: #e7e7e7;
+    background-color: var(--color-li-primary);
   }
 
   &.Mui-selected {
-    background-color: #e7e7e7;
+    background-color: var(--color-li-primary);
 
     &:hover {
-      background-color: #e7e7e7;
+      background-color: var(--color-li-primary);
     }
   }
 
   &:focus {
-    background-color: #e7e7e7;
+    background-color: var(--color-li-primary);
   }
 `;
 
@@ -136,13 +146,13 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   margin-right: 8px;
 
   & .MuiCheckbox-root {
-    color: #000;
+    color: var(--color-black);
     padding-left: 0;
   }
 
   & .MuiFormControlLabel-label {
     font-size: 12.5px;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--color-primary);
   }
 `;
 
@@ -154,7 +164,7 @@ const StyledErrorMessage = styled.div`
   & p {
     margin: 0;
     font-size: 12px;
-    color: #ff0000;
+    color: var(--color-text-field-error);
     margin-left: 5px;
   }
 `;

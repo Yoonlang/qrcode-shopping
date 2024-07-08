@@ -20,7 +20,7 @@ import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
 const StyledDiv = styled.div`
   align-items: normal;
   padding: 80px 20px 0 20px;
-  background-color: #f5f5f5;
+  background-color: var(--color-gray-20);
   overflow: auto;
   width: 100%;
   height: 100%;
@@ -44,7 +44,7 @@ const EmptyTextDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--color-gray-80);
   font-size: 12px;
   padding-bottom: 80px;
 `;
@@ -71,8 +71,8 @@ const StyledSwitch = () => {
           sx={{
             color:
               values.productLengthUnit === "METER"
-                ? "#FBFBFB"
-                : "rgba(0, 0, 0, 0.87)",
+                ? "var(--color-switch-secondary)"
+                : "var(--color-switch-primary)",
             fontWeight:
               values.productLengthUnit === "METER" ? "bold" : "normal",
           }}
@@ -85,8 +85,8 @@ const StyledSwitch = () => {
           sx={{
             color:
               values.productLengthUnit === "YARD"
-                ? "#FBFBFB"
-                : "rgba(0, 0, 0, 0.87)",
+                ? "var(--color-switch-secondary)"
+                : "var(--color-switch-primary)",
             fontWeight: values.productLengthUnit === "YARD" ? "bold" : "normal",
           }}
           onClick={() => setFieldValue("productLengthUnit", "YARD")}

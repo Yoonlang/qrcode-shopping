@@ -23,7 +23,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledPaper = styled(Paper)`
-  background-color: #e7e7e7;
+  background-color: var(--color-li-primary);
   width: 100%;
 
   & img {
@@ -38,19 +38,19 @@ const StyledPaper = styled(Paper)`
       white-space: normal;
       display: flex;
       justify-content: space-between;
-      background-color: #e7e7e7;
+      background-color: var(--color-li-primary);
       font-size: 17px;
-      border-bottom: 0.5px solid rgba(60, 60, 67, 0.36);
+      border-bottom: 0.5px solid var(--color-li-secondary);
 
       &.Mui-focused,
       &.Mui-Selected,
       &:hover,
       &:focus {
-        background-color: #e7e7e7 !important;
+        background-color: var(--color-li-primary) !important;
       }
 
       &[aria-selected="true"] {
-        background-color: #e7e7e7 !important;
+        background-color: var(--color-li-primary) !important;
       }
     }
   }

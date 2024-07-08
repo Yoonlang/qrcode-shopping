@@ -98,7 +98,7 @@ const StyledModalContainer = styled.div`
   flex-direction: column;
   width: 740px;
   height: 650px;
-  background-color: #fff;
+  background-color: var(--color-white);
   overflow: scroll;
   padding: 30px;
 
@@ -108,7 +108,7 @@ const StyledModalContainer = styled.div`
 
   h4 {
     margin: 10px 0;
-    color: #3da3f5;
+    color: var(--color-h4-secondary);
   }
 `;
 
