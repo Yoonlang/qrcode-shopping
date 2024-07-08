@@ -10,12 +10,15 @@ import {
   SelectedBox,
   StyledBox,
   StyledButton,
+  StyledWrapper,
 } from "@/components/ToBuyList/styled";
-import Product from "@/components/ToBuyList/ToBuyItem";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
 
+import { COLOR_CARD_TEXT } from "@/components/ToBuyList/const";
+import ToBuyItemMain from "@/components/ToBuyList/ToBuyItemMain";
+import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -133,12 +136,23 @@ const ToBuyListPage = () => {
               Object.keys(scannedItemList).some((pid) => pid === item.productId)
             )
             .map((product) => {
+              const selected = Object.keys(
+                selectedInfoList[product.productId] || []
+              ).sort((a, b) => {
+                if (a === COLOR_CARD_TEXT) return -1;
+                if (b === COLOR_CARD_TEXT) return 1;
+                return +a.split(" ")[0] - +b.split(" ")[0];
+              });
+
               return (
-                <Product
-                  key={product.productId}
-                  product={product}
-                  handleDelete={handleToBuyItemDelete}
-                />
+                <StyledWrapper key={product.productId}>
+                  <ToBuyItemMain
+                    product={product}
+                    selected={selected}
+                    handleDelete={handleToBuyItemDelete}
+                  />
+                  <ToBuyItemOptions product={product} selected={selected} />
+                </StyledWrapper>
               );
             })}
         </ProductLists>
