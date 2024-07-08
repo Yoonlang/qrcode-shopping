@@ -1,23 +1,61 @@
 import { SERVER_URL } from "@/components/const";
+import { OrdererInfo, Product } from "@/const";
 
-const handleResponse = (res) =>
-  res.json().then((data) => {
-    if (!res.ok) {
+interface SucceedResponse {
+  message: string;
+}
+
+interface ErrorResponse {
+  error: string;
+}
+
+type SuccessCallback<T> = (data: T) => void;
+type FailCallback = (error: Error) => void;
+
+type ApiGetFunction<T> = (
+  onSuccess: SuccessCallback<T>,
+  onFail: FailCallback
+) => Promise<void>;
+
+type ApiModifyFunction<T> = (
+  body: BodyInit | null | undefined,
+  onSuccess: SuccessCallback<T>,
+  onFail: FailCallback
+) => Promise<void>;
+
+const isErrorResponse = (data: unknown): data is ErrorResponse => {
+  return typeof data === "object" && data !== null && "error" in data;
+};
+
+const handleResponse = <T>(res: Response): Promise<T> =>
+  res.json().then((data: T | ErrorResponse) => {
+    if (!res.ok && isErrorResponse(data)) {
       throw new Error(data.error);
     }
-    return data;
+    return data as T;
   });
 
 const http = {
-  get: (path, options = {}, onSuccess, onFail) =>
+  get: <T>(
+    path: string,
+    options = {},
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "GET",
       ...options,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  post: (path, options = {}, body, onSuccess, onFail) =>
+  post: <T>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "POST",
       headers: {
@@ -26,10 +64,16 @@ const http = {
       ...options,
       body,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  put: (path, options = {}, body, onSuccess, onFail) =>
+  put: <T>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "PUT",
       headers: {
@@ -38,10 +82,16 @@ const http = {
       ...options,
       body,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
-  delete: (path, options = {}, body, onSuccess, onFail) =>
+  delete: <T>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
     fetch(`${SERVER_URL}${path}`, {
       method: "DELETE",
       headers: {
@@ -50,16 +100,23 @@ const http = {
       ...options,
       body,
     })
-      .then(handleResponse)
+      .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
 };
 
-export const getProductList = (onSuccess, onFail) => {
+export const getProductList: ApiGetFunction<Product[]> = (
+  onSuccess,
+  onFail
+) => {
   return http.get(`/products`, undefined, onSuccess, onFail);
 };
 
-export const postProduct = (body, onSuccess, onFail) => {
+export const postProduct: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.post(
     `/products`,
     { credentials: "include", headers: {} },
@@ -69,7 +126,11 @@ export const postProduct = (body, onSuccess, onFail) => {
   );
 };
 
-export const putProduct = (body, onSuccess, onFail) => {
+export const putProduct: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.put(
     `/products`,
     { credentials: "include", headers: {} },
@@ -79,7 +140,11 @@ export const putProduct = (body, onSuccess, onFail) => {
   );
 };
 
-const deleteProduct = (body, onSuccess, onFail) => {
+const deleteProduct: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.delete(
     `/products`,
     { credentials: "include" },
@@ -89,25 +154,40 @@ const deleteProduct = (body, onSuccess, onFail) => {
   );
 };
 
-export const deleteProductList = (productList, onSuccess, onFail) => {
-  const deletePromises = productList.map((product) => {
+export const deleteProductList = (
+  productList: string[],
+  onSuccess: SuccessCallback<SucceedResponse[]>,
+  onFail: FailCallback
+) => {
+  const deletePromises = productList.map((productId) => {
     return new Promise((resolve, reject) => {
-      deleteProduct(JSON.stringify({ productId: product }), resolve, reject);
+      deleteProduct(JSON.stringify({ productId }), resolve, reject);
     });
   });
 
   Promise.all(deletePromises).then(onSuccess).catch(onFail);
 };
 
-export const getOrdererInfoList = (onSuccess, onFail) => {
+export const getOrdererInfoList: ApiGetFunction<OrdererInfo[]> = (
+  onSuccess,
+  onFail
+) => {
   return http.get(`/users-info`, { credentials: "include" }, onSuccess, onFail);
 };
 
-export const submitOrdererInfo = (body, onSuccess, onFail) => {
+export const submitOrdererInfo: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.post(`/users-info`, undefined, body, onSuccess, onFail);
 };
 
-const deleteOrderer = (body, onSuccess, onFail) => {
+const deleteOrderer: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.delete(
     `/users-info`,
     { credentials: "include" },
@@ -117,21 +197,32 @@ const deleteOrderer = (body, onSuccess, onFail) => {
   );
 };
 
-export const deleteOrdererList = (ordererList, onSuccess, onFail) => {
-  const deletePromises = ordererList.map((orderer) => {
+export const deleteOrdererList = (
+  ordererList: string[],
+  onSuccess: SuccessCallback<SucceedResponse[]>,
+  onFail: FailCallback
+) => {
+  const deletePromises = ordererList.map((ordererId) => {
     return new Promise((resolve, reject) => {
-      deleteOrderer(JSON.stringify({ userId: orderer }), resolve, reject);
+      deleteOrderer(JSON.stringify({ userId: ordererId }), resolve, reject);
     });
   });
 
   Promise.all(deletePromises).then(onSuccess).catch(onFail);
 };
 
-export const checkCookieAuth = (onSuccess, onFail) => {
+export const checkCookieAuth: ApiGetFunction<SucceedResponse> = (
+  onSuccess,
+  onFail
+) => {
   return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
 };
 
-export const postLogin = (body, onSuccess, onFail) => {
+export const postLogin: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
   return http.post(
     `/login`,
     { credentials: "include" },

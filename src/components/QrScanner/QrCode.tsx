@@ -28,7 +28,7 @@ const QrCode = () => {
   const { setScannedItemList } = useScannedItemList();
 
   const imageScan = useCallback(
-    (imageData) => {
+    (imageData: ImageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
       if (code) {
         const [pre, pid] = code.data.split("/");

@@ -16,6 +16,7 @@ import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
 
+
 const StyledDiv = styled.div`
   align-items: normal;
   padding: 80px 20px 0 20px;
