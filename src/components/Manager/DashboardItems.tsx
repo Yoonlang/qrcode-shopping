@@ -7,7 +7,7 @@ const StyledAppBar = styled(AppBar)`
   &.MuiAppBar-root {
     display: flex;
     flex-direction: row;
-    background-color: #323232;
+    background-color: var(--color-app-bar-primary);
     justify-content: center;
     align-items: center;
     font-size: 17px;
@@ -46,7 +46,7 @@ const StyledModal = styled(Modal)`
 `;
 
 const ProductAddModal = styled.div`
-  background-color: #fff;
+  background-color: var(--color-white);
   display: flex;
   flex-direction: column;
   padding: 20px;

@@ -14,7 +14,7 @@ const StyledInfo = styled.div`
   }
   h4 {
     font-size: 11px;
-    color: #999;
+    color: var(--color-h4-primary);
     font-weight: normal;
     margin-bottom: 11px;
   }
