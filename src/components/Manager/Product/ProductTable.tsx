@@ -74,7 +74,7 @@ const StyledDetailModalContainer = styled.div`
   }
 `;
 
-const ProductDetail = ({ product, closeModal, openEditModal }) => {
+export const ProductDetail = ({ product, closeModal, openEditModal }) => {
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
     product;
 
@@ -125,7 +125,7 @@ const ProductDetail = ({ product, closeModal, openEditModal }) => {
   );
 };
 
-const ProductEdit = ({
+export const ProductEdit = ({
   handleModalClose,
   formik,
   openDetailModal,
@@ -253,7 +253,7 @@ const ProductEdit = ({
   );
 };
 
-const ProductDetailModal = ({
+export const ProductDetailModal = ({
   isModalOpen,
   closeModal,
   modalProductData,
