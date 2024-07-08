@@ -270,7 +270,11 @@ export const ProductDetailModal = ({
   };
 
   return (
-    <StyledModal open={isModalOpen} onClose={closeModal}>
+    <StyledModal
+      open={isModalOpen}
+      onClose={closeModal}
+      data-testid={"product-detail-modal"}
+    >
       <>
         {isEditMode ? (
           <ProductEdit
