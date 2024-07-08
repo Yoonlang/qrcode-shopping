@@ -11,10 +11,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
 import {
-  ALERT_MESSAGE,
   COLOR_CARD_TEXT,
   IMG_SIZE,
   OPTION_TEXT,
@@ -34,7 +32,9 @@ import {
   StyledTop,
   StyledWrapper,
 } from "@/components/ToBuyList/styled";
+import { IS_USING_SY } from "@/components/const";
 import { Product } from "@/const";
+import useCounter from "@/hooks/useCounter";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
 const ToBuyItem = ({
@@ -59,6 +59,11 @@ const ToBuyItem = ({
       return +a.split(" ")[0] - +b.split(" ")[0];
     }
   );
+  const {
+    handleCountChange,
+    handleCountAddButtonClick,
+    handleCountSubtractButtonClick,
+  } = useCounter();
 
   const handleOptionChange = (event: SelectChangeEvent<string[]>) => {
     const {
@@ -114,59 +119,6 @@ const ToBuyItem = ({
     }
   };
 
-  const handleCountChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    name: string
-  ) => {
-    const value = e.target.value;
-    const regex = /^[0-9]*$/;
-    if (regex.test(value)) {
-      setSelectedInfoList({
-        ...selectedInfoList,
-        [productId]: {
-          ...selectedInfoList[productId],
-          [name]: Number(value),
-        },
-      });
-    } else {
-      alert(t(ALERT_MESSAGE));
-    }
-  };
-
-  const handleCountAddButtonClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    name: string
-  ) => {
-    setSelectedInfoList({
-      ...selectedInfoList,
-      [productId]: {
-        ...selectedInfoList[productId],
-        [name]: +selectedInfoList[productId][name] + 1,
-      },
-    });
-  };
-
-  const handleCountSubtractButtonClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    name: string
-  ) => {
-    if (selectedInfoList[productId][name] > 1) {
-      setSelectedInfoList({
-        ...selectedInfoList,
-        [productId]: {
-          ...selectedInfoList[productId],
-          [name]: selectedInfoList[productId][name] - 1,
-        },
-      });
-    } else {
-      if (IS_USING_SY) {
-        const temp = { ...selectedInfoList[productId] };
-        delete temp[name];
-        setSelectedInfoList({ ...selectedInfoList, [productId]: temp });
-      }
-    }
-  };
-
   const handleOptionDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     name: string
@@ -200,19 +152,27 @@ const ToBuyItem = ({
               <Counter>
                 <Button
                   onClick={(e) =>
-                    handleCountSubtractButtonClick(e, COLOR_CARD_TEXT)
+                    handleCountSubtractButtonClick(
+                      e,
+                      productId,
+                      COLOR_CARD_TEXT
+                    )
                   }
                 >
                   -
                 </Button>
                 <StyledInput
                   value={selectedInfoList[productId][COLOR_CARD_TEXT]}
-                  onChange={(e) => handleCountChange(e, COLOR_CARD_TEXT)}
+                  onChange={(e) =>
+                    handleCountChange(e, productId, COLOR_CARD_TEXT)
+                  }
                   size="small"
                 />
 
                 <Button
-                  onClick={(e) => handleCountAddButtonClick(e, COLOR_CARD_TEXT)}
+                  onClick={(e) =>
+                    handleCountAddButtonClick(e, productId, COLOR_CARD_TEXT)
+                  }
                 >
                   +
                 </Button>
@@ -267,18 +227,22 @@ const ToBuyItem = ({
                     <Counter>
                       <Button
                         onClick={(e) =>
-                          handleCountSubtractButtonClick(e, select)
+                          handleCountSubtractButtonClick(e, productId, select)
                         }
                       >
                         -
                       </Button>
                       <StyledInput
                         value={selectedInfoList[productId][select]}
-                        onChange={(e) => handleCountChange(e, select)}
+                        onChange={(e) =>
+                          handleCountChange(e, productId, select)
+                        }
                         size="small"
                       />
                       <Button
-                        onClick={(e) => handleCountAddButtonClick(e, select)}
+                        onClick={(e) =>
+                          handleCountAddButtonClick(e, productId, select)
+                        }
                       >
                         +
                       </Button>
