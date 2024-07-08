@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 
 import { getProductList } from "@/api";
-import { ProductType } from "@/components/ToBuyList/ToBuyItem/const";
+import { ProductType } from "@/components/ToBuyList/const";
 
 export const fetchedItemListCounter = atom<number>({
   key: "fetchedItemListCounter",
