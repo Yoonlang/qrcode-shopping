@@ -28,9 +28,8 @@ import {
   StyledTop,
 } from "@/components/ToBuyList/styled";
 import { Product } from "@/const";
-import useCounter from "@/hooks/useCounter";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
-
+import useSelectedOptionCounter from "@/hooks/useSelectedOptionCounter";
 
 const ToBuyItemMain = ({
   product,
@@ -50,7 +49,7 @@ const ToBuyItemMain = ({
     handleCountChange,
     handleCountAddButtonClick,
     handleCountSubtractButtonClick,
-  } = useCounter();
+  } = useSelectedOptionCounter();
   const { productId, image, name = productId, colors } = product;
 
   const handleOptionChange = (event: SelectChangeEvent<string[]>) => {

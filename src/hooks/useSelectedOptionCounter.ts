@@ -4,8 +4,7 @@ import { IS_USING_SY } from "@/components/const";
 import { ALERT_MESSAGE } from "@/components/ToBuyList/const";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 
-
-const useCounter = () => {
+const useSelectedOptionCounter = () => {
   const { t } = useTranslation();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
 
@@ -72,4 +71,4 @@ const useCounter = () => {
   };
 };
 
-export default useCounter;
+export default useSelectedOptionCounter;
