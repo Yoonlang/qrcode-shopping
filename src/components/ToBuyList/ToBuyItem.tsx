@@ -49,7 +49,8 @@ const ToBuyItem = ({
 }) => {
   const { t } = useTranslation();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
-  const { productId, colors, name = productId } = product;
+  const { productId, colors } = product;
+  const name = productId;
   const [isOptionListExpanded, setIsOptionListExpanded] =
     useState<boolean>(true);
   const selected = Object.keys(selectedInfoList[productId] || []).sort(

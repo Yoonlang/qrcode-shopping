@@ -74,7 +74,7 @@ const StyledDetailModalContainer = styled.div`
   }
 `;
 
-const ProductDetail = ({ product, closeModal, openEditModal }) => {
+export const ProductDetail = ({ product, closeModal, openEditModal }) => {
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
     product;
 
@@ -118,14 +118,19 @@ const ProductDetail = ({ product, closeModal, openEditModal }) => {
         </div>
       </div>
       <div className="buttonContainer">
-        <Button onClick={openEditModal}>수정</Button>
+        <Button
+          onClick={openEditModal}
+          data-testid={"product-detail-open-edit-modal-button"}
+        >
+          수정
+        </Button>
         <Button onClick={closeModal}>닫기</Button>
       </div>
     </StyledDetailModalContainer>
   );
 };
 
-const ProductEdit = ({
+export const ProductEdit = ({
   handleModalClose,
   formik,
   openDetailModal,
@@ -194,7 +199,7 @@ const ProductEdit = ({
   }, [product]);
 
   return (
-    <ProductAddModal>
+    <ProductAddModal data-testid={"product-edit-modal"}>
       <h2>Edit</h2>
       <ProductInput label="Product ID" name="productId" formik={formik} />
       <FileUploader
@@ -253,7 +258,7 @@ const ProductEdit = ({
   );
 };
 
-const ProductDetailModal = ({
+export const ProductDetailModal = ({
   isModalOpen,
   closeModal,
   modalProductData,
@@ -270,7 +275,11 @@ const ProductDetailModal = ({
   };
 
   return (
-    <StyledModal open={isModalOpen} onClose={closeModal}>
+    <StyledModal
+      open={isModalOpen}
+      onClose={closeModal}
+      data-testid={"product-detail-modal"}
+    >
       <>
         {isEditMode ? (
           <ProductEdit
