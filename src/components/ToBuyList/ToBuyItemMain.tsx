@@ -50,7 +50,8 @@ const ToBuyItemMain = ({
     handleCountAddButtonClick,
     handleCountSubtractButtonClick,
   } = useSelectedOptionCounter();
-  const { productId, image, name = productId, colors } = product;
+  const { productId, image, colors } = product;
+  const name = productId;
 
   const handleOptionChange = (event: SelectChangeEvent<string[]>) => {
     const {
