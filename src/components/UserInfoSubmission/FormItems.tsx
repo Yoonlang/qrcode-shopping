@@ -83,7 +83,7 @@ const StyledTextField = styled(TextField)`
       border-color: ${(props) =>
         props.required
           ? "var(--color-text-field-required)"
-          : "var(--color-text-field-primary"};
+          : "var(--color-text-field-primary)"};
     }
 
     &.Mui-error {

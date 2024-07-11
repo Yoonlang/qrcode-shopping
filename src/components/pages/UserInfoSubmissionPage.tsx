@@ -16,10 +16,9 @@ import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
 import usePageRouter from "@/hooks/usePageRouter";
 
-
 const UserInfoSubmissionPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
   const { goToNextPage } = usePageRouter();
   const {
@@ -76,7 +75,10 @@ const UserInfoSubmissionPage = () => {
       <MessageDialog
         isDialogOpen={isDialogOpen}
         onDialogClose={handleDialogClose}
-        messageList={[t("Submittion Complete")]}
+        messageList={[t("Submission Complete")]}
+        customStyle={
+          i18n.language === "zh" ? "font-size: 100px; text-align: center;" : ""
+        }
       />
       <form onSubmit={handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">
