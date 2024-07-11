@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
-import Dashboard from "../Dashboard";
-import LoginForm from "../LoginForm";
-import { SERVER_URL } from "@/consts/url";
 import { useFormik } from "formik";
-import { initialValues } from "@/consts/dashboard";
+import { useEffect, useState } from "react";
+
+import { checkCookieAuth, postProduct, putProduct } from "@/api";
+import { initialValues } from "@/components/Manager/const";
+import Dashboard from "@/components/Manager/Dashboard";
+import LoginForm from "@/components/Manager/LoginForm";
 
 const ManagerPage = () => {
   const [hasAuth, setHasAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isCookieAuthChecking, setIsCookieAuthChecking] = useState(true);
   const formik = useFormik({
     initialValues: initialValues,
     validateOnMount: true,
-    onSubmit: async (form, { resetForm }) => {
+    onSubmit: (form, { resetForm }) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -50,46 +51,40 @@ const ManagerPage = () => {
         }
       }
 
-      try {
-        const res = await fetch(`${SERVER_URL}/products`, {
-          method: newForm["method"],
-          credentials: "include",
-          body: formData,
-        });
-        const data = await res.json();
-        resetForm();
-      } catch (e) {
-        console.log(e);
-      }
+      const submitProduct =
+        newForm["method"] === "PUT" ? putProduct : postProduct;
+      submitProduct(
+        formData,
+        () => {
+          resetForm();
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
     },
   });
 
   useEffect(() => {
-    const checkCookieAuth = async () => {
-      try {
-        const res = await fetch(`${SERVER_URL}/cookie`, {
-          method: "get",
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) {
-          throw data.error;
-        }
+    checkCookieAuth(
+      () => {
         setHasAuth(true);
-      } catch (e) {
+        setIsCookieAuthChecking(false);
+      },
+      (e) => {
         console.log(e);
-      } finally {
-        setIsLoading(false);
+        setIsCookieAuthChecking(false);
       }
-    };
-    checkCookieAuth();
+    );
   }, []);
+
+  if (isCookieAuthChecking) {
+    return <main />;
+  }
 
   return (
     <main>
-      {isLoading ? (
-        <></>
-      ) : hasAuth ? (
+      {hasAuth ? (
         <Dashboard formik={formik} />
       ) : (
         <LoginForm setHasAuth={setHasAuth} />

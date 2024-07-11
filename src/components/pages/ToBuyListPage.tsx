@@ -1,17 +1,29 @@
-import styled from "styled-components";
-import Icons from "../Icons";
-import { Dispatch, SetStateAction } from "react";
-import Product from "../Product";
-import { MessageSnackBar } from "../SnackBar";
 import { Box } from "@mui/material";
-import { SelectedBox, StyledBox, StyledButton } from "../Product/styled";
-import { FormikProps } from "formik";
+import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
+import { styled } from "styled-components";
+
+import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
+import Icons from "@/components/Icons";
+import { COLOR_CARD_TEXT } from "@/components/ToBuyList/const";
+import {
+  SelectedBox,
+  StyledBox,
+  StyledButton,
+  StyledWrapper,
+} from "@/components/ToBuyList/styled";
+import ToBuyItemMain from "@/components/ToBuyList/ToBuyItemMain";
+import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
+import useScannedItemList from "@/hooks/useScannedItemList";
+import useSelectedInfoList from "@/hooks/useSelectedInfoList";
+import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
+
 
 const StyledDiv = styled.div`
   align-items: normal;
   padding: 80px 20px 0 20px;
-  background-color: #f5f5f5;
+  background-color: var(--color-gray-20);
   overflow: auto;
   width: 100%;
   height: 100%;
@@ -35,7 +47,7 @@ const EmptyTextDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--color-gray-80);
   font-size: 12px;
   padding-bottom: 80px;
 `;
@@ -44,14 +56,16 @@ const ProductLists = styled.div`
   padding-bottom: 85px;
 `;
 
-const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
+const StyledSwitch = () => {
+  const { values, setFieldValue } = useFormikContext<FormType>();
+
   return (
     <Box sx={{ display: "flex" }}>
       <StyledBox>
         <SelectedBox
           style={{
             transform: `translateX(${
-              formik.values.productLengthUnit === "METER" ? 0 : "62px"
+              values.productLengthUnit === "METER" ? 0 : "62px"
             })`,
           }}
         />
@@ -59,13 +73,13 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
           disableRipple
           sx={{
             color:
-              formik.values.productLengthUnit === "METER"
-                ? "#FBFBFB"
-                : "rgba(0, 0, 0, 0.87)",
+              values.productLengthUnit === "METER"
+                ? "var(--color-switch-secondary)"
+                : "var(--color-switch-primary)",
             fontWeight:
-              formik.values.productLengthUnit === "METER" ? "bold" : "normal",
+              values.productLengthUnit === "METER" ? "bold" : "normal",
           }}
-          onClick={() => formik.setFieldValue("productLengthUnit", "METER")}
+          onClick={() => setFieldValue("productLengthUnit", "METER")}
         >
           METER
         </StyledButton>
@@ -73,13 +87,12 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
           disableRipple
           sx={{
             color:
-              formik.values.productLengthUnit === "YARD"
-                ? "#FBFBFB"
-                : "rgba(0, 0, 0, 0.87)",
-            fontWeight:
-              formik.values.productLengthUnit === "YARD" ? "bold" : "normal",
+              values.productLengthUnit === "YARD"
+                ? "var(--color-switch-secondary)"
+                : "var(--color-switch-primary)",
+            fontWeight: values.productLengthUnit === "YARD" ? "bold" : "normal",
           }}
-          onClick={() => formik.setFieldValue("productLengthUnit", "YARD")}
+          onClick={() => setFieldValue("productLengthUnit", "YARD")}
         >
           YARD
         </StyledButton>
@@ -88,74 +101,58 @@ const StyledSwitch = ({ formik }: { formik: FormikProps<any> }) => {
   );
 };
 
-const EMPTY_TEXT = "No items scanned";
-
-const ToBuyListPage = ({
-  scannedItems,
-  setScannedItems,
-  fetchedItems,
-  selectedInfos,
-  setSelectedInfos,
-  snackBarOpen,
-  setSnackBarOpen,
-  snackBarStatus,
-  formik,
-}: {
-  scannedItems: Object;
-  setScannedItems: Dispatch<SetStateAction<Object>>;
-  fetchedItems: any[];
-  selectedInfos: Object;
-  setSelectedInfos: Dispatch<SetStateAction<Object>>;
-  snackBarOpen: boolean;
-  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
-  snackBarStatus: string;
-  formik: FormikProps<any>;
-}) => {
+const ToBuyListPage = () => {
   const { t } = useTranslation();
+  const fetchedItemList = useRecoilValue(fetchedItemListSelector);
+  const { scannedItemList, setScannedItemList } = useScannedItemList();
+  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
 
-  const handleDelete = (
+  const handleToBuyItemDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     id: string
   ) => {
-    const newScannedItems = { ...scannedItems };
-    delete newScannedItems[id];
-    setScannedItems(newScannedItems);
-    localStorage.setItem("scannedItems", JSON.stringify(newScannedItems));
+    const newScannedItemList = { ...scannedItemList };
+    delete newScannedItemList[id];
+    setScannedItemList(newScannedItemList);
 
-    const newSelectedInfos = { ...selectedInfos };
-    delete newSelectedInfos[id];
-    setSelectedInfos(newSelectedInfos);
+    const newSelectedInfoList = { ...selectedInfoList };
+    delete newSelectedInfoList[id];
+    setSelectedInfoList(newSelectedInfoList);
   };
 
   return (
     <StyledDiv>
-      <MessageSnackBar
-        key={`${Object.keys(selectedInfos).length} ${snackBarStatus}`}
-        isOpen={snackBarOpen}
-        setIsOpen={setSnackBarOpen}
-        message={snackBarStatus}
-      />
       <StyledTitle>
         {Icons["list"]}
         <p>{t("Product List")}</p>
+        {IS_USING_SY && <StyledSwitch />}
       </StyledTitle>
-      {Object.keys(scannedItems).length <= 0 ? (
+      {Object.keys(scannedItemList).length <= 0 ? (
         <EmptyTextDiv>{t(EMPTY_TEXT)}</EmptyTextDiv>
       ) : (
         <ProductLists>
-          {fetchedItems
+          {fetchedItemList
             .filter((item) =>
-              Object.keys(scannedItems).some((pid) => pid === item.productId)
+              Object.keys(scannedItemList).some((pid) => pid === item.productId)
             )
-            .map((product, index) => {
+            .map((product) => {
+              const selected = Object.keys(
+                selectedInfoList[product.productId] || []
+              ).sort((a, b) => {
+                if (a === COLOR_CARD_TEXT) return -1;
+                if (b === COLOR_CARD_TEXT) return 1;
+                return +a.split(" ")[0] - +b.split(" ")[0];
+              });
+
               return (
-                <Product
-                  key={product.productId}
-                  product={product}
-                  selectedInfos={selectedInfos}
-                  setSelectedInfos={setSelectedInfos}
-                  handleDelete={handleDelete}
-                />
+                <StyledWrapper key={product.productId}>
+                  <ToBuyItemMain
+                    product={product}
+                    selected={selected}
+                    handleDelete={handleToBuyItemDelete}
+                  />
+                  <ToBuyItemOptions product={product} selected={selected} />
+                </StyledWrapper>
               );
             })}
         </ProductLists>

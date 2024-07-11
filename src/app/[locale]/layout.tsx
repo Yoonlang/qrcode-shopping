@@ -1,8 +1,10 @@
-import { META } from "@/consts/metadata";
-import i18nConfig from "@/i18nConfig";
 import { dir } from "i18next";
 import { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_SC } from "next/font/google";
+import { ReactNode } from "react";
+
+import { META } from "@/components/const";
+import i18nConfig from "@/i18nConfig";
 
 export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
@@ -49,7 +51,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children, params: { locale } }) {
+export default function RootLayout({
+  children,
+  params: { locale },
+}: {
+  children: ReactNode;
+  params: {
+    locale: string;
+  };
+}) {
   return (
     <html lang={locale} dir={dir(locale)}>
       <body

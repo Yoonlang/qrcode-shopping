@@ -1,58 +1,54 @@
-import { FormikProps } from "formik";
-import { useEffect, useState } from "react";
 import { Step, StepContent, StepLabel } from "@mui/material";
+import { FormikContextType, useFormikContext } from "formik";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { FormType } from "@/components/const";
+import MessageDialog from "@/components/MessageDialog";
+import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
+import { steps } from "@/components/UserInfoSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
   StyledStepper,
-} from "@/components/FormItems";
-import { steps } from "@/consts/form";
-import OrdererInfo from "../OrdererInfo";
-import CompanyAddress from "../CompanyAddress";
-import ShippingAddress from "../ShippingAddress";
-import { useTranslation } from "react-i18next";
-import { Button, Dialog } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+} from "@/components/UserInfoSubmission/FormItems";
+import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
+import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
+import usePageRouter from "@/hooks/usePageRouter";
 
-const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const { t } = useTranslation();
+const UserInfoSubmissionPage = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { t, i18n } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
+  const { goToNextPage } = usePageRouter();
+  const {
+    values,
+    errors,
+    isSubmitting,
+    handleSubmit,
+  }: FormikContextType<FormType> = useFormikContext();
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
     goToNextPage();
   };
 
   useEffect(() => {
     if (
-      !formik.errors["userName"] &&
-      !formik.errors["companyName"] &&
-      !formik.errors["business"] &&
-      !formik.errors["countryCode"] &&
-      !formik.errors["phoneNumber"] &&
-      !formik.errors["email"]
+      !errors["userName"] &&
+      !errors["companyName"] &&
+      !errors["businessType"] &&
+      !errors["countryCode"] &&
+      !errors["phoneNumber"]
     ) {
-      setActiveStep(1);
-
-      if (
-        formik.values.business === "Student" ||
-        (!formik.errors["coZipCode"] &&
-          !formik.errors["coAddress1"] &&
-          !formik.errors["coAddress2"])
-      ) {
-        setActiveStep(2);
-
-        if (
-          formik.values.isSameAddress ||
-          (!formik.errors["spZipCode"] &&
-            !formik.errors["spAddress1"] &&
-            !formik.errors["spAddress2"])
-        ) {
+      if (values.countryCode.label === "China") {
+        if (!errors["weChatId"]) {
           setActiveStep(3);
+        } else {
+          setActiveStep(0);
         }
+      } else {
+        setActiveStep(3);
       }
     } else {
       setActiveStep(0);
@@ -60,29 +56,22 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem("form", JSON.stringify(formik.values));
-  }, [formik.values]);
-        
-  useEffect(() => {
-    if (formik.isSubmitting) {
-      setOpenDialog(true);
+    if (isSubmitting) {
+      setIsDialogOpen(true);
     }
-  }, [formik.isSubmitting]);
+  }, [isSubmitting]);
 
   return (
     <>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogContent>
-          <DialogContentText>{t("Submission Complete")}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
-            {t("Confirm")}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <form onSubmit={formik.handleSubmit}>
+      <MessageDialog
+        isDialogOpen={isDialogOpen}
+        onDialogClose={handleDialogClose}
+        messageList={[t("Submission Complete")]}
+        customStyle={
+          i18n.language === "zh" ? "font-size: 100px; text-align: center;" : ""
+        }
+      />
+      <form onSubmit={handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
             <Step key={step.label} expanded>
@@ -91,19 +80,15 @@ const UserInfoSubmissionPage = ({ formik, goToNextPage }) => {
               ) : (
                 <AddressBox>
                   <StepLabel>{t(step.label)}</StepLabel>
-                  {formik.values.businessType !== "Student" && (
-                    <AddressCheckbox name="isSameAddress" formik={formik} />
+                  {values.businessType !== "Student" && (
+                    <AddressCheckbox name="isSameAddress" />
                   )}
                 </AddressBox>
               )}
               <StepContent>
-                {index === 0 ? (
-                  <OrdererInfo formik={formik} />
-                ) : index === 1 ? (
-                  <CompanyAddress formik={formik} />
-                ) : (
-                  <ShippingAddress formik={formik} />
-                )}
+                {index === 0 && <OrdererInfo />}
+                {index === 1 && <CompanyAddress />}
+                {index === 2 && <ShippingAddress />}
               </StepContent>
             </Step>
           ))}

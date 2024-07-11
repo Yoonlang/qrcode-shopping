@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
-import styled from "styled-components";
-import Icons from "./Icons";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { styled } from "styled-components";
+
+import Icons from "@/components/Icons";
 import i18nConfig from "@/i18nConfig";
 
 const StyledLanguageSelector = styled.div`
@@ -44,11 +44,11 @@ const LanguageSelector = () => {
       <Button
         sx={{
           justifyContent: "space-between",
-          color: "#000",
+          color: "var(--color-language-selector-primary)",
           textTransform: "none",
           padding: "6px 12px",
           "&:hover": {
-            backgroundColor: "#00000010",
+            backgroundColor: "var(--color-language-selector-primary)",
           },
         }}
         onClick={() => changeLang("en")}
@@ -59,11 +59,10 @@ const LanguageSelector = () => {
       <Button
         sx={{
           justifyContent: "space-between",
-          color: "#000",
-          border: "#3c3c4336",
+          color: "var(--color-language-selector-primary)",
           padding: "6px 12px",
           "&:hover": {
-            backgroundColor: "#00000010",
+            backgroundColor: "var(--color-language-selector-primary)",
           },
         }}
         onClick={() => changeLang("zh")}
@@ -74,11 +73,10 @@ const LanguageSelector = () => {
       <Button
         sx={{
           justifyContent: "space-between",
-          color: "#000",
-          border: "#3c3c4336",
+          color: "var(--color-language-selector-primary)",
           padding: "6px 12px",
           "&:hover": {
-            backgroundColor: "#00000010",
+            backgroundColor: "var(--color-language-selector-primary)",
           },
         }}
         onClick={() => changeLang("ko")}

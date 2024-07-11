@@ -1,79 +1,66 @@
-import QrCode from "@/components/QrCode";
-import { MessageSnackBar } from "@/components/SnackBar";
-import { Button, Dialog } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { Suspense, useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
+import { styled } from "styled-components";
+
+import { snackBarStatusMessage } from "@/components/const";
+import MessageDialog from "@/components/MessageDialog";
+import QrCode from "@/components/QrScanner/QrCode";
+import RetryButton from "@/components/RetryButton";
+import useScannedItemList from "@/hooks/useScannedItemList";
+import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledContainer = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
-const QrScannerPage = ({
-  scannedItems,
-  setScannedItems,
-  fetchedItems,
-  snackBarOpen,
-  setSnackBarOpen,
-  snackBarStatus,
-  setSnackBarStatus,
-  snackBarStatusMessage,
-}: {
-  scannedItems: Object;
-  setScannedItems: Dispatch<SetStateAction<{}>>;
-  fetchedItems: any[] | null;
-  snackBarOpen: boolean;
-  setSnackBarOpen: Dispatch<SetStateAction<Object>>;
-  snackBarStatus: string;
-  setSnackBarStatus: Dispatch<SetStateAction<string>>;
-  snackBarStatusMessage: object;
-}) => {
-  const [openDialog, setOpenDialog] = useState(true);
+const QrScannerPage = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
   const { t } = useTranslation();
+  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+  const { scannedItemList } = useScannedItemList();
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
   };
 
   useEffect(() => {
-    if (Object.keys(scannedItems).length > 0) {
-      setSnackBarStatus(t(snackBarStatusMessage["scanned"]));
-      setSnackBarOpen(true);
-      localStorage.setItem("scannedItems", JSON.stringify(scannedItems));
+    if (Object.keys(scannedItemList).length > 0) {
+      setMessageSnackBarState({
+        message: t(snackBarStatusMessage["scanned"]),
+        isMessageSnackBarOpen: true,
+      });
+    } else {
+      setMessageSnackBarState({
+        message: t(snackBarStatusMessage["default"]),
+        isMessageSnackBarOpen: true,
+      });
     }
-  }, [scannedItems]);
+  }, [scannedItemList, setMessageSnackBarState, t]);
 
   return (
     <StyledContainer>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogContent>
-          <DialogContentText>1. {t("Dialog1")}</DialogContentText>
-          <DialogContentText>2. {t("Dialog2")}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
-            {t("Confirm")}
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {!openDialog && (
-        <>
-          <MessageSnackBar
-            key={`${Object.keys(scannedItems).length} ${snackBarStatus}`}
-            isOpen={snackBarOpen}
-            setIsOpen={setSnackBarOpen}
-            message={snackBarStatus}
-          />
-          <QrCode
-            setScannedItems={setScannedItems}
-            fetchedItems={fetchedItems}
-          />
-        </>
+      <MessageDialog
+        isDialogOpen={isDialogOpen}
+        onDialogClose={handleDialogClose}
+        messageList={[t("Dialog1"), t("Dialog2")]}
+      />
+      {!isDialogOpen && (
+        <ErrorBoundary
+          fallbackRender={({ resetErrorBoundary }) => (
+            <RetryButton resetErrorBoundary={resetErrorBoundary} />
+          )}
+        >
+          <Suspense fallback={<CircularProgress />}>
+            <QrCode />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </StyledContainer>
   );
