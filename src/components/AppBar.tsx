@@ -2,16 +2,17 @@ import { AppBar, Badge, IconButton, Popover } from "@mui/material";
 import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 
-import { snackBarStatusMessage } from "@/components/const";
+import { IS_USING_SY, snackBarStatusMessage } from "@/components/const";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
+import useScannedItemList from "@/hooks/useScannedItemList";
+import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { scannedItemListState } from "@/recoil/atoms/scannedItemListState";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -169,7 +170,8 @@ const BottomAppBar = () => {
   const { t } = useTranslation();
   const { pageName, isPageName, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const scannedItemList = useRecoilValue(scannedItemListState);
+  const { scannedItemList } = useScannedItemList();
+  const { selectedInfoList } = useSelectedInfoList();
   const { isValid, handleSubmit } = useFormikContext();
 
   const handleBottomAppBarClick = () => {
@@ -189,24 +191,28 @@ const BottomAppBar = () => {
           isMessageSnackBarOpen: true,
         });
       } else {
-        goToNextPage();
-        // let isAllSelected = true;
-        // for (const key of Object.keys(scannedItems)) {
-        //   if (
-        //     !selectedInfos[key] ||
-        //     Object.keys(selectedInfos[key]).length <= 0
-        //   ) {
-        //     isAllSelected = false;
-        //     break;
-        //   }
-        // }
-
-        // if (isAllSelected) {
-        // console.log(selectedInfos);
-        // } else {
-        //   setSnackBarStatus(snackBarStatusMessage["option"]);
-        //   setSnackBarOpen(true);
-        // }
+        if (IS_USING_SY) {
+          let isAllSelected = true;
+          for (const key of Object.keys(scannedItemList)) {
+            if (
+              !selectedInfoList[key] ||
+              Object.keys(selectedInfoList[key]).length <= 0
+            ) {
+              isAllSelected = false;
+              break;
+            }
+          }
+          if (!isAllSelected) {
+            setMessageSnackBarState({
+              message: t(snackBarStatusMessage["option"]),
+              isMessageSnackBarOpen: true,
+            });
+          } else {
+            goToNextPage();
+          }
+        } else {
+          goToNextPage();
+        }
       }
     } else {
       if (isValid) {
