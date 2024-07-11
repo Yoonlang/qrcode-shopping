@@ -6,20 +6,33 @@ import {
   DialogContentText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+const StyledMessageDialog = styled(Dialog)<{ customStyle?: string }>`
+  p {
+    ${(props) => props.customStyle};
+  }
+`;
 
 const MessageDialog = ({
   isDialogOpen,
   onDialogClose,
   messageList,
+  customStyle = "",
 }: {
   isDialogOpen: boolean;
   onDialogClose: () => void;
   messageList: string[];
+  customStyle?: string;
 }) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog open={isDialogOpen} onClose={onDialogClose}>
+    <StyledMessageDialog
+      open={isDialogOpen}
+      onClose={onDialogClose}
+      customStyle={customStyle}
+    >
       <DialogContent>
         {messageList.map((message, idx) => (
           <DialogContentText key={idx}>{message}</DialogContentText>
@@ -30,7 +43,7 @@ const MessageDialog = ({
           {t("Confirm")}
         </Button>
       </DialogActions>
-    </Dialog>
+    </StyledMessageDialog>
   );
 };
 
