@@ -41,9 +41,8 @@ const useInitialFormikValues = () => {
     key: "form",
     value: initialValues,
   });
-  const { handleScannedItemListUpdate } = useScannedItemList();
-  const { selectedInfoList, handleSelectedItemListUpdate } =
-    useSelectedInfoList();
+  const { setScannedItemList } = useScannedItemList();
+  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
 
   const handleSubmit = (form, { resetForm }) => {
     const {
@@ -110,8 +109,8 @@ const useInitialFormikValues = () => {
         },
       }),
       () => {
-        handleScannedItemListUpdate({});
-        handleSelectedItemListUpdate({});
+        setScannedItemList({});
+        setSelectedInfoList({});
         resetForm();
         handleFormikValuesUpdate(initialValues);
         setMessageSnackBarState({
