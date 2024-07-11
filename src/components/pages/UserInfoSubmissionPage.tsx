@@ -37,27 +37,18 @@ const UserInfoSubmissionPage = () => {
     if (
       !errors["userName"] &&
       !errors["companyName"] &&
-      !errors["business"] &&
+      !errors["businessType"] &&
       !errors["countryCode"] &&
-      !errors["phoneNumber"] &&
-      !errors["email"]
+      !errors["phoneNumber"]
     ) {
-      setActiveStep(1);
-
-      if (
-        values.businessType === "Student" ||
-        (!errors["coZipCode"] && !errors["coAddress1"] && !errors["coAddress2"])
-      ) {
-        setActiveStep(2);
-
-        if (
-          values.isSameAddress ||
-          (!errors["spZipCode"] &&
-            !errors["spAddress1"] &&
-            !errors["spAddress2"])
-        ) {
+      if (values.countryCode.label === "China") {
+        if (!errors["weChatId"]) {
           setActiveStep(3);
+        } else {
+          setActiveStep(0);
         }
+      } else {
+        setActiveStep(3);
       }
     } else {
       setActiveStep(0);
