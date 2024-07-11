@@ -111,8 +111,7 @@ const useInitialFormikValues = () => {
       () => {
         setScannedItemList({});
         setSelectedInfoList({});
-        resetForm();
-        handleFormikValuesUpdate(initialValues);
+        resetForm({ values: initialValues });
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["complete"]),
           isMessageSnackBarOpen: true,
