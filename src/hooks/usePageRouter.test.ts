@@ -30,7 +30,7 @@ describe("usePageRouter goToNextPage 확인", () => {
     expect(result.current.pageIdx).toBe(1);
   });
 
-  it("2번 페이지에서 0번 페이지로 이동", () => {
+  it("3번 페이지에서 0번 페이지로 이동", () => {
     // Given
     const { result } = renderHook(
       () => {
@@ -44,9 +44,9 @@ describe("usePageRouter goToNextPage 확인", () => {
     );
 
     act(() => {
-      result.current.setPageIdx(2);
+      result.current.setPageIdx(3);
     });
-    expect(result.current.pageIdx).toBe(2);
+    expect(result.current.pageIdx).toBe(3);
 
     // When
     act(() => {
