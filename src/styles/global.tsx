@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     --color-badge-secondary: var(--color-gray-60);
     
     --color-button-primary: var(--color-gray-10);
+    --color-button-secondary: var(--color-blue);
 
     --color-counter-primary: var(--color-gray-40); 
 

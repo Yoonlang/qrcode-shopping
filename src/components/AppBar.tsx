@@ -10,6 +10,7 @@ import {
   IS_USING_SY,
   snackBarStatusMessage,
 } from "@/components/const";
+import CounselingIntakeForm from "@/components/CounselingIntakeForm";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -17,6 +18,7 @@ import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
+import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledTitleAppBar = styled(AppBar)`
@@ -55,7 +57,7 @@ const titleText: PageObject = {
   qrcode: "QR code",
   cart: "Cart",
   info: "Info",
-  complete: "Submission Complete",
+  complete: "Result",
 };
 
 const bottomAppBarIconList: PageObject = {
@@ -142,7 +144,9 @@ const TitleAppBar = () => {
   );
 };
 
-const StyledBottomAppBar = styled(AppBar)`
+const StyledBottomAppBar = styled(AppBar)<{
+  isSubmissionCompletePage: boolean;
+}>`
   background-color: var(--color-app-bar-primary);
   top: calc(100% - 65px);
 
@@ -155,7 +159,7 @@ const StyledBottomAppBar = styled(AppBar)`
     background: none;
     border: none;
     padding: 0;
-    gap: 15px;
+    gap: ${(props) => !props.isSubmissionCompletePage && "15px"};
     cursor: pointer;
   }
 `;
@@ -181,7 +185,10 @@ const BottomAppBar = () => {
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const { isValid, handleSubmit } = useFormikContext();
-  const { resetForm } = useFormikContext<FormType>();
+  const { values, resetForm } = useFormikContext<FormType>();
+  const setCounselingIntakeFormData = useSetRecoilState(
+    counselingIntakeFormDataState
+  );
 
   const handleBottomAppBarClick = () => {
     if (isPageName("qrcode")) {
@@ -225,25 +232,29 @@ const BottomAppBar = () => {
       }
     } else if (isPageName("info")) {
       if (isValid) {
-        handleSubmit();
-      } else {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["invalid"]),
-          isMessageSnackBarOpen: true,
-        });
+        setCounselingIntakeFormData(
+          <CounselingIntakeForm
+            formikValues={values}
+            selectedInfoList={selectedInfoList}
+          />
+        );
+        Promise.all([handleSubmit()])
+          .then(() => {
+            setScannedItemList({});
+            setSelectedInfoList({});
+            resetForm({ values: initialValues });
+          })
+          .then(() => {
+            goToNextPage();
+          });
+      } else if (isPageName("complete")) {
+        goToNextPage();
       }
-    } else if (isPageName("complete")) {
-      Promise.all([setScannedItemList({}), setSelectedInfoList({})]).then(
-        () => {
-          resetForm({ values: initialValues });
-          goToNextPage();
-        }
-      );
     }
   };
 
   return (
-    <StyledBottomAppBar>
+    <StyledBottomAppBar isSubmissionCompletePage={isPageName("complete")}>
       <button onClick={handleBottomAppBarClick}>
         <StyledBadge
           badgeContent={

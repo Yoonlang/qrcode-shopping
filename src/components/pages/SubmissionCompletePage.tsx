@@ -1,12 +1,11 @@
 import { Button } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import { FormType } from "@/components/const";
-import CounselingIntakeForm from "@/components/CounselingIntakeForm";
-import useSelectedInfoList from "@/hooks/useSelectedInfoList";
+import Icons from "@/components/Icons";
+import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
 
 const StyledSubmissionCompletePageBox = styled.div`
   display: flex;
@@ -17,42 +16,56 @@ const StyledSubmissionCompletePageBox = styled.div`
   height: 100%;
 `;
 
-const StyledPDFDownloadButton = styled(Button)``;
+const StyledSubmissionCompleteTextBox = styled.div<{ language: string }>`
+  display: flex;
+  align-items: center;
 
-const StyledSubmissionCompleteText = styled.p<{ fontSize: string }>`
-  font-size: ${(props) => props.fontSize};
-  text-align: center;
+  p {
+    font-size: ${(props) => (props.language === "zh" ? "80px" : "30px")};
+    margin: ${(props) => (props.language === "zh" ? "-15px" : "0")} 0 15px 0;
+  }
+`;
+
+const StyledPDFDownloadButton = styled(Button)`
+  background-color: var(--color-button-secondary);
+  color: var(--color-white);
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: none;
+
+  &:hover {
+    background-color: var(--color-button-secondary);
+  }
 `;
 
 const SubmissionCompletePage = () => {
   const { t, i18n } = useTranslation();
-  const { values } = useFormikContext<FormType>();
-  const { selectedInfoList } = useSelectedInfoList();
+  const counselingIntakeFormData = useRecoilValue(
+    counselingIntakeFormDataState
+  );
 
   return (
     <StyledSubmissionCompletePageBox>
-      <StyledSubmissionCompleteText
-        fontSize={i18n.language === "zh" ? "100px" : "30px"}
-      >
-        {t("Submission Complete")}
-      </StyledSubmissionCompleteText>
-      <PDFDownloadLink
-        document={
-          <CounselingIntakeForm
-            formikValues={values}
-            selectedInfoList={selectedInfoList}
-          />
-        }
-        fileName="counseling_intake_form.pdf"
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? (
-            "Loading document..."
-          ) : (
-            <StyledPDFDownloadButton>download PDF file</StyledPDFDownloadButton>
-          )
-        }
-      </PDFDownloadLink>
+      <div>{Icons["submission_complete"]}</div>
+      <StyledSubmissionCompleteTextBox language={i18n.language}>
+        <p>{t("Submission Complete")}</p>
+      </StyledSubmissionCompleteTextBox>
+      {counselingIntakeFormData && (
+        <PDFDownloadLink
+          document={counselingIntakeFormData}
+          fileName={`${t("counseling-intake-form")}.pdf`}
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? (
+              t("Loading...")
+            ) : (
+              <StyledPDFDownloadButton>
+                {t("Download Order History PDF")}
+              </StyledPDFDownloadButton>
+            )
+          }
+        </PDFDownloadLink>
+      )}
     </StyledSubmissionCompletePageBox>
   );
 };
