@@ -3,6 +3,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import QrScannerPage from "@/components/pages/QrScannerPage";
+import SubmissionCompletePage from "@/components/pages/SubmissionCompletePage";
 import ToBuyListPage from "@/components/pages/ToBuyListPage";
 import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
 import RetryButton from "@/components/RetryButton";
@@ -29,6 +30,7 @@ const MainPage = () => {
         </ErrorBoundary>
       )}
       {isPageName("info") && <UserInfoSubmissionPage />}
+      {isPageName("complete") && <SubmissionCompletePage />}
       <BottomAppBar />
     </main>
   );

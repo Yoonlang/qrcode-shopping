@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
 import { submitOrdererInfo } from "@/api";
-import { FormType, snackBarStatusMessage } from "@/components/const";
+import { FormType } from "@/components/const";
 import { validationSchema } from "@/components/validation";
 import dayjs from "@/dayjsConfig";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
@@ -12,7 +12,7 @@ import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
-const initialValues: FormType = {
+export const initialValues: FormType = {
   name: "",
   companyName: "",
   businessType: "",
@@ -108,20 +108,7 @@ const useInitialFormikValues = () => {
           },
         },
       }),
-      () => {
-        setScannedItemList({});
-        setSelectedInfoList({});
-        resetForm({ values: initialValues });
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["complete"]),
-          isMessageSnackBarOpen: true,
-        });
-        // setTimeout(() => {
-        //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        //   setSnackBarOpen(true);
-        // }, 3500);
-        // setPageIdx((pageIdx + 1) % 3);
-      },
+      () => {},
       (e) => {
         console.log(e);
       }

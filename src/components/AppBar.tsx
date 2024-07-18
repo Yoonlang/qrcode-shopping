@@ -5,10 +5,15 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 
-import { IS_USING_SY, snackBarStatusMessage } from "@/components/const";
+import {
+  FormType,
+  IS_USING_SY,
+  snackBarStatusMessage,
+} from "@/components/const";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
@@ -43,18 +48,21 @@ const bottomText: PageObject = {
   qrcode: "My Products",
   cart: "Information",
   info: "Submission",
+  complete: "Scan New QR",
 };
 
 const titleText: PageObject = {
   qrcode: "QR code",
   cart: "Cart",
   info: "Info",
+  complete: "Submission Complete",
 };
 
 const bottomAppBarIconList: PageObject = {
   qrcode: "cart",
   cart: "person",
   info: "check",
+  complete: "",
 };
 
 const StyledIconButton = styled(IconButton)`
@@ -89,7 +97,7 @@ const TitleAppBar = () => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {!isPageName("qrcode") && (
+        {!isPageName("qrcode") && !isPageName("complete") && (
           <StyledIconButton onClick={goToPreviousPage} edge="start">
             {Icons["back"]}
           </StyledIconButton>
@@ -170,9 +178,10 @@ const BottomAppBar = () => {
   const { t } = useTranslation();
   const { pageName, isPageName, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const { scannedItemList } = useScannedItemList();
-  const { selectedInfoList } = useSelectedInfoList();
+  const { scannedItemList, setScannedItemList } = useScannedItemList();
+  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const { isValid, handleSubmit } = useFormikContext();
+  const { resetForm } = useFormikContext<FormType>();
 
   const handleBottomAppBarClick = () => {
     if (isPageName("qrcode")) {
@@ -214,7 +223,7 @@ const BottomAppBar = () => {
           goToNextPage();
         }
       }
-    } else {
+    } else if (isPageName("info")) {
       if (isValid) {
         handleSubmit();
       } else {
@@ -223,6 +232,13 @@ const BottomAppBar = () => {
           isMessageSnackBarOpen: true,
         });
       }
+    } else if (isPageName("complete")) {
+      Promise.all([setScannedItemList({}), setSelectedInfoList({})]).then(
+        () => {
+          resetForm({ values: initialValues });
+          goToNextPage();
+        }
+      );
     }
   };
 
