@@ -1,9 +1,53 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import {
+  Document,
+  Font,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+} from "@react-pdf/renderer";
+import { franc } from "franc";
 
 import { FormType } from "@/components/const";
 import { SelectedInfoList } from "@/recoil/atoms/selectedInfoListState";
 
+const detectLanugage = (text: string) => {
+  const langCode = franc(text, { minLength: 0 });
+  switch (langCode) {
+    case "cmn":
+      return "zh";
+    case "kor":
+      return "ko";
+    default:
+      return "en";
+  }
+};
+
+Font.register({
+  family: "Noto Sans",
+  src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans@latest/latin-400-normal.ttf",
+});
+
+Font.register({
+  family: "Noto Sans SC",
+  src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-sc@latest/chinese-simplified-400-normal.ttf",
+});
+
+Font.register({
+  family: "Noto Sans KR",
+  src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-kr@latest/korean-400-normal.ttf",
+});
+
 const styles = StyleSheet.create({
+  en: {
+    fontFamily: "Noto Sans",
+  },
+  zh: {
+    fontFamily: "Noto Sans SC",
+  },
+  ko: {
+    fontFamily: "Noto Sans KR",
+  },
   table: {
     width: "100%",
     fontSize: "10px",
@@ -144,7 +188,11 @@ const CounselingIntakeForm = ({
                   {data.value.map((v) => (
                     <Text
                       key={`customer-${data.title}-value`}
-                      style={[styles.col, styles[`width${data.width}`]]}
+                      style={[
+                        styles.col,
+                        styles[`width${data.width}`],
+                        styles[`${detectLanugage(v)}`],
+                      ]}
                     >
                       {v}
                     </Text>
