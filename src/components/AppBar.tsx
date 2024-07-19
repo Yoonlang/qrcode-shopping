@@ -145,7 +145,7 @@ const TitleAppBar = () => {
 };
 
 const StyledBottomAppBar = styled(AppBar)<{
-  isSubmissionCompletePage: boolean;
+  page: string;
 }>`
   background-color: var(--color-app-bar-primary);
   top: calc(100% - 65px);
@@ -159,7 +159,7 @@ const StyledBottomAppBar = styled(AppBar)<{
     background: none;
     border: none;
     padding: 0;
-    gap: ${(props) => !props.isSubmissionCompletePage && "15px"};
+    gap: ${(props) => (props.page === "complete" ? "0" : "15px")};
     cursor: pointer;
   }
 `;
@@ -254,7 +254,7 @@ const BottomAppBar = () => {
   };
 
   return (
-    <StyledBottomAppBar isSubmissionCompletePage={isPageName("complete")}>
+    <StyledBottomAppBar page={pageName}>
       <button onClick={handleBottomAppBarClick}>
         <StyledBadge
           badgeContent={
