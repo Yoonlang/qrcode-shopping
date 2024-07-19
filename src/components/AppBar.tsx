@@ -247,9 +247,9 @@ const BottomAppBar = () => {
           .then(() => {
             goToNextPage();
           });
-      } else if (isPageName("complete")) {
-        goToNextPage();
       }
+    } else if (isPageName("complete")) {
+      goToNextPage();
     }
   };
 
