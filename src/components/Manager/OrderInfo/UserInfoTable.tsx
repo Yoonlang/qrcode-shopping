@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { styled } from "styled-components";
 
 import { StyledModal } from "@/components/Manager/DashboardItems";
+import { OrdererInfo } from "@/const";
 
 const tableColumns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 120 },
@@ -65,22 +66,22 @@ const productListColumns: GridColDef[] = [
   { field: "quantity", headerName: "개수", width: 200 },
 ];
 
-const handleUserInfoListForTable = (userInfoList) => {
+const handleUserInfoListForTable = (userInfoList: OrdererInfo[]) => {
   return (
     userInfoList?.map((userInfo) => {
       const {
-        submissionTime,
         personalInfo: {
           name,
           companyName,
           contactInfo: { email, phoneNumber },
           businessType,
         },
-        documentId,
+        submissionTime,
+        userId,
       } = userInfo;
 
       return {
-        id: documentId,
+        id: userId,
         name,
         company: companyName,
         email: email,
@@ -122,7 +123,21 @@ const StyledCopyButton = styled(Button)`
   height: 30px;
 `;
 
-const handleUserInfoForOrder = (hopeProducts) => {
+const handleUserInfoForOrder = (
+  hopeProducts: [
+    {
+      colorCardQuantity: number;
+      productId: string;
+      sampleYardages: [
+        {
+          colorId: string;
+          colorName: string;
+          yardageQuantity: number;
+        }
+      ];
+    }
+  ]
+) => {
   return hopeProducts
     .map((product) => {
       const { colorCardQuantity, productId, sampleYardages } = product;
@@ -153,9 +168,13 @@ const UserInfoDetailModal = ({
   isModalOpen,
   closeModal,
   modalUserInfoData,
+}: {
+  isModalOpen: boolean;
+  closeModal: () => void;
+  modalUserInfoData: OrdererInfo;
 }) => {
   const {
-    documentId,
+    userId,
     submissionTime,
     productLengthUnit,
     hopeProducts,
@@ -193,7 +212,7 @@ const UserInfoDetailModal = ({
           <DataGrid
             rows={[
               {
-                id: documentId,
+                id: userId,
                 name,
                 company: companyName,
               },
@@ -210,7 +229,7 @@ const UserInfoDetailModal = ({
         </div>
         <div>
           <DataGrid
-            getRowId={() => documentId}
+            getRowId={() => userId}
             rows={[
               {
                 email,
@@ -231,7 +250,7 @@ const UserInfoDetailModal = ({
         <h4>Company Address</h4>
         <div>
           <DataGrid
-            getRowId={() => documentId}
+            getRowId={() => userId}
             rows={[
               {
                 postalCode: companyAddress.postalCode,
@@ -252,7 +271,7 @@ const UserInfoDetailModal = ({
         <h4>Shipping Address</h4>
         <div>
           <DataGrid
-            getRowId={() => documentId}
+            getRowId={() => userId}
             rows={[
               {
                 postalCode: shippingAddress.postalCode,
@@ -296,9 +315,16 @@ const UserInfoDetailModal = ({
   );
 };
 
-const UserInfoTable = ({ userInfoList, setSelectedUserList }) => {
+const UserInfoTable = ({
+  userInfoList,
+  setSelectedUserList,
+}: {
+  userInfoList: OrdererInfo[];
+  setSelectedUserList: Dispatch<SetStateAction<string[]>>;
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalUserInfoData, setModalUserInfoData] = useState(null);
+  const [modalUserInfoData, setModalUserInfoData] =
+    useState<OrdererInfo | null>(null);
   const tableRows = handleUserInfoListForTable(userInfoList);
 
   const closeModal = () => {
@@ -319,7 +345,7 @@ const UserInfoTable = ({ userInfoList, setSelectedUserList }) => {
           pageSizeOptions={[10, 20, 50, 100]}
           checkboxSelection
           onRowSelectionModelChange={(selectedList) => {
-            setSelectedUserList(selectedList);
+            setSelectedUserList(selectedList as string[]);
           }}
           onCellClick={(cell, e) => {
             if (cell.field !== "__check__") {
@@ -330,7 +356,7 @@ const UserInfoTable = ({ userInfoList, setSelectedUserList }) => {
           }}
         />
       </div>
-      {isModalOpen && (
+      {isModalOpen && modalUserInfoData && (
         <UserInfoDetailModal
           isModalOpen={isModalOpen}
           closeModal={closeModal}

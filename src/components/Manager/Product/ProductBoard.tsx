@@ -30,7 +30,15 @@ const StyledProductBoard = styled.div`
   }
 `;
 
-const ProductCreateModal = ({ open, handleModalClose, formik }) => {
+const ProductCreateModal = ({
+  open,
+  handleModalClose,
+  formik,
+}: {
+  open: boolean;
+  handleModalClose: () => void;
+  formik: FormikProps<any>;
+}) => {
   const productIdRefs = useRef<HTMLInputElement>(null);
   const colors = formik.values.colors;
   const colorRefs = useRef<HTMLInputElement[]>([]);
