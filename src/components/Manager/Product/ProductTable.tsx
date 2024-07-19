@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
 
+import { ProductFormType } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -147,7 +148,7 @@ export const ProductEdit = ({
   product,
 }: {
   handleModalClose: () => void;
-  formik: FormikProps<any>;
+  formik: FormikProps<ProductFormType>;
   openDetailModal: () => void;
   product: Product;
 }) => {
@@ -282,7 +283,7 @@ export const ProductDetailModal = ({
   isModalOpen: boolean;
   closeModal: () => void;
   modalProductData: Product;
-  formik: FormikProps<any>;
+  formik: FormikProps<ProductFormType>;
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -327,7 +328,7 @@ const ProductTable = ({
 }: {
   productList: Product[];
   setSelectedProductList: Dispatch<SetStateAction<string[]>>;
-  formik: FormikProps<any>;
+  formik: FormikProps<ProductFormType>;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalProductData, setModalProductData] = useState<Product | null>(
