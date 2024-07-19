@@ -1,6 +1,6 @@
 export interface ProductFormType {
   productId: string;
-  image: string | null;
+  image: File | null;
   colors: string[];
   composition: string;
   weightGPerM2: string;
