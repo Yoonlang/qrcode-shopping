@@ -344,8 +344,8 @@ const UserInfoTable = ({
           }}
           pageSizeOptions={[10, 20, 50, 100]}
           checkboxSelection
-          onRowSelectionModelChange={(selectedList) => {
-            setSelectedUserList(selectedList as string[]);
+          onRowSelectionModelChange={(selectedList: string[]) => {
+            setSelectedUserList(selectedList);
           }}
           onCellClick={(cell, e) => {
             if (cell.field !== "__check__") {

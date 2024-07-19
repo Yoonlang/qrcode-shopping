@@ -358,8 +358,8 @@ const ProductTable = ({
           }}
           pageSizeOptions={[10, 20, 50, 100]}
           checkboxSelection
-          onRowSelectionModelChange={(selectedList) => {
-            setSelectedProductList(selectedList as string[]);
+          onRowSelectionModelChange={(selectedList: string[]) => {
+            setSelectedProductList(selectedList);
           }}
           onCellClick={(cell, e) => {
             if (cell.field !== "__check__") {
