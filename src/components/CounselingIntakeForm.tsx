@@ -105,10 +105,18 @@ const CounselingIntakeForm = ({
   formikValues: FormType;
   selectedInfoList: SelectedInfoList;
 }) => {
+  const currentDate = new Date();
+  const formattedDate =
+    currentDate.getFullYear() +
+    "-" +
+    (currentDate.getMonth() + 1).toString().padStart(2, "0") +
+    "-" +
+    currentDate.getDate().toString().padStart(2, "0");
+
   const customerData = [
     {
       title: "Date",
-      value: ["hi"],
+      value: [formattedDate],
       width: "50",
     },
     { title: "Company", value: [formikValues.companyName], width: "50" },
