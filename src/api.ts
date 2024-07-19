@@ -1,6 +1,8 @@
 import { SERVER_URL } from "@/components/const";
 import { OrdererInfo, Product } from "@/const";
 
+const API_VERSION = "";
+
 interface SucceedResponse {
   message: string;
 }
@@ -42,7 +44,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "GET",
       ...options,
     })
@@ -56,7 +58,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +76,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +94,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
