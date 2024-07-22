@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { act, render } from "@testing-library/react";
+import { act, render, waitFor } from "@testing-library/react";
 import { Suspense } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
 
@@ -30,7 +30,7 @@ describe("QrCode loading 확인", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("fetchedItemList 불러오기 성공 시, video DOMElement 반환", () => {
+  it("fetchedItemList 불러오기 성공 시, video DOMElement 반환", async () => {
     // Given
     (useRecoilValue as jest.Mock).mockReturnValue([
       {
@@ -53,7 +53,9 @@ describe("QrCode loading 확인", () => {
     });
 
     // Then
-    const videoElement = container.querySelector("video");
-    expect(videoElement).toBeInTheDocument();
+    await waitFor(() => {
+      const videoElement = container.querySelector("video");
+      expect(videoElement).toBeInTheDocument();
+    });
   });
 });

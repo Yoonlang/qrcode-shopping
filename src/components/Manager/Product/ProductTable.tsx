@@ -46,11 +46,15 @@ const StyledDetailModalContainer = styled.div`
     .baseInfo {
       display: flex;
       flex-direction: column;
-      > img {
+      .imageContainer {
         min-width: 276px;
         min-height: 276px;
+        > img {
+          min-width: 276px;
+          min-height: 276px;
+        }
       }
-      > div {
+      .productDetail {
         max-width: 276px;
         background-color: var(--color-gray-10);
         filter: drop-shadow(0 1px 2px var(--color-black));
@@ -88,15 +92,21 @@ export const ProductDetail = ({ product, closeModal, openEditModal }) => {
     <StyledDetailModalContainer>
       <div className="productContainer">
         <div className="baseInfo">
-          <Image
-            width={276}
-            height={276}
-            src={`${image ?? ""}`}
-            loading="lazy"
-            unoptimized
-            alt={productId}
-          />
-          <div>
+          <div className="imageContainer">
+            {image ? (
+              <Image
+                width={276}
+                height={276}
+                src={`${image ?? ""}`}
+                loading="lazy"
+                unoptimized
+                alt={productId}
+              />
+            ) : (
+              <>no image</>
+            )}
+          </div>
+          <div className="productDetail">
             <h4>{productId}</h4>
             <h5>Comp: {composition}</h5>
             <h5>Weight (g/m2): {weightGPerM2}</h5>
