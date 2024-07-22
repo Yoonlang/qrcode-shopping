@@ -1,9 +1,9 @@
 import { renderHook } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
-import { pageNameList } from "./usePageRouter";
 
-import usePageRouter from "@/hooks/usePageRouter";
+
+import usePageRouter, { pageNameList } from "@/hooks/usePageRouter";
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 
 describe("usePageRouter goToNextPage 확인", () => {
