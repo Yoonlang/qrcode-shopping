@@ -21,6 +21,61 @@ const StyledQrCode = styled.div`
   }
 `;
 
+const StyledQrScannerBox = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+
+  > div {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 6px solid var(--color-green);
+  }
+
+  .top-left {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .top-right {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+
+  .bottom-left {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+  }
+
+  .bottom-right {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
+`;
+
+const QrScannerBox = () => {
+  return (
+    <StyledQrScannerBox>
+      <div className="top-left" />
+      <div className="top-right" />
+      <div className="bottom-left" />
+      <div className="bottom-right" />
+    </StyledQrScannerBox>
+  );
+};
+
 const QrCode = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
@@ -113,6 +168,7 @@ const QrCode = () => {
         }}
         screenshotQuality={1}
       />
+      <QrScannerBox />
     </StyledQrCode>
   );
 };
