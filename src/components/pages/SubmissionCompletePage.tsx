@@ -26,12 +26,14 @@ const StyledSubmissionCompleteTextBox = styled.div<{ language: string }>`
   }
 `;
 
-const StyledPDFDownloadButton = styled(Button)`
-  background-color: var(--color-button-secondary);
+const StyledPDFDownloadButton = styled(Button)<{ disabled: boolean }>`
+  background-color: ${(props) =>
+    props.disabled ? "var(--color-gray-20)" : "var(--color-button-secondary)"};
   color: var(--color-white);
   margin-bottom: 20px;
   font-weight: bold;
   text-transform: none;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 
   &:hover {
     background-color: var(--color-button-secondary);
@@ -55,15 +57,11 @@ const SubmissionCompletePage = () => {
           document={counselingIntakeFormData}
           fileName={`${t("counseling-intake-form")}.pdf`}
         >
-          {({ blob, url, loading, error }) =>
-            loading ? (
-              t("Loading...")
-            ) : (
-              <StyledPDFDownloadButton>
-                {t("Download Order History PDF")}
-              </StyledPDFDownloadButton>
-            )
-          }
+          {({ loading }) => (
+            <StyledPDFDownloadButton disabled={loading}>
+              {t("Download Order History PDF")}
+            </StyledPDFDownloadButton>
+          )}
         </PDFDownloadLink>
       )}
     </StyledSubmissionCompletePageBox>
