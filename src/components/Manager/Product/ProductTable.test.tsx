@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Formik } from "formik";
 
+import { initialValues } from "@/components/Manager/const";
 import { mockProductList } from "@/components/Manager/Product/const";
 import ProductTable from "@/components/Manager/Product/ProductTable";
 
@@ -14,7 +15,7 @@ describe("ProductTable", () => {
 
     // When
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         {(formik) => (
           <ProductTable
             productList={productList}
@@ -35,7 +36,7 @@ describe("ProductTable", () => {
 
     // When
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         {(formik) => (
           <ProductTable
             productList={productList}
