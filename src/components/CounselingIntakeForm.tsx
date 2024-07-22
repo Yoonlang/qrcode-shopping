@@ -9,6 +9,7 @@ import {
 import { franc } from "franc";
 
 import { FormType } from "@/components/const";
+import dayjs from "@/dayjsConfig";
 import { SelectedInfoList } from "@/recoil/atoms/selectedInfoListState";
 
 const detectLanugage = (text: string) => {
@@ -98,6 +99,31 @@ const styles = StyleSheet.create({
   },
 });
 
+const clientData = [
+  { title: "In charge", value: ["JAY KIM"], width: "50" },
+  { title: "Contact information", value: [], width: "100" },
+  {
+    title: "Email",
+    value: ["JAY@YOUNGWONINT.COM\nYW0011S@NATE.COM"],
+    width: "50",
+  },
+  {
+    title: "Address",
+    value: ["SUITE304, 1130 DALGUBEOL-DAERO, DAEGU, SOUTH KOREA 42709"],
+    width: "50",
+  },
+  {
+    title: "Tel#",
+    value: ["+82 53 571 7676\n+82 10 3916 1371"],
+    width: "50",
+  },
+  {
+    title: "Wechat ID",
+    value: ["jayywmaeil"],
+    width: "50",
+  },
+];
+
 const CounselingIntakeForm = ({
   formikValues,
   selectedInfoList,
@@ -105,18 +131,10 @@ const CounselingIntakeForm = ({
   formikValues: FormType;
   selectedInfoList: SelectedInfoList;
 }) => {
-  const currentDate = new Date();
-  const formattedDate =
-    currentDate.getFullYear() +
-    "-" +
-    (currentDate.getMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    currentDate.getDate().toString().padStart(2, "0");
-
   const customerData = [
     {
       title: "Date",
-      value: [formattedDate],
+      value: [dayjs().format("YYYY-MM-DD")],
       width: "50",
     },
     { title: "Company", value: [formikValues.companyName], width: "50" },
@@ -143,31 +161,6 @@ const CounselingIntakeForm = ({
     {
       title: "Wechat ID (optional)",
       value: [formikValues.weChatId],
-      width: "50",
-    },
-  ];
-
-  const clientData = [
-    { title: "In charge", value: ["JAY KIM"], width: "50" },
-    { title: "Contact information", value: [], width: "100" },
-    {
-      title: "Email",
-      value: ["JAY@YOUNGWONINT.COM\nYW0011S@NATE.COM"],
-      width: "50",
-    },
-    {
-      title: "Address",
-      value: ["SUITE304, 1130 DALGUBEOL-DAERO, DAEGU, SOUTH KOREA 42709"],
-      width: "50",
-    },
-    {
-      title: "Tel#",
-      value: ["+82 53 571 7676\n+82 10 3916 1371"],
-      width: "50",
-    },
-    {
-      title: "Wechat ID",
-      value: ["jayywmaeil"],
       width: "50",
     },
   ];
