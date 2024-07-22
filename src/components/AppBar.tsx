@@ -144,9 +144,7 @@ const TitleAppBar = () => {
   );
 };
 
-const StyledBottomAppBar = styled(AppBar)<{
-  page: string;
-}>`
+const StyledBottomAppBar = styled(AppBar)`
   background-color: var(--color-app-bar-primary);
   top: calc(100% - 65px);
 
@@ -159,7 +157,7 @@ const StyledBottomAppBar = styled(AppBar)<{
     background: none;
     border: none;
     padding: 0;
-    gap: ${(props) => (props.page === "complete" ? "0" : "15px")};
+    gap: 15px;
     cursor: pointer;
   }
 `;
@@ -184,13 +182,13 @@ const BottomAppBar = () => {
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
-  const { isValid, handleSubmit } = useFormikContext();
-  const { values, resetForm } = useFormikContext<FormType>();
+  const { isValid, values, resetForm, submitForm } =
+    useFormikContext<FormType>();
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
 
-  const handleBottomAppBarClick = () => {
+  const handleBottomAppBarClick = async () => {
     if (isPageName("qrcode")) {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
@@ -238,15 +236,12 @@ const BottomAppBar = () => {
             selectedInfoList={selectedInfoList}
           />
         );
-        Promise.all([handleSubmit()])
-          .then(() => {
-            setScannedItemList({});
-            setSelectedInfoList({});
-            resetForm({ values: initialValues });
-          })
-          .then(() => {
-            goToNextPage();
-          });
+
+        await submitForm();
+        setScannedItemList({});
+        setSelectedInfoList({});
+        resetForm({ values: initialValues });
+        goToNextPage();
       }
     } else if (isPageName("complete")) {
       goToNextPage();
@@ -254,15 +249,17 @@ const BottomAppBar = () => {
   };
 
   return (
-    <StyledBottomAppBar page={pageName}>
+    <StyledBottomAppBar>
       <button onClick={handleBottomAppBarClick}>
-        <StyledBadge
-          badgeContent={
-            isPageName("qrcode") ? Object.keys(scannedItemList).length : null
-          }
-        >
-          {Icons[bottomAppBarIconList[pageName]]}
-        </StyledBadge>
+        {!isPageName("complete") && (
+          <StyledBadge
+            badgeContent={
+              isPageName("qrcode") ? Object.keys(scannedItemList).length : null
+            }
+          >
+            {Icons[bottomAppBarIconList[pageName]]}
+          </StyledBadge>
+        )}
         <BottomAppBarTitleText>{t(bottomText[pageName])}</BottomAppBarTitleText>
       </button>
     </StyledBottomAppBar>
