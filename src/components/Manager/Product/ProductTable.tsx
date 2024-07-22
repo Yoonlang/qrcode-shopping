@@ -207,7 +207,7 @@ export const ProductEdit = ({
     formik.setFieldValue("price", price);
 
     if (image) {
-      formik.setFieldValue("image", true);
+      formik.setFieldValue("image", new File([], ""));
     }
 
     const handledColors = colors.map(({ colorName }) => colorName);
@@ -222,9 +222,11 @@ export const ProductEdit = ({
         handleChange={handleChangeFile}
         name="file"
         types={fileTypes}
-        disabled={formik.values.image === true}
+        disabled={formik.values.image}
       />
-      {formik.values.image === true ? (
+      {formik.values.image && formik.values.image.name ? (
+        <div>{formik.values.image.name}</div>
+      ) : (
         <Button
           onClick={() => {
             handleChangeFile(null);
@@ -232,8 +234,6 @@ export const ProductEdit = ({
         >
           기존 이미지 제거
         </Button>
-      ) : (
-        formik.values.image !== null && <div>{formik.values.image.name}</div>
       )}
       <ProductInput label="Composition" name="composition" formik={formik} />
       <ProductInput label="Weight" name="weightGPerM2" formik={formik} />
