@@ -1,6 +1,7 @@
 import {
   Document,
   Font,
+  Image,
   Page,
   StyleSheet,
   Text,
@@ -10,6 +11,7 @@ import { franc } from "franc";
 
 import { FormType } from "@/components/const";
 import dayjs from "@/dayjsConfig";
+import { imageUrlList } from "@/recoil/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/atoms/selectedInfoListState";
 
 const detectLanugage = (text: string) => {
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
   },
   col: {
     borderLeft: "1px solid #000",
-    borderRight: "1px solid #000",
     paddingLeft: "5px",
   },
   width20: {
@@ -127,9 +128,11 @@ const clientData = [
 const CounselingIntakeForm = ({
   formikValues,
   selectedInfoList,
+  imageUrlList,
 }: {
   formikValues: FormType;
   selectedInfoList: SelectedInfoList;
+  imageUrlList: imageUrlList;
 }) => {
   const customerData = [
     {
@@ -164,6 +167,8 @@ const CounselingIntakeForm = ({
       width: "50",
     },
   ];
+
+  console.log(imageUrlList);
 
   return (
     <Document>
@@ -233,17 +238,28 @@ const CounselingIntakeForm = ({
             <Text style={[styles.col, styles.width40]}>ARTICLE NO</Text>
             <Text style={[styles.col, styles.width40]}>OPTION</Text>
           </View>
-          {Object.keys(selectedInfoList).map((pid) => (
-            <View key={pid} style={[styles.row, styles.width100]}>
-              <Text style={[styles.col, styles.width20]}>image url</Text>
-              <Text style={[styles.col, styles.width40]}>{pid}</Text>
-              <Text style={[styles.col, styles.width40]}>
-                {Object.keys(selectedInfoList[pid]).map(
-                  (option) => `${option}: ${selectedInfoList[pid][option]}\n`
-                )}
-              </Text>
-            </View>
-          ))}
+          {Object.keys(selectedInfoList).map((pid) => {
+            console.log(imageUrlList[pid]);
+            return (
+              <View key={pid} style={[styles.row, styles.width100]}>
+                <Image
+                  style={[styles.col, styles.width20]}
+                  src={{
+                    uri: imageUrlList[pid],
+                    method: "GET",
+                    headers: {},
+                    body: "",
+                  }}
+                />
+                <Text style={[styles.col, styles.width40]}>{pid}</Text>
+                <Text style={[styles.col, styles.width40]}>
+                  {Object.keys(selectedInfoList[pid]).map(
+                    (option) => `${option}: ${selectedInfoList[pid][option]}\n`
+                  )}
+                </Text>
+              </View>
+            );
+          })}
         </View>
       </Page>
     </Document>

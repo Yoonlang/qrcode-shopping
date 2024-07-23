@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import { useFormikContext } from "formik";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
@@ -18,7 +19,7 @@ import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
-
+import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -106,6 +107,35 @@ const ToBuyListPage = () => {
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
+  const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
+
+  const convertToBase64 = (url) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(url);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  useEffect(() => {
+    fetchedItemList
+      .filter((item) =>
+        Object.keys(scannedItemList).some((pid) => pid === item.productId)
+      )
+      .map((product) => {
+        //     const base64 = convertToBase64(product.image);
+        //     console.log(base64);
+        setImageUrlList({
+          ...imageUrlList,
+          [product.productId]: product.image ? product.image : "",
+        });
+      });
+  }, [fetchedItemList, scannedItemList]);
 
   const handleToBuyItemDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,

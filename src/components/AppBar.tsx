@@ -2,7 +2,7 @@ import { AppBar, Badge, IconButton, Popover } from "@mui/material";
 import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 
 import {
@@ -19,6 +19,7 @@ import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
+import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledTitleAppBar = styled(AppBar)`
@@ -182,6 +183,7 @@ const BottomAppBar = () => {
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
+  const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
   const { isValid, values, resetForm, submitForm } =
     useFormikContext<FormType>();
   const setCounselingIntakeFormData = useSetRecoilState(
@@ -234,12 +236,14 @@ const BottomAppBar = () => {
           <CounselingIntakeForm
             formikValues={values}
             selectedInfoList={selectedInfoList}
+            imageUrlList={imageUrlList}
           />
         );
 
         await submitForm();
         setScannedItemList({});
         setSelectedInfoList({});
+        setImageUrlList({});
         resetForm({ values: initialValues });
         goToNextPage();
       }
