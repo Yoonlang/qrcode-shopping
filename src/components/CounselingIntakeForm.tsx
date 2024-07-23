@@ -155,7 +155,7 @@ const CounselingIntakeForm = ({
     },
     {
       title: "Tel#",
-      value: [formikValues.phoneNumber],
+      value: [`+${formikValues.countryCode.phone} ${formikValues.phoneNumber}`],
       width: "50",
     },
     {
