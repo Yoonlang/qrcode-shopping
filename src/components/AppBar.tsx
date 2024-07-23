@@ -50,7 +50,7 @@ const bottomText: PageObject = {
   qrcode: "My Products",
   cart: "Information",
   info: "Submission",
-  complete: "Scan New QR",
+  complete: "Go to Main Page",
 };
 
 const titleText: PageObject = {
