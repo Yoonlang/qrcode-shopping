@@ -1,7 +1,7 @@
 import { SERVER_URL } from "@/components/const";
 import { OrdererInfo, Product } from "@/const";
 
-const API_VERSION = "";
+const API_VERSION = "/v1";
 
 interface SucceedResponse {
   message: string;
