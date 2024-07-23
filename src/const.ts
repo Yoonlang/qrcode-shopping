@@ -3,8 +3,13 @@ interface Color {
   colorName: string;
 }
 
-export interface Product {
+interface ProductMetadata {
   documentId: string;
+  productId: string;
+  folderId: string;
+}
+
+export interface Product {
   productId: string;
   colors: Color[];
   composition: string | null;
@@ -12,11 +17,18 @@ export interface Product {
   image: string | null;
   weightGPerM2: number | null;
   widthInch: number | null;
+  metadata: ProductMetadata;
+}
+
+interface OrdererInfoMetadata {
+  documentId: string;
+  userId: string;
+  submissionTime: string;
+  folderId: string;
 }
 
 export interface OrdererInfo {
-  documentId: string;
-  submissionTime: string;
+  userId: string;
   hopeProducts: [
     {
       colorCardQuantity: number;
@@ -49,9 +61,13 @@ export interface OrdererInfo {
       detailAddress: string | null;
     };
     shippingAddress: {
-      postalCode: string;
-      address: string;
-      detailAddress: string;
+      postalCode: string | null;
+      address: string | null;
+      detailAddress: string | null;
     };
   };
+  submissionTime: string;
+  remark1: string;
+  remark2: string;
+  metadata: OrdererInfoMetadata;
 }

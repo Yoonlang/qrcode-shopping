@@ -10,6 +10,7 @@ import { useState } from "react";
 import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
+import { ProductFormType } from "@/components/Manager/const";
 import {
   StyledAppBar,
   StyledDrawer,
@@ -17,6 +18,7 @@ import {
 } from "@/components/Manager/DashboardItems";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
+
 
 const StyledBoardContainer = styled.div`
   display: flex;
@@ -27,7 +29,7 @@ const StyledBoardContainer = styled.div`
   height: calc(100% - 70px);
 `;
 
-const Dashboard = ({ formik }: { formik: FormikProps<any> }) => {
+const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
   const [menu, setMenu] = useState(0);
   const drawerItems = ["user", "product"];
 

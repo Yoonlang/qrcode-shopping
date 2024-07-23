@@ -5,6 +5,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
 
 import { deleteProductList, getProductList } from "@/api";
+import { ProductFormType } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -30,7 +31,15 @@ const StyledProductBoard = styled.div`
   }
 `;
 
-const ProductCreateModal = ({ open, handleModalClose, formik }) => {
+const ProductCreateModal = ({
+  open,
+  handleModalClose,
+  formik,
+}: {
+  open: boolean;
+  handleModalClose: () => void;
+  formik: FormikProps<ProductFormType>;
+}) => {
   const productIdRefs = useRef<HTMLInputElement>(null);
   const colors = formik.values.colors;
   const colorRefs = useRef<HTMLInputElement[]>([]);
@@ -120,7 +129,7 @@ const ProductCreateModal = ({ open, handleModalClose, formik }) => {
   );
 };
 
-const ProductBoard = ({ formik }: { formik: FormikProps<any> }) => {
+const ProductBoard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
