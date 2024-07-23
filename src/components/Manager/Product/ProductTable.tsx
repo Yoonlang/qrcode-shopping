@@ -1,16 +1,19 @@
 import { Button, TextField } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { FormikProps } from "formik";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
 
+import { ProductFormType } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
   StyledFlexDiv,
   StyledModal,
 } from "@/components/Manager/DashboardItems";
+import { Product } from "@/const";
 
 const fileTypes = ["JPG", "PNG"];
 
@@ -22,10 +25,10 @@ const productDetailColumns: GridColDef[] = [
   { field: "sampleYardage", headerName: "Sample Yardage", width: 300 },
 ];
 
-const handleProductListForTable = (productList) => {
+const handleProductListForTable = (productList: Product[]) => {
   return productList.map((product) => {
     return {
-      id: product.documentId,
+      id: product.productId,
       __product__: product,
     };
   });
@@ -46,11 +49,15 @@ const StyledDetailModalContainer = styled.div`
     .baseInfo {
       display: flex;
       flex-direction: column;
-      > img {
+      .imageContainer {
         min-width: 276px;
         min-height: 276px;
+        > img {
+          min-width: 276px;
+          min-height: 276px;
+        }
       }
-      > div {
+      .productDetail {
         max-width: 276px;
         background-color: var(--color-gray-10);
         filter: drop-shadow(0 1px 2px var(--color-black));
@@ -74,7 +81,15 @@ const StyledDetailModalContainer = styled.div`
   }
 `;
 
-export const ProductDetail = ({ product, closeModal, openEditModal }) => {
+export const ProductDetail = ({
+  product,
+  closeModal,
+  openEditModal,
+}: {
+  product: Product;
+  closeModal: () => void;
+  openEditModal: () => void;
+}) => {
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
     product;
 
@@ -88,15 +103,21 @@ export const ProductDetail = ({ product, closeModal, openEditModal }) => {
     <StyledDetailModalContainer>
       <div className="productContainer">
         <div className="baseInfo">
-          <Image
-            width={276}
-            height={276}
-            src={`${image ?? ""}`}
-            loading="lazy"
-            unoptimized
-            alt={productId}
-          />
-          <div>
+          <div className="imageContainer">
+            {image ? (
+              <Image
+                width={276}
+                height={276}
+                src={`${image ?? ""}`}
+                loading="lazy"
+                unoptimized
+                alt={productId}
+              />
+            ) : (
+              <>no image</>
+            )}
+          </div>
+          <div className="productDetail">
             <h4>{productId}</h4>
             <h5>Comp: {composition}</h5>
             <h5>Weight (g/m2): {weightGPerM2}</h5>
@@ -135,6 +156,11 @@ export const ProductEdit = ({
   formik,
   openDetailModal,
   product,
+}: {
+  handleModalClose: () => void;
+  formik: FormikProps<ProductFormType>;
+  openDetailModal: () => void;
+  product: Product;
 }) => {
   const colors = formik.values.colors;
   const colorRefs = useRef<HTMLInputElement[]>([]);
@@ -191,7 +217,7 @@ export const ProductEdit = ({
     formik.setFieldValue("price", price);
 
     if (image) {
-      formik.setFieldValue("image", true);
+      formik.setFieldValue("image", new File([], ""));
     }
 
     const handledColors = colors.map(({ colorName }) => colorName);
@@ -206,9 +232,11 @@ export const ProductEdit = ({
         handleChange={handleChangeFile}
         name="file"
         types={fileTypes}
-        disabled={formik.values.image === true}
+        disabled={formik.values.image}
       />
-      {formik.values.image === true ? (
+      {formik.values.image && formik.values.image.name ? (
+        <div>{formik.values.image.name}</div>
+      ) : (
         <Button
           onClick={() => {
             handleChangeFile(null);
@@ -216,8 +244,6 @@ export const ProductEdit = ({
         >
           기존 이미지 제거
         </Button>
-      ) : (
-        formik.values.image !== null && <div>{formik.values.image.name}</div>
       )}
       <ProductInput label="Composition" name="composition" formik={formik} />
       <ProductInput label="Weight" name="weightGPerM2" formik={formik} />
@@ -245,8 +271,8 @@ export const ProductEdit = ({
         ))}
       <StyledFlexDiv>
         <Button
-          onClick={async () => {
-            await formik.handleSubmit();
+          onClick={() => {
+            formik.submitForm();
             openDetailModal();
           }}
         >
@@ -263,6 +289,11 @@ export const ProductDetailModal = ({
   closeModal,
   modalProductData,
   formik,
+}: {
+  isModalOpen: boolean;
+  closeModal: () => void;
+  modalProductData: Product;
+  formik: FormikProps<ProductFormType>;
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -300,9 +331,19 @@ export const ProductDetailModal = ({
   );
 };
 
-const ProductTable = ({ productList, setSelectedProductList, formik }) => {
+const ProductTable = ({
+  productList,
+  setSelectedProductList,
+  formik,
+}: {
+  productList: Product[];
+  setSelectedProductList: Dispatch<SetStateAction<string[]>>;
+  formik: FormikProps<ProductFormType>;
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalProductData, setModalProductData] = useState(null);
+  const [modalProductData, setModalProductData] = useState<Product | null>(
+    null
+  );
   const tableRows = handleProductListForTable(productList);
 
   const closeModal = () => {
@@ -328,7 +369,7 @@ const ProductTable = ({ productList, setSelectedProductList, formik }) => {
           }}
           pageSizeOptions={[10, 20, 50, 100]}
           checkboxSelection
-          onRowSelectionModelChange={(selectedList) => {
+          onRowSelectionModelChange={(selectedList: string[]) => {
             setSelectedProductList(selectedList);
           }}
           onCellClick={(cell, e) => {
@@ -340,7 +381,7 @@ const ProductTable = ({ productList, setSelectedProductList, formik }) => {
           }}
         />
       </div>
-      {isModalOpen && (
+      {isModalOpen && modalProductData && (
         <ProductDetailModal
           isModalOpen={isModalOpen}
           closeModal={closeModal}

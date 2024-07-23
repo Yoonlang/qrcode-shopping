@@ -1,6 +1,8 @@
 import { SERVER_URL } from "@/components/const";
 import { OrdererInfo, Product } from "@/const";
 
+const API_VERSION = "/v1";
+
 interface SucceedResponse {
   message: string;
 }
@@ -14,13 +16,15 @@ type FailCallback = (error: Error) => void;
 
 type ApiGetFunction<T> = (
   onSuccess: SuccessCallback<T>,
-  onFail: FailCallback
+  onFail: FailCallback,
+  targetId?: string
 ) => Promise<void>;
 
 type ApiModifyFunction<T> = (
   body: BodyInit | null | undefined,
   onSuccess: SuccessCallback<T>,
-  onFail: FailCallback
+  onFail: FailCallback,
+  targetId?: string
 ) => Promise<void>;
 
 const isErrorResponse = (data: unknown): data is ErrorResponse => {
@@ -42,7 +46,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "GET",
       ...options,
     })
@@ -56,7 +60,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +78,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +96,7 @@ const http = {
     onSuccess: SuccessCallback<T>,
     onFail: FailCallback
   ) =>
-    fetch(`${SERVER_URL}${path}`, {
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -129,10 +133,11 @@ export const postProduct: ApiModifyFunction<SucceedResponse> = (
 export const putProduct: ApiModifyFunction<SucceedResponse> = (
   body,
   onSuccess,
-  onFail
+  onFail,
+  targetId
 ) => {
   return http.put(
-    `/products`,
+    `/products/${targetId}`,
     { credentials: "include", headers: {} },
     body,
     onSuccess,
@@ -143,10 +148,11 @@ export const putProduct: ApiModifyFunction<SucceedResponse> = (
 const deleteProduct: ApiModifyFunction<SucceedResponse> = (
   body,
   onSuccess,
-  onFail
+  onFail,
+  targetId
 ) => {
   return http.delete(
-    `/products`,
+    `/products/${targetId}`,
     { credentials: "include" },
     body,
     onSuccess,
@@ -161,7 +167,7 @@ export const deleteProductList = (
 ) => {
   const deletePromises = productList.map((productId) => {
     return new Promise((resolve, reject) => {
-      deleteProduct(JSON.stringify({ productId }), resolve, reject);
+      deleteProduct(undefined, resolve, reject, productId);
     });
   });
 
@@ -172,7 +178,7 @@ export const getOrdererInfoList: ApiGetFunction<OrdererInfo[]> = (
   onSuccess,
   onFail
 ) => {
-  return http.get(`/users-info`, { credentials: "include" }, onSuccess, onFail);
+  return http.get(`/users`, { credentials: "include" }, onSuccess, onFail);
 };
 
 export const submitOrdererInfo: ApiModifyFunction<SucceedResponse> = (
@@ -180,16 +186,17 @@ export const submitOrdererInfo: ApiModifyFunction<SucceedResponse> = (
   onSuccess,
   onFail
 ) => {
-  return http.post(`/users-info`, undefined, body, onSuccess, onFail);
+  return http.post(`/users`, undefined, body, onSuccess, onFail);
 };
 
 const deleteOrderer: ApiModifyFunction<SucceedResponse> = (
   body,
   onSuccess,
-  onFail
+  onFail,
+  targetId
 ) => {
   return http.delete(
-    `/users-info`,
+    `/users/${targetId}`,
     { credentials: "include" },
     body,
     onSuccess,
@@ -204,7 +211,7 @@ export const deleteOrdererList = (
 ) => {
   const deletePromises = ordererList.map((ordererId) => {
     return new Promise((resolve, reject) => {
-      deleteOrderer(JSON.stringify({ userId: ordererId }), resolve, reject);
+      deleteOrderer(undefined, resolve, reject, ordererId);
     });
   });
 

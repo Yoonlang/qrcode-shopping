@@ -24,6 +24,9 @@ const Icons: {
   info: <Image src={"/svg/info.svg"} width={24} height={24} alt={"인포"} />,
   globe: <Image src={"/svg/globe.svg"} width={24} height={24} alt={"지구"} />,
   logo: <Image src={"/svg/logo.svg"} width={162} height={162} alt={"로고"} />,
+  submission_complete: (
+    <Image src={"/svg/complete.svg"} width={80} height={80} alt={"제출완료"} />
+  ),
 };
 
 export default Icons;

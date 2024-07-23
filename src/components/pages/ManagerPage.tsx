@@ -13,6 +13,7 @@ const ManagerPage = () => {
     initialValues: initialValues,
     validateOnMount: true,
     onSubmit: (form, { resetForm }) => {
+      const { productId } = form;
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -44,6 +45,7 @@ const ManagerPage = () => {
       });
 
       if (newForm["method"] === "PUT") {
+        formData.delete("productId");
         if (newForm["image"] === true) {
           formData.append("useSameImage", "true");
         } else {
@@ -60,7 +62,8 @@ const ManagerPage = () => {
         },
         (e) => {
           console.log(e);
-        }
+        },
+        newForm["method"] === "PUT" ? productId : undefined
       );
     },
   });

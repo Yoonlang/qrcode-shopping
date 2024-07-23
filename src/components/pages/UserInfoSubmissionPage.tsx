@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { FormType } from "@/components/const";
-import MessageDialog from "@/components/MessageDialog";
 import CompanyAddress from "@/components/UserInfoSubmission/CompanyAddress";
 import { steps } from "@/components/UserInfoSubmission/const";
 import {
@@ -14,24 +13,12 @@ import {
 } from "@/components/UserInfoSubmission/FormItems";
 import OrdererInfo from "@/components/UserInfoSubmission/OrdererInfo";
 import ShippingAddress from "@/components/UserInfoSubmission/ShippingAddress";
-import usePageRouter from "@/hooks/usePageRouter";
 
 const UserInfoSubmissionPage = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
-  const { goToNextPage } = usePageRouter();
-  const {
-    values,
-    errors,
-    isSubmitting,
-    handleSubmit,
-  }: FormikContextType<FormType> = useFormikContext();
-
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
-    goToNextPage();
-  };
+  const { values, errors, handleSubmit }: FormikContextType<FormType> =
+    useFormikContext();
 
   useEffect(() => {
     if (
@@ -55,22 +42,8 @@ const UserInfoSubmissionPage = () => {
     }
   });
 
-  useEffect(() => {
-    if (isSubmitting) {
-      setIsDialogOpen(true);
-    }
-  }, [isSubmitting]);
-
   return (
     <>
-      <MessageDialog
-        isDialogOpen={isDialogOpen}
-        onDialogClose={handleDialogClose}
-        messageList={[t("Submission Complete")]}
-        customStyle={
-          i18n.language === "zh" ? "font-size: 100px; text-align: center;" : ""
-        }
-      />
       <form onSubmit={handleSubmit}>
         <StyledStepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (

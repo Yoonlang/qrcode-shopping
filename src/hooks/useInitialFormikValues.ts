@@ -1,18 +1,14 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
 
 import { submitOrdererInfo } from "@/api";
-import { FormType, snackBarStatusMessage } from "@/components/const";
+import { FormType } from "@/components/const";
 import { validationSchema } from "@/components/validation";
 import dayjs from "@/dayjsConfig";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
-import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
-import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
-const initialValues: FormType = {
+export const initialValues: FormType = {
   name: "",
   companyName: "",
   businessType: "",
@@ -35,16 +31,13 @@ const initialValues: FormType = {
 };
 
 const useInitialFormikValues = () => {
-  const { t } = useTranslation();
-  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const [storedFormikValues, handleFormikValuesUpdate] = useLocalStorageState({
     key: "form",
     value: initialValues,
   });
-  const { setScannedItemList } = useScannedItemList();
-  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
+  const { selectedInfoList } = useSelectedInfoList();
 
-  const handleSubmit = (form, { resetForm }) => {
+  const handleSubmit = async (form) => {
     const {
       name,
       companyName,
@@ -62,7 +55,7 @@ const useInitialFormikValues = () => {
       isSameAddress,
       productLengthUnit,
     } = form;
-    submitOrdererInfo(
+    await submitOrdererInfo(
       JSON.stringify({
         submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
         hopeProducts: Object.entries(selectedInfoList).map(
@@ -108,20 +101,7 @@ const useInitialFormikValues = () => {
           },
         },
       }),
-      () => {
-        setScannedItemList({});
-        setSelectedInfoList({});
-        resetForm({ values: initialValues });
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["complete"]),
-          isMessageSnackBarOpen: true,
-        });
-        // setTimeout(() => {
-        //   setSnackBarStatus(t(snackBarStatusMessage["default"]));
-        //   setSnackBarOpen(true);
-        // }, 3500);
-        // setPageIdx((pageIdx + 1) % 3);
-      },
+      () => {},
       (e) => {
         console.log(e);
       }

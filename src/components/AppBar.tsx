@@ -5,13 +5,20 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 
-import { IS_USING_SY, snackBarStatusMessage } from "@/components/const";
+import {
+  FormType,
+  IS_USING_SY,
+  snackBarStatusMessage,
+} from "@/components/const";
+import CounselingIntakeForm from "@/components/CounselingIntakeForm";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
+import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledTitleAppBar = styled(AppBar)`
@@ -43,18 +50,21 @@ const bottomText: PageObject = {
   qrcode: "My Products",
   cart: "Information",
   info: "Submission",
+  complete: "Scan New QR",
 };
 
 const titleText: PageObject = {
   qrcode: "QR code",
   cart: "Cart",
   info: "Info",
+  complete: "Result",
 };
 
 const bottomAppBarIconList: PageObject = {
   qrcode: "cart",
   cart: "person",
   info: "check",
+  complete: "",
 };
 
 const StyledIconButton = styled(IconButton)`
@@ -89,7 +99,7 @@ const TitleAppBar = () => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {!isPageName("qrcode") && (
+        {!isPageName("qrcode") && !isPageName("complete") && (
           <StyledIconButton onClick={goToPreviousPage} edge="start">
             {Icons["back"]}
           </StyledIconButton>
@@ -170,11 +180,15 @@ const BottomAppBar = () => {
   const { t } = useTranslation();
   const { pageName, isPageName, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const { scannedItemList } = useScannedItemList();
-  const { selectedInfoList } = useSelectedInfoList();
-  const { isValid, handleSubmit } = useFormikContext();
+  const { scannedItemList, setScannedItemList } = useScannedItemList();
+  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
+  const { isValid, values, resetForm, submitForm } =
+    useFormikContext<FormType>();
+  const setCounselingIntakeFormData = useSetRecoilState(
+    counselingIntakeFormDataState
+  );
 
-  const handleBottomAppBarClick = () => {
+  const handleBottomAppBarClick = async () => {
     if (isPageName("qrcode")) {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
@@ -214,28 +228,38 @@ const BottomAppBar = () => {
           goToNextPage();
         }
       }
-    } else {
+    } else if (isPageName("info")) {
       if (isValid) {
-        handleSubmit();
-      } else {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["invalid"]),
-          isMessageSnackBarOpen: true,
-        });
+        setCounselingIntakeFormData(
+          <CounselingIntakeForm
+            formikValues={values}
+            selectedInfoList={selectedInfoList}
+          />
+        );
+
+        await submitForm();
+        setScannedItemList({});
+        setSelectedInfoList({});
+        resetForm({ values: initialValues });
+        goToNextPage();
       }
+    } else if (isPageName("complete")) {
+      goToNextPage();
     }
   };
 
   return (
     <StyledBottomAppBar>
       <button onClick={handleBottomAppBarClick}>
-        <StyledBadge
-          badgeContent={
-            isPageName("qrcode") ? Object.keys(scannedItemList).length : null
-          }
-        >
-          {Icons[bottomAppBarIconList[pageName]]}
-        </StyledBadge>
+        {!isPageName("complete") && (
+          <StyledBadge
+            badgeContent={
+              isPageName("qrcode") ? Object.keys(scannedItemList).length : null
+            }
+          >
+            {Icons[bottomAppBarIconList[pageName]]}
+          </StyledBadge>
+        )}
         <BottomAppBarTitleText>{t(bottomText[pageName])}</BottomAppBarTitleText>
       </button>
     </StyledBottomAppBar>
