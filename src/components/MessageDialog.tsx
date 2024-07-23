@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const StyledMessageDialog = styled(Dialog)<{ customStyle?: string }>`
+  z-index: 2;
+
   p {
     ${(props) => props.customStyle};
   }
