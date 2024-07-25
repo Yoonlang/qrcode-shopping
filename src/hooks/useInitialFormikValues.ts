@@ -87,7 +87,7 @@ const useInitialFormikValues = () => {
               number: phoneNumber,
             },
             email,
-            weChatId,
+            weChatId: weChatId || null,
           },
           companyAddress: {
             postalCode: coPostalCode,
