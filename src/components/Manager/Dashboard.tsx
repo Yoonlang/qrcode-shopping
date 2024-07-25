@@ -19,7 +19,6 @@ import {
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
 
-
 const StyledBoardContainer = styled.div`
   display: flex;
   position: fixed;
@@ -44,7 +43,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
     <>
       <StyledAppBar>
         <div>YOUNGWON</div>
-        <div>{Icons["x"]}</div>
+        <div className="icon">{Icons["x"]}</div>
         <div>MAEIL</div>
       </StyledAppBar>
       <StyledDrawer variant="permanent" anchor="left">

@@ -21,6 +21,10 @@ const StyledAppBar = styled(AppBar)`
     & div {
       margin: 0 2px;
     }
+
+    .icon {
+      filter: invert(1);
+    }
   }
 `;
 
