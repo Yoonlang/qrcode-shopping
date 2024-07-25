@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
   table: {
     width: "100%",
     fontSize: "10px",
-    fontWeight: "light",
   },
   table50: {
     width: "50%",
@@ -67,20 +66,26 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    borderTop: "1px solid #000",
+  },
+  lastRow: {
     borderBottom: "1px solid #000",
   },
-  col: {
+  cell: {
     borderLeft: "1px solid #000",
     paddingLeft: "5px",
   },
-  width20: {
-    width: "20%",
+  lastCell: {
+    borderRight: "1px solid #000",
   },
-  width25: {
-    width: "25%",
+  image: {
+    padding: "0",
   },
-  width40: {
-    width: "40%",
+  width15: {
+    width: "15%",
+  },
+  width35: {
+    width: "35%",
   },
   width50: {
     width: "50%",
@@ -174,18 +179,32 @@ const CounselingIntakeForm = ({
     <Document>
       <Page>
         <View style={styles.table}>
-          <View style={[styles.row, styles.bold, styles.header]}>
+          <View
+            style={[
+              styles.row,
+              styles.bold,
+              styles.header,
+              styles.cell,
+              styles.lastCell,
+            ]}
+          >
             <Text>CounSeling Intake Form</Text>
             <Text>YOUNGWON</Text>
           </View>
           <View style={styles.tableBox}>
             <View style={styles.table50}>
-              {customerData.map((data) => (
-                <View key={`customer-${data.title}`} style={styles.row}>
+              {customerData.map((data, idx) => (
+                <View
+                  key={`customer-${data.title}`}
+                  style={[
+                    styles.row,
+                    idx === customerData.length - 1 ? styles.lastRow : {},
+                  ]}
+                >
                   <Text
                     style={[
                       styles.bold,
-                      styles.col,
+                      styles.cell,
                       styles[`width${data.width}`],
                     ]}
                   >
@@ -195,7 +214,7 @@ const CounselingIntakeForm = ({
                     <Text
                       key={`customer-${data.title}-value`}
                       style={[
-                        styles.col,
+                        styles.cell,
                         styles[`width${data.width}`],
                         styles[`${detectLanugage(v)}`],
                       ]}
@@ -207,13 +226,14 @@ const CounselingIntakeForm = ({
               ))}
             </View>
             <View style={styles.table50}>
-              {clientData.map((data) => (
-                <View key={`client-${data.title}`} style={styles.row}>
+              {clientData.map((data, idx) => (
+                <View key={`client-${data.title}`} style={[styles.row]}>
                   <Text
                     style={[
                       styles.bold,
-                      styles.col,
+                      styles.cell,
                       styles[`width${data.width}`],
+                      data.width === "100" ? styles.lastCell : {},
                     ]}
                   >
                     {data.title}
@@ -221,7 +241,11 @@ const CounselingIntakeForm = ({
                   {data.value.map((v) => (
                     <Text
                       key={`client-${data.title}-value`}
-                      style={[styles.col, styles[`width${data.width}`]]}
+                      style={[
+                        styles.cell,
+                        styles.lastCell,
+                        styles[`width${data.width}`],
+                      ]}
                     >
                       {v}
                     </Text>
@@ -230,36 +254,52 @@ const CounselingIntakeForm = ({
               ))}
             </View>
           </View>
-          <View style={[styles.row, styles.bold, styles.header]}>
+          <View
+            style={[
+              styles.row,
+              styles.bold,
+              styles.header,
+              styles.cell,
+              styles.lastCell,
+            ]}
+          >
             <Text>SELECTED ARTICLE LIST</Text>
           </View>
           <View style={[styles.row, styles.width100, styles.bold]}>
-            <Text style={[styles.col, styles.width20]}>ARTICLE PHOTO</Text>
-            <Text style={[styles.col, styles.width40]}>ARTICLE NO</Text>
-            <Text style={[styles.col, styles.width40]}>OPTION</Text>
+            <Text style={[styles.cell, styles.width15]}>ARTICLE PHOTO</Text>
+            <Text style={[styles.cell, styles.width35]}>ARTICLE NO</Text>
+            <Text style={[styles.cell, styles.lastCell, styles.width50]}>
+              OPTION
+            </Text>
           </View>
-          {Object.keys(selectedInfoList).map((pid) => {
-            console.log(imageUrlList[pid]);
-            return (
-              <View key={pid} style={[styles.row, styles.width100]}>
-                <Image
-                  style={[styles.col, styles.width20]}
-                  src={{
-                    uri: imageUrlList[pid],
-                    method: "GET",
-                    headers: {},
-                    body: "",
-                  }}
-                />
-                <Text style={[styles.col, styles.width40]}>{pid}</Text>
-                <Text style={[styles.col, styles.width40]}>
-                  {Object.keys(selectedInfoList[pid]).map(
-                    (option) => `${option}: ${selectedInfoList[pid][option]}\n`
-                  )}
-                </Text>
-              </View>
-            );
-          })}
+          {Object.keys(selectedInfoList).map((pid, idx) => (
+            <View
+              key={pid}
+              style={[
+                styles.row,
+                styles.width100,
+                idx === Object.keys(selectedInfoList).length - 1
+                  ? styles.lastRow
+                  : {},
+              ]}
+            >
+              <Image
+                style={[styles.cell, styles.width15, styles.image]}
+                src={{
+                  uri: imageUrlList[pid],
+                  method: "GET",
+                  headers: {},
+                  body: "",
+                }}
+              />
+              <Text style={[styles.cell, styles.width35]}>{pid}</Text>
+              <Text style={[styles.cell, styles.lastCell, styles.width50]}>
+                {Object.keys(selectedInfoList[pid]).map(
+                  (option) => `${option}: ${selectedInfoList[pid][option]}\n`
+                )}
+              </Text>
+            </View>
+          ))}
         </View>
       </Page>
     </Document>
