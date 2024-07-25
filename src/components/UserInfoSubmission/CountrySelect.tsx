@@ -138,7 +138,9 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
       {errors.countryCode && touched.countryCode && (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{t(errors.countryCode?.toString())}</p>
+          <p>
+            {errors.countryCode.code && t(errors.countryCode?.code?.toString())}
+          </p>
         </StyledErrorMessage>
       )}
     </>
