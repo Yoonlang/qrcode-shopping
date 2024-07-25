@@ -64,7 +64,7 @@ const useInitialFormikValues = () => {
               productId,
               colorCardQuantity: items["Color Card"] ?? 0,
               sampleYardages: Object.entries(items)
-                .filter(([colorInfo, b]) => colorInfo !== "Color Card")
+                .filter(([colorInfo]) => colorInfo !== "Color Card")
                 .map(([colorInfo, quantity]) => {
                   const [colorId, colorName] = colorInfo.split(". ");
                   return {

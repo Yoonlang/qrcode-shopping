@@ -48,7 +48,7 @@ const ToBuyItemOptions = ({
             <Divider />
             <StyledBottom>
               <p>{SELECTED_OPTIONS_TEXT}</p>
-              {selected?.map((select, index) => (
+              {selected?.map((select) => (
                 <div key={select}>
                   <SelectedOption>
                     <div>{select}</div>
