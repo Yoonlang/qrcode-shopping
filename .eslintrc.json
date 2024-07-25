@@ -32,7 +32,6 @@
     "@typescript-eslint/no-misused-promises": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
     "@typescript-eslint/no-base-to-string": "warn",
-    "no-useless-escape": "warn",
     "no-prototype-builtins": "warn",
     "prefer-const": "warn",
     "sort-react-dependency-arrays/sort": "error",
