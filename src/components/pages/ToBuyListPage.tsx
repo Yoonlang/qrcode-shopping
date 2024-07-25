@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useFormikContext } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
@@ -107,20 +107,7 @@ const ToBuyListPage = () => {
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
-  const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
-
-  const convertToBase64 = (url) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(url);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+  const setImageUrlList = useSetRecoilState(imageUrlListState);
 
   useEffect(() => {
     fetchedItemList
@@ -128,12 +115,10 @@ const ToBuyListPage = () => {
         Object.keys(scannedItemList).some((pid) => pid === item.productId)
       )
       .map((product) => {
-        //     const base64 = convertToBase64(product.image);
-        //     console.log(base64);
-        setImageUrlList({
-          ...imageUrlList,
-          [product.productId]: product.image ? product.image : "",
-        });
+        setImageUrlList((prevImageUrlList) => ({
+          ...prevImageUrlList,
+          [product.productId]: product.image || "",
+        }));
       });
   }, [fetchedItemList, scannedItemList]);
 
