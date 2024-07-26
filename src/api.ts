@@ -1,5 +1,5 @@
 import { SERVER_URL } from "@/components/const";
-import { OrdererInfo, Product } from "@/const";
+import { Folder, OrdererInfo, Product } from "@/const";
 
 const API_VERSION = "/v1";
 
@@ -216,6 +216,10 @@ export const deleteOrdererList = (
   });
 
   Promise.all(deletePromises).then(onSuccess).catch(onFail);
+};
+
+export const getFolderList: ApiGetFunction<Folder[]> = (onSuccess, onFail) => {
+  return http.get(`/folders`, { credentials: "include" }, onSuccess, onFail);
 };
 
 export const checkCookieAuth: ApiGetFunction<SucceedResponse> = (
