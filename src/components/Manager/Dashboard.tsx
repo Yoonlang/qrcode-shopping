@@ -4,11 +4,11 @@ import { styled } from "styled-components";
 
 import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";
+import { ProductFormType } from "@/components/Manager/const";
 import { StyledAppBar } from "@/components/Manager/DashboardItems";
 import Menu from "@/components/Manager/Menu";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
-import { ProductFormType } from "@/components/Manager/const";
 import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
