@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 
 import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";
-import { ProductFormType } from "@/components/Manager/const";
+import { initialFolderList, ProductFormType } from "@/components/Manager/const";
 import { StyledAppBar } from "@/components/Manager/DashboardItems";
 import Menu from "@/components/Manager/Menu";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
@@ -21,16 +21,10 @@ const StyledBoardContainer = styled.div`
 `;
 
 const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
-  const [folderId, setFolderId] = useState("user-default");
-  const [folderList, setFolderList] = useState<Folder[] | null>(null);
-
-  // folderId로 changeMenu 로직 변경 예정
-  // const handleChangeMenu = (
-  //   e: React.MouseEvent<HTMLElement>,
-  //   index: number
-  // ) => {
-  //   setMenu(index);
-  // };
+  const [selectedFolder, setSelectedFolder] = useState<Folder>(
+    initialFolderList[0]
+  );
+  const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
 
   useEffect(() => {
     getFolderList(
@@ -50,13 +44,15 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
         <div className="icon">{Icons["x"]}</div>
         <div>MAEIL</div>
       </StyledAppBar>
-      {folderList && <Menu folderList={folderList} />}
+      <Menu
+        folderList={folderList}
+        onMenuChange={(folder) => setSelectedFolder(folder)}
+      />
       <StyledBoardContainer>
-        {folderId === "user-default" ? (
-          // folderId 값에 따라 board 데이터 변경 예정
-          <UserBoard />
+        {selectedFolder.type === "user" ? (
+          <UserBoard folderId={selectedFolder.id} />
         ) : (
-          <ProductBoard formik={formik} />
+          <ProductBoard folderId={selectedFolder.id} formik={formik} />
         )}
       </StyledBoardContainer>
     </>

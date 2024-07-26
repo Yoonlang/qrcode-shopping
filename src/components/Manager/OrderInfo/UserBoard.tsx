@@ -20,8 +20,11 @@ const StyledUserBoard = styled.div`
   }
 `;
 
-const UserBoard = () => {
+const UserBoard = ({ folderId }: { folderId: string }) => {
   const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
+  const filteredUserList = userInfoList.filter(
+    (u) => u.metadata.folderId === folderId
+  );
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
 
   const updateOrdererInfoList = () => {
@@ -57,7 +60,7 @@ const UserBoard = () => {
         <Button onClick={handleUserDeletionButtonClick}>Delete</Button>
       </div>
       <UserInfoTable
-        userInfoList={userInfoList}
+        userInfoList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />
     </StyledUserBoard>

@@ -129,9 +129,18 @@ const ProductCreateModal = ({
   );
 };
 
-const ProductBoard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
+const ProductBoard = ({
+  folderId,
+  formik,
+}: {
+  folderId: string;
+  formik: FormikProps<ProductFormType>;
+}) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
+  const filteredProductList = productList.filter(
+    (p) => p.metadata.folderId === folderId
+  );
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
 
   const handleModalOpen = () => {
@@ -182,7 +191,7 @@ const ProductBoard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
         <Button onClick={handleModalOpen}>Add</Button>
       </div>
       <ProductTable
-        productList={productList}
+        productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
         formik={formik}
       />

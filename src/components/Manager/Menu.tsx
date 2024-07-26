@@ -49,9 +49,11 @@ const handleFolderList = (
 const NestedListItem = ({
   folderList,
   iconId,
+  onMenuChange,
 }: {
   folderList: Folder[];
   iconId: string;
+  onMenuChange: (folder: Folder) => void;
 }) => {
   const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(false);
 
@@ -71,7 +73,7 @@ const NestedListItem = ({
       <Collapse in={isNestedListOpen} timeout={"auto"} unmountOnExit>
         {folderList.map((folder) => (
           <ListItem key={folder.id}>
-            <ListItemButton>
+            <ListItemButton onClick={() => onMenuChange(folder)}>
               <ListItemText primary={folder.name} />
             </ListItemButton>
           </ListItem>
@@ -86,15 +88,29 @@ const NestedListItem = ({
   );
 };
 
-const Menu = ({ folderList }: { folderList: Folder[] }) => {
+const Menu = ({
+  folderList,
+  onMenuChange,
+}: {
+  folderList: Folder[];
+  onMenuChange: (folder: Folder) => void;
+}) => {
   const { userFolderList, productFolderList } = handleFolderList(folderList);
 
   return (
     <StyledDrawer variant="permanent" anchor="left">
       <Toolbar />
       <StyledList>
-        <NestedListItem folderList={userFolderList} iconId="person_dark" />
-        <NestedListItem folderList={productFolderList} iconId="list" />
+        <NestedListItem
+          folderList={userFolderList}
+          iconId="person_dark"
+          onMenuChange={onMenuChange}
+        />
+        <NestedListItem
+          folderList={productFolderList}
+          iconId="list"
+          onMenuChange={onMenuChange}
+        />
       </StyledList>
     </StyledDrawer>
   );
