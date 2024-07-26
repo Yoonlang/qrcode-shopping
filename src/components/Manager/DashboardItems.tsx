@@ -38,6 +38,16 @@ const StyledList = styled(List)`
   &.MuiList-root {
     width: 100%;
   }
+  li {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .MuiListItemIcon-root {
+    min-width: 30px;
+  }
+  .MuiTypography-root {
+    font-weight: bold;
+  }
 `;
 
 const StyledDiv = styled.div`
