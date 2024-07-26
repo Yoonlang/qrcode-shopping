@@ -1,23 +1,15 @@
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
 import { FormikProps } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
+import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";
-import { ProductFormType } from "@/components/Manager/const";
-import {
-  StyledAppBar,
-  StyledDrawer,
-  StyledList,
-} from "@/components/Manager/DashboardItems";
+import { StyledAppBar } from "@/components/Manager/DashboardItems";
+import Menu from "@/components/Manager/Menu";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
+import { ProductFormType } from "@/components/Manager/const";
+import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
   display: flex;
@@ -29,15 +21,27 @@ const StyledBoardContainer = styled.div`
 `;
 
 const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
-  const [menu, setMenu] = useState(0);
-  const drawerItems = ["user", "product"];
+  const [folderId, setFolderId] = useState("user-default");
+  const [folderList, setFolderList] = useState<Folder[] | null>(null);
 
-  const handleChangeMenu = (
-    e: React.MouseEvent<HTMLElement>,
-    index: number
-  ) => {
-    setMenu(index);
-  };
+  // folderId로 changeMenu 로직 변경 예정
+  // const handleChangeMenu = (
+  //   e: React.MouseEvent<HTMLElement>,
+  //   index: number
+  // ) => {
+  //   setMenu(index);
+  // };
+
+  useEffect(() => {
+    getFolderList(
+      (data) => {
+        setFolderList(data);
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+  }, []);
 
   return (
     <>
@@ -46,24 +50,14 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
         <div className="icon">{Icons["x"]}</div>
         <div>MAEIL</div>
       </StyledAppBar>
-      <StyledDrawer variant="permanent" anchor="left">
-        <Toolbar />
-        <StyledList>
-          <div>MENU</div>
-          {drawerItems.map((item, index) => (
-            <ListItem key={item}>
-              <ListItemButton onClick={(e) => handleChangeMenu(e, index)}>
-                <ListItemIcon>
-                  {index % 2 == 0 ? Icons["person_dark"] : Icons["list"]}
-                </ListItemIcon>
-                <ListItemText primary={item} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </StyledList>
-      </StyledDrawer>
+      {folderList && <Menu folderList={folderList} />}
       <StyledBoardContainer>
-        {menu === 0 ? <UserBoard /> : <ProductBoard formik={formik} />}
+        {folderId === "user-default" ? (
+          // folderId 값에 따라 board 데이터 변경 예정
+          <UserBoard />
+        ) : (
+          <ProductBoard formik={formik} />
+        )}
       </StyledBoardContainer>
     </>
   );
