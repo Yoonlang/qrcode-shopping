@@ -1,7 +1,9 @@
 import AddIcon from "@mui/icons-material/Add";
+import ConstructionIcon from "@mui/icons-material/Construction";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {
+  Button,
   Collapse,
   ListItem,
   ListItemButton,
@@ -71,6 +73,8 @@ const NestedListItem = ({
   const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(false);
   const [isCreationModalOpen, setIsCreationModalOpen] =
     useState<boolean>(false);
+  const [isFolderActionModalOpen, setIsFolderActionModalOpen] =
+    useState<boolean>(false);
 
   const handleNestedList = () => {
     setIsNestedListOpen((old) => !old);
@@ -86,10 +90,20 @@ const NestedListItem = ({
         </ListItemButton>
       </ListItem>
       <Collapse in={isNestedListOpen} timeout={"auto"} unmountOnExit>
-        {folderList.map((folder) => (
+        {folderList.map((folder, idx) => (
           <ListItem key={folder.id}>
             <ListItemButton onClick={() => onMenuChange(folder)}>
               <ListItemText primary={folder.name} />
+              {idx !== 0 && idx !== folderList.length - 1 && (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsFolderActionModalOpen(true);
+                  }}
+                >
+                  <ConstructionIcon />
+                </Button>
+              )}
             </ListItemButton>
           </ListItem>
         ))}
@@ -106,6 +120,18 @@ const NestedListItem = ({
       >
         <StyledModalContainer>
           {folderList[0].type} 폴더 생성
+          <Button>닫기</Button>
+        </StyledModalContainer>
+      </Modal>
+      <Modal
+        open={isFolderActionModalOpen}
+        onClose={() => setIsFolderActionModalOpen(false)}
+      >
+        <StyledModalContainer>
+          {folderList[0].type} 폴더 관리
+          <Button>수정</Button>
+          <Button>삭제</Button>
+          <Button>닫기</Button>
         </StyledModalContainer>
       </Modal>
     </>
