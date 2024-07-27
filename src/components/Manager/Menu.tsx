@@ -1,3 +1,4 @@
+import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {
@@ -6,13 +7,25 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Modal,
   Toolbar,
 } from "@mui/material";
 import { useState } from "react";
+import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import { StyledDrawer, StyledList } from "@/components/Manager/DashboardItems";
 import { Folder } from "@/const";
+
+const StyledModalContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background-color: var(--color-white);
+`;
 
 const handleFolderList = (
   folderList: Folder[]
@@ -56,6 +69,8 @@ const NestedListItem = ({
   onMenuChange: (folder: Folder) => void;
 }) => {
   const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(false);
+  const [isCreationModalOpen, setIsCreationModalOpen] =
+    useState<boolean>(false);
 
   const handleNestedList = () => {
     setIsNestedListOpen((old) => !old);
@@ -79,11 +94,20 @@ const NestedListItem = ({
           </ListItem>
         ))}
         <ListItem>
-          <ListItemButton>
-            <ListItemText primary={"폴더 추가하기"} />
+          <ListItemButton onClick={() => setIsCreationModalOpen(true)}>
+            <AddIcon />
+            <ListItemText primary={"폴더 생성"} />
           </ListItemButton>
         </ListItem>
       </Collapse>
+      <Modal
+        open={isCreationModalOpen}
+        onClose={() => setIsCreationModalOpen(false)}
+      >
+        <StyledModalContainer>
+          {folderList[0].type} 폴더 생성
+        </StyledModalContainer>
+      </Modal>
     </>
   );
 };
