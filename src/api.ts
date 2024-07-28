@@ -222,6 +222,20 @@ export const getFolderList: ApiGetFunction<Folder[]> = (onSuccess, onFail) => {
   return http.get(`/folders`, { credentials: "include" }, onSuccess, onFail);
 };
 
+export const postFolder: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
+  return http.post(
+    `/folders`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
 export const checkCookieAuth: ApiGetFunction<SucceedResponse> = (
   onSuccess,
   onFail
