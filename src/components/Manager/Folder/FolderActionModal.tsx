@@ -1,4 +1,4 @@
-import { Button, Modal, TextField } from "@mui/material";
+import { Button, DialogActions, Modal, TextField } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik, useFormik } from "formik";
 import { styled } from "styled-components";
@@ -101,7 +101,7 @@ const FolderActionModal = ({
                 error={touched.name && errors.name}
                 helperText={touched.name && errors.name}
               />
-              <div className="buttonContainer">
+              <DialogActions>
                 <Button
                   type="submit"
                   disabled={isSubmitting || deletionFormik.isSubmitting}
@@ -132,7 +132,7 @@ const FolderActionModal = ({
                   삭제
                 </Button>
                 <Button onClick={onClose}>닫기</Button>
-              </div>
+              </DialogActions>
             </Form>
           )}
         </Formik>
