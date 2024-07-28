@@ -1,3 +1,5 @@
+import { Folder } from "@/const";
+
 export interface ProductFormType {
   productId: string;
   image: File | null;
@@ -20,7 +22,7 @@ export const initialValues = {
   method: "POST",
 };
 
-export const initialFolderList = [
+export const initialFolderList: Folder[] = [
   {
     name: "전체",
     type: "user",

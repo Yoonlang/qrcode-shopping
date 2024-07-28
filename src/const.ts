@@ -74,7 +74,7 @@ export interface OrdererInfo {
 
 export interface Folder {
   name: string;
-  type: string;
+  type: "user" | "product";
   id: string;
   creationTime: string;
 }
