@@ -257,10 +257,26 @@ export const postFolder: ApiModifyFunction<SucceedResponse> = (
 export const patchFolder: ApiModifyFunction<SucceedResponse> = (
   body,
   onSuccess,
-  onFail
+  onFail,
+  targetId
 ) => {
   return http.patch(
-    `/folders`,
+    `/folders/${targetId}`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
+export const deleteFolder: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail,
+  targetId
+) => {
+  return http.delete(
+    `/folders/${targetId}`,
     { credentials: "include" },
     body,
     onSuccess,
