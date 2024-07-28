@@ -89,6 +89,24 @@ const http = {
       .then((res) => handleResponse<T>(res))
       .then(onSuccess)
       .catch(onFail),
+  patch: <T>(
+    path: string,
+    options = {},
+    body: BodyInit | null | undefined,
+    onSuccess: SuccessCallback<T>,
+    onFail: FailCallback
+  ) =>
+    fetch(`${SERVER_URL}${API_VERSION}${path}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      ...options,
+      body,
+    })
+      .then((res) => handleResponse<T>(res))
+      .then(onSuccess)
+      .catch(onFail),
   delete: <T>(
     path: string,
     options = {},
@@ -228,6 +246,20 @@ export const postFolder: ApiModifyFunction<SucceedResponse> = (
   onFail
 ) => {
   return http.post(
+    `/folders`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
+export const patchFolder: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
+  return http.patch(
     `/folders`,
     { credentials: "include" },
     body,
