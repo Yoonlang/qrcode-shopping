@@ -9,25 +9,16 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Modal,
   Toolbar,
 } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useState } from "react";
-import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import { StyledDrawer, StyledList } from "@/components/Manager/DashboardItems";
+import FolderActionModal from "@/components/Manager/Folder/FolderActionModal";
+import FolderCreationModal from "@/components/Manager/Folder/FolderCreationModal";
 import { Folder } from "@/const";
-
-const StyledModalContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  background-color: var(--color-white);
-`;
 
 const handleFolderList = (
   folderList: Folder[]
@@ -70,11 +61,8 @@ const NestedListItem = ({
   iconId: string;
   onMenuChange: (folder: Folder) => void;
 }) => {
+  const overlay = useOverlay();
   const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(false);
-  const [isCreationModalOpen, setIsCreationModalOpen] =
-    useState<boolean>(false);
-  const [isFolderActionModalOpen, setIsFolderActionModalOpen] =
-    useState<boolean>(false);
 
   const handleNestedList = () => {
     setIsNestedListOpen((old) => !old);
@@ -98,7 +86,13 @@ const NestedListItem = ({
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setIsFolderActionModalOpen(true);
+                    overlay.open(({ isOpen, close }) => (
+                      <FolderActionModal
+                        isModalOpen={isOpen}
+                        onClose={close}
+                        type={folderList[0].type}
+                      />
+                    ));
                   }}
                 >
                   <ConstructionIcon />
@@ -108,32 +102,22 @@ const NestedListItem = ({
           </ListItem>
         ))}
         <ListItem>
-          <ListItemButton onClick={() => setIsCreationModalOpen(true)}>
+          <ListItemButton
+            onClick={() => {
+              overlay.open(({ isOpen, close }) => (
+                <FolderCreationModal
+                  isModalOpen={isOpen}
+                  onClose={close}
+                  type={folderList[0].type}
+                />
+              ));
+            }}
+          >
             <AddIcon />
             <ListItemText primary={"폴더 생성"} />
           </ListItemButton>
         </ListItem>
       </Collapse>
-      <Modal
-        open={isCreationModalOpen}
-        onClose={() => setIsCreationModalOpen(false)}
-      >
-        <StyledModalContainer>
-          {folderList[0].type} 폴더 생성
-          <Button>닫기</Button>
-        </StyledModalContainer>
-      </Modal>
-      <Modal
-        open={isFolderActionModalOpen}
-        onClose={() => setIsFolderActionModalOpen(false)}
-      >
-        <StyledModalContainer>
-          {folderList[0].type} 폴더 관리
-          <Button>수정</Button>
-          <Button>삭제</Button>
-          <Button>닫기</Button>
-        </StyledModalContainer>
-      </Modal>
     </>
   );
 };
