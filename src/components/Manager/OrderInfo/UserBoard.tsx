@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
 import { deleteOrdererList, getOrdererInfoList } from "@/api";
+import { USER_TRASH_CAN } from "@/components/Manager/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
 import { Folder, OrdererInfo } from "@/const";
 
@@ -59,7 +60,13 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
     <StyledUserBoard>
       <div className="header">
         <h3>user / {folder.name}</h3>
-        <Button onClick={handleUserDeletionButtonClick}>Delete</Button>
+        {folder.id === USER_TRASH_CAN ? (
+          <Button onClick={handleUserDeletionButtonClick}>
+            데이터 영구 삭제
+          </Button>
+        ) : (
+          <Button onClick={handleUserDeletionButtonClick}>데이터 삭제</Button>
+        )}
       </div>
       <UserInfoTable
         userInfoList={filteredUserList}

@@ -15,6 +15,12 @@ import { useState } from "react";
 import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
+import {
+  PRODUCT_DEFAULT,
+  PRODUCT_TRASH_CAN,
+  USER_DEFAULT,
+  USER_TRASH_CAN,
+} from "@/components/Manager/const";
 import { StyledDrawer, StyledList } from "@/components/Manager/DashboardItems";
 import FolderActionModal from "@/components/Manager/Folder/FolderActionModal";
 import FolderCreationModal from "@/components/Manager/Folder/FolderCreationModal";
@@ -39,22 +45,22 @@ const handleFolderList = (
   const userFolderList = folderList
     .filter((folder) => folder.type === "user")
     .sort((a, b) => {
-      if (a.id === "user-default") return -1;
-      if (b.id === "user-default") return 1;
+      if (a.id === USER_DEFAULT) return -1;
+      if (b.id === USER_DEFAULT) return 1;
 
-      if (a.id === "user-trash-can") return 1;
-      if (b.id === "user-trash-can") return -1;
+      if (a.id === USER_TRASH_CAN) return 1;
+      if (b.id === USER_TRASH_CAN) return -1;
 
       return a.creationTime.localeCompare(b.creationTime);
     });
   const productFolderList = folderList
     .filter((folder) => folder.type === "product")
     .sort((a, b) => {
-      if (a.id === "product-default") return -1;
-      if (b.id === "product-default") return 1;
+      if (a.id === PRODUCT_DEFAULT) return -1;
+      if (b.id === PRODUCT_DEFAULT) return 1;
 
-      if (a.id === "product-trash-can") return 1;
-      if (b.id === "product-trash-can") return -1;
+      if (a.id === PRODUCT_TRASH_CAN) return 1;
+      if (b.id === PRODUCT_TRASH_CAN) return -1;
 
       return a.creationTime.localeCompare(b.creationTime);
     });

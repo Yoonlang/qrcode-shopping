@@ -1,3 +1,4 @@
+import { PRODUCT_DEFAULT } from "@/components/Manager/const";
 import { Product } from "@/const";
 
 export const mockProductList: Product[] = [
@@ -12,7 +13,7 @@ export const mockProductList: Product[] = [
     metadata: {
       documentId: "JQ 12370SIQ",
       productId: "JQ 12370SIQ",
-      folderId: "product-default",
+      folderId: PRODUCT_DEFAULT,
     },
   },
   {
@@ -26,7 +27,7 @@ export const mockProductList: Product[] = [
     metadata: {
       documentId: "JQ 11370SIE",
       productId: "JQ 11370SIE",
-      folderId: "product-default",
+      folderId: PRODUCT_DEFAULT,
     },
   },
 ];
