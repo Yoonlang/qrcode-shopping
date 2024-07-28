@@ -10,9 +10,20 @@ const StyledModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 0 10px;
   width: 400px;
-  height: 400px;
   background-color: var(--color-white);
+`;
+
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .buttonContainer {
+    display: flex;
+    width: 100%;
+    justify-content: end;
+  }
 `;
 
 const creationValidationSchema = Yup.object({
@@ -24,7 +35,7 @@ const FolderCreationModal = ({ isModalOpen, onClose, type }) => {
   return (
     <Modal open={isModalOpen} onClose={onClose}>
       <StyledModalContainer>
-        {type} 폴더 생성
+        <h3>{type} 폴더 생성</h3>
         <Formik
           initialValues={{
             name: "",
@@ -45,7 +56,7 @@ const FolderCreationModal = ({ isModalOpen, onClose, type }) => {
           }}
         >
           {({ isSubmitting, errors, touched }) => (
-            <Form>
+            <StyledForm>
               <Field
                 as={TextField}
                 name="name"
@@ -54,11 +65,13 @@ const FolderCreationModal = ({ isModalOpen, onClose, type }) => {
                 error={touched.name && errors.name}
                 helperText={touched.name && errors.name}
               />
-              <Button type="submit" disabled={isSubmitting}>
-                생성
-              </Button>
-              <Button onClick={onClose}>닫기</Button>
-            </Form>
+              <div className="buttonContainer">
+                <Button type="submit" disabled={isSubmitting}>
+                  생성
+                </Button>
+                <Button onClick={onClose}>닫기</Button>
+              </div>
+            </StyledForm>
           )}
         </Formik>
       </StyledModalContainer>
