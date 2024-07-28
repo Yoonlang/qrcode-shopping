@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 
 import { deleteOrdererList, getOrdererInfoList } from "@/api";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
-import { OrdererInfo } from "@/const";
+import { Folder, OrdererInfo } from "@/const";
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -14,16 +14,17 @@ const StyledUserBoard = styled.div`
   > .header {
     width: 100%;
     height: 60px;
+    padding: 0 10px;
     display: flex;
     align-items: end;
-    justify-content: end;
+    justify-content: space-between;
   }
 `;
 
-const UserBoard = ({ folderId }: { folderId: string }) => {
+const UserBoard = ({ folder }: { folder: Folder }) => {
   const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
   const filteredUserList = userInfoList.filter(
-    (u) => u.metadata.folderId === folderId
+    (u) => u.metadata.folderId === folder.id
   );
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
 
@@ -57,6 +58,7 @@ const UserBoard = ({ folderId }: { folderId: string }) => {
   return (
     <StyledUserBoard>
       <div className="header">
+        <h3>user / {folder.name}</h3>
         <Button onClick={handleUserDeletionButtonClick}>Delete</Button>
       </div>
       <UserInfoTable

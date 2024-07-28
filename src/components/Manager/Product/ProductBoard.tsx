@@ -13,7 +13,7 @@ import {
   StyledModal,
 } from "@/components/Manager/DashboardItems";
 import ProductTable from "@/components/Manager/Product/ProductTable";
-import { Product } from "@/const";
+import { Folder, Product } from "@/const";
 
 const fileTypes = ["JPG", "PNG"];
 
@@ -25,9 +25,10 @@ const StyledProductBoard = styled.div`
   > .header {
     width: 100%;
     height: 60px;
+    padding: 0 10px;
     display: flex;
     align-items: end;
-    justify-content: end;
+    justify-content: space-between;
   }
 `;
 
@@ -130,16 +131,16 @@ const ProductCreateModal = ({
 };
 
 const ProductBoard = ({
-  folderId,
+  folder,
   formik,
 }: {
-  folderId: string;
+  folder: Folder;
   formik: FormikProps<ProductFormType>;
 }) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
   const filteredProductList = productList.filter(
-    (p) => p.metadata.folderId === folderId
+    (p) => p.metadata.folderId === folder.id
   );
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
 
@@ -187,8 +188,11 @@ const ProductBoard = ({
   return (
     <StyledProductBoard>
       <div className="header">
-        <Button onClick={handleProductDeletionButtonClick}>Delete</Button>
-        <Button onClick={handleModalOpen}>Add</Button>
+        <h3>product / {folder.name}</h3>
+        <div>
+          <Button onClick={handleProductDeletionButtonClick}>Delete</Button>
+          <Button onClick={handleModalOpen}>Add</Button>
+        </div>
       </div>
       <ProductTable
         productList={filteredProductList}
