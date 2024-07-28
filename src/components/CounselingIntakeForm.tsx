@@ -307,7 +307,7 @@ const CounselingIntakeForm = ({
               <Text style={[styles.cell, styles.width35]}>{pid}</Text>
               <Text style={[styles.cell, styles.lastCell, styles.width50]}>
                 {Object.keys(selectedInfoList[pid]).map(
-                  (option) => `${option}: ${selectedInfoList[pid][option]}\n`
+                  (option) => `${t(option)}: ${selectedInfoList[pid][option]}\n`
                 )}
               </Text>
             </View>
