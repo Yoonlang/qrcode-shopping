@@ -236,7 +236,7 @@ const CounselingIntakeForm = ({
               ))}
             </View>
             <View style={styles.table50}>
-              {clientData.map((data, idx) => (
+              {clientData.map((data) => (
                 <View key={`client-${data.title}`} style={[styles.row]}>
                   <Text
                     style={[
