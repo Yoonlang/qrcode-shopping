@@ -139,7 +139,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
         <StyledErrorMessage>
           {Icons["error"]}
           <p>
-            {errors.countryCode.code && t(errors.countryCode?.code?.toString())}
+            {errors.countryCode.code && t(errors.countryCode.code.toString())}
           </p>
         </StyledErrorMessage>
       )}
