@@ -52,13 +52,22 @@ const handleFolderList = (
   };
 };
 
+const shortenWithEllipsis = (str: string, limit: number): string => {
+  if (str.length <= limit) {
+    return str;
+  }
+  return str.slice(0, limit) + "...";
+};
+
 const NestedListItem = ({
   folderList,
   iconId,
+  updateFolderList,
   onMenuChange,
 }: {
   folderList: Folder[];
   iconId: string;
+  updateFolderList: () => void;
   onMenuChange: (folder: Folder) => void;
 }) => {
   const overlay = useOverlay();
@@ -81,7 +90,7 @@ const NestedListItem = ({
         {folderList.map((folder, idx) => (
           <ListItem key={folder.id}>
             <ListItemButton onClick={() => onMenuChange(folder)}>
-              <ListItemText primary={folder.name} />
+              <ListItemText primary={shortenWithEllipsis(folder.name, 8)} />
               {idx !== 0 && idx !== folderList.length - 1 && (
                 <Button
                   onClick={(e) => {
@@ -90,7 +99,8 @@ const NestedListItem = ({
                       <FolderActionModal
                         isModalOpen={isOpen}
                         onClose={close}
-                        type={folderList[0].type}
+                        folder={folder}
+                        updateFolderList={updateFolderList}
                       />
                     ));
                   }}
@@ -109,6 +119,7 @@ const NestedListItem = ({
                   isModalOpen={isOpen}
                   onClose={close}
                   type={folderList[0].type}
+                  updateFolderList={updateFolderList}
                 />
               ));
             }}
@@ -124,9 +135,11 @@ const NestedListItem = ({
 
 const Menu = ({
   folderList,
+  updateFolderList,
   onMenuChange,
 }: {
   folderList: Folder[];
+  updateFolderList: () => void;
   onMenuChange: (folder: Folder) => void;
 }) => {
   const { userFolderList, productFolderList } = handleFolderList(folderList);
@@ -138,11 +151,13 @@ const Menu = ({
         <NestedListItem
           folderList={userFolderList}
           iconId="person_dark"
+          updateFolderList={updateFolderList}
           onMenuChange={onMenuChange}
         />
         <NestedListItem
           folderList={productFolderList}
           iconId="list"
+          updateFolderList={updateFolderList}
           onMenuChange={onMenuChange}
         />
       </StyledList>

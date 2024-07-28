@@ -1,9 +1,11 @@
 import { Button, Modal, TextField } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import { styled } from "styled-components";
 import * as Yup from "yup";
 
 import { postFolder } from "@/api";
+import MessageDialog from "@/components/MessageDialog";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -31,7 +33,19 @@ const creationValidationSchema = Yup.object({
   type: Yup.string().oneOf(["user", "product"]).required(),
 });
 
-const FolderCreationModal = ({ isModalOpen, onClose, type }) => {
+const FolderCreationModal = ({
+  isModalOpen,
+  onClose,
+  type,
+  updateFolderList,
+}: {
+  isModalOpen: boolean;
+  onClose: () => void;
+  type: "user" | "product";
+  updateFolderList: () => void;
+}) => {
+  const overlay = useOverlay();
+
   return (
     <Modal open={isModalOpen} onClose={onClose}>
       <StyledModalContainer>
@@ -47,10 +61,18 @@ const FolderCreationModal = ({ isModalOpen, onClose, type }) => {
               JSON.stringify(values),
               () => {
                 setSubmitting(false);
+                updateFolderList();
                 onClose();
               },
-              (e) => {
-                console.log(e);
+              () => {
+                setSubmitting(false);
+                overlay.open(({ isOpen, close }) => (
+                  <MessageDialog
+                    isDialogOpen={isOpen}
+                    onDialogClose={close}
+                    messageList={["폴더 생성 실패"]}
+                  />
+                ));
               }
             );
           }}
