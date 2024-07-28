@@ -3,7 +3,6 @@ import ConstructionIcon from "@mui/icons-material/Construction";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {
-  Button,
   Collapse,
   ListItem,
   ListItemButton,
@@ -26,6 +25,10 @@ const StyledListItemText = styled(ListItemText)<{
 }>`
   color: ${(props) =>
     props.selected ? "var(--color-blue)" : "var(--color-black)"};
+`;
+
+const StyledCollapse = styled(Collapse)`
+  padding-left: 20px;
 `;
 
 const handleFolderList = (
@@ -117,7 +120,7 @@ const NestedListItem = ({
           )}
         </ListItemButton>
       </ListItem>
-      <Collapse in={isNestedListOpen} timeout={"auto"} unmountOnExit>
+      <StyledCollapse in={isNestedListOpen} timeout={"auto"} unmountOnExit>
         {folderList.slice(1).map((folder, idx) => (
           <ListItem key={folder.id}>
             <ListItemButton onClick={() => onMenuChange(folder)}>
@@ -126,7 +129,7 @@ const NestedListItem = ({
                 primary={shortenWithEllipsis(folder.name, 8)}
               />
               {idx !== folderList.length - 2 && (
-                <Button
+                <ConstructionIcon
                   onClick={(e) => {
                     e.stopPropagation();
                     overlay.open(({ isOpen, close }) => (
@@ -138,9 +141,7 @@ const NestedListItem = ({
                       />
                     ));
                   }}
-                >
-                  <ConstructionIcon />
-                </Button>
+                />
               )}
             </ListItemButton>
           </ListItem>
@@ -162,7 +163,7 @@ const NestedListItem = ({
             <ListItemText primary={"폴더 생성"} />
           </ListItemButton>
         </ListItem>
-      </Collapse>
+      </StyledCollapse>
     </>
   );
 };
