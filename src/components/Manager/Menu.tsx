@@ -86,7 +86,7 @@ const NestedListItem = ({
   onMenuChange: (folder: Folder) => void;
 }) => {
   const overlay = useOverlay();
-  const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(false);
+  const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(true);
 
   const handleNestedList = () => {
     setIsNestedListOpen((old) => !old);
