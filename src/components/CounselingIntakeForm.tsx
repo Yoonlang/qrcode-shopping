@@ -8,6 +8,7 @@ import {
   View,
 } from "@react-pdf/renderer";
 import { franc } from "franc";
+import { useTranslation } from "react-i18next";
 
 import { FormType } from "@/components/const";
 import dayjs from "@/dayjsConfig";
@@ -16,13 +17,23 @@ import { SelectedInfoList } from "@/recoil/atoms/selectedInfoListState";
 
 const detectLanugage = (text: string) => {
   const langCode = franc(text, { minLength: 0 });
-  switch (langCode) {
-    case "cmn":
-      return "zh";
-    case "kor":
-      return "ko";
-    default:
-      return "en";
+
+  if (langCode === "cmn") {
+    return "zh";
+  } else if (langCode === "kor") {
+    return "ko";
+  } else if (langCode === "eng") {
+    return "en";
+  } else {
+    for (const c of text.split("")) {
+      const convertedCharCode = franc(c, { minLength: 0 });
+      if (convertedCharCode === "cmn") {
+        return "zh";
+      } else if (convertedCharCode === "kor") {
+        return "ko";
+      }
+    }
+    return "en";
   }
 };
 
@@ -105,31 +116,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const clientData = [
-  { title: "In charge", value: ["JAY KIM"], width: "50" },
-  { title: "Contact information", value: [], width: "100" },
-  {
-    title: "Email",
-    value: ["JAY@YOUNGWONINT.COM\nYW0011S@NATE.COM"],
-    width: "50",
-  },
-  {
-    title: "Address",
-    value: ["SUITE304, 1130 DALGUBEOL-DAERO, DAEGU, SOUTH KOREA 42709"],
-    width: "50",
-  },
-  {
-    title: "Tel#",
-    value: ["+82 53 571 7676\n+82 10 3916 1371"],
-    width: "50",
-  },
-  {
-    title: "Wechat ID",
-    value: ["jayywmaeil"],
-    width: "50",
-  },
-];
-
 const CounselingIntakeForm = ({
   formikValues,
   selectedInfoList,
@@ -139,44 +125,68 @@ const CounselingIntakeForm = ({
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
 }) => {
+  const { t, i18n } = useTranslation();
+  const clientData = [
+    { title: t("In charge"), value: ["JAY KIM"], width: "50" },
+    { title: t("Contact information"), value: [], width: "100" },
+    {
+      title: t("Email"),
+      value: ["JAY@YOUNGWONINT.COM\nYW0011S@NATE.COM"],
+      width: "50",
+    },
+    {
+      title: t("Address"),
+      value: ["SUITE304, 1130 DALGUBEOL-DAERO, DAEGU, SOUTH KOREA 42709"],
+      width: "50",
+    },
+    {
+      title: t("Tel#"),
+      value: ["+82 53 571 7676\n+82 10 3916 1371"],
+      width: "50",
+    },
+    {
+      title: "Wechat ID",
+      value: ["jayywmaeil"],
+      width: "50",
+    },
+  ];
+
   const customerData = [
     {
-      title: "Date",
+      title: t("Date"),
       value: [dayjs().format("YYYY-MM-DD")],
       width: "50",
     },
-    { title: "Company", value: [formikValues.companyName], width: "50" },
+    { title: t("Company"), value: [formikValues.companyName], width: "50" },
     {
-      title: "Customer",
+      title: t("Customer"),
       value: [formikValues.name],
       width: "50",
     },
     {
-      title: "Country",
+      title: t("Country"),
       value: [formikValues.countryCode.label],
       width: "50",
     },
     {
-      title: "Email ",
+      title: t("Email"),
       value: [formikValues.email],
       width: "50",
     },
     {
-      title: "Tel#",
+      title: t("Tel#"),
       value: [`+${formikValues.countryCode.phone} ${formikValues.phoneNumber}`],
       width: "50",
     },
     {
-      title: "Wechat ID (optional)",
+      title: `Wechat ID (${t("optional")})`,
       value: [formikValues.weChatId],
       width: "50",
     },
   ];
 
-  console.log(imageUrlList);
-
   return (
-    <Document>
+    <Document style={styles[i18n.language]}>
       <Page>
         <View style={styles.table}>
           <View
@@ -188,7 +198,7 @@ const CounselingIntakeForm = ({
               styles.lastCell,
             ]}
           >
-            <Text>CounSeling Intake Form</Text>
+            <Text>{t("Counseling Intake Form")}</Text>
             <Text>YOUNGWON</Text>
           </View>
           <View style={styles.tableBox}>
@@ -263,13 +273,15 @@ const CounselingIntakeForm = ({
               styles.lastCell,
             ]}
           >
-            <Text>SELECTED ARTICLE LIST</Text>
+            <Text>{t("SELECTED ARTICLE LIST")}</Text>
           </View>
           <View style={[styles.row, styles.width100, styles.bold]}>
-            <Text style={[styles.cell, styles.width15]}>ARTICLE PHOTO</Text>
-            <Text style={[styles.cell, styles.width35]}>ARTICLE NO</Text>
+            <Text style={[styles.cell, styles.width15]}>
+              {t("ARTICLE PHOTO")}
+            </Text>
+            <Text style={[styles.cell, styles.width35]}>{t("ARTICLE NO")}</Text>
             <Text style={[styles.cell, styles.lastCell, styles.width50]}>
-              OPTION
+              {t("OPTIONS")}
             </Text>
           </View>
           {Object.keys(selectedInfoList).map((pid, idx) => (

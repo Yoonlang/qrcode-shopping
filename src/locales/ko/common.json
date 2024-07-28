@@ -50,5 +50,18 @@
   "Scan New QR": "새로운 QR 스캔하기",
   "Result": "결과",
   "Go to Main Page": "메인 페이지로 이동",
-  "Download Order History PDF": "주문 내역 PDF 다운로드"
+  "Download Order History PDF": "주문 내역 PDF 다운로드",
+  "Date": "날짜",
+  "Company": "회사",
+  "Country": "국가",
+  "Tel#": "전화번호",
+  "optional": "옵션",
+  "Customer": "고객",
+  "In charge": "책임자",
+  "Contact information": "연락처",
+  "SELECTED ARTICLE LIST": "선택한 제품 목록",
+  "ARTICLE PHOTO": "제품 사진",
+  "ARTICLE NO": "제품 번호",
+  "OPTIONS": "옵션",
+  "Counseling Intake Form": "주문 내역 확인서"
 }
