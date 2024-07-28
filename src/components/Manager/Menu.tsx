@@ -20,9 +20,11 @@ import FolderActionModal from "@/components/Manager/Folder/FolderActionModal";
 import FolderCreationModal from "@/components/Manager/Folder/FolderCreationModal";
 import { Folder } from "@/const";
 
-const StyledListItemText = styled(ListItemText)<{
+interface StyledListItemTextProp {
   selected: boolean;
-}>`
+}
+
+const StyledListItemText = styled(ListItemText)<StyledListItemTextProp>`
   color: ${(props) =>
     props.selected ? "var(--color-blue)" : "var(--color-black)"};
 `;
