@@ -242,6 +242,11 @@ const BottomAppBar = () => {
         setSelectedInfoList({});
         resetForm({ values: initialValues });
         goToNextPage();
+      } else {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["invalid"]),
+          isMessageSnackBarOpen: true,
+        });
       }
     } else if (isPageName("complete")) {
       goToNextPage();
