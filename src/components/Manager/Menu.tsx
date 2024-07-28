@@ -45,7 +45,7 @@ const handleFolderList = (
       if (a.id === "user-trash-can") return 1;
       if (b.id === "user-trash-can") return -1;
 
-      return b.creationTime.localeCompare(a.creationTime);
+      return a.creationTime.localeCompare(b.creationTime);
     });
   const productFolderList = folderList
     .filter((folder) => folder.type === "product")
@@ -56,7 +56,7 @@ const handleFolderList = (
       if (a.id === "product-trash-can") return 1;
       if (b.id === "product-trash-can") return -1;
 
-      return b.creationTime.localeCompare(a.creationTime);
+      return a.creationTime.localeCompare(b.creationTime);
     });
 
   return {
