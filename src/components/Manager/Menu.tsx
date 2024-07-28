@@ -13,12 +13,20 @@ import {
 } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { useState } from "react";
+import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import { StyledDrawer, StyledList } from "@/components/Manager/DashboardItems";
 import FolderActionModal from "@/components/Manager/Folder/FolderActionModal";
 import FolderCreationModal from "@/components/Manager/Folder/FolderCreationModal";
 import { Folder } from "@/const";
+
+const StyledListItemText = styled(ListItemText)<{
+  selected: boolean;
+}>`
+  color: ${(props) =>
+    props.selected ? "var(--color-blue)" : "var(--color-black)"};
+`;
 
 const handleFolderList = (
   folderList: Folder[]
@@ -60,11 +68,13 @@ const shortenWithEllipsis = (str: string, limit: number): string => {
 };
 
 const NestedListItem = ({
+  selectedFolder,
   folderList,
   iconId,
   updateFolderList,
   onMenuChange,
 }: {
+  selectedFolder: Folder;
   folderList: Folder[];
   iconId: string;
   updateFolderList: () => void;
@@ -80,18 +90,42 @@ const NestedListItem = ({
   return (
     <>
       <ListItem key={folderList[0].id}>
-        <ListItemButton onClick={handleNestedList}>
+        <ListItemButton
+          onClick={() => {
+            onMenuChange(folderList[0]);
+          }}
+        >
           <ListItemIcon>{Icons[`${iconId}`]}</ListItemIcon>
-          <ListItemText primary={folderList[0].type} />
-          {isNestedListOpen ? <ExpandLess /> : <ExpandMore />}
+          <StyledListItemText
+            selected={selectedFolder.id === folderList[0].id}
+            primary={folderList[0].type}
+          />
+          {isNestedListOpen ? (
+            <ExpandLess
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNestedList();
+              }}
+            />
+          ) : (
+            <ExpandMore
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNestedList();
+              }}
+            />
+          )}
         </ListItemButton>
       </ListItem>
       <Collapse in={isNestedListOpen} timeout={"auto"} unmountOnExit>
-        {folderList.map((folder, idx) => (
+        {folderList.slice(1).map((folder, idx) => (
           <ListItem key={folder.id}>
             <ListItemButton onClick={() => onMenuChange(folder)}>
-              <ListItemText primary={shortenWithEllipsis(folder.name, 8)} />
-              {idx !== 0 && idx !== folderList.length - 1 && (
+              <StyledListItemText
+                selected={selectedFolder.id === folder.id}
+                primary={shortenWithEllipsis(folder.name, 8)}
+              />
+              {idx !== folderList.length - 2 && (
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -134,10 +168,12 @@ const NestedListItem = ({
 };
 
 const Menu = ({
+  selectedFolder,
   folderList,
   updateFolderList,
   onMenuChange,
 }: {
+  selectedFolder: Folder;
   folderList: Folder[];
   updateFolderList: () => void;
   onMenuChange: (folder: Folder) => void;
@@ -149,12 +185,14 @@ const Menu = ({
       <Toolbar />
       <StyledList>
         <NestedListItem
+          selectedFolder={selectedFolder}
           folderList={userFolderList}
           iconId="person_dark"
           updateFolderList={updateFolderList}
           onMenuChange={onMenuChange}
         />
         <NestedListItem
+          selectedFolder={selectedFolder}
           folderList={productFolderList}
           iconId="list"
           updateFolderList={updateFolderList}

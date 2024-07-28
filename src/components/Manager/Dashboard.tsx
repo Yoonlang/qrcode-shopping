@@ -49,6 +49,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
         <div>MAEIL</div>
       </StyledAppBar>
       <Menu
+        selectedFolder={selectedFolder}
         folderList={folderList}
         updateFolderList={updateFolderList}
         onMenuChange={(folder) => setSelectedFolder(folder)}
