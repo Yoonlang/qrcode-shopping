@@ -39,7 +39,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
 
   useEffect(() => {
     updateFolderList();
-  }, [updateFolderList]);
+  }, []);
 
   useEffect(() => {
     setSelectedFolder(
