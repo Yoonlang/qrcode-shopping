@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
 
-import { deleteProductList, getProductList } from "@/api";
-import { ProductFormType } from "@/components/Manager/const";
+import { getProductList, moveToTrash, permanentDeleteProductList } from "@/api";
+import { PRODUCT_TRASH_CAN, ProductFormType } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -164,8 +164,22 @@ const ProductBoard = ({
     );
   };
 
-  const handleProductDeletionButtonClick = () => {
-    deleteProductList(
+  const handleProductSoftDelete = () => {
+    moveToTrash(
+      filteredProductList.filter((f) =>
+        selectedProductList.find((productId) => f.productId === productId)
+      ),
+      () => {
+        updateProductList();
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+  };
+
+  const handleProductPermanentDelete = () => {
+    permanentDeleteProductList(
       selectedProductList,
       () => {
         updateProductList();
@@ -191,8 +205,16 @@ const ProductBoard = ({
       <div className="header">
         <h3>product / {folder.name}</h3>
         <div>
-          <Button onClick={handleProductDeletionButtonClick}>Delete</Button>
-          <Button onClick={handleModalOpen}>Add</Button>
+          {folder.id === PRODUCT_TRASH_CAN ? (
+            <Button onClick={handleProductPermanentDelete}>
+              데이터 영구 삭제
+            </Button>
+          ) : (
+            <>
+              <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
+              <Button onClick={handleModalOpen}>데이터 추가</Button>
+            </>
+          )}
         </div>
       </div>
       <ProductTable

@@ -2,7 +2,11 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
-import { deleteOrdererList, getOrdererInfoList } from "@/api";
+import {
+  getOrdererInfoList,
+  moveToTrash,
+  permanentDeleteOrdererList,
+} from "@/api";
 import { USER_TRASH_CAN } from "@/components/Manager/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
 import { Folder, OrdererInfo } from "@/const";
@@ -41,8 +45,22 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
     );
   };
 
-  const handleUserDeletionButtonClick = () => {
-    deleteOrdererList(
+  const handleUserSoftDelete = () => {
+    moveToTrash(
+      filteredUserList.filter((f) =>
+        selectedUserList.find((userId) => f.userId === userId)
+      ),
+      () => {
+        updateOrdererInfoList();
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+  };
+
+  const handleUserPermanentDelete = () => {
+    permanentDeleteOrdererList(
       selectedUserList,
       () => {
         updateOrdererInfoList();
@@ -62,11 +80,9 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
       <div className="header">
         <h3>user / {folder.name}</h3>
         {folder.id === USER_TRASH_CAN ? (
-          <Button onClick={handleUserDeletionButtonClick}>
-            데이터 영구 삭제
-          </Button>
+          <Button onClick={handleUserPermanentDelete}>데이터 영구 삭제</Button>
         ) : (
-          <Button onClick={handleUserDeletionButtonClick}>데이터 삭제</Button>
+          <Button onClick={handleUserSoftDelete}>데이터 삭제</Button>
         )}
       </div>
       <UserInfoTable
