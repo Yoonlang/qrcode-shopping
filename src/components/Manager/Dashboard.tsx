@@ -26,7 +26,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
   );
   const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
 
-  useEffect(() => {
+  const updateFolderList = () => {
     getFolderList(
       (data) => {
         setFolderList(data);
@@ -35,7 +35,17 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
         console.log(e);
       }
     );
+  };
+
+  useEffect(() => {
+    updateFolderList();
   }, []);
+
+  useEffect(() => {
+    setSelectedFolder(
+      (old) => folderList.find((f) => f.id === old.id) ?? initialFolderList[0]
+    );
+  }, [folderList, setSelectedFolder]);
 
   return (
     <>
@@ -45,14 +55,16 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
         <div>MAEIL</div>
       </StyledAppBar>
       <Menu
+        selectedFolder={selectedFolder}
         folderList={folderList}
+        updateFolderList={updateFolderList}
         onMenuChange={(folder) => setSelectedFolder(folder)}
       />
       <StyledBoardContainer>
         {selectedFolder.type === "user" ? (
-          <UserBoard folderId={selectedFolder.id} />
+          <UserBoard folder={selectedFolder} />
         ) : (
-          <ProductBoard folderId={selectedFolder.id} formik={formik} />
+          <ProductBoard folder={selectedFolder} formik={formik} />
         )}
       </StyledBoardContainer>
     </>

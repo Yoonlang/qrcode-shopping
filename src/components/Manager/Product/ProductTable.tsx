@@ -359,7 +359,7 @@ const ProductTable = ({
 
   return (
     <>
-      <div style={{ height: 550, width: "100%" }}>
+      <div style={{ height: "calc(100% - 60px)", width: "100%" }}>
         <DataGrid
           rows={tableRows}
           columns={columns}
