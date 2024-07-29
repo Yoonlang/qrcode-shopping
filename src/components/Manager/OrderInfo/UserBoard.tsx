@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
@@ -9,6 +10,7 @@ import {
 } from "@/api";
 import { USER_TRASH_CAN } from "@/components/Manager/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
+import MessageDialog from "@/components/MessageDialog";
 import { Folder, OrdererInfo } from "@/const";
 
 const StyledUserBoard = styled.div`
@@ -33,14 +35,21 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
     (u) => u.metadata.folderId === folder.id
   );
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
+  const overlay = useOverlay();
 
   const updateOrdererInfoList = () => {
     getOrdererInfoList(
       (data) => {
         setUserInfoList(data);
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 가져오기 실패"]}
+          />
+        ));
       }
     );
   };
@@ -53,8 +62,14 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
       () => {
         updateOrdererInfoList();
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 삭제 실패"]}
+          />
+        ));
       }
     );
   };
@@ -65,8 +80,14 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
       () => {
         updateOrdererInfoList();
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 영구 삭제 실패"]}
+          />
+        ));
       }
     );
   };

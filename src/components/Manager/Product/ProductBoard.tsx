@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { FormikProps } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
@@ -13,6 +14,7 @@ import {
   StyledModal,
 } from "@/components/Manager/DashboardItems";
 import ProductTable from "@/components/Manager/Product/ProductTable";
+import MessageDialog from "@/components/MessageDialog";
 import { Folder, Product } from "@/const";
 
 const fileTypes = ["JPG", "PNG"];
@@ -144,6 +146,7 @@ const ProductBoard = ({
     (p) => p.metadata.folderId === folder.id
   );
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
+  const overlay = useOverlay();
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -158,8 +161,14 @@ const ProductBoard = ({
       (data) => {
         setProductList(data);
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 가져오기 실패"]}
+          />
+        ));
       }
     );
   };
@@ -172,8 +181,14 @@ const ProductBoard = ({
       () => {
         updateProductList();
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 삭제 실패"]}
+          />
+        ));
       }
     );
   };
@@ -184,8 +199,14 @@ const ProductBoard = ({
       () => {
         updateProductList();
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 영구 삭제 실패"]}
+          />
+        ));
       }
     );
   };
