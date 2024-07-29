@@ -14,7 +14,7 @@ const Icons: {
     <Image src={"/svg/person_dark.svg"} width={14} height={14} alt={"사람"} />
   ),
   check: <Image src={"/svg/check.svg"} width={25} height={25} alt={"체크"} />,
-  x: <Image src={"/svg/x.svg"} width={9} height={12} alt={"x"} />,
+  x: <Image src={"/svg/x.svg"} width={12} height={15} alt={"x"} />,
   list: <Image src={"/svg/list.svg"} width={12} height={12} alt={"목록"} />,
   delete: <Image src={"/svg/delete.svg"} width={14} height={14} alt={"삭제"} />,
   open: <Image src={"/svg/open.svg"} width={7} height={11} alt={"열기"} />,
