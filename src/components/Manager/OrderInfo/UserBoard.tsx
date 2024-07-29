@@ -5,11 +5,11 @@ import { styled } from "styled-components";
 
 import {
   getOrdererInfoList,
-  moveToTrash,
   permanentDeleteOrdererList,
-  restoreToDefaultFolder,
+  reassignFolder,
 } from "@/api";
-import { USER_TRASH_CAN } from "@/components/Manager/const";
+import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/Manager/const";
+import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, OrdererInfo } from "@/const";
@@ -30,11 +30,20 @@ const StyledUserBoard = styled.div`
   }
 `;
 
-const UserBoard = ({ folder }: { folder: Folder }) => {
+const UserBoard = ({
+  folder,
+  userFolderList,
+}: {
+  folder: Folder;
+  userFolderList: Folder[];
+}) => {
   const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
-  const filteredUserList = userInfoList.filter(
-    (u) => u.metadata.folderId === folder.id
-  );
+  const filteredUserList = userInfoList.filter((u) => {
+    if (folder.id === USER_DEFAULT) {
+      return u.metadata.folderId !== USER_TRASH_CAN;
+    }
+    return u.metadata.folderId === folder.id;
+  });
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
   const overlay = useOverlay();
 
@@ -56,10 +65,11 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
   };
 
   const handleUserRestore = () => {
-    restoreToDefaultFolder(
+    reassignFolder(
       filteredUserList.filter((f) =>
         selectedUserList.find((userId) => f.userId === userId)
       ),
+      USER_DEFAULT,
       () => {
         updateOrdererInfoList();
       },
@@ -76,10 +86,11 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
   };
 
   const handleUserSoftDelete = () => {
-    moveToTrash(
+    reassignFolder(
       filteredUserList.filter((f) =>
         selectedUserList.find((userId) => f.userId === userId)
       ),
+      USER_TRASH_CAN,
       () => {
         updateOrdererInfoList();
       },
@@ -113,6 +124,25 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
     );
   };
 
+  const handleUserFolderReassign = () => {
+    if (selectedUserList.length > 0) {
+      overlay.open(({ isOpen, close }) => (
+        <DataFolderReassignModal
+          isModalOpen={isOpen}
+          onModalClose={close}
+          selectedDataList={filteredUserList.filter((f) =>
+            selectedUserList.find((userId) => f.userId === userId)
+          )}
+          folder={folder}
+          folderList={userFolderList}
+          onReassignComplete={() => {
+            updateOrdererInfoList();
+          }}
+        />
+      ));
+    }
+  };
+
   useEffect(() => {
     updateOrdererInfoList();
   }, []);
@@ -121,16 +151,23 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
     <StyledUserBoard>
       <div className="header">
         <h3>user / {folder.name}</h3>
-        {folder.id === USER_TRASH_CAN ? (
-          <div>
-            <Button onClick={handleUserRestore}>데이터 복구</Button>
-            <Button onClick={handleUserPermanentDelete}>
-              데이터 영구 삭제
-            </Button>
-          </div>
-        ) : (
-          <Button onClick={handleUserSoftDelete}>데이터 삭제</Button>
-        )}
+        <div>
+          {folder.id === USER_TRASH_CAN ? (
+            <>
+              <Button onClick={handleUserRestore}>데이터 복구</Button>
+              <Button onClick={handleUserPermanentDelete}>
+                데이터 영구 삭제
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={handleUserFolderReassign}>
+                데이터 폴더 이동
+              </Button>
+              <Button onClick={handleUserSoftDelete}>데이터 삭제</Button>
+            </>
+          )}
+        </div>
       </div>
       <UserInfoTable
         userInfoList={filteredUserList}

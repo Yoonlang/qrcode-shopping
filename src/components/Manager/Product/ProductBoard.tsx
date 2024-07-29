@@ -7,11 +7,14 @@ import { styled } from "styled-components";
 
 import {
   getProductList,
-  moveToTrash,
   permanentDeleteProductList,
-  restoreToDefaultFolder,
+  reassignFolder,
 } from "@/api";
-import { PRODUCT_TRASH_CAN, ProductFormType } from "@/components/Manager/const";
+import {
+  PRODUCT_DEFAULT,
+  PRODUCT_TRASH_CAN,
+  ProductFormType,
+} from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -179,10 +182,11 @@ const ProductBoard = ({
   };
 
   const handleProductRestore = () => {
-    restoreToDefaultFolder(
+    reassignFolder(
       filteredProductList.filter((f) =>
         selectedProductList.find((productId) => f.productId === productId)
       ),
+      PRODUCT_DEFAULT,
       () => {
         updateProductList();
       },
@@ -199,10 +203,11 @@ const ProductBoard = ({
   };
 
   const handleProductSoftDelete = () => {
-    moveToTrash(
+    reassignFolder(
       filteredProductList.filter((f) =>
         selectedProductList.find((productId) => f.productId === productId)
       ),
+      PRODUCT_TRASH_CAN,
       () => {
         updateProductList();
       },
