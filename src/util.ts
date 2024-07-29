@@ -1,8 +1,8 @@
-import { PRODUCT_TRASH_CAN, USER_TRASH_CAN } from "@/components/Manager/const";
 import { OrdererInfo, Product } from "@/const";
 
-export const transformProductToSoftDeleteFormat = (
-  product: Product
+export const transformProductForFolderUpdate = (
+  product: Product,
+  folderId: string
 ): FormData => {
   const formData = new FormData();
   formData.append("colors", JSON.stringify(product.colors));
@@ -10,17 +10,20 @@ export const transformProductToSoftDeleteFormat = (
   formData.append("price", JSON.stringify(product.price));
   formData.append("weightGPerM2", JSON.stringify(product.weightGPerM2));
   formData.append("widthInch", JSON.stringify(product.widthInch));
-  formData.append("folderId", JSON.stringify(PRODUCT_TRASH_CAN));
+  formData.append("folderId", JSON.stringify(folderId));
   formData.append("image", "null");
   formData.append("useSameImage", "true");
   return formData;
 };
 
-export const transformUserToSoftDeleteFormat = (user: OrdererInfo): string => {
+export const transformUserForFolderUpdate = (
+  user: OrdererInfo,
+  folderId: string
+): string => {
   const { metadata, userId, ...rest } = user;
   const transformedData = {
     ...rest,
-    folderId: USER_TRASH_CAN,
+    folderId,
     submissionTime: metadata.submissionTime,
   };
   return JSON.stringify(transformedData);

@@ -1,8 +1,14 @@
 import { SERVER_URL } from "@/components/const";
+import {
+  PRODUCT_DEFAULT,
+  PRODUCT_TRASH_CAN,
+  USER_DEFAULT,
+  USER_TRASH_CAN,
+} from "@/components/Manager/const";
 import { Folder, OrdererInfo, Product } from "@/const";
 import {
-  transformProductToSoftDeleteFormat,
-  transformUserToSoftDeleteFormat,
+  transformProductForFolderUpdate,
+  transformUserForFolderUpdate,
 } from "@/util";
 
 const API_VERSION = "/v1";
@@ -237,13 +243,41 @@ export const moveToTrash = (
       new Promise((resolve, reject) => {
         "productId" in d
           ? putProduct(
-              transformProductToSoftDeleteFormat(d),
+              transformProductForFolderUpdate(d, PRODUCT_TRASH_CAN),
               resolve,
               reject,
               d.productId
             )
           : putUser(
-              transformUserToSoftDeleteFormat(d),
+              transformUserForFolderUpdate(d, USER_TRASH_CAN),
+              resolve,
+              reject,
+              d.userId
+            );
+      })
+    );
+  });
+  return Promise.all(promises).then(onSuccess).catch(onFail);
+};
+
+export const restoreToDefaultFolder = (
+  dataList: OrdererInfo[] | Product[],
+  onSuccess: SuccessCallback<SucceedResponse[]>,
+  onFail: FailCallback
+) => {
+  const promises: Promise<SucceedResponse>[] = [];
+  dataList.forEach((d: OrdererInfo | Product) => {
+    promises.push(
+      new Promise((resolve, reject) => {
+        "productId" in d
+          ? putProduct(
+              transformProductForFolderUpdate(d, PRODUCT_DEFAULT),
+              resolve,
+              reject,
+              d.productId
+            )
+          : putUser(
+              transformUserForFolderUpdate(d, USER_DEFAULT),
               resolve,
               reject,
               d.userId
