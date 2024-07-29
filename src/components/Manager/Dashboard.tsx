@@ -41,6 +41,12 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
     updateFolderList();
   }, []);
 
+  useEffect(() => {
+    setSelectedFolder(
+      (old) => folderList.find((f) => f.id === old.id) ?? initialFolderList[0]
+    );
+  }, [folderList, setSelectedFolder]);
+
   return (
     <>
       <StyledAppBar>
@@ -56,9 +62,9 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
       />
       <StyledBoardContainer>
         {selectedFolder.type === "user" ? (
-          <UserBoard folderId={selectedFolder.id} />
+          <UserBoard folder={selectedFolder} />
         ) : (
-          <ProductBoard folderId={selectedFolder.id} formik={formik} />
+          <ProductBoard folder={selectedFolder} formik={formik} />
         )}
       </StyledBoardContainer>
     </>

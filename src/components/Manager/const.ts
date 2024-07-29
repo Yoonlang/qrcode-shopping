@@ -22,29 +22,34 @@ export const initialValues = {
   method: "POST",
 };
 
+export const USER_DEFAULT = "user-default";
+export const USER_TRASH_CAN = "user-trash-can";
+export const PRODUCT_DEFAULT = "product-default";
+export const PRODUCT_TRASH_CAN = "product-trash-can";
+
 export const initialFolderList: Folder[] = [
   {
     name: "전체",
     type: "user",
-    id: "user-default",
+    id: USER_DEFAULT,
     creationTime: "2024-07-18 17:06",
   },
   {
     name: "휴지통",
     type: "user",
-    id: "user-trash-can",
+    id: USER_TRASH_CAN,
     creationTime: "2024-07-18 17:06",
   },
   {
     name: "전체",
     type: "product",
-    id: "product-default",
+    id: PRODUCT_DEFAULT,
     creationTime: "2024-07-18 17:06",
   },
   {
     name: "휴지통",
     type: "product",
-    id: "product-trash-can",
+    id: PRODUCT_TRASH_CAN,
     creationTime: "2024-07-18 17:06",
   },
 ];

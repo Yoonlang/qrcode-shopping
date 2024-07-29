@@ -1,5 +1,9 @@
 import { SERVER_URL } from "@/components/const";
 import { Folder, OrdererInfo, Product } from "@/const";
+import {
+  transformProductToSoftDeleteFormat,
+  transformUserToSoftDeleteFormat,
+} from "@/util";
 
 const API_VERSION = "/v1";
 
@@ -178,7 +182,7 @@ const deleteProduct: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
-export const deleteProductList = (
+export const permanentDeleteProductList = (
   productList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback
@@ -189,7 +193,7 @@ export const deleteProductList = (
     });
   });
 
-  Promise.all(deletePromises).then(onSuccess).catch(onFail);
+  return Promise.all(deletePromises).then(onSuccess).catch(onFail);
 };
 
 export const getOrdererInfoList: ApiGetFunction<OrdererInfo[]> = (
@@ -207,6 +211,49 @@ export const submitOrdererInfo: ApiModifyFunction<SucceedResponse> = (
   return http.post(`/users`, undefined, body, onSuccess, onFail);
 };
 
+const putUser: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail,
+  targetId
+) => {
+  return http.put(
+    `/users/${targetId}`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
+export const moveToTrash = (
+  dataList: OrdererInfo[] | Product[],
+  onSuccess: SuccessCallback<SucceedResponse[]>,
+  onFail: FailCallback
+) => {
+  const promises: Promise<SucceedResponse>[] = [];
+  dataList.forEach((d: OrdererInfo | Product) => {
+    promises.push(
+      new Promise((resolve, reject) => {
+        "productId" in d
+          ? putProduct(
+              transformProductToSoftDeleteFormat(d),
+              resolve,
+              reject,
+              d.productId
+            )
+          : putUser(
+              transformUserToSoftDeleteFormat(d),
+              resolve,
+              reject,
+              d.userId
+            );
+      })
+    );
+  });
+  return Promise.all(promises).then(onSuccess).catch(onFail);
+};
+
 const deleteOrderer: ApiModifyFunction<SucceedResponse> = (
   body,
   onSuccess,
@@ -222,18 +269,20 @@ const deleteOrderer: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
-export const deleteOrdererList = (
+export const permanentDeleteOrdererList = (
   ordererList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback
 ) => {
-  const deletePromises = ordererList.map((ordererId) => {
-    return new Promise((resolve, reject) => {
-      deleteOrderer(undefined, resolve, reject, ordererId);
-    });
-  });
+  const deletePromises: Promise<SucceedResponse>[] = ordererList.map(
+    (ordererId) => {
+      return new Promise((resolve, reject) => {
+        deleteOrderer(undefined, resolve, reject, ordererId);
+      });
+    }
+  );
 
-  Promise.all(deletePromises).then(onSuccess).catch(onFail);
+  return Promise.all(deletePromises).then(onSuccess).catch(onFail);
 };
 
 export const getFolderList: ApiGetFunction<Folder[]> = (onSuccess, onFail) => {
