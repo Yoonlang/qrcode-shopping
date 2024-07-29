@@ -1,3 +1,5 @@
+import { Folder } from "@/const";
+
 export interface ProductFormType {
   productId: string;
   image: File | null;
@@ -19,3 +21,35 @@ export const initialValues = {
   price: null,
   method: "POST",
 };
+
+export const USER_DEFAULT = "user-default";
+export const USER_TRASH_CAN = "user-trash-can";
+export const PRODUCT_DEFAULT = "product-default";
+export const PRODUCT_TRASH_CAN = "product-trash-can";
+
+export const initialFolderList: Folder[] = [
+  {
+    name: "전체",
+    type: "user",
+    id: USER_DEFAULT,
+    creationTime: "2024-07-18 17:06",
+  },
+  {
+    name: "휴지통",
+    type: "user",
+    id: USER_TRASH_CAN,
+    creationTime: "2024-07-18 17:06",
+  },
+  {
+    name: "전체",
+    type: "product",
+    id: PRODUCT_DEFAULT,
+    creationTime: "2024-07-18 17:06",
+  },
+  {
+    name: "휴지통",
+    type: "product",
+    id: PRODUCT_TRASH_CAN,
+    creationTime: "2024-07-18 17:06",
+  },
+];

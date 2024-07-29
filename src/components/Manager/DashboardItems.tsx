@@ -21,6 +21,10 @@ const StyledAppBar = styled(AppBar)`
     & div {
       margin: 0 2px;
     }
+
+    .icon {
+      filter: invert(1);
+    }
   }
 `;
 
@@ -33,6 +37,16 @@ const StyledDrawer = styled(Drawer)`
 const StyledList = styled(List)`
   &.MuiList-root {
     width: 100%;
+  }
+  li {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .MuiListItemIcon-root {
+    min-width: 30px;
+  }
+  .MuiTypography-root {
+    font-weight: bold;
   }
 `;
 
