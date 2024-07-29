@@ -28,11 +28,13 @@ const FolderActionModal = ({
   onClose,
   folder,
   updateFolderList,
+  onFolderDelete,
 }: {
   isModalOpen: boolean;
   onClose: () => void;
   folder: Folder;
   updateFolderList: () => void;
+  onFolderDelete: () => void;
 }) => {
   const overlay = useOverlay();
   const { name, type, id } = folder;
@@ -45,6 +47,7 @@ const FolderActionModal = ({
         undefined,
         () => {
           updateFolderList();
+          onFolderDelete();
         },
         () => {
           overlay.open(({ isOpen, close }) => (
