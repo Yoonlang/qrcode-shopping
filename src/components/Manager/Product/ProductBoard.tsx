@@ -5,7 +5,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
 
-import { getProductList, moveToTrash, permanentDeleteProductList } from "@/api";
+import {
+  getProductList,
+  moveToTrash,
+  permanentDeleteProductList,
+  restoreToDefaultFolder,
+} from "@/api";
 import { PRODUCT_TRASH_CAN, ProductFormType } from "@/components/Manager/const";
 import {
   ProductAddModal,
@@ -173,6 +178,26 @@ const ProductBoard = ({
     );
   };
 
+  const handleProductRestore = () => {
+    restoreToDefaultFolder(
+      filteredProductList.filter((f) =>
+        selectedProductList.find((productId) => f.productId === productId)
+      ),
+      () => {
+        updateProductList();
+      },
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 복구 실패"]}
+          />
+        ));
+      }
+    );
+  };
+
   const handleProductSoftDelete = () => {
     moveToTrash(
       filteredProductList.filter((f) =>
@@ -227,9 +252,12 @@ const ProductBoard = ({
         <h3>product / {folder.name}</h3>
         <div>
           {folder.id === PRODUCT_TRASH_CAN ? (
-            <Button onClick={handleProductPermanentDelete}>
-              데이터 영구 삭제
-            </Button>
+            <>
+              <Button onClick={handleProductRestore}>데이터 복구</Button>
+              <Button onClick={handleProductPermanentDelete}>
+                데이터 영구 삭제
+              </Button>
+            </>
           ) : (
             <>
               <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>

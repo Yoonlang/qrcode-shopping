@@ -7,6 +7,7 @@ import {
   getOrdererInfoList,
   moveToTrash,
   permanentDeleteOrdererList,
+  restoreToDefaultFolder,
 } from "@/api";
 import { USER_TRASH_CAN } from "@/components/Manager/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
@@ -48,6 +49,26 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
             isDialogOpen={isOpen}
             onDialogClose={close}
             messageList={["데이터 가져오기 실패"]}
+          />
+        ));
+      }
+    );
+  };
+
+  const handleUserRestore = () => {
+    restoreToDefaultFolder(
+      filteredUserList.filter((f) =>
+        selectedUserList.find((userId) => f.userId === userId)
+      ),
+      () => {
+        updateOrdererInfoList();
+      },
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 복구 실패"]}
           />
         ));
       }
@@ -101,7 +122,12 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
       <div className="header">
         <h3>user / {folder.name}</h3>
         {folder.id === USER_TRASH_CAN ? (
-          <Button onClick={handleUserPermanentDelete}>데이터 영구 삭제</Button>
+          <div>
+            <Button onClick={handleUserRestore}>데이터 복구</Button>
+            <Button onClick={handleUserPermanentDelete}>
+              데이터 영구 삭제
+            </Button>
+          </div>
         ) : (
           <Button onClick={handleUserSoftDelete}>데이터 삭제</Button>
         )}
