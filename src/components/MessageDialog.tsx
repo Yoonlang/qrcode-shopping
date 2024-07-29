@@ -8,9 +8,15 @@ import {
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-const StyledMessageDialog = styled(Dialog)<{ customstyle?: string }>`
+interface StyledMessageDialogProps {
+  customStyle?: string;
+}
+
+const StyledMessageDialog = styled(Dialog).withConfig({
+  shouldForwardProp: (prop) => !["customStyle"].includes(prop),
+})<StyledMessageDialogProps>`
   p {
-    ${(props) => props.customstyle};
+    ${(props) => props.customStyle || ""};
   }
 `;
 
@@ -31,7 +37,7 @@ const MessageDialog = ({
     <StyledMessageDialog
       open={isDialogOpen}
       onClose={onDialogClose}
-      customstyle={customStyle}
+      customStyle={customStyle}
     >
       <DialogContent>
         {messageList.map((message, idx) => (
