@@ -1,11 +1,12 @@
 import { Button, TextField } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { FormikProps } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
 
-import { deleteProductList, getProductList } from "@/api";
-import { ProductFormType } from "@/components/Manager/const";
+import { getProductList, moveToTrash, permanentDeleteProductList } from "@/api";
+import { PRODUCT_TRASH_CAN, ProductFormType } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -13,7 +14,8 @@ import {
   StyledModal,
 } from "@/components/Manager/DashboardItems";
 import ProductTable from "@/components/Manager/Product/ProductTable";
-import { Product } from "@/const";
+import MessageDialog from "@/components/MessageDialog";
+import { Folder, Product } from "@/const";
 
 const fileTypes = ["JPG", "PNG"];
 
@@ -21,13 +23,15 @@ const StyledProductBoard = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 
   > .header {
     width: 100%;
     height: 60px;
+    padding: 0 10px;
     display: flex;
     align-items: end;
-    justify-content: end;
+    justify-content: space-between;
   }
 `;
 
@@ -129,10 +133,20 @@ const ProductCreateModal = ({
   );
 };
 
-const ProductBoard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
+const ProductBoard = ({
+  folder,
+  formik,
+}: {
+  folder: Folder;
+  formik: FormikProps<ProductFormType>;
+}) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
+  const filteredProductList = productList.filter(
+    (p) => p.metadata.folderId === folder.id
+  );
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
+  const overlay = useOverlay();
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -147,20 +161,52 @@ const ProductBoard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
       (data) => {
         setProductList(data);
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 가져오기 실패"]}
+          />
+        ));
       }
     );
   };
 
-  const handleProductDeletionButtonClick = () => {
-    deleteProductList(
+  const handleProductSoftDelete = () => {
+    moveToTrash(
+      filteredProductList.filter((f) =>
+        selectedProductList.find((productId) => f.productId === productId)
+      ),
+      () => {
+        updateProductList();
+      },
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 삭제 실패"]}
+          />
+        ));
+      }
+    );
+  };
+
+  const handleProductPermanentDelete = () => {
+    permanentDeleteProductList(
       selectedProductList,
       () => {
         updateProductList();
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 영구 삭제 실패"]}
+          />
+        ));
       }
     );
   };
@@ -178,11 +224,22 @@ const ProductBoard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
   return (
     <StyledProductBoard>
       <div className="header">
-        <Button onClick={handleProductDeletionButtonClick}>Delete</Button>
-        <Button onClick={handleModalOpen}>Add</Button>
+        <h3>product / {folder.name}</h3>
+        <div>
+          {folder.id === PRODUCT_TRASH_CAN ? (
+            <Button onClick={handleProductPermanentDelete}>
+              데이터 영구 삭제
+            </Button>
+          ) : (
+            <>
+              <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
+              <Button onClick={handleModalOpen}>데이터 추가</Button>
+            </>
+          )}
+        </div>
       </div>
       <ProductTable
-        productList={productList}
+        productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
         formik={formik}
       />

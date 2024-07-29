@@ -24,7 +24,13 @@ export const validationSchema = Yup.object().shape({
     .email(EMAIL_TEXT)
     // .required(REQUIRED_TEXT)
     .max(50, MAX_TEXT["50"]),
-  countryCode: Yup.object().required(REQUIRED_TEXT),
+  countryCode: Yup.object()
+    .shape({
+      code: Yup.string().required(REQUIRED_TEXT),
+      label: Yup.string().required(REQUIRED_TEXT),
+      phone: Yup.string().required(REQUIRED_TEXT),
+    })
+    .required(REQUIRED_TEXT),
   weChatId: Yup.string().when("countryCode.label", {
     is: "China",
     then: () => Yup.string().required(REQUIRED_TEXT),
@@ -39,7 +45,7 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
-        .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
+        .matches(/^[0-9-]+$/, POSTAL_CODE_TEXT)
         // .required(REQUIRED_TEXT)
         .max(30, MAX_TEXT["30"]),
   }),
@@ -66,7 +72,7 @@ export const validationSchema = Yup.object().shape({
     then: () => Yup.string().notRequired(),
     otherwise: () =>
       Yup.string()
-        .matches(/^[0-9\-]+$/, POSTAL_CODE_TEXT)
+        .matches(/^[0-9-]+$/, POSTAL_CODE_TEXT)
         // .required(REQUIRED_TEXT)
         // .typeError(POSTAL_CODE_TEXT)
         .max(30, MAX_TEXT["30"]),

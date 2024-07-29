@@ -1,48 +1,93 @@
 import { Button } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
-import { deleteOrdererList, getOrdererInfoList } from "@/api";
+import {
+  getOrdererInfoList,
+  moveToTrash,
+  permanentDeleteOrdererList,
+} from "@/api";
+import { USER_TRASH_CAN } from "@/components/Manager/const";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
-import { OrdererInfo } from "@/const";
+import MessageDialog from "@/components/MessageDialog";
+import { Folder, OrdererInfo } from "@/const";
 
 const StyledUserBoard = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 
   > .header {
     width: 100%;
     height: 60px;
+    padding: 0 10px;
     display: flex;
     align-items: end;
-    justify-content: end;
+    justify-content: space-between;
   }
 `;
 
-const UserBoard = () => {
+const UserBoard = ({ folder }: { folder: Folder }) => {
   const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
+  const filteredUserList = userInfoList.filter(
+    (u) => u.metadata.folderId === folder.id
+  );
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
+  const overlay = useOverlay();
 
   const updateOrdererInfoList = () => {
     getOrdererInfoList(
       (data) => {
         setUserInfoList(data);
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 가져오기 실패"]}
+          />
+        ));
       }
     );
   };
 
-  const handleUserDeletionButtonClick = () => {
-    deleteOrdererList(
+  const handleUserSoftDelete = () => {
+    moveToTrash(
+      filteredUserList.filter((f) =>
+        selectedUserList.find((userId) => f.userId === userId)
+      ),
+      () => {
+        updateOrdererInfoList();
+      },
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 삭제 실패"]}
+          />
+        ));
+      }
+    );
+  };
+
+  const handleUserPermanentDelete = () => {
+    permanentDeleteOrdererList(
       selectedUserList,
       () => {
         updateOrdererInfoList();
       },
-      (e) => {
-        console.log(e);
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["데이터 영구 삭제 실패"]}
+          />
+        ));
       }
     );
   };
@@ -54,10 +99,15 @@ const UserBoard = () => {
   return (
     <StyledUserBoard>
       <div className="header">
-        <Button onClick={handleUserDeletionButtonClick}>Delete</Button>
+        <h3>user / {folder.name}</h3>
+        {folder.id === USER_TRASH_CAN ? (
+          <Button onClick={handleUserPermanentDelete}>데이터 영구 삭제</Button>
+        ) : (
+          <Button onClick={handleUserSoftDelete}>데이터 삭제</Button>
+        )}
       </div>
       <UserInfoTable
-        userInfoList={userInfoList}
+        userInfoList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />
     </StyledUserBoard>

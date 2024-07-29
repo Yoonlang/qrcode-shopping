@@ -234,17 +234,18 @@ export const ProductEdit = ({
         types={fileTypes}
         disabled={formik.values.image}
       />
-      {formik.values.image && formik.values.image.name ? (
-        <div>{formik.values.image.name}</div>
-      ) : (
-        <Button
-          onClick={() => {
-            handleChangeFile(null);
-          }}
-        >
-          기존 이미지 제거
-        </Button>
-      )}
+      {formik.values.image &&
+        (formik.values.image.name ? (
+          <div>{formik.values.image.name}</div>
+        ) : (
+          <Button
+            onClick={() => {
+              handleChangeFile(null);
+            }}
+          >
+            기존 이미지 제거
+          </Button>
+        ))}
       <ProductInput label="Composition" name="composition" formik={formik} />
       <ProductInput label="Weight" name="weightGPerM2" formik={formik} />
       <ProductInput label="Width" name="widthInch" formik={formik} />
@@ -358,7 +359,7 @@ const ProductTable = ({
 
   return (
     <>
-      <div style={{ height: 550, width: "100%" }}>
+      <div style={{ height: "calc(100% - 60px)", width: "100%" }}>
         <DataGrid
           rows={tableRows}
           columns={columns}

@@ -71,3 +71,10 @@ export interface OrdererInfo {
   remark2: string;
   metadata: OrdererInfoMetadata;
 }
+
+export interface Folder {
+  name: string;
+  type: "user" | "product";
+  id: string;
+  creationTime: string;
+}

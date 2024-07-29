@@ -1,24 +1,15 @@
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
 import { FormikProps } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
+import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";
-import { ProductFormType } from "@/components/Manager/const";
-import {
-  StyledAppBar,
-  StyledDrawer,
-  StyledList,
-} from "@/components/Manager/DashboardItems";
+import { initialFolderList, ProductFormType } from "@/components/Manager/const";
+import { StyledAppBar } from "@/components/Manager/DashboardItems";
+import Menu from "@/components/Manager/Menu";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
-
+import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
   display: flex;
@@ -30,41 +21,51 @@ const StyledBoardContainer = styled.div`
 `;
 
 const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
-  const [menu, setMenu] = useState(0);
-  const drawerItems = ["user", "product"];
+  const [selectedFolder, setSelectedFolder] = useState<Folder>(
+    initialFolderList[0]
+  );
+  const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
 
-  const handleChangeMenu = (
-    e: React.MouseEvent<HTMLElement>,
-    index: number
-  ) => {
-    setMenu(index);
+  const updateFolderList = () => {
+    getFolderList(
+      (data) => {
+        setFolderList(data);
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
   };
+
+  useEffect(() => {
+    updateFolderList();
+  }, []);
+
+  useEffect(() => {
+    setSelectedFolder(
+      (old) => folderList.find((f) => f.id === old.id) ?? initialFolderList[0]
+    );
+  }, [folderList, setSelectedFolder]);
 
   return (
     <>
       <StyledAppBar>
         <div>YOUNGWON</div>
-        <div>{Icons["x"]}</div>
+        <div className="icon">{Icons["x"]}</div>
         <div>MAEIL</div>
       </StyledAppBar>
-      <StyledDrawer variant="permanent" anchor="left">
-        <Toolbar />
-        <StyledList>
-          <div>MENU</div>
-          {drawerItems.map((item, index) => (
-            <ListItem key={item}>
-              <ListItemButton onClick={(e) => handleChangeMenu(e, index)}>
-                <ListItemIcon>
-                  {index % 2 == 0 ? Icons["person_dark"] : Icons["list"]}
-                </ListItemIcon>
-                <ListItemText primary={item} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </StyledList>
-      </StyledDrawer>
+      <Menu
+        selectedFolder={selectedFolder}
+        folderList={folderList}
+        updateFolderList={updateFolderList}
+        onMenuChange={(folder) => setSelectedFolder(folder)}
+      />
       <StyledBoardContainer>
-        {menu === 0 ? <UserBoard /> : <ProductBoard formik={formik} />}
+        {selectedFolder.type === "user" ? (
+          <UserBoard folder={selectedFolder} />
+        ) : (
+          <ProductBoard folder={selectedFolder} formik={formik} />
+        )}
       </StyledBoardContainer>
     </>
   );
