@@ -16,7 +16,7 @@ const StyledMessageDialog = styled(Dialog).withConfig({
   shouldForwardProp: (prop) => !["customStyle"].includes(prop),
 })<StyledMessageDialogProps>`
   p {
-    ${(props) => props.customStyle || ""};
+    ${(props) => props.customStyle};
   }
 `;
 
