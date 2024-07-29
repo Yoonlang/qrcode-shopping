@@ -78,6 +78,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
           <ProductBoard
             key={updateTrigger}
             folder={selectedFolder}
+            productFolderList={sortFolderListByType(folderList, "product")}
             formik={formik}
           />
         )}

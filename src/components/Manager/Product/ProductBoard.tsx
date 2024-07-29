@@ -21,6 +21,7 @@ import {
   StyledFlexDiv,
   StyledModal,
 } from "@/components/Manager/DashboardItems";
+import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
 import ProductTable from "@/components/Manager/Product/ProductTable";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, Product } from "@/const";
@@ -143,16 +144,21 @@ const ProductCreateModal = ({
 
 const ProductBoard = ({
   folder,
+  productFolderList,
   formik,
 }: {
   folder: Folder;
+  productFolderList: Folder[];
   formik: FormikProps<ProductFormType>;
 }) => {
   const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
-  const filteredProductList = productList.filter(
-    (p) => p.metadata.folderId === folder.id
-  );
+  const filteredProductList = productList.filter((p) => {
+    if (folder.id === PRODUCT_DEFAULT) {
+      return p.metadata.folderId !== PRODUCT_TRASH_CAN;
+    }
+    return p.metadata.folderId === folder.id;
+  });
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
   const overlay = useOverlay();
 
@@ -241,6 +247,25 @@ const ProductBoard = ({
     );
   };
 
+  const handleProductFolderReassign = () => {
+    if (selectedProductList.length > 0) {
+      overlay.open(({ isOpen, close }) => (
+        <DataFolderReassignModal
+          isModalOpen={isOpen}
+          onModalClose={close}
+          selectedDataList={filteredProductList.filter((f) =>
+            selectedProductList.find((productId) => f.productId === productId)
+          )}
+          folder={folder}
+          folderList={productFolderList}
+          onReassignComplete={() => {
+            updateProductList();
+          }}
+        />
+      ));
+    }
+  };
+
   const cachedFormikSubmit = useMemo(() => {
     return formik.isSubmitting;
   }, [formik.isSubmitting]);
@@ -265,8 +290,11 @@ const ProductBoard = ({
             </>
           ) : (
             <>
-              <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
+              <Button onClick={handleProductFolderReassign}>
+                데이터 폴더 이동
+              </Button>
               <Button onClick={handleModalOpen}>데이터 추가</Button>
+              <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
             </>
           )}
         </div>
