@@ -9,6 +9,7 @@ import { StyledAppBar } from "@/components/Manager/DashboardItems";
 import Menu from "@/components/Manager/Menu";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
+import { sortFolderListByType } from "@/components/Manager/util";
 import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
@@ -62,7 +63,11 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
       />
       <StyledBoardContainer>
         {selectedFolder.type === "user" ? (
-          <UserBoard folder={selectedFolder} />
+          <UserBoard
+            key={updateTrigger}
+            folder={selectedFolder}
+            userFolderList={sortFolderListByType(folderList, "user")}
+          />
         ) : (
           <ProductBoard folder={selectedFolder} formik={formik} />
         )}

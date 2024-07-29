@@ -15,15 +15,10 @@ import { useState } from "react";
 import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
-import {
-  PRODUCT_DEFAULT,
-  PRODUCT_TRASH_CAN,
-  USER_DEFAULT,
-  USER_TRASH_CAN,
-} from "@/components/Manager/const";
 import { StyledDrawer, StyledList } from "@/components/Manager/DashboardItems";
 import FolderActionModal from "@/components/Manager/Folder/FolderActionModal";
 import FolderCreationModal from "@/components/Manager/Folder/FolderCreationModal";
+import { sortFolderListByType } from "@/components/Manager/util";
 import { Folder } from "@/const";
 
 interface StyledListItemTextProp {
@@ -39,38 +34,6 @@ const StyledCollapse = styled(Collapse)`
   padding-left: 20px;
 `;
 
-const handleFolderList = (
-  folderList: Folder[]
-): { userFolderList: Folder[]; productFolderList: Folder[] } => {
-  const userFolderList = folderList
-    .filter((folder) => folder.type === "user")
-    .sort((a, b) => {
-      if (a.id === USER_DEFAULT) return -1;
-      if (b.id === USER_DEFAULT) return 1;
-
-      if (a.id === USER_TRASH_CAN) return 1;
-      if (b.id === USER_TRASH_CAN) return -1;
-
-      return a.creationTime.localeCompare(b.creationTime);
-    });
-  const productFolderList = folderList
-    .filter((folder) => folder.type === "product")
-    .sort((a, b) => {
-      if (a.id === PRODUCT_DEFAULT) return -1;
-      if (b.id === PRODUCT_DEFAULT) return 1;
-
-      if (a.id === PRODUCT_TRASH_CAN) return 1;
-      if (b.id === PRODUCT_TRASH_CAN) return -1;
-
-      return a.creationTime.localeCompare(b.creationTime);
-    });
-
-  return {
-    userFolderList,
-    productFolderList,
-  };
-};
-
 const shortenWithEllipsis = (str: string, limit: number): string => {
   if (str.length <= limit) {
     return str;
@@ -84,12 +47,14 @@ const NestedListItem = ({
   iconId,
   updateFolderList,
   onMenuChange,
+  onFolderDelete,
 }: {
   selectedFolder: Folder;
   folderList: Folder[];
   iconId: string;
   updateFolderList: () => void;
   onMenuChange: (folder: Folder) => void;
+  onFolderDelete: () => void;
 }) => {
   const overlay = useOverlay();
   const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(true);
@@ -146,6 +111,7 @@ const NestedListItem = ({
                         onClose={close}
                         folder={folder}
                         updateFolderList={updateFolderList}
+                        onFolderDelete={onFolderDelete}
                       />
                     ));
                   }}
@@ -181,13 +147,16 @@ const Menu = ({
   folderList,
   updateFolderList,
   onMenuChange,
+  updateBoard,
 }: {
   selectedFolder: Folder;
   folderList: Folder[];
   updateFolderList: () => void;
   onMenuChange: (folder: Folder) => void;
+  updateBoard: () => void;
 }) => {
-  const { userFolderList, productFolderList } = handleFolderList(folderList);
+  const userFolderList = sortFolderListByType(folderList, "user");
+  const productFolderList = sortFolderListByType(folderList, "product");
 
   return (
     <StyledDrawer variant="permanent" anchor="left">
@@ -199,6 +168,7 @@ const Menu = ({
           iconId="person_dark"
           updateFolderList={updateFolderList}
           onMenuChange={onMenuChange}
+          onFolderDelete={updateBoard}
         />
         <NestedListItem
           selectedFolder={selectedFolder}
@@ -206,6 +176,7 @@ const Menu = ({
           iconId="list"
           updateFolderList={updateFolderList}
           onMenuChange={onMenuChange}
+          onFolderDelete={updateBoard}
         />
       </StyledList>
     </StyledDrawer>
