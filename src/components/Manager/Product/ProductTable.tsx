@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { useOverlay } from "@toss/use-overlay";
 import { FormikProps } from "formik";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
@@ -25,7 +26,14 @@ const productDetailColumns: GridColDef[] = [
   { field: "sampleYardage", headerName: "Sample Yardage", width: 300 },
 ];
 
-const handleProductListForTable = (productList: Product[]) => {
+type ProductTableRow = {
+  id: string;
+  __product__: Product;
+};
+
+const handleProductListForTable = (
+  productList: Product[]
+): ProductTableRow[] => {
   return productList.map((product) => {
     return {
       id: product.productId,
@@ -83,12 +91,12 @@ const StyledDetailModalContainer = styled.div`
 
 export const ProductDetail = ({
   product,
-  closeModal,
-  openEditModal,
+  onModalClose,
+  onEditModalOpen,
 }: {
   product: Product;
-  closeModal: () => void;
-  openEditModal: () => void;
+  onModalClose: () => void;
+  onEditModalOpen: () => void;
 }) => {
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
     product;
@@ -140,27 +148,27 @@ export const ProductDetail = ({
       </div>
       <div className="buttonContainer">
         <Button
-          onClick={openEditModal}
+          onClick={onEditModalOpen}
           data-testid={"product-detail-open-edit-modal-button"}
         >
           수정
         </Button>
-        <Button onClick={closeModal}>닫기</Button>
+        <Button onClick={onModalClose}>닫기</Button>
       </div>
     </StyledDetailModalContainer>
   );
 };
 
 export const ProductEdit = ({
-  handleModalClose,
-  formik,
-  openDetailModal,
   product,
+  onModalClose,
+  onDetailModalOpen,
+  formik,
 }: {
-  handleModalClose: () => void;
-  formik: FormikProps<ProductFormType>;
-  openDetailModal: () => void;
   product: Product;
+  onModalClose: () => void;
+  onDetailModalOpen: () => void;
+  formik: FormikProps<ProductFormType>;
 }) => {
   const colors = formik.values.colors;
   const colorRefs = useRef<HTMLInputElement[]>([]);
@@ -274,12 +282,12 @@ export const ProductEdit = ({
         <Button
           onClick={() => {
             formik.submitForm();
-            openDetailModal();
+            onDetailModalOpen();
           }}
         >
           Confirm
         </Button>
-        <Button onClick={handleModalClose}>Cancel</Button>
+        <Button onClick={onModalClose}>Cancel</Button>
       </StyledFlexDiv>
     </ProductAddModal>
   );
@@ -287,12 +295,12 @@ export const ProductEdit = ({
 
 export const ProductDetailModal = ({
   isModalOpen,
-  closeModal,
+  onModalClose,
   modalProductData,
   formik,
 }: {
   isModalOpen: boolean;
-  closeModal: () => void;
+  onModalClose: () => void;
   modalProductData: Product;
   formik: FormikProps<ProductFormType>;
 }) => {
@@ -309,25 +317,23 @@ export const ProductDetailModal = ({
   return (
     <StyledModal
       open={isModalOpen}
-      onClose={closeModal}
+      onClose={onModalClose}
       data-testid={"product-detail-modal"}
     >
-      <>
-        {isEditMode ? (
-          <ProductEdit
-            handleModalClose={closeModal}
-            formik={formik}
-            openDetailModal={openDetailModal}
-            product={modalProductData}
-          />
-        ) : (
-          <ProductDetail
-            product={modalProductData}
-            closeModal={closeModal}
-            openEditModal={openEditModal}
-          />
-        )}
-      </>
+      {isEditMode ? (
+        <ProductEdit
+          product={modalProductData}
+          onModalClose={onModalClose}
+          onDetailModalOpen={openDetailModal}
+          formik={formik}
+        />
+      ) : (
+        <ProductDetail
+          product={modalProductData}
+          onModalClose={onModalClose}
+          onEditModalOpen={openEditModal}
+        />
+      )}
     </StyledModal>
   );
 };
@@ -341,21 +347,15 @@ const ProductTable = ({
   setSelectedProductList: Dispatch<SetStateAction<string[]>>;
   formik: FormikProps<ProductFormType>;
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalProductData, setModalProductData] = useState<Product | null>(
-    null
-  );
   const tableRows = handleProductListForTable(productList);
+  const overlay = useOverlay();
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  useEffect(() => {
-    if (!isModalOpen) {
-      formik.resetForm();
-    }
-  }, [isModalOpen]);
+  // formik 커밋 이후 수정할 예정
+  // useEffect(() => {
+  //   if (!isModalOpen) {
+  //     formik.resetForm();
+  //   }
+  // }, [isModalOpen]);
 
   return (
     <>
@@ -373,23 +373,21 @@ const ProductTable = ({
           onRowSelectionModelChange={(selectedList: string[]) => {
             setSelectedProductList(selectedList);
           }}
-          onCellClick={(cell, e) => {
+          onCellClick={(cell: GridCellParams<ProductTableRow>, e) => {
             if (cell.field !== "__check__") {
               e.stopPropagation();
-              setIsModalOpen(true);
-              setModalProductData(cell.row.__product__);
+              overlay.open(({ isOpen, close }) => (
+                <ProductDetailModal
+                  isModalOpen={isOpen}
+                  onModalClose={close}
+                  modalProductData={cell.row.__product__}
+                  formik={formik}
+                />
+              ));
             }
           }}
         />
       </div>
-      {isModalOpen && modalProductData && (
-        <ProductDetailModal
-          isModalOpen={isModalOpen}
-          closeModal={closeModal}
-          modalProductData={modalProductData}
-          formik={formik}
-        />
-      )}
     </>
   );
 };

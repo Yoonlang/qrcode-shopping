@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { useOverlay } from "@toss/use-overlay";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { styled } from "styled-components";
 
 import { StyledModal } from "@/components/Manager/DashboardItems";
@@ -66,7 +67,20 @@ const productListColumns: GridColDef[] = [
   { field: "quantity", headerName: "개수", width: 200 },
 ];
 
-const handleUserInfoListForTable = (userInfoList: OrdererInfo[]) => {
+type UserTableRow = {
+  id: string;
+  name: string;
+  company: string;
+  email: string;
+  contactNumber: string;
+  submissionTime: string;
+  type: string;
+  __user_info__: OrdererInfo;
+};
+
+const handleUserInfoListForTable = (
+  userInfoList: OrdererInfo[]
+): UserTableRow[] => {
   return (
     userInfoList?.map((userInfo) => {
       const {
@@ -166,11 +180,11 @@ const handleUserInfoForOrder = (
 
 const UserInfoDetailModal = ({
   isModalOpen,
-  closeModal,
+  onModalClose,
   modalUserInfoData,
 }: {
   isModalOpen: boolean;
-  closeModal: () => void;
+  onModalClose: () => void;
   modalUserInfoData: OrdererInfo;
 }) => {
   const {
@@ -204,7 +218,7 @@ const UserInfoDetailModal = ({
   };
 
   return (
-    <StyledModal open={isModalOpen} onClose={closeModal}>
+    <StyledModal open={isModalOpen} onClose={onModalClose}>
       <StyledModalContainer>
         <h2>User Info - {submissionTime ?? ""}</h2>
         <h4>Personal Info</h4>
@@ -322,14 +336,8 @@ const UserInfoTable = ({
   userInfoList: OrdererInfo[];
   setSelectedUserList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalUserInfoData, setModalUserInfoData] =
-    useState<OrdererInfo | null>(null);
   const tableRows = handleUserInfoListForTable(userInfoList);
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const overlay = useOverlay();
 
   return (
     <>
@@ -347,22 +355,20 @@ const UserInfoTable = ({
           onRowSelectionModelChange={(selectedList: string[]) => {
             setSelectedUserList(selectedList);
           }}
-          onCellClick={(cell, e) => {
+          onCellClick={(cell: GridCellParams<UserTableRow>, e) => {
             if (cell.field !== "__check__") {
               e.stopPropagation();
-              setIsModalOpen(true);
-              setModalUserInfoData(cell.row.__user_info__);
+              overlay.open(({ isOpen, close }) => (
+                <UserInfoDetailModal
+                  isModalOpen={isOpen}
+                  onModalClose={close}
+                  modalUserInfoData={cell.row.__user_info__}
+                />
+              ));
             }
           }}
         />
       </div>
-      {isModalOpen && modalUserInfoData && (
-        <UserInfoDetailModal
-          isModalOpen={isModalOpen}
-          closeModal={closeModal}
-          modalUserInfoData={modalUserInfoData}
-        />
-      )}
     </>
   );
 };

@@ -36,12 +36,12 @@ const StyledProductBoard = styled.div`
 `;
 
 const ProductCreateModal = ({
-  open,
-  handleModalClose,
+  isModalOpen,
+  onModalClose,
   formik,
 }: {
-  open: boolean;
-  handleModalClose: () => void;
+  isModalOpen: boolean;
+  onModalClose: () => void;
   formik: FormikProps<ProductFormType>;
 }) => {
   const productIdRefs = useRef<HTMLInputElement>(null);
@@ -83,7 +83,7 @@ const ProductCreateModal = ({
   }, [colors.length]);
 
   return (
-    <StyledModal open={open} onClose={handleModalClose}>
+    <StyledModal open={isModalOpen} onClose={onModalClose}>
       <ProductAddModal>
         <h2>Add</h2>
         <ProductInput label="Product ID" name="productId" formik={formik} />
@@ -126,7 +126,7 @@ const ProductCreateModal = ({
           >
             Confirm
           </Button>
-          <Button onClick={handleModalClose}>Cancel</Button>
+          <Button onClick={onModalClose}>Cancel</Button>
         </StyledFlexDiv>
       </ProductAddModal>
     </StyledModal>
@@ -140,21 +140,12 @@ const ProductBoard = ({
   folder: Folder;
   formik: FormikProps<ProductFormType>;
 }) => {
-  const [open, setOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>([]);
   const filteredProductList = productList.filter(
     (p) => p.metadata.folderId === folder.id
   );
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
   const overlay = useOverlay();
-
-  const handleModalOpen = () => {
-    setOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setOpen(false);
-  };
 
   const updateProductList = () => {
     getProductList(
@@ -233,7 +224,19 @@ const ProductBoard = ({
           ) : (
             <>
               <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
-              <Button onClick={handleModalOpen}>데이터 추가</Button>
+              <Button
+                onClick={() => {
+                  overlay.open(({ isOpen, close }) => (
+                    <ProductCreateModal
+                      isModalOpen={isOpen}
+                      onModalClose={close}
+                      formik={formik}
+                    />
+                  ));
+                }}
+              >
+                데이터 추가
+              </Button>
             </>
           )}
         </div>
@@ -241,11 +244,6 @@ const ProductBoard = ({
       <ProductTable
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
-        formik={formik}
-      />
-      <ProductCreateModal
-        open={open}
-        handleModalClose={handleModalClose}
         formik={formik}
       />
     </StyledProductBoard>
