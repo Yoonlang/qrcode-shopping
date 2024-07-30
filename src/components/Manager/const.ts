@@ -1,6 +1,6 @@
 import { Folder } from "@/const";
 
-export interface ProductFormType {
+export interface ProductCreationForm {
   productId: string;
   image: File | null;
   colors: string[];
@@ -8,19 +8,17 @@ export interface ProductFormType {
   weightGPerM2: string;
   widthInch: string;
   price: number | null;
-  method: string;
 }
 
-export const initialValues = {
-  productId: "",
-  image: null,
-  colors: [""],
-  composition: "",
-  weightGPerM2: "",
-  widthInch: "",
-  price: null,
-  method: "POST",
-};
+export interface ProductEditionForm {
+  image: File | null;
+  colors: string[];
+  composition: string;
+  weightGPerM2: string;
+  widthInch: string;
+  price: number | null;
+  useSameImage: boolean;
+}
 
 export const USER_DEFAULT = "user-default";
 export const USER_TRASH_CAN = "user-trash-can";

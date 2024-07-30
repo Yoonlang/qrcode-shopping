@@ -1,11 +1,10 @@
 import "@testing-library/jest-dom";
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { Formik } from "formik";
+import { OverlayProvider } from "@toss/use-overlay";
 
-import { initialValues } from "@/components/Manager/const";
 import { mockProductList } from "@/components/Manager/Product/const";
-import { ProductDetailModal } from "@/components/Manager/Product/ProductTable";
+import ProductDetailModal from "@/components/Manager/Product/ProductDetailModal";
 
 describe("ProductDetailModal", () => {
   it("초기 렌더링 확인", async () => {
@@ -14,16 +13,13 @@ describe("ProductDetailModal", () => {
 
     // When
     render(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
-        {(formik) => (
-          <ProductDetailModal
-            isModalOpen={true}
-            closeModal={jest.fn()}
-            modalProductData={modalProductData}
-            formik={formik}
-          />
-        )}
-      </Formik>
+      <OverlayProvider>
+        <ProductDetailModal
+          isModalOpen={true}
+          onModalClose={jest.fn()}
+          modalProductData={modalProductData}
+        />
+      </OverlayProvider>
     );
 
     // Then
@@ -38,16 +34,13 @@ describe("ProductDetailModal", () => {
 
     // When
     render(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-        {(formik) => (
-          <ProductDetailModal
-            isModalOpen={true}
-            closeModal={jest.fn()}
-            modalProductData={modalProductData}
-            formik={formik}
-          />
-        )}
-      </Formik>
+      <OverlayProvider>
+        <ProductDetailModal
+          isModalOpen={true}
+          onModalClose={jest.fn()}
+          modalProductData={modalProductData}
+        />
+      </OverlayProvider>
     );
     await waitFor(() => {
       expect(
