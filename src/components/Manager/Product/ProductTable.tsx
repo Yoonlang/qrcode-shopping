@@ -9,6 +9,7 @@ import { styled } from "styled-components";
 import * as yup from "yup";
 
 import { putProduct } from "@/api";
+import { ProductEditionForm } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -159,16 +160,6 @@ export const ProductDetail = ({
     </StyledDetailModalContainer>
   );
 };
-
-export interface ProductEditionForm {
-  image: File | null;
-  colors: string[];
-  composition: string;
-  weightGPerM2: string;
-  widthInch: string;
-  price: number | null;
-  useSameImage: boolean;
-}
 
 const productEditionInitialValues: ProductEditionForm = {
   image: null,

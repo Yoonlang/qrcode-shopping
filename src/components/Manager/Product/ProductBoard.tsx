@@ -12,7 +12,10 @@ import {
   permanentDeleteProductList,
   postProduct,
 } from "@/api";
-import { PRODUCT_TRASH_CAN } from "@/components/Manager/const";
+import {
+  PRODUCT_TRASH_CAN,
+  ProductCreationForm,
+} from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -40,16 +43,6 @@ const StyledProductBoard = styled.div`
     justify-content: space-between;
   }
 `;
-
-export interface ProductCreationForm {
-  productId: string;
-  image: File | null;
-  colors: string[];
-  composition: string;
-  weightGPerM2: string;
-  widthInch: string;
-  price: number | null;
-}
 
 const productCreationInitialValues: ProductCreationForm = {
   productId: "",
