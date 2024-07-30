@@ -28,7 +28,7 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
   const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
   const [updateTrigger, setUpdateTrigger] = useState(0);
 
-  const updateFolderList = () => {
+  const handleFolderListUpdate = () => {
     getFolderList(
       (data) => {
         setFolderList(data);
@@ -39,12 +39,12 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
     );
   };
 
-  const updateBoard = () => {
+  const handleBoardUpdate = () => {
     setUpdateTrigger((old) => old + 1);
   };
 
   useEffect(() => {
-    updateFolderList();
+    handleFolderListUpdate();
   }, []);
 
   useEffect(() => {
@@ -63,9 +63,9 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
       <Menu
         selectedFolder={selectedFolder}
         folderList={folderList}
-        updateFolderList={updateFolderList}
+        onFolderListUpdate={handleFolderListUpdate}
         onMenuChange={(folder) => setSelectedFolder(folder)}
-        updateBoard={updateBoard}
+        onBoardUpdate={handleBoardUpdate}
       />
       <StyledBoardContainer>
         {selectedFolder.type === "user" ? (

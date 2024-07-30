@@ -27,13 +27,13 @@ const FolderActionModal = ({
   isModalOpen,
   onClose,
   folder,
-  updateFolderList,
+  onFolderListUpdate,
   onFolderDelete,
 }: {
   isModalOpen: boolean;
   onClose: () => void;
   folder: Folder;
-  updateFolderList: () => void;
+  onFolderListUpdate: () => void;
   onFolderDelete: () => void;
 }) => {
   const overlay = useOverlay();
@@ -46,7 +46,7 @@ const FolderActionModal = ({
       await deleteFolder(
         undefined,
         () => {
-          updateFolderList();
+          onFolderListUpdate();
           onFolderDelete();
         },
         () => {
@@ -77,7 +77,7 @@ const FolderActionModal = ({
               JSON.stringify(values),
               () => {
                 setSubmitting(false);
-                updateFolderList();
+                onFolderListUpdate();
                 onClose();
               },
               () => {

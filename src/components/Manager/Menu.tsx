@@ -45,14 +45,14 @@ const NestedListItem = ({
   selectedFolder,
   folderList,
   iconId,
-  updateFolderList,
+  onFolderListUpdate,
   onMenuChange,
   onFolderDelete,
 }: {
   selectedFolder: Folder;
   folderList: Folder[];
   iconId: string;
-  updateFolderList: () => void;
+  onFolderListUpdate: () => void;
   onMenuChange: (folder: Folder) => void;
   onFolderDelete: () => void;
 }) => {
@@ -110,7 +110,7 @@ const NestedListItem = ({
                         isModalOpen={isOpen}
                         onClose={close}
                         folder={folder}
-                        updateFolderList={updateFolderList}
+                        onFolderListUpdate={onFolderListUpdate}
                         onFolderDelete={onFolderDelete}
                       />
                     ));
@@ -128,7 +128,7 @@ const NestedListItem = ({
                   isModalOpen={isOpen}
                   onClose={close}
                   type={folderList[0].type}
-                  updateFolderList={updateFolderList}
+                  onFolderListUpdate={onFolderListUpdate}
                 />
               ));
             }}
@@ -145,15 +145,15 @@ const NestedListItem = ({
 const Menu = ({
   selectedFolder,
   folderList,
-  updateFolderList,
+  onFolderListUpdate,
   onMenuChange,
-  updateBoard,
+  onBoardUpdate,
 }: {
   selectedFolder: Folder;
   folderList: Folder[];
-  updateFolderList: () => void;
+  onFolderListUpdate: () => void;
   onMenuChange: (folder: Folder) => void;
-  updateBoard: () => void;
+  onBoardUpdate: () => void;
 }) => {
   const userFolderList = sortFolderListByType(folderList, "user");
   const productFolderList = sortFolderListByType(folderList, "product");
@@ -166,17 +166,17 @@ const Menu = ({
           selectedFolder={selectedFolder}
           folderList={userFolderList}
           iconId="person_dark"
-          updateFolderList={updateFolderList}
+          onFolderListUpdate={onFolderListUpdate}
           onMenuChange={onMenuChange}
-          onFolderDelete={updateBoard}
+          onFolderDelete={onBoardUpdate}
         />
         <NestedListItem
           selectedFolder={selectedFolder}
           folderList={productFolderList}
           iconId="list"
-          updateFolderList={updateFolderList}
+          onFolderListUpdate={onFolderListUpdate}
           onMenuChange={onMenuChange}
-          onFolderDelete={updateBoard}
+          onFolderDelete={onBoardUpdate}
         />
       </StyledList>
     </StyledDrawer>
