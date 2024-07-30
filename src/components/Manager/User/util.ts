@@ -1,8 +1,9 @@
 import { UserTableRow } from "@/components/Manager/User/const";
-import { OrdererInfo } from "@/const";
+import { Folder, OrdererInfo } from "@/const";
 
 export const handleUserInfoListForTable = (
-  userInfoList: OrdererInfo[]
+  userInfoList: OrdererInfo[],
+  folder: Folder
 ): UserTableRow[] => {
   return (
     userInfoList?.map((userInfo) => {
@@ -10,21 +11,25 @@ export const handleUserInfoListForTable = (
         personalInfo: {
           name,
           companyName,
-          contactInfo: { email, phoneNumber },
+          contactInfo: { phoneNumber, weChatId },
           businessType,
         },
-        submissionTime,
         userId,
+        remark1,
+        remark2,
       } = userInfo;
 
       return {
         id: userId,
         name,
-        company: companyName,
-        email: email,
+        weChatId,
         contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
-        submissionTime,
+        company: companyName,
         type: businessType,
+        remark1,
+        remark2,
+        folderId: folder.id,
+        folderName: folder.name,
         __user_info__: userInfo,
       };
     }) ?? []

@@ -3,17 +3,12 @@ import { GridColDef } from "@mui/x-data-grid";
 import { OrdererInfo } from "@/const";
 
 export const tableColumns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 120 },
+  { field: "id", headerName: "ID", width: 80 },
   { field: "name", headerName: "Name", width: 107 },
   {
-    field: "company",
-    headerName: "Company",
-    width: 107,
-  },
-  {
-    field: "email",
-    headerName: "E-mail",
-    width: 200,
+    field: "weChatId",
+    headerName: "WeChat ID",
+    width: 120,
   },
   {
     field: "contactNumber",
@@ -21,14 +16,38 @@ export const tableColumns: GridColDef[] = [
     width: 150,
   },
   {
-    field: "submissionTime",
-    headerName: "Submission Time",
-    width: 150,
+    field: "remark1",
+    headerName: "비고 1",
+    width: 200,
+  },
+  {
+    field: "remark2",
+    headerName: "비고 2",
+    width: 200,
+  },
+  {
+    field: "company",
+    headerName: "Company",
+    width: 107,
   },
   {
     field: "type",
     headerName: "Type",
-    width: 150,
+    width: 100,
+  },
+];
+
+export const defaultTableColumns: GridColDef[] = [
+  ...tableColumns,
+  {
+    field: "folderId",
+    headerName: "폴더 ID",
+    width: 100,
+  },
+  {
+    field: "folderName",
+    headerName: "폴더명",
+    width: 100,
   },
 ];
 
@@ -65,10 +84,13 @@ export const productListColumns: GridColDef[] = [
 export type UserTableRow = {
   id: string;
   name: string;
-  company: string;
-  email: string;
+  weChatId: string | null;
   contactNumber: string;
-  submissionTime: string;
+  company: string;
   type: string;
+  remark1: string;
+  remark2: string;
+  folderId: string;
+  folderName: string;
   __user_info__: OrdererInfo;
 };
