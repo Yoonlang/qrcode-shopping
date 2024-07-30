@@ -8,6 +8,7 @@ import { StyledAppBar } from "@/components/Manager/DashboardItems";
 import Menu from "@/components/Manager/Menu";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
 import UserBoard from "@/components/Manager/User/UserBoard";
+import { sortFolderListByType } from "@/components/Manager/util";
 import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
@@ -24,8 +25,9 @@ const Dashboard = () => {
     initialFolderList[0]
   );
   const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
+  const [updateTrigger, setUpdateTrigger] = useState(0);
 
-  const updateFolderList = () => {
+  const handleFolderListUpdate = () => {
     getFolderList(
       (data) => {
         setFolderList(data);
@@ -36,8 +38,12 @@ const Dashboard = () => {
     );
   };
 
+  const handleBoardUpdate = () => {
+    setUpdateTrigger((old) => old + 1);
+  };
+
   useEffect(() => {
-    updateFolderList();
+    handleFolderListUpdate();
   }, []);
 
   useEffect(() => {
@@ -56,14 +62,23 @@ const Dashboard = () => {
       <Menu
         selectedFolder={selectedFolder}
         folderList={folderList}
-        updateFolderList={updateFolderList}
+        onFolderListUpdate={handleFolderListUpdate}
         onMenuChange={(folder) => setSelectedFolder(folder)}
+        onBoardUpdate={handleBoardUpdate}
       />
       <StyledBoardContainer>
         {selectedFolder.type === "user" ? (
-          <UserBoard folder={selectedFolder} />
+          <UserBoard
+            key={updateTrigger}
+            folder={selectedFolder}
+            userFolderList={sortFolderListByType(folderList, "user")}
+          />
         ) : (
-          <ProductBoard folder={selectedFolder} />
+          <ProductBoard
+            key={updateTrigger}
+            folder={selectedFolder}
+            productFolderList={sortFolderListByType(folderList, "product")}
+          />
         )}
       </StyledBoardContainer>
     </>

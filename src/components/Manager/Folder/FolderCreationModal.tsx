@@ -37,12 +37,12 @@ const FolderCreationModal = ({
   isModalOpen,
   onClose,
   type,
-  updateFolderList,
+  onFolderListUpdate,
 }: {
   isModalOpen: boolean;
   onClose: () => void;
   type: "user" | "product";
-  updateFolderList: () => void;
+  onFolderListUpdate: () => void;
 }) => {
   const overlay = useOverlay();
 
@@ -61,7 +61,7 @@ const FolderCreationModal = ({
               JSON.stringify(values),
               () => {
                 setSubmitting(false);
-                updateFolderList();
+                onFolderListUpdate();
                 onClose();
               },
               () => {

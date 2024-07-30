@@ -1,8 +1,8 @@
 import { SERVER_URL } from "@/components/const";
 import { Folder, OrdererInfo, Product } from "@/const";
 import {
-  transformProductToSoftDeleteFormat,
-  transformUserToSoftDeleteFormat,
+  transformProductForFolderUpdate,
+  transformUserForFolderUpdate,
 } from "@/util";
 
 const API_VERSION = "/v1";
@@ -226,8 +226,9 @@ const putUser: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
-export const moveToTrash = (
+export const reassignFolder = (
   dataList: OrdererInfo[] | Product[],
+  folderId: string,
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback
 ) => {
@@ -237,13 +238,13 @@ export const moveToTrash = (
       new Promise((resolve, reject) => {
         "productId" in d
           ? putProduct(
-              transformProductToSoftDeleteFormat(d),
+              transformProductForFolderUpdate(d, folderId),
               resolve,
               reject,
               d.productId
             )
           : putUser(
-              transformUserToSoftDeleteFormat(d),
+              transformUserForFolderUpdate(d, folderId),
               resolve,
               reject,
               d.userId
