@@ -28,14 +28,16 @@ const defaultColumns: GridColDef[] = [
 
 const ProductTable = ({
   folder,
+  folderList,
   productList,
   setSelectedProductList,
 }: {
   folder: Folder;
+  folderList: Folder[];
   productList: Product[];
   setSelectedProductList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const tableRows = handleProductListForTable(productList, folder);
+  const tableRows = handleProductListForTable(productList, folderList);
   const overlay = useOverlay();
 
   // formik 커밋 이후 수정할 예정

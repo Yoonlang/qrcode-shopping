@@ -3,13 +3,15 @@ import { Folder, Product } from "@/const";
 
 export const handleProductListForTable = (
   productList: Product[],
-  folder: Folder
+  folderList: Folder[]
 ): ProductTableRow[] => {
   return productList.map((product) => {
     return {
       id: product.productId,
-      folderId: folder.id,
-      folderName: folder.name,
+      folderId: product.metadata.folderId,
+      folderName:
+        folderList.find((f) => f.id === product.metadata.folderId)?.name ??
+        "Not Found",
       __product__: product,
     };
   });

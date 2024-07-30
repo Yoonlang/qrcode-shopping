@@ -184,6 +184,7 @@ const ProductBoard = ({
       </div>
       <ProductTable
         folder={folder}
+        folderList={productFolderList}
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
       />
