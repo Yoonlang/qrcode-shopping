@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { mockProductList } from "@/components/Manager/Product/const";
-import { ProductDetailModal } from "@/components/Manager/Product/ProductTable";
+import ProductDetailModal from "@/components/Manager/Product/ProductDetailModal";
 
 describe("ProductDetailModal", () => {
   it("초기 렌더링 확인", async () => {
