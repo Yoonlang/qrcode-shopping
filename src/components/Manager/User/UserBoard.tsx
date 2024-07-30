@@ -10,7 +10,7 @@ import {
 } from "@/api";
 import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/Manager/const";
 import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
-import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";
+import UserTable from "@/components/Manager/User/UserTable";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, OrdererInfo } from "@/const";
 
@@ -169,7 +169,7 @@ const UserBoard = ({
           )}
         </div>
       </div>
-      <UserInfoTable
+      <UserTable
         userInfoList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />

@@ -1,14 +1,13 @@
-import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
 import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";
-import { initialFolderList, ProductFormType } from "@/components/Manager/const";
+import { initialFolderList } from "@/components/Manager/const";
 import { StyledAppBar } from "@/components/Manager/DashboardItems";
 import Menu from "@/components/Manager/Menu";
-import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
+import UserBoard from "@/components/Manager/User/UserBoard";
 import { sortFolderListByType } from "@/components/Manager/util";
 import { Folder } from "@/const";
 
@@ -21,7 +20,7 @@ const StyledBoardContainer = styled.div`
   height: calc(100% - 70px);
 `;
 
-const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
+const Dashboard = () => {
   const [selectedFolder, setSelectedFolder] = useState<Folder>(
     initialFolderList[0]
   );
@@ -79,7 +78,6 @@ const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
             key={updateTrigger}
             folder={selectedFolder}
             productFolderList={sortFolderListByType(folderList, "product")}
-            formik={formik}
           />
         )}
       </StyledBoardContainer>

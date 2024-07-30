@@ -1,5 +1,76 @@
-import { PRODUCT_DEFAULT } from "@/components/Manager/const";
+import { GridColDef } from "@mui/x-data-grid";
+import * as yup from "yup";
+
+import {
+  PRODUCT_DEFAULT,
+  ProductCreationForm,
+  ProductEditionForm,
+} from "@/components/Manager/const";
 import { Product } from "@/const";
+
+export const fileTypes = ["JPG", "PNG"];
+
+export const productCreationInitialValues: ProductCreationForm = {
+  productId: "",
+  image: null,
+  colors: [""],
+  composition: "",
+  weightGPerM2: "",
+  widthInch: "",
+  price: null,
+};
+
+export const productCreationSchema = yup.object().shape({
+  productId: yup.string().required(),
+  image: yup
+    .mixed()
+    .nullable()
+    .test("fileType", (value) => {
+      if (!value) return true;
+      return (
+        value instanceof File &&
+        ["image/jpeg", "image/png"].includes(value.type)
+      );
+    }),
+  colors: yup.array().of(yup.string()),
+  composition: yup.string().defined(),
+  weightGPerM2: yup.string().defined(),
+  widthInch: yup.string().defined(),
+  price: yup.number().required().nullable(),
+});
+
+export const productEditionInitialValues: ProductEditionForm = {
+  image: null,
+  colors: [""],
+  composition: "",
+  weightGPerM2: "",
+  widthInch: "",
+  price: null,
+  useSameImage: true,
+};
+
+export const productEditionSchema = yup.object().shape({
+  image: yup
+    .mixed()
+    .nullable()
+    .test("fileType", (value) => {
+      if (!value) return true;
+      return (
+        value instanceof File &&
+        ["image/jpeg", "image/png"].includes(value.type)
+      );
+    }),
+  colors: yup.array().of(yup.string()),
+  composition: yup.string().defined(),
+  weightGPerM2: yup.string().defined(),
+  widthInch: yup.string().defined(),
+  price: yup.number().required().nullable(),
+  useSameImage: yup.boolean().required(),
+});
+
+export const productDetailColumns: GridColDef[] = [
+  { field: "sampleYardage", headerName: "Sample Yardage", width: 300 },
+];
 
 export const mockProductList: Product[] = [
   {
@@ -31,3 +102,8 @@ export const mockProductList: Product[] = [
     },
   },
 ];
+
+export type ProductTableRow = {
+  id: string;
+  __product__: Product;
+};
