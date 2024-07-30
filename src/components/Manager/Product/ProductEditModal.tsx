@@ -8,6 +8,7 @@ import {
   ProductAddModal,
   ProductInput,
   StyledFlexDiv,
+  StyledModal,
 } from "@/components/Manager/DashboardItems";
 import {
   fileTypes,
@@ -16,20 +17,20 @@ import {
 } from "@/components/Manager/Product/const";
 import { Product } from "@/const";
 
-const ProductEdit = ({
+const ProductEditModal = ({
   product,
+  isModalOpen,
   onModalClose,
-  onDetailModalOpen,
 }: {
   product: Product;
+  isModalOpen: boolean;
   onModalClose: () => void;
-  onDetailModalOpen: () => void;
 }) => {
   const formik = useFormik({
     initialValues: productEditionInitialValues,
     validateOnMount: true,
     validationSchema: productEditionSchema,
-    onSubmit: (form, { resetForm }) => {
+    onSubmit: (form) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -63,7 +64,7 @@ const ProductEdit = ({
       putProduct(
         formData,
         () => {
-          resetForm();
+          onModalClose();
         },
         (e) => {
           console.log(e);
@@ -125,69 +126,70 @@ const ProductEdit = ({
   }, [product]);
 
   return (
-    <ProductAddModal data-testid={"product-edit-modal"}>
-      <h2>Edit</h2>
-      <TextField
-        label="Product ID"
-        name="productId"
-        value={product.productId}
-        disabled
-      />
-      <FileUploader
-        handleChange={handleChangeFile}
-        name="file"
-        types={fileTypes}
-        disabled={formik.values.image}
-      />
-      {formik.values.image &&
-        (formik.values.image.name ? (
-          <div>{formik.values.image.name}</div>
-        ) : (
+    <StyledModal open={isModalOpen} onClose={onModalClose}>
+      <ProductAddModal data-testid={"product-edit-modal"}>
+        <h2>Edit</h2>
+        <TextField
+          label="Product ID"
+          name="productId"
+          value={product.productId}
+          disabled
+        />
+        <FileUploader
+          handleChange={handleChangeFile}
+          name="file"
+          types={fileTypes}
+          disabled={formik.values.image}
+        />
+        {formik.values.image &&
+          (formik.values.image.name ? (
+            <div>{formik.values.image.name}</div>
+          ) : (
+            <Button
+              onClick={() => {
+                handleChangeFile(null);
+              }}
+            >
+              기존 이미지 제거
+            </Button>
+          ))}
+        <ProductInput label="Composition" name="composition" formik={formik} />
+        <ProductInput label="Weight" name="weightGPerM2" formik={formik} />
+        <ProductInput label="Width" name="widthInch" formik={formik} />
+        {colors.length > 0 &&
+          colors.map((color, index) => (
+            <StyledFlexDiv key={index}>
+              <TextField
+                label="Sample Yardage"
+                name={`colors.${index}`}
+                onChange={formik.handleChange}
+                onKeyDown={handleKeyDown}
+                value={color}
+                inputRef={(el) => (colorRefs.current[index] = el)}
+                fullWidth
+              />
+              {index !== colors.length - 1 ? (
+                <Button onClick={(e) => handleDeleteColor(e, index)}>
+                  Delete
+                </Button>
+              ) : (
+                <Button onClick={handleAddColor}>Add</Button>
+              )}
+            </StyledFlexDiv>
+          ))}
+        <StyledFlexDiv>
           <Button
             onClick={() => {
-              handleChangeFile(null);
+              formik.submitForm();
             }}
           >
-            기존 이미지 제거
+            Confirm
           </Button>
-        ))}
-      <ProductInput label="Composition" name="composition" formik={formik} />
-      <ProductInput label="Weight" name="weightGPerM2" formik={formik} />
-      <ProductInput label="Width" name="widthInch" formik={formik} />
-      {colors.length > 0 &&
-        colors.map((color, index) => (
-          <StyledFlexDiv key={index}>
-            <TextField
-              label="Sample Yardage"
-              name={`colors.${index}`}
-              onChange={formik.handleChange}
-              onKeyDown={handleKeyDown}
-              value={color}
-              inputRef={(el) => (colorRefs.current[index] = el)}
-              fullWidth
-            />
-            {index !== colors.length - 1 ? (
-              <Button onClick={(e) => handleDeleteColor(e, index)}>
-                Delete
-              </Button>
-            ) : (
-              <Button onClick={handleAddColor}>Add</Button>
-            )}
-          </StyledFlexDiv>
-        ))}
-      <StyledFlexDiv>
-        <Button
-          onClick={() => {
-            formik.submitForm();
-            onDetailModalOpen();
-          }}
-        >
-          Confirm
-        </Button>
-        <Button onClick={onModalClose}>Cancel</Button>
-      </StyledFlexDiv>
-    </ProductAddModal>
+          <Button onClick={onModalClose}>Cancel</Button>
+        </StyledFlexDiv>
+      </ProductAddModal>
+    </StyledModal>
   );
 };
 
-export default ProductEdit;
+export default ProductEditModal;

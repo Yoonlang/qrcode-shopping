@@ -1,12 +1,12 @@
 import { Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useOverlay } from "@toss/use-overlay";
 import Image from "next/image";
-import { useState } from "react";
 import { styled } from "styled-components";
 
 import { StyledModal } from "@/components/Manager/DashboardItems";
 import { productDetailColumns } from "@/components/Manager/Product/const";
-import ProductEdit from "@/components/Manager/Product/ProductEditModal";
+import ProductEditModal from "@/components/Manager/Product/ProductEditModal";
 import { Product } from "@/const";
 
 const StyledDetailModalContainer = styled.div`
@@ -56,76 +56,6 @@ const StyledDetailModalContainer = styled.div`
   }
 `;
 
-export const ProductDetail = ({
-  product,
-  onModalClose,
-  onEditModalOpen,
-}: {
-  product: Product;
-  onModalClose: () => void;
-  onEditModalOpen: () => void;
-}) => {
-  const { productId, image, composition, weightGPerM2, widthInch, colors } =
-    product;
-
-  const rows = colors.map(({ colorName, colorId }) => {
-    return {
-      sampleYardage: `${colorId} ${colorName}`,
-    };
-  });
-
-  return (
-    <StyledDetailModalContainer>
-      <div className="productContainer">
-        <div className="baseInfo">
-          <div className="imageContainer">
-            {image ? (
-              <Image
-                width={276}
-                height={276}
-                src={`${image ?? ""}`}
-                loading="lazy"
-                unoptimized
-                alt={productId}
-              />
-            ) : (
-              <>no image</>
-            )}
-          </div>
-          <div className="productDetail">
-            <h4>{productId}</h4>
-            <h5>Comp: {composition}</h5>
-            <h5>Weight (g/m2): {weightGPerM2}</h5>
-            <h5>width (Inch): {widthInch}</h5>
-          </div>
-        </div>
-        <div style={{ width: "100%" }}>
-          <DataGrid
-            getRowId={(obj) => obj.sampleYardage}
-            rows={rows}
-            columns={productDetailColumns}
-            hideFooter
-            density="compact"
-            sx={{
-              borderLeft: "none",
-              borderRight: "none",
-            }}
-          />
-        </div>
-      </div>
-      <div className="buttonContainer">
-        <Button
-          onClick={onEditModalOpen}
-          data-testid={"product-detail-open-edit-modal-button"}
-        >
-          수정
-        </Button>
-        <Button onClick={onModalClose}>닫기</Button>
-      </div>
-    </StyledDetailModalContainer>
-  );
-};
-
 const ProductDetailModal = ({
   isModalOpen,
   onModalClose,
@@ -135,15 +65,15 @@ const ProductDetailModal = ({
   onModalClose: () => void;
   modalProductData: Product;
 }) => {
-  const [isEditMode, setIsEditMode] = useState(false);
+  const { productId, image, composition, weightGPerM2, widthInch, colors } =
+    modalProductData;
+  const overlay = useOverlay();
 
-  const openEditModal = () => {
-    setIsEditMode(true);
-  };
-
-  const openDetailModal = () => {
-    setIsEditMode(false);
-  };
+  const rows = colors.map(({ colorName, colorId }) => {
+    return {
+      sampleYardage: `${colorId} ${colorName}`,
+    };
+  });
 
   return (
     <StyledModal
@@ -151,19 +81,63 @@ const ProductDetailModal = ({
       onClose={onModalClose}
       data-testid={"product-detail-modal"}
     >
-      {isEditMode ? (
-        <ProductEdit
-          product={modalProductData}
-          onModalClose={onModalClose}
-          onDetailModalOpen={openDetailModal}
-        />
-      ) : (
-        <ProductDetail
-          product={modalProductData}
-          onModalClose={onModalClose}
-          onEditModalOpen={openEditModal}
-        />
-      )}
+      <StyledDetailModalContainer>
+        <div className="productContainer">
+          <div className="baseInfo">
+            <div className="imageContainer">
+              {image ? (
+                <Image
+                  width={276}
+                  height={276}
+                  src={`${image ?? ""}`}
+                  loading="lazy"
+                  unoptimized
+                  alt={productId}
+                />
+              ) : (
+                <>no image</>
+              )}
+            </div>
+            <div className="productDetail">
+              <h4>{productId}</h4>
+              <h5>Comp: {composition}</h5>
+              <h5>Weight (g/m2): {weightGPerM2}</h5>
+              <h5>width (Inch): {widthInch}</h5>
+            </div>
+          </div>
+          <div style={{ width: "100%" }}>
+            <DataGrid
+              getRowId={(obj) => obj.sampleYardage}
+              rows={rows}
+              columns={productDetailColumns}
+              hideFooter
+              density="compact"
+              sx={{
+                borderLeft: "none",
+                borderRight: "none",
+              }}
+            />
+          </div>
+        </div>
+        <div className="buttonContainer">
+          <Button
+            onClick={() => {
+              overlay.open(({ isOpen, close }) => (
+                <ProductEditModal
+                  product={modalProductData}
+                  isModalOpen={isOpen}
+                  onModalClose={close}
+                />
+              ));
+              onModalClose();
+            }}
+            data-testid={"product-detail-open-edit-modal-button"}
+          >
+            수정
+          </Button>
+          <Button onClick={onModalClose}>닫기</Button>
+        </div>
+      </StyledDetailModalContainer>
     </StyledModal>
   );
 };

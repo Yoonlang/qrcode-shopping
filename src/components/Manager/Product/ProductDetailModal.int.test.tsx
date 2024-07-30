@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { OverlayProvider } from "@toss/use-overlay";
 
 import { mockProductList } from "@/components/Manager/Product/const";
 import ProductDetailModal from "@/components/Manager/Product/ProductDetailModal";
@@ -12,11 +13,13 @@ describe("ProductDetailModal", () => {
 
     // When
     render(
-      <ProductDetailModal
-        isModalOpen={true}
-        onModalClose={jest.fn()}
-        modalProductData={modalProductData}
-      />
+      <OverlayProvider>
+        <ProductDetailModal
+          isModalOpen={true}
+          onModalClose={jest.fn()}
+          modalProductData={modalProductData}
+        />
+      </OverlayProvider>
     );
 
     // Then
@@ -31,11 +34,13 @@ describe("ProductDetailModal", () => {
 
     // When
     render(
-      <ProductDetailModal
-        isModalOpen={true}
-        onModalClose={jest.fn()}
-        modalProductData={modalProductData}
-      />
+      <OverlayProvider>
+        <ProductDetailModal
+          isModalOpen={true}
+          onModalClose={jest.fn()}
+          modalProductData={modalProductData}
+        />
+      </OverlayProvider>
     );
     await waitFor(() => {
       expect(
