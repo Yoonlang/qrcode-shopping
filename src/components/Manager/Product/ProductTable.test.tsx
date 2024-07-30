@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { Formik } from "formik";
+import { OverlayProvider } from "@toss/use-overlay";
 
-import { initialValues } from "@/components/Manager/const";
 import { mockProductList } from "@/components/Manager/Product/const";
 import ProductTable from "@/components/Manager/Product/ProductTable";
 
@@ -15,15 +14,12 @@ describe("ProductTable", () => {
 
     // When
     render(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-        {(formik) => (
-          <ProductTable
-            productList={productList}
-            setSelectedProductList={mockSetSelectedProductList}
-            formik={formik}
-          />
-        )}
-      </Formik>
+      <OverlayProvider>
+        <ProductTable
+          productList={productList}
+          setSelectedProductList={mockSetSelectedProductList}
+        />
+      </OverlayProvider>
     );
 
     // Then
@@ -36,15 +32,12 @@ describe("ProductTable", () => {
 
     // When
     render(
-      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-        {(formik) => (
-          <ProductTable
-            productList={productList}
-            setSelectedProductList={mockSetSelectedProductList}
-            formik={formik}
-          />
-        )}
-      </Formik>
+      <OverlayProvider>
+        <ProductTable
+          productList={productList}
+          setSelectedProductList={mockSetSelectedProductList}
+        />
+      </OverlayProvider>
     );
 
     await waitFor(() => {

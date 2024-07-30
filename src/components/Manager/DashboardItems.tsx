@@ -3,8 +3,10 @@ import { FormikProps } from "formik";
 import { MutableRefObject } from "react";
 import { styled } from "styled-components";
 
-import { ProductCreationForm } from "@/components/Manager/Product/ProductBoard";
-import { ProductEditionForm } from "@/components/Manager/Product/ProductTable";
+import {
+  ProductCreationForm,
+  ProductEditionForm,
+} from "@/components/Manager/const";
 
 const StyledAppBar = styled(AppBar)`
   &.MuiAppBar-root {
