@@ -3,7 +3,8 @@ import { FormikProps } from "formik";
 import { MutableRefObject } from "react";
 import { styled } from "styled-components";
 
-import { ProductFormType } from "@/components/Manager/const";
+import { ProductCreationForm } from "@/components/Manager/Product/ProductBoard";
+import { ProductEditionForm } from "@/components/Manager/Product/ProductTable";
 
 const StyledAppBar = styled(AppBar)`
   &.MuiAppBar-root {
@@ -93,7 +94,7 @@ const ProductInput = ({
 }: {
   label: string;
   name: string;
-  formik: FormikProps<ProductFormType>;
+  formik: FormikProps<ProductCreationForm | ProductEditionForm>;
   type?: string;
   inputRef?: MutableRefObject<HTMLInputElement | undefined>;
 }) => {

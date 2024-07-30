@@ -1,13 +1,14 @@
 import { Button, TextField } from "@mui/material";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { useOverlay } from "@toss/use-overlay";
-import { FormikProps } from "formik";
+import { useFormik } from "formik";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
+import * as yup from "yup";
 
-import { ProductFormType } from "@/components/Manager/const";
+import { putProduct } from "@/api";
 import {
   ProductAddModal,
   ProductInput,
@@ -159,22 +160,108 @@ export const ProductDetail = ({
   );
 };
 
+export interface ProductEditionForm {
+  image: File | null;
+  colors: string[];
+  composition: string;
+  weightGPerM2: string;
+  widthInch: string;
+  price: number | null;
+  useSameImage: boolean;
+}
+
+const productEditionInitialValues: ProductEditionForm = {
+  image: null,
+  colors: [""],
+  composition: "",
+  weightGPerM2: "",
+  widthInch: "",
+  price: null,
+  useSameImage: true,
+};
+
+const productEditionSchema = yup.object().shape({
+  image: yup
+    .mixed()
+    .nullable()
+    .test("fileType", (value) => {
+      if (!value) return true;
+      return (
+        value instanceof File &&
+        ["image/jpeg", "image/png"].includes(value.type)
+      );
+    }),
+  colors: yup.array().of(yup.string()),
+  composition: yup.string().defined(),
+  weightGPerM2: yup.string().defined(),
+  widthInch: yup.string().defined(),
+  price: yup.number().required().nullable(),
+  useSameImage: yup.boolean().required(),
+});
+
 export const ProductEdit = ({
   product,
   onModalClose,
   onDetailModalOpen,
-  formik,
 }: {
   product: Product;
   onModalClose: () => void;
   onDetailModalOpen: () => void;
-  formik: FormikProps<ProductFormType>;
 }) => {
+  const formik = useFormik({
+    initialValues: productEditionInitialValues,
+    validateOnMount: true,
+    validationSchema: productEditionSchema,
+    onSubmit: (form, { resetForm }) => {
+      const newForm = {
+        ...form,
+        colors: form.colors.map((color, index) => {
+          return {
+            colorId: (index + 1).toString(),
+            colorName: color,
+          };
+        }),
+        weightGPerM2: Number(form["weightGPerM2"]),
+        widthInch: Number(form["widthInch"]),
+        folderId: product.metadata.folderId,
+        useSameImage: form.useSameImage,
+      };
+
+      const formData = new FormData();
+
+      Object.entries(newForm).forEach(([key, value]) => {
+        if (key === "image") {
+          if (value instanceof File) {
+            formData.append(key, value);
+          } else if ((value as never as boolean) === true) {
+            formData.append(key, "null");
+          } else {
+            formData.append(key, "null");
+          }
+        } else {
+          formData.append(key, JSON.stringify(value));
+        }
+      });
+
+      putProduct(
+        formData,
+        () => {
+          resetForm();
+        },
+        (e) => {
+          console.log(e);
+        },
+        product.productId
+      );
+    },
+  });
+
   const colors = formik.values.colors;
   const colorRefs = useRef<HTMLInputElement[]>([]);
 
   const handleChangeFile = (file) => {
     formik.setFieldValue("image", file);
+    formik.setFieldValue("useSameImage", false);
   };
 
   const handleAddColor = () => {
@@ -198,27 +285,15 @@ export const ProductEdit = ({
   };
 
   useEffect(() => {
-    if (
-      colors.length > 0 &&
-      colorRefs.current[colors.length - 1] &&
-      formik.values.productId !== ""
-    ) {
+    if (colors.length > 0 && colorRefs.current[colors.length - 1]) {
       colorRefs.current[colors.length - 1].focus();
     }
   }, [colors.length]);
 
   useEffect(() => {
-    const {
-      productId,
-      image,
-      colors,
-      price,
-      weightGPerM2,
-      widthInch,
-      composition,
-    } = product;
+    const { image, colors, price, weightGPerM2, widthInch, composition } =
+      product;
     formik.setFieldValue("method", "PUT");
-    formik.setFieldValue("productId", productId);
     formik.setFieldValue("weightGPerM2", weightGPerM2);
     formik.setFieldValue("widthInch", widthInch);
     formik.setFieldValue("composition", composition);
@@ -235,7 +310,12 @@ export const ProductEdit = ({
   return (
     <ProductAddModal data-testid={"product-edit-modal"}>
       <h2>Edit</h2>
-      <ProductInput label="Product ID" name="productId" formik={formik} />
+      <TextField
+        label="Product ID"
+        name="productId"
+        value={product.productId}
+        disabled
+      />
       <FileUploader
         handleChange={handleChangeFile}
         name="file"
@@ -297,12 +377,10 @@ export const ProductDetailModal = ({
   isModalOpen,
   onModalClose,
   modalProductData,
-  formik,
 }: {
   isModalOpen: boolean;
   onModalClose: () => void;
   modalProductData: Product;
-  formik: FormikProps<ProductFormType>;
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -325,7 +403,6 @@ export const ProductDetailModal = ({
           product={modalProductData}
           onModalClose={onModalClose}
           onDetailModalOpen={openDetailModal}
-          formik={formik}
         />
       ) : (
         <ProductDetail
@@ -341,11 +418,9 @@ export const ProductDetailModal = ({
 const ProductTable = ({
   productList,
   setSelectedProductList,
-  formik,
 }: {
   productList: Product[];
   setSelectedProductList: Dispatch<SetStateAction<string[]>>;
-  formik: FormikProps<ProductFormType>;
 }) => {
   const tableRows = handleProductListForTable(productList);
   const overlay = useOverlay();
@@ -381,7 +456,6 @@ const ProductTable = ({
                   isModalOpen={isOpen}
                   onModalClose={close}
                   modalProductData={cell.row.__product__}
-                  formik={formik}
                 />
               ));
             }

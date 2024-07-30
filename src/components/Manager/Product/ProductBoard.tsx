@@ -1,12 +1,18 @@
 import { Button, TextField } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
-import { FormikProps } from "formik";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useFormik } from "formik";
+import { useEffect, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { styled } from "styled-components";
+import * as yup from "yup";
 
-import { getProductList, moveToTrash, permanentDeleteProductList } from "@/api";
-import { PRODUCT_TRASH_CAN, ProductFormType } from "@/components/Manager/const";
+import {
+  getProductList,
+  moveToTrash,
+  permanentDeleteProductList,
+  postProduct,
+} from "@/api";
+import { PRODUCT_TRASH_CAN } from "@/components/Manager/const";
 import {
   ProductAddModal,
   ProductInput,
@@ -35,15 +41,95 @@ const StyledProductBoard = styled.div`
   }
 `;
 
+export interface ProductCreationForm {
+  productId: string;
+  image: File | null;
+  colors: string[];
+  composition: string;
+  weightGPerM2: string;
+  widthInch: string;
+  price: number | null;
+}
+
+const productCreationInitialValues: ProductCreationForm = {
+  productId: "",
+  image: null,
+  colors: [""],
+  composition: "",
+  weightGPerM2: "",
+  widthInch: "",
+  price: null,
+};
+
+const productCreationSchema = yup.object().shape({
+  productId: yup.string().required(),
+  image: yup
+    .mixed()
+    .nullable()
+    .test("fileType", (value) => {
+      if (!value) return true;
+      return (
+        value instanceof File &&
+        ["image/jpeg", "image/png"].includes(value.type)
+      );
+    }),
+  colors: yup.array().of(yup.string()),
+  composition: yup.string().defined(),
+  weightGPerM2: yup.string().defined(),
+  widthInch: yup.string().defined(),
+  price: yup.number().required().nullable(),
+});
+
 const ProductCreateModal = ({
   isModalOpen,
   onModalClose,
-  formik,
 }: {
   isModalOpen: boolean;
   onModalClose: () => void;
-  formik: FormikProps<ProductFormType>;
 }) => {
+  const formik = useFormik({
+    initialValues: productCreationInitialValues,
+    validationSchema: productCreationSchema,
+    onSubmit: (form, { resetForm }) => {
+      const newForm = {
+        ...form,
+        colors: form.colors.map((color, index) => {
+          return {
+            colorId: (index + 1).toString(),
+            colorName: color,
+          };
+        }),
+        weightGPerM2: Number(form["weightGPerM2"]),
+        widthInch: Number(form["widthInch"]),
+      };
+
+      const formData = new FormData();
+
+      Object.entries(newForm).forEach(([key, value]) => {
+        if (key === "image") {
+          if (value instanceof File) {
+            formData.append(key, value);
+          } else if ((value as never as boolean) === true) {
+            formData.append(key, "null");
+          } else {
+            formData.append(key, "null");
+          }
+        } else {
+          formData.append(key, JSON.stringify(value));
+        }
+      });
+
+      postProduct(
+        formData,
+        () => {
+          resetForm();
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
+    },
+  });
   const productIdRefs = useRef<HTMLInputElement>(null);
   const colors = formik.values.colors;
   const colorRefs = useRef<HTMLInputElement[]>([]);
@@ -133,13 +219,7 @@ const ProductCreateModal = ({
   );
 };
 
-const ProductBoard = ({
-  folder,
-  formik,
-}: {
-  folder: Folder;
-  formik: FormikProps<ProductFormType>;
-}) => {
+const ProductBoard = ({ folder }: { folder: Folder }) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const filteredProductList = productList.filter(
     (p) => p.metadata.folderId === folder.id
@@ -202,15 +282,9 @@ const ProductBoard = ({
     );
   };
 
-  const cachedFormikSubmit = useMemo(() => {
-    return formik.isSubmitting;
-  }, [formik.isSubmitting]);
-
   useEffect(() => {
-    if (!cachedFormikSubmit) {
-      updateProductList();
-    }
-  }, [cachedFormikSubmit]);
+    updateProductList();
+  }, []);
 
   return (
     <StyledProductBoard>
@@ -230,7 +304,6 @@ const ProductBoard = ({
                     <ProductCreateModal
                       isModalOpen={isOpen}
                       onModalClose={close}
-                      formik={formik}
                     />
                   ));
                 }}
@@ -244,7 +317,6 @@ const ProductBoard = ({
       <ProductTable
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
-        formik={formik}
       />
     </StyledProductBoard>
   );

@@ -8,10 +8,10 @@ export interface ProductFormType {
   weightGPerM2: string;
   widthInch: string;
   price: number | null;
-  method: string;
+  useSameImage: boolean;
 }
 
-export const initialValues = {
+export const initialValues: ProductFormType = {
   productId: "",
   image: null,
   colors: [""],
@@ -19,7 +19,7 @@ export const initialValues = {
   weightGPerM2: "",
   widthInch: "",
   price: null,
-  method: "POST",
+  useSameImage: false,
 };
 
 export const USER_DEFAULT = "user-default";
