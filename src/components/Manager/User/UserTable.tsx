@@ -329,7 +329,7 @@ const UserInfoDetailModal = ({
   );
 };
 
-const UserInfoTable = ({
+const UserTable = ({
   userInfoList,
   setSelectedUserList,
 }: {
@@ -373,4 +373,4 @@ const UserInfoTable = ({
   );
 };
 
-export default UserInfoTable;
+export default UserTable;

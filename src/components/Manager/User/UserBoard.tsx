@@ -9,7 +9,7 @@ import {
   permanentDeleteOrdererList,
 } from "@/api";
 import { USER_TRASH_CAN } from "@/components/Manager/const";
-import UserInfoTable from "@/components/Manager/User/UserInfoTable";
+import UserTable from "@/components/Manager/User/UserTable";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, OrdererInfo } from "@/const";
 
@@ -106,7 +106,7 @@ const UserBoard = ({ folder }: { folder: Folder }) => {
           <Button onClick={handleUserSoftDelete}>데이터 삭제</Button>
         )}
       </div>
-      <UserInfoTable
+      <UserTable
         userInfoList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />
