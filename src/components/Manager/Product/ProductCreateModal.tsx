@@ -42,14 +42,8 @@ const ProductCreateModal = ({
       const formData = new FormData();
 
       Object.entries(newForm).forEach(([key, value]) => {
-        if (key === "image") {
-          if (value instanceof File) {
-            formData.append(key, value);
-          } else if ((value as never as boolean) === true) {
-            formData.append(key, "null");
-          } else {
-            formData.append(key, "null");
-          }
+        if (key === "image" && value instanceof File) {
+          formData.append(key, value);
         } else {
           formData.append(key, JSON.stringify(value));
         }
