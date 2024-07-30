@@ -6,8 +6,8 @@ import Icons from "@/components/Icons";
 import { initialFolderList } from "@/components/Manager/const";
 import { StyledAppBar } from "@/components/Manager/DashboardItems";
 import Menu from "@/components/Manager/Menu";
-import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
+import UserBoard from "@/components/Manager/User/UserBoard";
 import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
