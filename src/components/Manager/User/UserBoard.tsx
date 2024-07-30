@@ -171,6 +171,7 @@ const UserBoard = ({
       </div>
       <UserTable
         folder={folder}
+        folderList={userFolderList}
         userInfoList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />

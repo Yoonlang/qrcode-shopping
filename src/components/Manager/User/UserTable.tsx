@@ -16,14 +16,16 @@ import { Folder, OrdererInfo } from "@/const";
 
 const UserTable = ({
   folder,
+  folderList,
   userInfoList,
   setSelectedUserList,
 }: {
   folder: Folder;
+  folderList: Folder[];
   userInfoList: OrdererInfo[];
   setSelectedUserList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const tableRows = handleUserInfoListForTable(userInfoList, folder);
+  const tableRows = handleUserInfoListForTable(userInfoList, folderList);
   const overlay = useOverlay();
 
   const handleRemarkUpdate = async (

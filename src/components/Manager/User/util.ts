@@ -3,7 +3,7 @@ import { Folder, OrdererInfo } from "@/const";
 
 export const handleUserInfoListForTable = (
   userInfoList: OrdererInfo[],
-  folder: Folder
+  folderList: Folder[]
 ): UserTableRow[] => {
   return (
     userInfoList?.map((userInfo) => {
@@ -17,6 +17,7 @@ export const handleUserInfoListForTable = (
         userId,
         remark1,
         remark2,
+        metadata: { folderId },
       } = userInfo;
 
       return {
@@ -28,8 +29,9 @@ export const handleUserInfoListForTable = (
         type: businessType,
         remark1,
         remark2,
-        folderId: folder.id,
-        folderName: folder.name,
+        folderId,
+        folderName:
+          folderList.find((f) => f.id === folderId)?.name ?? "Not Found",
         __user_info__: userInfo,
       };
     }) ?? []
