@@ -19,11 +19,13 @@ export const tableColumns: GridColDef[] = [
     field: "remark1",
     headerName: "비고 1",
     width: 200,
+    editable: true,
   },
   {
     field: "remark2",
     headerName: "비고 2",
     width: 200,
+    editable: true,
   },
   {
     field: "company",
