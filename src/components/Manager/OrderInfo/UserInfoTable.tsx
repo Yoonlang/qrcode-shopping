@@ -1,7 +1,7 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { styled } from "styled-components";
 
 import { StyledModal } from "@/components/Manager/DashboardItems";
 import { OrdererInfo } from "@/const";

@@ -1,8 +1,8 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 
 import Icons from "@/components/Icons";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";

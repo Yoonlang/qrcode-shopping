@@ -1,6 +1,6 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { styled } from "styled-components";
 
 import { deleteOrdererList, getOrdererInfoList } from "@/api";
 import UserInfoTable from "@/components/Manager/OrderInfo/UserInfoTable";

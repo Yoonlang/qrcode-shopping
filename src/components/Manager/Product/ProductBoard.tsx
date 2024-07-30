@@ -1,8 +1,8 @@
+import styled from "@emotion/styled";
 import { Button, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import { styled } from "styled-components";
 
 import { deleteProductList, getProductList } from "@/api";
 import { ProductFormType } from "@/components/Manager/const";

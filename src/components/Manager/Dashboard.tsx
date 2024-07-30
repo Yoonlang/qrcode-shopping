@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   ListItem,
   ListItemButton,
@@ -7,7 +8,6 @@ import {
 } from "@mui/material";
 import { FormikProps } from "formik";
 import { useState } from "react";
-import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import { ProductFormType } from "@/components/Manager/const";
@@ -18,7 +18,6 @@ import {
 } from "@/components/Manager/DashboardItems";
 import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
-
 
 const StyledBoardContainer = styled.div`
   display: flex;

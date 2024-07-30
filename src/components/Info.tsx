@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "@emotion/styled";
 
 const StyledInfo = styled.div`
   padding: 10px;
