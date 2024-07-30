@@ -183,6 +183,7 @@ const ProductBoard = ({
         </div>
       </div>
       <ProductTable
+        folder={folder}
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
       />

@@ -2,23 +2,40 @@ import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { useOverlay } from "@toss/use-overlay";
 import { Dispatch, SetStateAction } from "react";
 
+import { PRODUCT_DEFAULT } from "@/components/Manager/const";
 import { ProductTableRow } from "@/components/Manager/Product/const";
 import ProductDetailModal from "@/components/Manager/Product/ProductDetailModal";
 import { handleProductListForTable } from "@/components/Manager/Product/util";
-import { Product } from "@/const";
+import { Folder, Product } from "@/const";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Product ID", width: 200 },
 ];
 
+const defaultColumns: GridColDef[] = [
+  ...columns,
+  {
+    field: "folderId",
+    headerName: "폴더 ID",
+    width: 150,
+  },
+  {
+    field: "folderName",
+    headerName: "폴더명",
+    width: 150,
+  },
+];
+
 const ProductTable = ({
+  folder,
   productList,
   setSelectedProductList,
 }: {
+  folder: Folder;
   productList: Product[];
   setSelectedProductList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const tableRows = handleProductListForTable(productList);
+  const tableRows = handleProductListForTable(productList, folder);
   const overlay = useOverlay();
 
   // formik 커밋 이후 수정할 예정
@@ -32,7 +49,7 @@ const ProductTable = ({
     <div style={{ height: "calc(100% - 60px)", width: "100%" }}>
       <DataGrid
         rows={tableRows}
-        columns={columns}
+        columns={folder.id === PRODUCT_DEFAULT ? defaultColumns : columns}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 20 },
