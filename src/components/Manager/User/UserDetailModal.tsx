@@ -54,7 +54,6 @@ const UserDetailModal = ({
 }) => {
   const {
     userId,
-    submissionTime,
     productLengthUnit,
     hopeProducts,
     personalInfo: {
@@ -65,6 +64,7 @@ const UserDetailModal = ({
       companyAddress,
       shippingAddress,
     },
+    metadata: { submissionTime },
   } = modalUserInfoData;
 
   const orderRows = handleUserInfoForOrder(hopeProducts);

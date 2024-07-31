@@ -66,7 +66,6 @@ export interface OrdererInfo {
       detailAddress: string | null;
     };
   };
-  submissionTime: string;
   remark1: string;
   remark2: string;
   metadata: OrdererInfoMetadata;
