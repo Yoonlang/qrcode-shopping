@@ -16,6 +16,16 @@ export const tableColumns: GridColDef[] = [
     width: 150,
   },
   {
+    field: "company",
+    headerName: "Company",
+    width: 107,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    width: 100,
+  },
+  {
     field: "remark1",
     headerName: "비고 1",
     width: 200,
@@ -26,16 +36,6 @@ export const tableColumns: GridColDef[] = [
     headerName: "비고 2",
     width: 200,
     editable: true,
-  },
-  {
-    field: "company",
-    headerName: "Company",
-    width: 107,
-  },
-  {
-    field: "type",
-    headerName: "Type",
-    width: 100,
   },
 ];
 
