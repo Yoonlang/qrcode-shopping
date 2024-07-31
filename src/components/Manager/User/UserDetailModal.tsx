@@ -10,6 +10,8 @@ import {
   personalInfoColumns2,
   productListColumns,
   shippingAddressColumns,
+  userMetadataColumns1,
+  userMetadataColumns2,
 } from "@/components/Manager/User/const";
 import { handleUserInfoForOrder } from "@/components/Manager/User/util";
 import { OrdererInfo } from "@/const";
@@ -60,11 +62,13 @@ const UserDetailModal = ({
       name,
       companyName,
       businessType,
-      contactInfo: { email, phoneNumber },
+      contactInfo: { email, phoneNumber, weChatId },
       companyAddress,
       shippingAddress,
     },
-    metadata: { submissionTime },
+    remark1,
+    remark2,
+    metadata: { submissionTime, folderId },
   } = modalUserInfoData;
 
   const orderRows = handleUserInfoForOrder(hopeProducts);
@@ -85,7 +89,7 @@ const UserDetailModal = ({
   return (
     <StyledModal open={isModalOpen} onClose={onModalClose}>
       <StyledModalContainer>
-        <h2>User Info - {submissionTime ?? ""}</h2>
+        <h2>User Info</h2>
         <h4>Personal Info</h4>
         <div>
           <DataGrid
@@ -93,6 +97,7 @@ const UserDetailModal = ({
               {
                 id: userId,
                 name,
+                weChatId,
                 company: companyName,
               },
             ]}
@@ -159,6 +164,45 @@ const UserDetailModal = ({
               },
             ]}
             columns={shippingAddressColumns}
+            autoHeight
+            hideFooter
+            density="compact"
+            sx={{
+              borderLeft: "none",
+              borderRight: "none",
+            }}
+          />
+        </div>
+        <h4>Metadata</h4>
+        <div>
+          <DataGrid
+            getRowId={() => userId}
+            rows={[
+              {
+                folderId,
+                submissionTime,
+              },
+            ]}
+            columns={userMetadataColumns1}
+            autoHeight
+            hideFooter
+            density="compact"
+            sx={{
+              borderLeft: "none",
+              borderRight: "none",
+            }}
+          />
+        </div>
+        <div>
+          <DataGrid
+            getRowId={() => userId}
+            rows={[
+              {
+                remark1,
+                remark2,
+              },
+            ]}
+            columns={userMetadataColumns2}
             autoHeight
             hideFooter
             density="compact"
