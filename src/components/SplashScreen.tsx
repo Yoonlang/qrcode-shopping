@@ -28,7 +28,8 @@ const StyledDiv = styled("div", {
   display: flex;
   align-items: center;
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transition: opacity 0.5s ease-in-out;
+  visibility: ${({ isVisible }) => (isVisible ? "visible" : "hidden")};
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 
   > div {
     display: flex;
