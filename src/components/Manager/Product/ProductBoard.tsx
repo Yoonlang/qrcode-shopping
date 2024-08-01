@@ -165,7 +165,6 @@ const ProductBoard = ({
               <Button onClick={handleProductFolderReassign}>
                 데이터 폴더 이동
               </Button>
-              <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
               <Button
                 onClick={() => {
                   overlay.open(({ isOpen, close }) => (
@@ -180,6 +179,7 @@ const ProductBoard = ({
               >
                 데이터 추가
               </Button>
+              <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
             </>
           )}
         </div>
