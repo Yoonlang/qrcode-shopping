@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
@@ -15,17 +16,22 @@ import {
   productCreationInitialValues,
   productCreationSchema,
 } from "@/components/Manager/Product/const";
+import MessageDialog from "@/components/MessageDialog";
 import { Folder } from "@/const";
 
 const ProductCreateModal = ({
   folder,
   isModalOpen,
   onModalClose,
+  onProductCreate,
 }: {
   folder: Folder;
   isModalOpen: boolean;
   onModalClose: () => void;
+  onProductCreate: () => void;
 }) => {
+  const overlay = useOverlay();
+
   const formik = useFormik({
     initialValues: productCreationInitialValues,
     validationSchema: productCreationSchema,
@@ -57,9 +63,16 @@ const ProductCreateModal = ({
         formData,
         () => {
           resetForm();
+          onProductCreate();
         },
         (e) => {
-          console.log(e);
+          overlay.open(({ isOpen, close }) => (
+            <MessageDialog
+              isDialogOpen={isOpen}
+              onDialogClose={close}
+              messageList={[e.message]}
+            />
+          ));
         }
       );
     },
