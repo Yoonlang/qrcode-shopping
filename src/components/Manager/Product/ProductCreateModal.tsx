@@ -19,9 +19,11 @@ import {
 const ProductCreateModal = ({
   isModalOpen,
   onModalClose,
+  onProductCreate,
 }: {
   isModalOpen: boolean;
   onModalClose: () => void;
+  onProductCreate: () => void;
 }) => {
   const formik = useFormik({
     initialValues: productCreationInitialValues,
@@ -53,6 +55,7 @@ const ProductCreateModal = ({
         formData,
         () => {
           resetForm();
+          onProductCreate();
         },
         (e) => {
           console.log(e);

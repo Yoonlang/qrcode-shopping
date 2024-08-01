@@ -172,6 +172,7 @@ const ProductBoard = ({
                     <ProductCreateModal
                       isModalOpen={isOpen}
                       onModalClose={close}
+                      onProductCreate={handleProductListUpdate}
                     />
                   ));
                 }}
