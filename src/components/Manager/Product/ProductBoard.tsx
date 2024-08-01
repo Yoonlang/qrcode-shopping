@@ -170,6 +170,7 @@ const ProductBoard = ({
                 onClick={() => {
                   overlay.open(({ isOpen, close }) => (
                     <ProductCreateModal
+                      folder={folder}
                       isModalOpen={isOpen}
                       onModalClose={close}
                     />
