@@ -1,7 +1,7 @@
+import styled from "@emotion/styled";
 import { AppBar, Drawer, List, Modal, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import { MutableRefObject } from "react";
-import { styled } from "styled-components";
 
 import {
   ProductCreationForm,
@@ -19,7 +19,7 @@ const StyledAppBar = styled(AppBar)`
     font-weight: bold;
     height: 71px;
     position: fixed;
-    z-index: 1300;
+    z-index: 1201;
 
     & div {
       margin: 0 2px;

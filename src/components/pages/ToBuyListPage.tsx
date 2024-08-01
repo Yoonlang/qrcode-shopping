@@ -1,9 +1,9 @@
+import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import { useFormikContext } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { styled } from "styled-components";
 
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";

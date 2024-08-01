@@ -1,5 +1,5 @@
+import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { styled } from "styled-components";
 
 import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";

@@ -1,9 +1,9 @@
+import styled from "@emotion/styled";
 import { CircularProgress } from "@mui/material";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import { styled } from "styled-components";
 
 import { snackBarStatusMessage } from "@/components/const";
 import MessageDialog from "@/components/MessageDialog";

@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   Button,
   Dialog,
@@ -6,16 +7,15 @@ import {
   DialogContentText,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
 
 interface StyledMessageDialogProps {
   customStyle?: string;
 }
 
-const StyledMessageDialog = styled(Dialog).withConfig({
+const StyledMessageDialog = styled(Dialog, {
   shouldForwardProp: (prop) => !["customStyle"].includes(prop),
 })<StyledMessageDialogProps>`
-  z-index: 2;
+  z-index: 1202;
   p {
     ${(props) => props.customStyle};
   }
