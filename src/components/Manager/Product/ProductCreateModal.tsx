@@ -15,11 +15,14 @@ import {
   productCreationInitialValues,
   productCreationSchema,
 } from "@/components/Manager/Product/const";
+import { Folder } from "@/const";
 
 const ProductCreateModal = ({
+  folder,
   isModalOpen,
   onModalClose,
 }: {
+  folder: Folder;
   isModalOpen: boolean;
   onModalClose: () => void;
 }) => {
@@ -37,6 +40,7 @@ const ProductCreateModal = ({
         }),
         weightGPerM2: Number(form["weightGPerM2"]),
         widthInch: Number(form["widthInch"]),
+        folderId: folder.id,
       };
 
       const formData = new FormData();
@@ -103,6 +107,12 @@ const ProductCreateModal = ({
       <ProductAddModal>
         <h2>Add</h2>
         <ProductInput label="Product ID" name="productId" formik={formik} />
+        <TextField
+          label="Folder ID"
+          name="folderId"
+          value={folder.id}
+          disabled
+        />
         <FileUploader
           handleChange={handleChangeFile}
           name="file"
