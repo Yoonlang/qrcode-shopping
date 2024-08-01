@@ -2,7 +2,7 @@ import { SERVER_URL } from "@/components/const";
 import { Folder, OrdererInfo, Product } from "@/const";
 import {
   transformProductForFolderUpdate,
-  transformUserForFolderUpdate,
+  transformUserForUpdate,
 } from "@/util";
 
 const API_VERSION = "/v1";
@@ -226,6 +226,14 @@ const putUser: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
+export const editUserRemark = (
+  user: OrdererInfo,
+  onSuccess: SuccessCallback<SucceedResponse>,
+  onFail: FailCallback
+) => {
+  return putUser(transformUserForUpdate(user), onSuccess, onFail, user.userId);
+};
+
 export const reassignFolder = (
   dataList: OrdererInfo[] | Product[],
   folderId: string,
@@ -244,7 +252,7 @@ export const reassignFolder = (
               d.productId
             )
           : putUser(
-              transformUserForFolderUpdate(d, folderId),
+              transformUserForUpdate(d, folderId),
               resolve,
               reject,
               d.userId

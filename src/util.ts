@@ -16,14 +16,14 @@ export const transformProductForFolderUpdate = (
   return formData;
 };
 
-export const transformUserForFolderUpdate = (
+export const transformUserForUpdate = (
   user: OrdererInfo,
-  folderId: string
+  folderId?: string
 ): string => {
   const { metadata, userId, ...rest } = user;
   const transformedData = {
     ...rest,
-    folderId,
+    folderId: folderId ?? metadata.folderId,
     submissionTime: metadata.submissionTime,
   };
   return JSON.stringify(transformedData);
