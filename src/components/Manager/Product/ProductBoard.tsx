@@ -48,7 +48,7 @@ const ProductBoard = ({
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
   const overlay = useOverlay();
 
-  const updateProductList = () => {
+  const handleProductListUpdate = () => {
     getProductList(
       (data) => {
         setProductList(data);
@@ -72,7 +72,7 @@ const ProductBoard = ({
       ),
       PRODUCT_DEFAULT,
       () => {
-        updateProductList();
+        handleProductListUpdate();
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -93,7 +93,7 @@ const ProductBoard = ({
       ),
       PRODUCT_TRASH_CAN,
       () => {
-        updateProductList();
+        handleProductListUpdate();
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -111,7 +111,7 @@ const ProductBoard = ({
     permanentDeleteProductList(
       selectedProductList,
       () => {
-        updateProductList();
+        handleProductListUpdate();
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -137,7 +137,7 @@ const ProductBoard = ({
           folder={folder}
           folderList={productFolderList}
           onReassignComplete={() => {
-            updateProductList();
+            handleProductListUpdate();
           }}
         />
       ));
@@ -145,7 +145,7 @@ const ProductBoard = ({
   };
 
   useEffect(() => {
-    updateProductList();
+    handleProductListUpdate();
   }, []);
 
   return (
