@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,7 @@ import CounselingIntakeForm from "@/components/CounselingIntakeForm";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import MessageDialog from "@/components/MessageDialog";
 import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
@@ -189,6 +191,7 @@ const BottomAppBar = () => {
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
+  const overlay = useOverlay();
 
   const handleBottomAppBarClick = async () => {
     if (isPageName("qrcode")) {
@@ -240,12 +243,22 @@ const BottomAppBar = () => {
           />
         );
 
-        await submitForm();
-        setScannedItemList({});
-        setSelectedInfoList({});
-        setImageUrlList({});
-        resetForm({ values: initialValues });
-        goToNextPage();
+        try {
+          await submitForm();
+          setScannedItemList({});
+          setSelectedInfoList({});
+          setImageUrlList({});
+          resetForm({ values: initialValues });
+          goToNextPage();
+        } catch (e) {
+          overlay.open(({ isOpen, close }) => (
+            <MessageDialog
+              isDialogOpen={isOpen}
+              onDialogClose={close}
+              messageList={[e.message]}
+            />
+          ));
+        }
       } else {
         setMessageSnackBarState({
           message: t(snackBarStatusMessage["invalid"]),
