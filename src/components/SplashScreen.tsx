@@ -1,20 +1,17 @@
 import styled from "@emotion/styled";
 import { ReactNode, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
 
 import { MAEIL_TEXT, YOUNGWON_TEXT } from "@/components/const";
 import Icons from "@/components/Icons";
-import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
-interface StyledDivProps {
+interface StyledSplashScreenBoxProps {
   isVisible: boolean;
   children: ReactNode;
 }
 
-const StyledDiv = styled("div", {
+const StyledSplashScreenBox = styled("div", {
   shouldForwardProp: (prop) => !["isVisible"].includes(prop),
-})<StyledDivProps>`
+})<StyledSplashScreenBoxProps>`
   width: 100%;
   height: 100%;
   background-color: var(--color-black);
@@ -55,26 +52,23 @@ const StyledDiv = styled("div", {
 
 const SplashScreen = () => {
   const [isSplashScreenOpen, setIsSplashScreenOpen] = useState(true);
-  const { t } = useTranslation();
-  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsSplashScreenOpen(false);
     }, 1500);
     return () => clearTimeout(timer);
-  }, [setIsSplashScreenOpen, t]);
+  }, [setIsSplashScreenOpen]);
 
   return (
-    <StyledDiv isVisible={isSplashScreenOpen}>
+    <StyledSplashScreenBox isVisible={isSplashScreenOpen}>
       <div>
         <p>{YOUNGWON_TEXT}</p>
         <>{Icons["x"]}</>
         <p>{MAEIL_TEXT}</p>
       </div>
-
       <h2>JOJO</h2>
-    </StyledDiv>
+    </StyledSplashScreenBox>
   );
 };
 
