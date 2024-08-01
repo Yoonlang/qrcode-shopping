@@ -34,6 +34,10 @@ const StyledStepper = styled(Stepper)`
   & .MuiSvgIcon-root {
     width: 15.6px;
     margin-left: 5px;
+
+    &.Mui-completed {
+      color: var(--color-black);
+    }
   }
 
   & .MuiStepIcon-root.Mui-active {
@@ -48,10 +52,6 @@ const StyledStepper = styled(Stepper)`
 
   & .MuiStepIcon-text {
     font-size: 7.8px;
-  }
-
-  & .Mui-completed {
-    color: var(--color-black);
   }
 `;
 

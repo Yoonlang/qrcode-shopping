@@ -24,6 +24,8 @@ const detectLanugage = (text: string) => {
     return "ko";
   } else if (langCode === "eng") {
     return "en";
+  } else if (langCode === "jpn") {
+    return "ja";
   } else {
     for (const c of text.split("")) {
       const convertedCharCode = franc(c, { minLength: 0 });
@@ -31,6 +33,8 @@ const detectLanugage = (text: string) => {
         return "zh";
       } else if (convertedCharCode === "kor") {
         return "ko";
+      } else if (convertedCharCode === "jpn") {
+        return "ja";
       }
     }
     return "en";
@@ -52,6 +56,11 @@ Font.register({
   src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-kr@latest/korean-400-normal.ttf",
 });
 
+Font.register({
+  family: "Noto Sans JP",
+  src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-jp@latest/japanese-400-normal.ttf",
+});
+
 const styles = StyleSheet.create({
   en: {
     fontFamily: "Noto Sans",
@@ -61,6 +70,9 @@ const styles = StyleSheet.create({
   },
   ko: {
     fontFamily: "Noto Sans KR",
+  },
+  ja: {
+    fontFamily: "Noto Sans JP",
   },
   table: {
     width: "100%",

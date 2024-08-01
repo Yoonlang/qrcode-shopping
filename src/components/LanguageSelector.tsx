@@ -64,6 +64,10 @@ const LanguageSelector = () => {
         한국어
         {i18n.language === "ko" && Icons["select"]}
       </StyledLanguageSelectButton>
+      <StyledLanguageSelectButton onClick={() => changeLang("ja")}>
+        日本語
+        {i18n.language === "ja" && Icons["select"]}
+      </StyledLanguageSelectButton>
     </StyledLanguageSelectorBox>
   );
 };
