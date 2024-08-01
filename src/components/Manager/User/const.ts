@@ -16,6 +16,16 @@ export const tableColumns: GridColDef[] = [
     width: 150,
   },
   {
+    field: "company",
+    headerName: "Company",
+    width: 107,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    width: 100,
+  },
+  {
     field: "remark1",
     headerName: "비고 1",
     width: 200,
@@ -26,16 +36,6 @@ export const tableColumns: GridColDef[] = [
     headerName: "비고 2",
     width: 200,
     editable: true,
-  },
-  {
-    field: "company",
-    headerName: "Company",
-    width: 107,
-  },
-  {
-    field: "type",
-    headerName: "Type",
-    width: 100,
   },
 ];
 
@@ -54,8 +54,9 @@ export const defaultTableColumns: GridColDef[] = [
 ];
 
 export const personalInfoColumns1: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 300 },
+  { field: "id", headerName: "ID", width: 150 },
   { field: "name", headerName: "Name", width: 150 },
+  { field: "weChatId", headerName: "WeChat ID", width: 150 },
   { field: "company", headerName: "Company", width: 150 },
 ];
 
@@ -75,6 +76,16 @@ export const shippingAddressColumns: GridColDef[] = [
   { field: "postalCode", headerName: "Postal Code", width: 150 },
   { field: "address", headerName: "Address", width: 250 },
   { field: "detailAddress", headerName: "Detail Address", width: 250 },
+];
+
+export const userMetadataColumns1: GridColDef[] = [
+  { field: "folderId", headerName: "폴더 ID", width: 300 },
+  { field: "submissionTime", headerName: "제출 시각", width: 300 },
+];
+
+export const userMetadataColumns2: GridColDef[] = [
+  { field: "remark1", headerName: "비고 1", width: 300 },
+  { field: "remark2", headerName: "비고 2", width: 300 },
 ];
 
 export const productListColumns: GridColDef[] = [
