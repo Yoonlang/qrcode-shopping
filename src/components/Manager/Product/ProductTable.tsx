@@ -40,13 +40,6 @@ const ProductTable = ({
   const tableRows = handleProductListForTable(productList, folderList);
   const overlay = useOverlay();
 
-  // formik 커밋 이후 수정할 예정
-  // useEffect(() => {
-  //   if (!isModalOpen) {
-  //     formik.resetForm();
-  //   }
-  // }, [isModalOpen]);
-
   return (
     <div style={{ height: "calc(100% - 60px)", width: "100%" }}>
       <DataGrid
