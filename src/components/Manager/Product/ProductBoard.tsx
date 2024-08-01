@@ -1,7 +1,7 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { useEffect, useState } from "react";
-import { styled } from "styled-components";
 
 import {
   getProductList,
@@ -170,6 +170,7 @@ const ProductBoard = ({
                 onClick={() => {
                   overlay.open(({ isOpen, close }) => (
                     <ProductCreateModal
+                      folder={folder}
                       isModalOpen={isOpen}
                       onModalClose={close}
                       onProductCreate={handleProductListUpdate}
@@ -184,6 +185,8 @@ const ProductBoard = ({
         </div>
       </div>
       <ProductTable
+        folder={folder}
+        folderList={productFolderList}
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
       />

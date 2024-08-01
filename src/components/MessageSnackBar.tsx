@@ -1,13 +1,13 @@
+import styled from "@emotion/styled";
 import { Snackbar } from "@mui/material";
 import { useRecoilState } from "recoil";
-import { styled } from "styled-components";
 
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledSnackBar = styled(Snackbar)`
   display: flex;
   justify-content: center;
-  z-index: 1;
+  z-index: 1201;
 
   .MuiSnackbarContent-root {
     width: 320px;

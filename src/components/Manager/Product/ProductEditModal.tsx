@@ -146,6 +146,12 @@ const ProductEditModal = ({
           value={product.productId}
           disabled
         />
+        <TextField
+          label="Folder ID"
+          name="folderId"
+          value={product.metadata.folderId}
+          disabled
+        />
         <FileUploader
           handleChange={handleChangeFile}
           name="file"

@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   Box,
   Button,
@@ -6,7 +7,6 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-import { styled } from "styled-components";
 
 const StyledWrapper = styled.div`
   border: 0.5px solid var(--color-gray-40);

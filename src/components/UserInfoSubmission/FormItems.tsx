@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   Box,
   Checkbox,
@@ -10,7 +11,6 @@ import {
 import { FormikContextType, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { styled } from "styled-components";
 
 import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
