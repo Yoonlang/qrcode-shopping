@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
@@ -15,6 +16,8 @@ import {
   productEditionInitialValues,
   productEditionSchema,
 } from "@/components/Manager/Product/const";
+import ProductDetailModal from "@/components/Manager/Product/ProductDetailModal";
+import MessageDialog from "@/components/MessageDialog";
 import { Product } from "@/const";
 
 const ProductEditModal = ({
@@ -26,6 +29,7 @@ const ProductEditModal = ({
   isModalOpen: boolean;
   onModalClose: () => void;
 }) => {
+  const overlay = useOverlay();
   const formik = useFormik({
     initialValues: productEditionInitialValues,
     validateOnMount: true,
@@ -57,11 +61,24 @@ const ProductEditModal = ({
 
       putProduct(
         formData,
-        () => {
+        (product) => {
+          overlay.open(({ isOpen, close }) => (
+            <ProductDetailModal
+              modalProductData={product}
+              isModalOpen={isOpen}
+              onModalClose={close}
+            />
+          ));
           onModalClose();
         },
         (e) => {
-          console.log(e);
+          overlay.open(({ isOpen, close }) => (
+            <MessageDialog
+              isDialogOpen={isOpen}
+              onDialogClose={close}
+              messageList={[e.message]}
+            />
+          ));
         },
         product.productId
       );
@@ -179,7 +196,20 @@ const ProductEditModal = ({
           >
             Confirm
           </Button>
-          <Button onClick={onModalClose}>Cancel</Button>
+          <Button
+            onClick={() => {
+              overlay.open(({ isOpen, close }) => (
+                <ProductDetailModal
+                  modalProductData={product}
+                  isModalOpen={isOpen}
+                  onModalClose={close}
+                />
+              ));
+              onModalClose();
+            }}
+          >
+            Cancel
+          </Button>
         </StyledFlexDiv>
       </ProductAddModal>
     </StyledModal>

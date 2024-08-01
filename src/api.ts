@@ -152,7 +152,7 @@ export const postProduct: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
-export const putProduct: ApiModifyFunction<SucceedResponse> = (
+export const putProduct: ApiModifyFunction<Product> = (
   body,
   onSuccess,
   onFail,
@@ -229,10 +229,10 @@ const putUser: ApiModifyFunction<SucceedResponse> = (
 export const reassignFolder = (
   dataList: OrdererInfo[] | Product[],
   folderId: string,
-  onSuccess: SuccessCallback<SucceedResponse[]>,
+  onSuccess: SuccessCallback<SucceedResponse[] | Product[]>,
   onFail: FailCallback
 ) => {
-  const promises: Promise<SucceedResponse>[] = [];
+  const promises: Promise<SucceedResponse | Product>[] = [];
   dataList.forEach((d: OrdererInfo | Product) => {
     promises.push(
       new Promise((resolve, reject) => {
