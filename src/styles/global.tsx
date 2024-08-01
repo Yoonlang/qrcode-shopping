@@ -35,6 +35,7 @@ const GlobalStyle = () => (
         --color-h4-secondary: var(--color-blue);
 
         --color-language-selector-primary: var(--color-black);
+        --color-language-selector-secondary: var(--color-white);
 
         --color-li-primary: var(--color-gray-40);
         --color-li-secondary: var(--color-gray-60);
