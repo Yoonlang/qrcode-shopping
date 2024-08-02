@@ -20,10 +20,15 @@ export const validationSchema = Yup.object().shape({
     .typeError(STRING_TEXT)
     .max(50, MAX_TEXT["50"]),
   businessType: Yup.string().required(REQUIRED_TEXT),
-  email: Yup.string()
-    .email(EMAIL_TEXT)
-    // .required(REQUIRED_TEXT)
-    .max(50, MAX_TEXT["50"]),
+  email: Yup.string().when("countryCode.label", {
+    is: (val: string) => val !== "China",
+    then: () =>
+      Yup.string()
+        .required(REQUIRED_TEXT)
+        .email(EMAIL_TEXT)
+        .max(50, MAX_TEXT["50"]),
+    otherwise: () => Yup.string().email(EMAIL_TEXT).max(50, MAX_TEXT["50"]),
+  }),
   countryCode: Yup.object()
     .shape({
       code: Yup.string().required(REQUIRED_TEXT),
