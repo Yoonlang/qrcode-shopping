@@ -1,7 +1,7 @@
+import styled from "@emotion/styled";
 import { Button, DialogActions, Modal, TextField } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
-import { styled } from "styled-components";
 import * as Yup from "yup";
 
 import { postFolder } from "@/api";
