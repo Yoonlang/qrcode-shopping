@@ -255,7 +255,7 @@ const BottomAppBar = () => {
             <MessageDialog
               isDialogOpen={isOpen}
               onDialogClose={close}
-              messageList={[e.message]}
+              messageList={[t("Submission failed")]}
             />
           ));
         }
