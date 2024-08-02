@@ -1,5 +1,6 @@
 "use client";
 
+import { OverlayProvider } from "@toss/use-overlay";
 import { FormikProvider } from "formik";
 import { RecoilRoot } from "recoil";
 
@@ -32,11 +33,13 @@ const Home = async ({ params: { locale } }) => {
       locale={locale}
       resources={resources}
     >
-      <RecoilRoot>
-        <GlobalStyle />
-        <MessageSnackBar />
-        <FormikContainer />
-      </RecoilRoot>
+      <OverlayProvider>
+        <RecoilRoot>
+          <GlobalStyle />
+          <MessageSnackBar />
+          <FormikContainer />
+        </RecoilRoot>
+      </OverlayProvider>
     </TranslationsProvider>
   );
 };
