@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
+import Confirm from "@/components/Confirm";
 import {
   FormType,
   IS_USING_SY,
@@ -275,7 +276,19 @@ const BottomAppBar = () => {
         });
       }
     } else if (isPageName("wechat")) {
-      goToNextPage();
+      overlay.open(({ isOpen, close }) => (
+        <Confirm
+          isConfirmOpen={isOpen}
+          onClose={close}
+          onConfirm={() => {
+            goToNextPage();
+            close();
+          }}
+          content="你完成微信好友添加了吗？"
+          confirmText="是"
+          cancelText="不是"
+        />
+      ));
     } else if (isPageName("complete")) {
       goToNextPage();
     }
