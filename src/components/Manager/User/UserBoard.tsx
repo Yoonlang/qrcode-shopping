@@ -11,6 +11,7 @@ import {
 import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/Manager/const";
 import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
 import UserTable from "@/components/Manager/User/UserTable";
+import UserTextActionModal from "@/components/Manager/User/UserTextActionModal";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, OrdererInfo } from "@/const";
 
@@ -152,6 +153,17 @@ const UserBoard = ({
       <div className="header">
         <h3>user / {folder.name}</h3>
         <div>
+          {folder.id === USER_DEFAULT && (
+            <Button
+              onClick={() => {
+                overlay.open(({ isOpen, close }) => (
+                  <UserTextActionModal isModalOpen={isOpen} onClose={close} />
+                ));
+              }}
+            >
+              텍스트 설정
+            </Button>
+          )}
           {folder.id === USER_TRASH_CAN ? (
             <>
               <Button onClick={handleUserRestore}>데이터 복구</Button>
