@@ -130,7 +130,6 @@ const UserIdCopyButton = () => {
   const handleUserIdCopyButtonClick = async () => {
     try {
       await navigator.clipboard.writeText(userId);
-      console.log(userId);
       if (userIdCopyButtonRef.current) {
         userIdCopyButtonRef.current.textContent = "复制好了";
       }
