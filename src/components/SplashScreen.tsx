@@ -1,8 +1,14 @@
 import styled from "@emotion/styled";
+import { Inter } from "next/font/google";
 import { ReactNode, useEffect, useState } from "react";
 
 import { MAEIL_TEXT, YOUNGWON_TEXT } from "@/components/const";
 import Icons from "@/components/Icons";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+});
 
 interface StyledSplashScreenBoxProps {
   isVisible: boolean;
@@ -30,22 +36,25 @@ const StyledSplashScreenBox = styled("div", {
     align-items: center;
 
     > p {
-      font-size: 23px;
+      font-size: 20px;
       color: var(--color-white);
       width: 100%;
+      font-weight: 400;
       margin: 0;
-      margin: 10px;
-      font-weight: 100;
+    }
+
+    > img {
+      margin: 0 10px 0 10px;
     }
   }
 
   > h2 {
-    font-size: 90px;
+    font-size: 83px;
     color: var(--color-white);
     text-align: center;
     margin: 0;
-    font-weight: 300;
-    letter-spacing: 5px;
+    font-weight: 600;
+
     line-height: 80px;
   }
 `;
@@ -61,7 +70,10 @@ const SplashScreen = () => {
   }, [setIsSplashScreenOpen]);
 
   return (
-    <StyledSplashScreenBox isVisible={isSplashScreenOpen}>
+    <StyledSplashScreenBox
+      className={inter.className}
+      isVisible={isSplashScreenOpen}
+    >
       <div>
         <p>{YOUNGWON_TEXT}</p>
         <>{Icons["x"]}</>
