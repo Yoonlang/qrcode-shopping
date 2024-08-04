@@ -52,7 +52,8 @@ type PageObject = {
 const bottomText: PageObject = {
   qrcode: "My Products",
   cart: "Information",
-  info: "Submission",
+  info: "Input Complete",
+  wechat: "Submission",
   complete: "Go to Main Page",
 };
 
@@ -60,6 +61,7 @@ const titleText: PageObject = {
   qrcode: "QR code",
   cart: "Cart",
   info: "Info",
+  wechat: "添加微信好友",
   complete: "Result",
 };
 
@@ -67,6 +69,7 @@ const bottomAppBarIconList: PageObject = {
   qrcode: "cart",
   cart: "person",
   info: "check",
+  wechat: "",
   complete: "",
 };
 
@@ -102,11 +105,13 @@ const TitleAppBar = () => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {!isPageName("qrcode") && !isPageName("complete") && (
-          <StyledIconButton onClick={goToPreviousPage} edge="start">
-            {Icons["back"]}
-          </StyledIconButton>
-        )}
+        {!isPageName("qrcode") &&
+          !isPageName("complete") &&
+          !isPageName("wechat") && (
+            <StyledIconButton onClick={() => goToPreviousPage()} edge="start">
+              {Icons["back"]}
+            </StyledIconButton>
+          )}
       </div>
       <AppBarTitleText>{t(titleText[pageName])}</AppBarTitleText>
       <div className="right">
@@ -249,7 +254,11 @@ const BottomAppBar = () => {
           setSelectedInfoList({});
           setImageUrlList({});
           resetForm({ values: initialValues });
-          goToNextPage();
+          if (values.countryCode.label === "China") {
+            goToNextPage();
+          } else {
+            goToNextPage(2);
+          }
         } catch (e) {
           overlay.open(({ isOpen, close }) => (
             <MessageDialog
@@ -265,6 +274,8 @@ const BottomAppBar = () => {
           isMessageSnackBarOpen: true,
         });
       }
+    } else if (isPageName("wechat")) {
+      goToNextPage();
     } else if (isPageName("complete")) {
       goToNextPage();
     }
@@ -273,7 +284,7 @@ const BottomAppBar = () => {
   return (
     <StyledBottomAppBar>
       <button onClick={handleBottomAppBarClick}>
-        {!isPageName("complete") && (
+        {!isPageName("complete") && !isPageName("wechat") && (
           <StyledBadge
             badgeContent={
               isPageName("qrcode") ? Object.keys(scannedItemList).length : null
