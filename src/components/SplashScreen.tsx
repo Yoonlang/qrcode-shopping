@@ -39,7 +39,7 @@ const StyledSplashScreenBox = styled("div", {
       font-size: 20px;
       color: var(--color-white);
       width: 100%;
-      font-weight: 100;
+      font-weight: 400;
       margin: 0;
     }
 
