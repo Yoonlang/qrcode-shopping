@@ -15,7 +15,6 @@ interface StyledMessageDialogProps {
 const StyledMessageDialog = styled(Dialog, {
   shouldForwardProp: (prop) => !["customStyle"].includes(prop),
 })<StyledMessageDialogProps>`
-  z-index: 1202;
   p {
     ${(props) => props.customStyle};
   }
