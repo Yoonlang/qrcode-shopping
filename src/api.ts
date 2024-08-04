@@ -152,6 +152,20 @@ export const postProduct: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
+export const postProducts: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
+  return http.post(
+    `/products/batch`,
+    { credentials: "include" },
+    body,
+    onSuccess,
+    onFail
+  );
+};
+
 export const putProduct: ApiModifyFunction<Product> = (
   body,
   onSuccess,
