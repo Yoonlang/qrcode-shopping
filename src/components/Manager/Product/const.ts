@@ -124,3 +124,21 @@ type PartialWithRequired<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 export type ErrorProductExcel = PartialWithRequired<ProductExcel, "__rowNum__">;
 
+export const productExcelSchema = yup
+  .object()
+  .shape({
+    __rowNum__: yup.number().required(),
+    "유효폭 (Cm)": yup.number(),
+    "유효폭 (Inch)": yup.number(),
+    제품: yup
+      .string()
+      .required()
+      .matches(/^[^/]*$/),
+    조성: yup.string().required(),
+    "중량 (G/M2)": yup.number().required(),
+    "중량 (G/Y)": yup.number(),
+    "폭 (Cm)": yup.number(),
+    "폭 (Inch)": yup.number().required(),
+  })
+  .noUnknown()
+  .strict();
