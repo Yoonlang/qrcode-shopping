@@ -2,8 +2,14 @@ import { useRecoilState } from "recoil";
 
 import { pageIdxState } from "@/recoil/atoms/pageIdxState";
 
-export type PageName = "qrcode" | "cart" | "info" | "complete";
-export const pageNameList: PageName[] = ["qrcode", "cart", "info", "complete"];
+export type PageName = "qrcode" | "cart" | "info" | "wechat" | "complete";
+export const pageNameList: PageName[] = [
+  "qrcode",
+  "cart",
+  "info",
+  "wechat",
+  "complete",
+];
 
 const usePageRouter = () => {
   const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
@@ -17,12 +23,14 @@ const usePageRouter = () => {
     return false;
   };
 
-  const goToNextPage = () => {
-    setPageIdx((pageIdx + 1) % pageNameList.length);
+  const goToNextPage = (step?: number) => {
+    const effectiveStep = step ?? 1;
+    setPageIdx((pageIdx + effectiveStep) % pageNameList.length);
   };
 
-  const goToPreviousPage = () => {
-    setPageIdx((pageIdx - 1) % pageNameList.length);
+  const goToPreviousPage = (step?: number) => {
+    const effectiveStep = step ?? 1;
+    setPageIdx((pageIdx - effectiveStep) % pageNameList.length);
   };
 
   return {
