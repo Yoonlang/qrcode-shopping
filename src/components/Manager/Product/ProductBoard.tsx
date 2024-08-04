@@ -184,8 +184,11 @@ const ProductBoard = ({
                 onClick={() => {
                   overlay.open(({ isOpen, close }) => (
                     <ExcelProductCreateModal
+                      folder={folder}
+                      productList={productList}
                       isModalOpen={isOpen}
                       onModalClose={close}
+                      onProductListCreate={handleProductListUpdate}
                     />
                   ));
                 }}
