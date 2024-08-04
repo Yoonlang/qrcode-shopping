@@ -10,6 +10,7 @@ import {
 } from "@/api";
 import { PRODUCT_DEFAULT, PRODUCT_TRASH_CAN } from "@/components/Manager/const";
 import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
+import ExcelProductCreateModal from "@/components/Manager/Product/ExcelProductCreateModal";
 import ProductCreateModal from "@/components/Manager/Product/ProductCreateModal";
 import ProductTable from "@/components/Manager/Product/ProductTable";
 import MessageDialog from "@/components/MessageDialog";
@@ -178,6 +179,21 @@ const ProductBoard = ({
                 }}
               >
                 데이터 추가
+              </Button>
+              <Button
+                onClick={() => {
+                  overlay.open(({ isOpen, close }) => (
+                    <ExcelProductCreateModal
+                      folder={folder}
+                      productList={productList}
+                      isModalOpen={isOpen}
+                      onModalClose={close}
+                      onProductListCreate={handleProductListUpdate}
+                    />
+                  ));
+                }}
+              >
+                데이터 추가(엑셀)
               </Button>
               <Button onClick={handleProductSoftDelete}>데이터 삭제</Button>
             </>

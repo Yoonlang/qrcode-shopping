@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   Button,
   Checkbox,
@@ -7,7 +8,6 @@ import {
 } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
-import { styled } from "styled-components";
 import * as Yup from "yup";
 
 import { reassignFolder } from "@/api";

@@ -1,8 +1,8 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useOverlay } from "@toss/use-overlay";
 import Image from "next/image";
-import { styled } from "styled-components";
 
 import { StyledModal } from "@/components/Manager/DashboardItems";
 import { productDetailColumns } from "@/components/Manager/Product/const";
