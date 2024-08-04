@@ -342,6 +342,21 @@ export const deleteFolder: ApiModifyFunction<SucceedResponse> = (
   );
 };
 
+export const getText: ApiGetFunction<{ text: string }> = (
+  onSuccess,
+  onFail
+) => {
+  return http.get(`/text`, undefined, onSuccess, onFail);
+};
+
+export const putText: ApiModifyFunction<SucceedResponse> = (
+  body,
+  onSuccess,
+  onFail
+) => {
+  return http.put(`/text`, { credentials: "include" }, body, onSuccess, onFail);
+};
+
 export const checkCookieAuth: ApiGetFunction<SucceedResponse> = (
   onSuccess,
   onFail
