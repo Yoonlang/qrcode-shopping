@@ -90,7 +90,7 @@ const StyledGuideContentBox = styled.div`
   width: 100%;
 
   img {
-    border: 1px solid var(--color-red);
+    border: 1px solid var(--color-gray-50);
     border-radius: 10px;
   }
 `;
@@ -161,7 +161,7 @@ const guides = [
       <Image
         width={300}
         height={170}
-        src="/images/RequestFriend.PNG"
+        src="/images/RequestFriend.png"
         alt="request-friend"
       ></Image>
     ),
@@ -183,7 +183,7 @@ const WeChatFriendGuidePage = () => {
         <Image
           width={200}
           height={200}
-          src={"/images/WeChatQR.PNG"}
+          src={"/images/WeChatQR.png"}
           alt="wechat-qr"
         />
         <p>weChat ID : jayywmaeil</p>
