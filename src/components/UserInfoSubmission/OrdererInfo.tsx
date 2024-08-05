@@ -9,7 +9,6 @@ import {
   UserSelect,
 } from "@/components/UserInfoSubmission/FormItems";
 
-
 const OrdererInfo = () => {
   const { t } = useTranslation();
   const { values }: FormikContextType<FormType> = useFormikContext();
@@ -24,12 +23,16 @@ const OrdererInfo = () => {
         items={business}
         required={true}
       />
-      <UserInput label={t("Email")} name="email" />
       <CountrySelect required={true} />
       <UserInput label={t("Phone Number")} name="phoneNumber" required={true} />
       {values.countryCode.label === "China" && (
         <UserInput label="WeChat ID" name="weChatId" required={true} />
       )}
+      <UserInput
+        label={t("Email")}
+        name="email"
+        required={values.countryCode.label !== "China"}
+      />
     </>
   );
 };

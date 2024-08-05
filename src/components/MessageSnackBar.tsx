@@ -1,22 +1,25 @@
+import styled from "@emotion/styled";
 import { Snackbar } from "@mui/material";
 import { useRecoilState } from "recoil";
-import { styled } from "styled-components";
 
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledSnackBar = styled(Snackbar)`
   display: flex;
   justify-content: center;
+  z-index: 1201;
 
   .MuiSnackbarContent-root {
     width: 320px;
+    min-height: 80px;
     position: fixed;
-    top: 94px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%) !important;
+    transform: translate(-50%, -50%) !important;
 
     display: flex;
     justify-content: center;
+    font-size: 24px;
   }
 `;
 
@@ -27,7 +30,7 @@ const MessageSnackBar = () => {
   return (
     <StyledSnackBar
       open={isMessageSnackBarOpen}
-      autoHideDuration={3000}
+      autoHideDuration={800}
       onClose={() => {
         setMessageSnackBarState({
           message: "",

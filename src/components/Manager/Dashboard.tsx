@@ -1,24 +1,15 @@
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
-import { FormikProps } from "formik";
-import { useState } from "react";
-import { styled } from "styled-components";
+import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 
+import { getFolderList } from "@/api";
 import Icons from "@/components/Icons";
-import { ProductFormType } from "@/components/Manager/const";
-import {
-  StyledAppBar,
-  StyledDrawer,
-  StyledList,
-} from "@/components/Manager/DashboardItems";
-import UserBoard from "@/components/Manager/OrderInfo/UserBoard";
+import { initialFolderList } from "@/components/Manager/const";
+import { StyledAppBar } from "@/components/Manager/DashboardItems";
+import Menu from "@/components/Manager/Menu";
 import ProductBoard from "@/components/Manager/Product/ProductBoard";
-
+import UserBoard from "@/components/Manager/User/UserBoard";
+import { sortFolderListByType } from "@/components/Manager/util";
+import { Folder } from "@/const";
 
 const StyledBoardContainer = styled.div`
   display: flex;
@@ -29,42 +20,66 @@ const StyledBoardContainer = styled.div`
   height: calc(100% - 70px);
 `;
 
-const Dashboard = ({ formik }: { formik: FormikProps<ProductFormType> }) => {
-  const [menu, setMenu] = useState(0);
-  const drawerItems = ["user", "product"];
+const Dashboard = () => {
+  const [selectedFolder, setSelectedFolder] = useState<Folder>(
+    initialFolderList[0]
+  );
+  const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
+  const [updateTrigger, setUpdateTrigger] = useState(0);
 
-  const handleChangeMenu = (
-    e: React.MouseEvent<HTMLElement>,
-    index: number
-  ) => {
-    setMenu(index);
+  const handleFolderListUpdate = () => {
+    getFolderList(
+      (data) => {
+        setFolderList(data);
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
   };
+
+  const handleBoardUpdate = () => {
+    setUpdateTrigger((old) => old + 1);
+  };
+
+  useEffect(() => {
+    handleFolderListUpdate();
+  }, []);
+
+  useEffect(() => {
+    setSelectedFolder(
+      (old) => folderList.find((f) => f.id === old.id) ?? initialFolderList[0]
+    );
+  }, [folderList, setSelectedFolder]);
 
   return (
     <>
       <StyledAppBar>
         <div>YOUNGWON</div>
-        <div>{Icons["x"]}</div>
+        <div className="icon">{Icons["x"]}</div>
         <div>MAEIL</div>
       </StyledAppBar>
-      <StyledDrawer variant="permanent" anchor="left">
-        <Toolbar />
-        <StyledList>
-          <div>MENU</div>
-          {drawerItems.map((item, index) => (
-            <ListItem key={item}>
-              <ListItemButton onClick={(e) => handleChangeMenu(e, index)}>
-                <ListItemIcon>
-                  {index % 2 == 0 ? Icons["person_dark"] : Icons["list"]}
-                </ListItemIcon>
-                <ListItemText primary={item} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </StyledList>
-      </StyledDrawer>
+      <Menu
+        selectedFolder={selectedFolder}
+        folderList={folderList}
+        onFolderListUpdate={handleFolderListUpdate}
+        onMenuChange={(folder) => setSelectedFolder(folder)}
+        onBoardUpdate={handleBoardUpdate}
+      />
       <StyledBoardContainer>
-        {menu === 0 ? <UserBoard /> : <ProductBoard formik={formik} />}
+        {selectedFolder.type === "user" ? (
+          <UserBoard
+            key={updateTrigger}
+            folder={selectedFolder}
+            userFolderList={sortFolderListByType(folderList, "user")}
+          />
+        ) : (
+          <ProductBoard
+            key={updateTrigger}
+            folder={selectedFolder}
+            productFolderList={sortFolderListByType(folderList, "product")}
+          />
+        )}
       </StyledBoardContainer>
     </>
   );

@@ -1,8 +1,9 @@
+import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import { useFormikContext } from "formik";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
-import { styled } from "styled-components";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
 import Icons from "@/components/Icons";
@@ -18,7 +19,7 @@ import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
-
+import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -106,6 +107,20 @@ const ToBuyListPage = () => {
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
+  const setImageUrlList = useSetRecoilState(imageUrlListState);
+
+  useEffect(() => {
+    fetchedItemList
+      .filter((item) =>
+        Object.keys(scannedItemList).some((pid) => pid === item.productId)
+      )
+      .map((product) => {
+        setImageUrlList((prevImageUrlList) => ({
+          ...prevImageUrlList,
+          [product.productId]: product.image || "",
+        }));
+      });
+  }, [fetchedItemList, scannedItemList]);
 
   const handleToBuyItemDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,

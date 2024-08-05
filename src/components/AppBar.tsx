@@ -1,10 +1,12 @@
+import styled from "@emotion/styled";
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
-import { styled } from "styled-components";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
+import Confirm from "@/components/Confirm";
 import {
   FormType,
   IS_USING_SY,
@@ -14,11 +16,13 @@ import CounselingIntakeForm from "@/components/CounselingIntakeForm";
 import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
+import MessageDialog from "@/components/MessageDialog";
 import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
+import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 const StyledTitleAppBar = styled(AppBar)`
@@ -49,14 +53,16 @@ type PageObject = {
 const bottomText: PageObject = {
   qrcode: "My Products",
   cart: "Information",
-  info: "Submission",
-  complete: "Scan New QR",
+  info: "Input Complete",
+  wechat: "Submission",
+  complete: "Go to Main Page",
 };
 
 const titleText: PageObject = {
   qrcode: "QR code",
   cart: "Cart",
   info: "Info",
+  wechat: "添加微信好友",
   complete: "Result",
 };
 
@@ -64,6 +70,7 @@ const bottomAppBarIconList: PageObject = {
   qrcode: "cart",
   cart: "person",
   info: "check",
+  wechat: "",
   complete: "",
 };
 
@@ -99,11 +106,13 @@ const TitleAppBar = () => {
   return (
     <StyledTitleAppBar>
       <div className="left">
-        {!isPageName("qrcode") && !isPageName("complete") && (
-          <StyledIconButton onClick={goToPreviousPage} edge="start">
-            {Icons["back"]}
-          </StyledIconButton>
-        )}
+        {!isPageName("qrcode") &&
+          !isPageName("complete") &&
+          !isPageName("wechat") && (
+            <StyledIconButton onClick={() => goToPreviousPage()} edge="start">
+              {Icons["back"]}
+            </StyledIconButton>
+          )}
       </div>
       <AppBarTitleText>{t(titleText[pageName])}</AppBarTitleText>
       <div className="right">
@@ -178,15 +187,17 @@ const BottomAppBarTitleText = styled.div`
 
 const BottomAppBar = () => {
   const { t } = useTranslation();
-  const { pageName, isPageName, goToNextPage } = usePageRouter();
+  const { pageName, isPageName, goToPage, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
+  const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
   const { isValid, values, resetForm, submitForm } =
     useFormikContext<FormType>();
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
+  const overlay = useOverlay();
 
   const handleBottomAppBarClick = async () => {
     if (isPageName("qrcode")) {
@@ -234,15 +245,50 @@ const BottomAppBar = () => {
           <CounselingIntakeForm
             formikValues={values}
             selectedInfoList={selectedInfoList}
+            imageUrlList={imageUrlList}
           />
         );
 
-        await submitForm();
-        setScannedItemList({});
-        setSelectedInfoList({});
-        resetForm({ values: initialValues });
-        goToNextPage();
+        try {
+          await submitForm();
+          setScannedItemList({});
+          setSelectedInfoList({});
+          setImageUrlList({});
+          resetForm({ values: initialValues });
+          if (values.countryCode.label === "China") {
+            goToNextPage();
+          } else {
+            goToPage("complete");
+          }
+        } catch (e) {
+          overlay.open(({ isOpen, close }) => (
+            <MessageDialog
+              isDialogOpen={isOpen}
+              onDialogClose={close}
+              messageList={[t("Submission failed")]}
+            />
+          ));
+        }
+      } else {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["invalid"]),
+          isMessageSnackBarOpen: true,
+        });
       }
+    } else if (isPageName("wechat")) {
+      overlay.open(({ isOpen, close }) => (
+        <Confirm
+          isConfirmOpen={isOpen}
+          onClose={close}
+          onConfirm={() => {
+            goToNextPage();
+            close();
+          }}
+          content="你完成微信好友添加了吗？"
+          confirmText="是"
+          cancelText="不是"
+        />
+      ));
     } else if (isPageName("complete")) {
       goToNextPage();
     }
@@ -251,7 +297,7 @@ const BottomAppBar = () => {
   return (
     <StyledBottomAppBar>
       <button onClick={handleBottomAppBarClick}>
-        {!isPageName("complete") && (
+        {!isPageName("complete") && !isPageName("wechat") && (
           <StyledBadge
             badgeContent={
               isPageName("qrcode") ? Object.keys(scannedItemList).length : null

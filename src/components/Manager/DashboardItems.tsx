@@ -1,9 +1,12 @@
+import styled from "@emotion/styled";
 import { AppBar, Drawer, List, Modal, TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import { MutableRefObject } from "react";
-import { styled } from "styled-components";
 
-import { ProductFormType } from "@/components/Manager/const";
+import {
+  ProductCreationForm,
+  ProductEditionForm,
+} from "@/components/Manager/const";
 
 const StyledAppBar = styled(AppBar)`
   &.MuiAppBar-root {
@@ -16,7 +19,7 @@ const StyledAppBar = styled(AppBar)`
     font-weight: bold;
     height: 71px;
     position: fixed;
-    z-index: 1300;
+    z-index: 1201;
 
     & div {
       margin: 0 2px;
@@ -33,6 +36,16 @@ const StyledDrawer = styled(Drawer)`
 const StyledList = styled(List)`
   &.MuiList-root {
     width: 100%;
+  }
+  li {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .MuiListItemIcon-root {
+    min-width: 30px;
+  }
+  .MuiTypography-root {
+    font-weight: bold;
   }
 `;
 
@@ -79,7 +92,7 @@ const ProductInput = ({
 }: {
   label: string;
   name: string;
-  formik: FormikProps<ProductFormType>;
+  formik: FormikProps<ProductCreationForm | ProductEditionForm>;
   type?: string;
   inputRef?: MutableRefObject<HTMLInputElement | undefined>;
 }) => {

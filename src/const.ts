@@ -66,8 +66,14 @@ export interface OrdererInfo {
       detailAddress: string | null;
     };
   };
-  submissionTime: string;
   remark1: string;
   remark2: string;
   metadata: OrdererInfoMetadata;
+}
+
+export interface Folder {
+  name: string;
+  type: "user" | "product";
+  id: string;
+  creationTime: string;
 }

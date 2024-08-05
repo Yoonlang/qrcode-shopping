@@ -1,15 +1,26 @@
+import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { styled } from "styled-components";
 
 import Icons from "@/components/Icons";
 import i18nConfig from "@/i18nConfig";
 
-const StyledLanguageSelector = styled.div`
+const StyledLanguageSelectorBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 200px;
+`;
+
+const StyledLanguageSelectButton = styled(Button)`
+  justify-content: space-between;
+  color: var(--color-language-selector-primary);
+  text-transform: none;
+  padding: 6px 12px;
+
+  &:hover {
+    backgroundcolor: var(--color-language-selector-secondary);
+  }
 `;
 
 const LanguageSelector = () => {
@@ -40,51 +51,24 @@ const LanguageSelector = () => {
   };
 
   return (
-    <StyledLanguageSelector>
-      <Button
-        sx={{
-          justifyContent: "space-between",
-          color: "var(--color-language-selector-primary)",
-          textTransform: "none",
-          padding: "6px 12px",
-          "&:hover": {
-            backgroundColor: "var(--color-language-selector-primary)",
-          },
-        }}
-        onClick={() => changeLang("en")}
-      >
+    <StyledLanguageSelectorBox>
+      <StyledLanguageSelectButton onClick={() => changeLang("en")}>
         English
         {i18n.language === "en" && Icons["select"]}
-      </Button>
-      <Button
-        sx={{
-          justifyContent: "space-between",
-          color: "var(--color-language-selector-primary)",
-          padding: "6px 12px",
-          "&:hover": {
-            backgroundColor: "var(--color-language-selector-primary)",
-          },
-        }}
-        onClick={() => changeLang("zh")}
-      >
+      </StyledLanguageSelectButton>
+      <StyledLanguageSelectButton onClick={() => changeLang("zh")}>
         中文
         {i18n.language === "zh" && Icons["select"]}
-      </Button>
-      <Button
-        sx={{
-          justifyContent: "space-between",
-          color: "var(--color-language-selector-primary)",
-          padding: "6px 12px",
-          "&:hover": {
-            backgroundColor: "var(--color-language-selector-primary)",
-          },
-        }}
-        onClick={() => changeLang("ko")}
-      >
+      </StyledLanguageSelectButton>
+      <StyledLanguageSelectButton onClick={() => changeLang("ko")}>
         한국어
         {i18n.language === "ko" && Icons["select"]}
-      </Button>
-    </StyledLanguageSelector>
+      </StyledLanguageSelectButton>
+      <StyledLanguageSelectButton onClick={() => changeLang("ja")}>
+        日本語
+        {i18n.language === "ja" && Icons["select"]}
+      </StyledLanguageSelectButton>
+    </StyledLanguageSelectorBox>
   );
 };
 

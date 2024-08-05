@@ -22,7 +22,6 @@
     "import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] }
   },
   "rules": {
-    "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unsafe-call": "warn",
     "@typescript-eslint/no-unsafe-argument": "warn",
@@ -33,7 +32,7 @@
     "@typescript-eslint/no-misused-promises": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
     "@typescript-eslint/no-base-to-string": "warn",
-    "no-useless-escape": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
     "no-prototype-builtins": "warn",
     "prefer-const": "warn",
     "sort-react-dependency-arrays/sort": "error",

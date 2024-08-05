@@ -1,9 +1,9 @@
+import styled from "@emotion/styled";
 import { MenuItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { FormikContextType, useFormikContext } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { styled } from "styled-components";
 
 import { FormType } from "@/components/const";
 import Icons from "@/components/Icons";
@@ -138,7 +138,9 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
       {errors.countryCode && touched.countryCode && (
         <StyledErrorMessage>
           {Icons["error"]}
-          <p>{t(errors.countryCode?.toString())}</p>
+          <p>
+            {errors.countryCode.code && t(errors.countryCode.code.toString())}
+          </p>
         </StyledErrorMessage>
       )}
     </>

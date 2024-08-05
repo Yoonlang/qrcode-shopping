@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 
 import { submitOrdererInfo } from "@/api";
 import { FormType } from "@/components/const";
@@ -7,6 +8,7 @@ import { validationSchema } from "@/components/validation";
 import dayjs from "@/dayjsConfig";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import useSelectedInfoList from "@/hooks/useSelectedInfoList";
+import { userIdxState } from "@/recoil/atoms/userIdState";
 
 export const initialValues: FormType = {
   name: "",
@@ -36,6 +38,7 @@ const useInitialFormikValues = () => {
     value: initialValues,
   });
   const { selectedInfoList } = useSelectedInfoList();
+  const setUserId = useSetRecoilState(userIdxState);
 
   const handleSubmit = async (form) => {
     const {
@@ -64,7 +67,7 @@ const useInitialFormikValues = () => {
               productId,
               colorCardQuantity: items["Color Card"] ?? 0,
               sampleYardages: Object.entries(items)
-                .filter(([colorInfo, b]) => colorInfo !== "Color Card")
+                .filter(([colorInfo]) => colorInfo !== "Color Card")
                 .map(([colorInfo, quantity]) => {
                   const [colorId, colorName] = colorInfo.split(". ");
                   return {
@@ -87,7 +90,7 @@ const useInitialFormikValues = () => {
               number: phoneNumber,
             },
             email,
-            weChatId,
+            weChatId: weChatId || null,
           },
           companyAddress: {
             postalCode: coPostalCode,
@@ -101,9 +104,11 @@ const useInitialFormikValues = () => {
           },
         },
       }),
-      () => {},
+      (res) => {
+        setUserId(res.userId);
+      },
       (e) => {
-        console.log(e);
+        throw e;
       }
     );
   };
