@@ -10,8 +10,9 @@ import { styled } from "styled-components";
 
 import {
   handleUserInfoForOrder,
-  initialSelectedOptionObj,
+  initialSelectedOptionsObj,
   optionsToCopyList,
+  SelectedOptions,
 } from "@/components/Manager/User/util";
 import { OrdererInfo } from "@/const";
 
@@ -25,6 +26,26 @@ const StyledModalContainer = styled.div`
   background-color: var(--color-white);
 `;
 
+const getTitleData = (option: string): string[] => {
+  const optionData = optionsToCopyList.find((v) => v.value === option);
+  if (!optionData) return [option];
+
+  if (option === "companyAddress") {
+    return [
+      "COMPANY - POSTAL CODE",
+      "COMPANY - ADDRESS",
+      "COMPANY - DETAIL ADDRESS",
+    ];
+  } else if (option === "shippingAddress") {
+    return [
+      "SHIPPING - POSTAL CODE",
+      "SHIPPING - ADDRESS",
+      "SHIPPING - DETAIL ADDRESS",
+    ];
+  }
+  return [optionData.label];
+};
+
 const UserCopyModal = ({
   isModalOpen,
   onModalClose,
@@ -36,20 +57,20 @@ const UserCopyModal = ({
 }) => {
   const [isSelectedAllOptions, setIsSelectedAllOptions] =
     useState<boolean>(true);
-  const [selectedOptionObj, setSelectedOptionObj] = useState<object>(
-    initialSelectedOptionObj
-  );
+  const [selectedOptionsObj, setSelectedOptionsObj] = useState<
+    Partial<SelectedOptions>
+  >(initialSelectedOptionsObj);
   const copyButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const allSelected = Object.values(selectedOptionObj).every(
+    const allSelected = Object.values(selectedOptionsObj).every(
       (value) => value
     );
     setIsSelectedAllOptions(allSelected);
-  }, [selectedOptionObj]);
+  }, [selectedOptionsObj]);
 
   const handleSelectAllChange = () => {
-    const newSelectedOptionObj = Object.keys(initialSelectedOptionObj).reduce(
+    const newSelectedOptionsObj = Object.keys(initialSelectedOptionsObj).reduce(
       (acc, key) => {
         acc[key] = !isSelectedAllOptions;
         return acc;
@@ -57,41 +78,21 @@ const UserCopyModal = ({
       {}
     );
 
-    setSelectedOptionObj(newSelectedOptionObj);
+    setSelectedOptionsObj(newSelectedOptionsObj);
   };
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSelectedOptionObj({
-      ...selectedOptionObj,
-      [value]: !selectedOptionObj[value],
+    setSelectedOptionsObj({
+      ...selectedOptionsObj,
+      [value]: !selectedOptionsObj[value],
     });
-  };
-
-  const getTitleData = (option: string): string[] => {
-    const optionData = optionsToCopyList.find((v) => v.value === option);
-    if (!optionData) return [option];
-
-    if (option === "companyAddress") {
-      return [
-        "COMPANY - POSTAL CODE",
-        "COMPANY - ADDRESS",
-        "COMPANY - DETAIL ADDRESS",
-      ];
-    } else if (option === "shippingAddress") {
-      return [
-        "SHIPPING - POSTAL CODE",
-        "SHIPPING - ADDRESS",
-        "SHIPPING - DETAIL ADDRESS",
-      ];
-    }
-    return [optionData.label];
   };
 
   const handleUserInfoCopy = async () => {
     const clipboardData: string[] = [];
-    const selectedOptionList = Object.keys(selectedOptionObj).filter(
-      (key) => selectedOptionObj[key]
+    const selectedOptionList = Object.keys(selectedOptionsObj).filter(
+      (key) => selectedOptionsObj[key]
     );
 
     const titleData = selectedOptionList.flatMap(getTitleData);
@@ -158,8 +159,8 @@ const UserCopyModal = ({
             <Checkbox
               value="전체"
               checked={
-                Object.keys(selectedOptionObj).filter(
-                  (key) => selectedOptionObj[key]
+                Object.keys(selectedOptionsObj).filter(
+                  (key) => selectedOptionsObj[key]
                 ).length === optionsToCopyList.length
                   ? true
                   : false
@@ -176,7 +177,7 @@ const UserCopyModal = ({
               control={
                 <Checkbox
                   value={option.value}
-                  checked={selectedOptionObj[option.value]}
+                  checked={selectedOptionsObj[option.value]}
                   onChange={handleOptionChange}
                 />
               }

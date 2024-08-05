@@ -79,7 +79,23 @@ export const handleUserInfoForOrder = (
     .flat();
 };
 
-export const initialSelectedOptionObj = {
+export interface SelectedOptions {
+  userId: boolean;
+  name: boolean;
+  companyName: boolean;
+  businessType: boolean;
+  phoneNumber: boolean;
+  weChatId: boolean;
+  email: boolean;
+  companyAddress: boolean;
+  shippingAddress: boolean;
+  hopeProducts: boolean;
+  productLengthUnit: boolean;
+  remark1: boolean;
+  remark2: boolean;
+}
+
+export const initialSelectedOptionsObj: SelectedOptions = {
   userId: true,
   name: true,
   companyName: true,
