@@ -5,12 +5,11 @@ import {
   FormControlLabel,
   Modal,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 
 import { handleUserInfoForOrder } from "@/components/Manager/User/util";
 import { OrdererInfo } from "@/const";
-
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -73,6 +72,7 @@ const UserCopyModal = ({
   const [selectedOptionObj, setSelectedOptionObj] = useState<object>(
     initialSelectedOptionObj
   );
+  const copyButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const allSelected = Object.values(selectedOptionObj).every(
@@ -174,6 +174,7 @@ const UserCopyModal = ({
 
     try {
       await navigator.clipboard.writeText(clipboardData.join("\n"));
+      if (copyButtonRef.current) copyButtonRef.current.textContent = "복사됨";
     } catch (e) {
       alert("복사에 실패하였습니다");
     }
@@ -216,7 +217,9 @@ const UserCopyModal = ({
           ))}
         </div>
         <DialogActions>
-          <Button onClick={handleUserInfoCopy}>복사</Button>
+          <Button onClick={handleUserInfoCopy} ref={copyButtonRef}>
+            복사
+          </Button>
           <Button onClick={onModalClose}>닫기</Button>
         </DialogActions>
       </StyledModalContainer>
