@@ -132,10 +132,12 @@ const CounselingIntakeForm = ({
   formikValues,
   selectedInfoList,
   imageUrlList,
+  userId,
 }: {
   formikValues: FormType;
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
+  userId: string;
 }) => {
   const { t, i18n } = useTranslation();
   const clientData = [
@@ -169,6 +171,7 @@ const CounselingIntakeForm = ({
       value: [dayjs().format("YYYY-MM-DD")],
       width: "50",
     },
+    { title: t("User ID"), value: [userId], width: "50" },
     { title: t("Company"), value: [formikValues.companyName], width: "50" },
     {
       title: t("Customer"),
