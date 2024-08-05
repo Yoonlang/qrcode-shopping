@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import Image from "next/image";
-import { ReactNode, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { ReactNode, useRef } from "react";
+import { useRecoilValue } from "recoil";
+
+import { userIdxState } from "@/recoil/atoms/userIdState";
 
 const StyledWeChatFriendGuideBox = styled.div`
   align-items: center;
@@ -124,7 +126,7 @@ const GuideStep = ({
 };
 
 const UserIdCopyButton = () => {
-  const [userId, setUserId] = useState<string>("EX20240804-001");
+  const userId = useRecoilValue(userIdxState);
   const userIdCopyButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleUserIdCopyButtonClick = async () => {
@@ -171,7 +173,6 @@ const guides = [
 ];
 
 const WeChatFriendGuidePage = () => {
-  const { t } = useTranslation();
   return (
     <StyledWeChatFriendGuideBox>
       <StyledTitleBox>
