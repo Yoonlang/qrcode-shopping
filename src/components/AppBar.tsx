@@ -187,7 +187,7 @@ const BottomAppBarTitleText = styled.div`
 
 const BottomAppBar = () => {
   const { t } = useTranslation();
-  const { pageName, isPageName, goToNextPage } = usePageRouter();
+  const { pageName, isPageName, goToPage, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
@@ -258,7 +258,7 @@ const BottomAppBar = () => {
           if (values.countryCode.label === "China") {
             goToNextPage();
           } else {
-            goToNextPage(2);
+            goToPage("complete");
           }
         } catch (e) {
           overlay.open(({ isOpen, close }) => (

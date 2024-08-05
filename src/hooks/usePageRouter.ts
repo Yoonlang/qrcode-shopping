@@ -23,19 +23,22 @@ const usePageRouter = () => {
     return false;
   };
 
-  const goToNextPage = (step?: number) => {
-    const effectiveStep = step ?? 1;
-    setPageIdx((pageIdx + effectiveStep) % pageNameList.length);
+  const goToPage = (pageName: PageName) => {
+    setPageIdx(pageNameList.indexOf(pageName));
   };
 
-  const goToPreviousPage = (step?: number) => {
-    const effectiveStep = step ?? 1;
-    setPageIdx((pageIdx - effectiveStep) % pageNameList.length);
+  const goToNextPage = () => {
+    setPageIdx((pageIdx + 1) % pageNameList.length);
+  };
+
+  const goToPreviousPage = () => {
+    setPageIdx((pageIdx - 1) % pageNameList.length);
   };
 
   return {
     pageName,
     isPageName,
+    goToPage,
     goToNextPage,
     goToPreviousPage,
   };

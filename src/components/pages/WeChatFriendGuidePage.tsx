@@ -1,10 +1,13 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import Image from "next/image";
 import { ReactNode, useRef } from "react";
 import { useRecoilValue } from "recoil";
 
+import MessageDialog from "@/components/MessageDialog";
 import { userIdxState } from "@/recoil/atoms/userIdState";
+
 
 const StyledWeChatFriendGuideBox = styled.div`
   align-items: center;
@@ -128,6 +131,7 @@ const GuideStep = ({
 const UserIdCopyButton = () => {
   const userId = useRecoilValue(userIdxState);
   const userIdCopyButtonRef = useRef<HTMLButtonElement>(null);
+  const overlay = useOverlay();
 
   const handleUserIdCopyButtonClick = async () => {
     try {
@@ -136,7 +140,13 @@ const UserIdCopyButton = () => {
         userIdCopyButtonRef.current.textContent = "复制好了";
       }
     } catch (e) {
-      console.log(e);
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["复制失败"]}
+        />
+      ));
     }
   };
 
@@ -163,7 +173,7 @@ const guides = [
         height={170}
         src="/images/RequestFriend.png"
         alt="request-friend"
-      ></Image>
+      />
     ),
   },
 
