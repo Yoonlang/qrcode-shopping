@@ -217,7 +217,7 @@ export const getOrdererInfoList: ApiGetFunction<OrdererInfo[]> = (
   return http.get(`/users`, { credentials: "include" }, onSuccess, onFail);
 };
 
-export const submitOrdererInfo: ApiModifyFunction<SucceedResponse> = (
+export const submitOrdererInfo: ApiModifyFunction<OrdererInfo> = (
   body,
   onSuccess,
   onFail
