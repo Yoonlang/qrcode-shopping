@@ -10,10 +10,12 @@ import {
 } from "@/api";
 import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/Manager/const";
 import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
+import UserCopyModal from "@/components/Manager/User/UserCopyModal";
 import UserTable from "@/components/Manager/User/UserTable";
 import UserTextActionModal from "@/components/Manager/User/UserTextActionModal";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, OrdererInfo } from "@/const";
+
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -173,6 +175,21 @@ const UserBoard = ({
             </>
           ) : (
             <>
+              <Button
+                onClick={() => {
+                  overlay.open(({ isOpen, close }) => (
+                    <UserCopyModal
+                      isModalOpen={isOpen}
+                      onModalClose={close}
+                      selectedUserList={filteredUserList.filter((f) =>
+                        selectedUserList.find((userId) => f.userId === userId)
+                      )}
+                    ></UserCopyModal>
+                  ));
+                }}
+              >
+                선택한 유저 정보 복사
+              </Button>
               <Button onClick={handleUserFolderReassign}>
                 데이터 폴더 이동
               </Button>
