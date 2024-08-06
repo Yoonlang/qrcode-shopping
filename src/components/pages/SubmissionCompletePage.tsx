@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 
 import Icons from "@/components/Icons";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
+import { userIdxState } from "@/recoil/atoms/userIdState";
 
 const StyledSubmissionCompletePageBox = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ const SubmissionCompletePage = () => {
   const counselingIntakeFormData = useRecoilValue(
     counselingIntakeFormDataState
   );
+  const userId = useRecoilValue(userIdxState);
 
   return (
     <StyledSubmissionCompletePageBox>
@@ -55,7 +57,7 @@ const SubmissionCompletePage = () => {
       {counselingIntakeFormData && (
         <PDFDownloadLink
           document={counselingIntakeFormData}
-          fileName={`${t("counseling-intake-form")}.pdf`}
+          fileName={`${userId.split("-")[0]}.pdf`}
         >
           {({ loading }) => (
             <StyledPDFDownloadButton disabled={loading}>
