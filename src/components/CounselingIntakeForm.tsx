@@ -81,6 +81,20 @@ const styles = StyleSheet.create({
   table50: {
     width: "50%",
   },
+  leftTable: {
+    borderRight: "0.5px solid #000",
+  },
+  rightTable: {
+    borderLeft: "0.5px solid #000",
+  },
+  leftTableCell: {
+    borderLeft: "1px solid #000",
+    paddingLeft: "5px",
+  },
+  rightTableCell: {
+    borderRight: "1px solid #000",
+    paddingLeft: "5px",
+  },
   tableBox: {
     display: "flex",
     flexDirection: "row",
@@ -126,16 +140,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     backgroundColor: "#eeeeee",
   },
+  marginTop5: {
+    marginTop: "5px",
+  },
 });
 
 const CounselingIntakeForm = ({
-  formikValues,
+  ordererInfo,
   selectedInfoList,
   imageUrlList,
+  userId,
 }: {
-  formikValues: FormType;
+  ordererInfo: Partial<FormType>;
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
+  userId: string;
 }) => {
   const { t, i18n } = useTranslation();
   const clientData = [
@@ -169,30 +188,35 @@ const CounselingIntakeForm = ({
       value: [dayjs().format("YYYY-MM-DD")],
       width: "50",
     },
-    { title: t("Company"), value: [formikValues.companyName], width: "50" },
+    { title: t("User ID"), value: [userId], width: "50" },
+    {
+      title: t("Company"),
+      value: [ordererInfo.companyName],
+      width: "50",
+    },
     {
       title: t("Customer"),
-      value: [formikValues.name],
+      value: [ordererInfo.name],
       width: "50",
     },
     {
       title: t("Country"),
-      value: [formikValues.countryCode.label],
+      value: [ordererInfo.countryCode?.label],
       width: "50",
     },
     {
       title: t("Email"),
-      value: [formikValues.email],
+      value: [ordererInfo.email],
       width: "50",
     },
     {
       title: t("Tel#"),
-      value: [`+${formikValues.countryCode.phone} ${formikValues.phoneNumber}`],
+      value: [`+${ordererInfo.countryCode?.phone} ${ordererInfo.phoneNumber}`],
       width: "50",
     },
     {
       title: `Wechat ID (${t("optional")})`,
-      value: [formikValues.weChatId],
+      value: [ordererInfo.weChatId],
       width: "50",
     },
   ];
@@ -214,7 +238,7 @@ const CounselingIntakeForm = ({
             <Text>YOUNGWON</Text>
           </View>
           <View style={styles.tableBox}>
-            <View style={styles.table50}>
+            <View style={[styles.table50, styles.leftTable]}>
               {customerData.map((data, idx) => (
                 <View
                   key={`customer-${data.title}`}
@@ -226,7 +250,7 @@ const CounselingIntakeForm = ({
                   <Text
                     style={[
                       styles.bold,
-                      styles.cell,
+                      styles.leftTableCell,
                       styles[`width${data.width}`],
                     ]}
                   >
@@ -236,9 +260,9 @@ const CounselingIntakeForm = ({
                     <Text
                       key={`customer-${data.title}-value`}
                       style={[
-                        styles.cell,
+                        styles.leftTableCell,
                         styles[`width${data.width}`],
-                        styles[`${detectLanugage(v)}`],
+                        styles[`${detectLanugage(v || "")}`],
                       ]}
                     >
                       {v}
@@ -247,13 +271,19 @@ const CounselingIntakeForm = ({
                 </View>
               ))}
             </View>
-            <View style={styles.table50}>
-              {clientData.map((data) => (
-                <View key={`client-${data.title}`} style={[styles.row]}>
+            <View style={[styles.table50, styles.rightTable]}>
+              {clientData.map((data, idx) => (
+                <View
+                  key={`client-${data.title}`}
+                  style={[
+                    styles.row,
+                    idx === clientData.length - 1 ? styles.lastRow : {},
+                  ]}
+                >
                   <Text
                     style={[
                       styles.bold,
-                      styles.cell,
+                      styles.rightTableCell,
                       styles[`width${data.width}`],
                       data.width === "100" ? styles.lastCell : {},
                     ]}
@@ -264,8 +294,7 @@ const CounselingIntakeForm = ({
                     <Text
                       key={`client-${data.title}-value`}
                       style={[
-                        styles.cell,
-                        styles.lastCell,
+                        styles.rightTableCell,
                         styles[`width${data.width}`],
                       ]}
                     >
@@ -283,6 +312,7 @@ const CounselingIntakeForm = ({
               styles.header,
               styles.cell,
               styles.lastCell,
+              styles.marginTop5,
             ]}
           >
             <Text>{t("SELECTED ARTICLE LIST")}</Text>
@@ -310,7 +340,7 @@ const CounselingIntakeForm = ({
               <Image
                 style={[styles.cell, styles.width15, styles.image]}
                 src={{
-                  uri: imageUrlList[pid],
+                  uri: imageUrlList ? imageUrlList[pid] : "",
                   method: "GET",
                   headers: {},
                   body: "",
