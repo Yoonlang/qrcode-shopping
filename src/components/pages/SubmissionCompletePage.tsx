@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 
 import Icons from "@/components/Icons";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
-import { userIdxState } from "@/recoil/atoms/userIdState";
+import { userIdState } from "@/recoil/atoms/userIdState";
 
 const StyledSubmissionCompletePageBox = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const SubmissionCompletePage = () => {
   const counselingIntakeFormData = useRecoilValue(
     counselingIntakeFormDataState
   );
-  const userId = useRecoilValue(userIdxState);
+  const userId = useRecoilValue(userIdState);
 
   return (
     <StyledSubmissionCompletePageBox>

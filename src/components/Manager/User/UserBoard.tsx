@@ -158,7 +158,7 @@ const UserBoard = ({
     }
   };
 
-  const handleUserPDFDownloadButtonClick = async () => {
+  const handleUserPdfDownloadButtonClick = async () => {
     const zip = new JSZip();
     const userList: OrdererInfo[] = filteredUserList.filter((f) =>
       selectedUserList.find((userId) => f.userId === userId)
@@ -284,7 +284,7 @@ const UserBoard = ({
             </>
           ) : (
             <>
-              <Button onClick={handleUserPDFDownloadButtonClick}>
+              <Button onClick={handleUserPdfDownloadButtonClick}>
                 PDF 다운로드
               </Button>
               <Button

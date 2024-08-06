@@ -6,8 +6,7 @@ import { ReactNode, useRef } from "react";
 import { useRecoilValue } from "recoil";
 
 import MessageDialog from "@/components/MessageDialog";
-import { userIdxState } from "@/recoil/atoms/userIdState";
-
+import { userIdState } from "@/recoil/atoms/userIdState";
 
 const StyledWeChatFriendGuideBox = styled.div`
   align-items: center;
@@ -129,7 +128,7 @@ const GuideStep = ({
 };
 
 const UserIdCopyButton = () => {
-  const userId = useRecoilValue(userIdxState);
+  const userId = useRecoilValue(userIdState);
   const userIdCopyButtonRef = useRef<HTMLButtonElement>(null);
   const overlay = useOverlay();
 

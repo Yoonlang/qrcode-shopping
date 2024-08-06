@@ -24,7 +24,7 @@ import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
 import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { userIdxState } from "@/recoil/atoms/userIdState";
+import { userIdState } from "@/recoil/atoms/userIdState";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -198,7 +198,7 @@ const BottomAppBar = () => {
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
-  const userId = useRecoilValue(userIdxState);
+  const userId = useRecoilValue(userIdState);
   const overlay = useOverlay();
 
   const handleBottomAppBarClick = async () => {
