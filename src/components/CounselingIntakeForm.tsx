@@ -81,6 +81,20 @@ const styles = StyleSheet.create({
   table50: {
     width: "50%",
   },
+  leftTable: {
+    borderRight: "0.5px solid #000",
+  },
+  rightTable: {
+    borderLeft: "0.5px solid #000",
+  },
+  leftTableCell: {
+    borderLeft: "1px solid #000",
+    paddingLeft: "5px",
+  },
+  rightTableCell: {
+    borderRight: "1px solid #000",
+    paddingLeft: "5px",
+  },
   tableBox: {
     display: "flex",
     flexDirection: "row",
@@ -125,6 +139,9 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: "bold",
     backgroundColor: "#eeeeee",
+  },
+  marginTop5: {
+    marginTop: "5px",
   },
 });
 
@@ -172,7 +189,11 @@ const CounselingIntakeForm = ({
       width: "50",
     },
     { title: t("User ID"), value: [userId], width: "50" },
-    { title: t("Company"), value: [ordererInfo.companyName], width: "50" },
+    {
+      title: t("Company"),
+      value: [ordererInfo.companyName],
+      width: "50",
+    },
     {
       title: t("Customer"),
       value: [ordererInfo.name],
@@ -217,7 +238,7 @@ const CounselingIntakeForm = ({
             <Text>YOUNGWON</Text>
           </View>
           <View style={styles.tableBox}>
-            <View style={styles.table50}>
+            <View style={[styles.table50, styles.leftTable]}>
               {customerData.map((data, idx) => (
                 <View
                   key={`customer-${data.title}`}
@@ -229,7 +250,7 @@ const CounselingIntakeForm = ({
                   <Text
                     style={[
                       styles.bold,
-                      styles.cell,
+                      styles.leftTableCell,
                       styles[`width${data.width}`],
                     ]}
                   >
@@ -239,7 +260,7 @@ const CounselingIntakeForm = ({
                     <Text
                       key={`customer-${data.title}-value`}
                       style={[
-                        styles.cell,
+                        styles.leftTableCell,
                         styles[`width${data.width}`],
                         styles[`${detectLanugage(v || "")}`],
                       ]}
@@ -250,13 +271,19 @@ const CounselingIntakeForm = ({
                 </View>
               ))}
             </View>
-            <View style={styles.table50}>
-              {clientData.map((data) => (
-                <View key={`client-${data.title}`} style={[styles.row]}>
+            <View style={[styles.table50, styles.rightTable]}>
+              {clientData.map((data, idx) => (
+                <View
+                  key={`client-${data.title}`}
+                  style={[
+                    styles.row,
+                    idx === clientData.length - 1 ? styles.lastRow : {},
+                  ]}
+                >
                   <Text
                     style={[
                       styles.bold,
-                      styles.cell,
+                      styles.rightTableCell,
                       styles[`width${data.width}`],
                       data.width === "100" ? styles.lastCell : {},
                     ]}
@@ -267,8 +294,7 @@ const CounselingIntakeForm = ({
                     <Text
                       key={`client-${data.title}-value`}
                       style={[
-                        styles.cell,
-                        styles.lastCell,
+                        styles.rightTableCell,
                         styles[`width${data.width}`],
                       ]}
                     >
@@ -286,6 +312,7 @@ const CounselingIntakeForm = ({
               styles.header,
               styles.cell,
               styles.lastCell,
+              styles.marginTop5,
             ]}
           >
             <Text>{t("SELECTED ARTICLE LIST")}</Text>
