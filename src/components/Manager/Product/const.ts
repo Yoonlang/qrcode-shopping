@@ -105,6 +105,15 @@ export const mockProductList: Product[] = [
 
 export type ProductTableRow = {
   id: string;
+  composition: string | null;
+  widthInch: number | null;
+  widthCm: number | null;
+  cuttableWidthInch: number | null;
+  cuttableWidthCm: number | null;
+  weightGPerM2: number | null;
+  weightGPerY: number | null;
+  folderId: string;
+  folderName: string;
   __product__: Product;
 };
 
