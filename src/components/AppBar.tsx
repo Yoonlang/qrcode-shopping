@@ -247,7 +247,7 @@ const BottomAppBar = () => {
           await submitForm();
           setCounselingIntakeFormData(
             <CounselingIntakeForm
-              formikValues={values}
+              ordererInfo={values}
               selectedInfoList={selectedInfoList}
               imageUrlList={imageUrlList}
               userId={userId}

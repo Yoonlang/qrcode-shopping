@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
 });
 
 const CounselingIntakeForm = ({
-  formikValues,
+  ordererInfo,
   selectedInfoList,
   imageUrlList,
   userId,
 }: {
-  formikValues: FormType;
+  ordererInfo: Partial<FormType>;
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
   userId: string;
@@ -172,30 +172,30 @@ const CounselingIntakeForm = ({
       width: "50",
     },
     { title: t("User ID"), value: [userId], width: "50" },
-    { title: t("Company"), value: [formikValues.companyName], width: "50" },
+    { title: t("Company"), value: [ordererInfo.companyName], width: "50" },
     {
       title: t("Customer"),
-      value: [formikValues.name],
+      value: [ordererInfo.name],
       width: "50",
     },
     {
       title: t("Country"),
-      value: [formikValues.countryCode.label],
+      value: [ordererInfo.countryCode?.label],
       width: "50",
     },
     {
       title: t("Email"),
-      value: [formikValues.email],
+      value: [ordererInfo.email],
       width: "50",
     },
     {
       title: t("Tel#"),
-      value: [`+${formikValues.countryCode.phone} ${formikValues.phoneNumber}`],
+      value: [`+${ordererInfo.countryCode?.phone} ${ordererInfo.phoneNumber}`],
       width: "50",
     },
     {
       title: `Wechat ID (${t("optional")})`,
-      value: [formikValues.weChatId],
+      value: [ordererInfo.weChatId],
       width: "50",
     },
   ];
@@ -241,7 +241,7 @@ const CounselingIntakeForm = ({
                       style={[
                         styles.cell,
                         styles[`width${data.width}`],
-                        styles[`${detectLanugage(v)}`],
+                        styles[`${detectLanugage(v || "")}`],
                       ]}
                     >
                       {v}
@@ -313,7 +313,7 @@ const CounselingIntakeForm = ({
               <Image
                 style={[styles.cell, styles.width15, styles.image]}
                 src={{
-                  uri: imageUrlList[pid],
+                  uri: imageUrlList ? imageUrlList[pid] : "",
                   method: "GET",
                   headers: {},
                   body: "",
