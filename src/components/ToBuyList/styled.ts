@@ -38,11 +38,16 @@ const StyledTop = styled.div`
     width: 100%;
   }
 
-  & > img {
+  & > img,
+  > svg {
     margin-right: 20px;
     border-radius: 2px;
     min-height: 71px;
     min-width: 71px;
+  }
+
+  & > svg {
+    color: var(--color-gray-60);
   }
 
   & .MuiInputBase-root {

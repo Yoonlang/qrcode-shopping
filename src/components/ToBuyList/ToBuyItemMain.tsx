@@ -1,3 +1,4 @@
+import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
 import {
   Button,
   IconButton,
@@ -109,14 +110,18 @@ const ToBuyItemMain = ({
 
   return (
     <StyledTop>
-      <Image
-        width={IMG_SIZE}
-        height={IMG_SIZE}
-        src={`${image ?? ""}`}
-        loading="lazy"
-        unoptimized
-        alt={name}
-      />
+      {image ? (
+        <Image
+          width={IMG_SIZE}
+          height={IMG_SIZE}
+          src={`${image ?? ""}`}
+          loading="lazy"
+          unoptimized
+          alt={name}
+        />
+      ) : (
+        <ImageNotSupportedIcon />
+      )}
       <StyledRight>
         <StyledNameDiv>
           <p>{name}</p>
