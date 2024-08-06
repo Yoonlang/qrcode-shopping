@@ -1,4 +1,6 @@
-module.exports = {
+const isProduction = process.env.NODE_ENV === "production";
+
+export default {
   images: {
     domains: ["server.jojoywmaeil.com"],
   },
@@ -6,10 +8,9 @@ module.exports = {
     styledComponents: true,
   },
   env: {
-    SERVER_URL:
-      process.env.NODE_ENV === "production"
-        ? `https://server.jojoywmaeil.com:5001`
-        : `https://localhost:5001`,
+    SERVER_URL: isProduction
+      ? `https://server.jojoywmaeil.com:5001`
+      : `https://localhost:5001`,
     IS_USING_SY: "false",
   },
 };
