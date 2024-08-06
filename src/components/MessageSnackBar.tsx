@@ -8,10 +8,24 @@ import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
 
 interface StyledSnackBarProps {
   isScanned: boolean;
+  scannedFontSize: number;
 }
 
+const getFontSize = (lang: string) => {
+  if (lang === "zh") {
+    return 80;
+  }
+  if (lang === "en" || lang === "ko") {
+    return 50;
+  }
+  if (lang === "ja") {
+    return 50;
+  }
+  return 0;
+};
+
 const StyledSnackBar = styled(Snackbar, {
-  shouldForwardProp: (prop) => !["isScanned"].includes(prop),
+  shouldForwardProp: (prop) => !["isScanned", "scannedFontSize"].includes(prop),
 })<StyledSnackBarProps>`
   display: flex;
   justify-content: center;
@@ -23,10 +37,13 @@ const StyledSnackBar = styled(Snackbar, {
         ? `
         width: 250px;
         height: 250px;
+        font-size: ${props.scannedFontSize}px;
+        text-align: center;
         `
         : `
         width: 320px;
         min-height: 80px;
+        font-size: 24px;
         `}
     position: fixed;
     top: 50%;
@@ -35,18 +52,18 @@ const StyledSnackBar = styled(Snackbar, {
 
     display: flex;
     justify-content: center;
-    font-size: 24px;
   }
 `;
 
 const MessageSnackBar = () => {
   const [{ message, isMessageSnackBarOpen }, setMessageSnackBarState] =
     useRecoilState(messageSnackBarState);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <StyledSnackBar
       isScanned={message === t(snackBarStatusMessage["scanned"])}
+      scannedFontSize={getFontSize(i18n.language)}
       open={isMessageSnackBarOpen}
       autoHideDuration={800}
       onClose={() => {
