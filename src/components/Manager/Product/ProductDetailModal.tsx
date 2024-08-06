@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useOverlay } from "@toss/use-overlay";
-import Image from "next/image";
 
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { StyledModal } from "@/components/Manager/DashboardItems";
 import { productDetailColumns } from "@/components/Manager/Product/const";
 import ProductEditModal from "@/components/Manager/Product/ProductEditModal";
@@ -27,9 +27,11 @@ const StyledDetailModalContainer = styled.div`
       .imageContainer {
         min-width: 276px;
         min-height: 276px;
-        > img {
+        > img,
+        > svg {
           min-width: 276px;
           min-height: 276px;
+          color: var(--color-gray-60);
         }
       }
       .productDetail {
@@ -85,18 +87,12 @@ const ProductDetailModal = ({
         <div className="productContainer">
           <div className="baseInfo">
             <div className="imageContainer">
-              {image ? (
-                <Image
-                  width={276}
-                  height={276}
-                  src={`${image ?? ""}`}
-                  loading="lazy"
-                  unoptimized
-                  alt={productId}
-                />
-              ) : (
-                <>no image</>
-              )}
+              <ImageWithFallback
+                width={276}
+                height={276}
+                src={image}
+                alt={productId}
+              />
             </div>
             <div className="productDetail">
               <h4>{productId}</h4>
