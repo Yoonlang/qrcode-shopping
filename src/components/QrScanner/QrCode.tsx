@@ -80,7 +80,7 @@ const QrCode = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
-  const { setScannedItemList } = useScannedItemList();
+  const { scannedItemList, setScannedItemList } = useScannedItemList();
 
   const imageScan = useCallback(
     (imageData: ImageData) => {
@@ -89,7 +89,8 @@ const QrCode = () => {
         const [pre, pid] = code.data.split("/");
         if (
           pre === "products" &&
-          fetchedItemList.some(({ productId }) => pid === productId)
+          fetchedItemList.some(({ productId }) => pid === productId) &&
+          !Object.keys(scannedItemList).some((productId) => pid === productId)
         )
           setScannedItemList((old) => {
             const newScannedItemList = { ...old };
@@ -98,7 +99,7 @@ const QrCode = () => {
           });
       }
     },
-    [fetchedItemList, setScannedItemList]
+    [fetchedItemList, scannedItemList, setScannedItemList]
   );
 
   const capture = useCallback(

@@ -11,8 +11,28 @@ export const handleProductListForTable = (
   folderList: Folder[]
 ): ProductTableRow[] => {
   return productList.map((product) => {
+    const widthCm =
+      product.widthInch !== null ? Math.floor(product.widthInch * 2.54) : null;
+    const cuttableWidthInch =
+      product.widthInch !== null ? product.widthInch - 3 : null;
+    const cuttableWidthCm =
+      cuttableWidthInch !== null ? Math.floor(cuttableWidthInch * 2.54) : null;
+    const weightGPerY =
+      product.weightGPerM2 !== null && product.widthInch !== null
+        ? Math.floor(
+            (product.weightGPerM2 * 0.9144 * 2.54 * product.widthInch) / 100
+          )
+        : null;
+
     return {
       id: product.productId,
+      composition: product.composition,
+      widthInch: product.widthInch,
+      widthCm,
+      cuttableWidthInch,
+      cuttableWidthCm,
+      weightGPerM2: product.weightGPerM2,
+      weightGPerY,
       folderId: product.metadata.folderId,
       folderName:
         folderList.find((f) => f.id === product.metadata.folderId)?.name ??

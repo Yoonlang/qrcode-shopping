@@ -8,7 +8,7 @@
   "Submission": "提交",
   "Scan QR Code": "扫描二维码",
   "Your cart is empty": "您的购物车是空的",
-  "Scanned new item": "扫描新项目",
+  "Scanned new item": "扫描完成",
   "Scan at least one QR Code": "扫描至少一个 二维码",
   "Please select at least one option": "请至少选择一个选项",
   "Please enter valid information": "请输入有效信息",
@@ -64,5 +64,6 @@
   "ARTICLE PHOTO": "产品照片",
   "ARTICLE NO": "产品编号",
   "OPTIONS": "选项",
-  "Counseling Intake Form": "咨询接纳表"
+  "Counseling Intake Form": "咨询接纳表",
+  "User ID": "用户 ID"
 }

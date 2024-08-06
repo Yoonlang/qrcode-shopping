@@ -107,3 +107,8 @@ export type UserTableRow = {
   folderName: string;
   __user_info__: OrdererInfo;
 };
+
+export interface PdfBlob {
+  userId: string;
+  pdf: Blob;
+}

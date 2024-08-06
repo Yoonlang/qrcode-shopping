@@ -4,7 +4,7 @@ import { useOverlay } from "@toss/use-overlay";
 import { useFormikContext } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import Confirm from "@/components/Confirm";
 import {
@@ -24,6 +24,7 @@ import useSelectedInfoList from "@/hooks/useSelectedInfoList";
 import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
 import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
+import { userIdState } from "@/recoil/atoms/userIdState";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -197,6 +198,7 @@ const BottomAppBar = () => {
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
+  const userId = useRecoilValue(userIdState);
   const overlay = useOverlay();
 
   const handleBottomAppBarClick = async () => {
@@ -241,16 +243,16 @@ const BottomAppBar = () => {
       }
     } else if (isPageName("info")) {
       if (isValid) {
-        setCounselingIntakeFormData(
-          <CounselingIntakeForm
-            formikValues={values}
-            selectedInfoList={selectedInfoList}
-            imageUrlList={imageUrlList}
-          />
-        );
-
         try {
           await submitForm();
+          setCounselingIntakeFormData(
+            <CounselingIntakeForm
+              ordererInfo={values}
+              selectedInfoList={selectedInfoList}
+              imageUrlList={imageUrlList}
+              userId={userId}
+            />
+          );
           setScannedItemList({});
           setSelectedInfoList({});
           setImageUrlList({});

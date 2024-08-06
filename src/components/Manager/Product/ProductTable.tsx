@@ -9,7 +9,14 @@ import { handleProductListForTable } from "@/components/Manager/Product/util";
 import { Folder, Product } from "@/const";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "Product ID", width: 200 },
+  { field: "id", headerName: "제품 ID", width: 150 },
+  { field: "composition", headerName: "조성", width: 200 },
+  { field: "widthInch", headerName: "폭 (Inch)", width: 80 },
+  { field: "widthCm", headerName: "폭 (Cm)", width: 80 },
+  { field: "cuttableWidthInch", headerName: "유효폭 (Inch)", width: 100 },
+  { field: "cuttableWidthCm", headerName: "유효폭 (Cm)", width: 100 },
+  { field: "weightGPerM2", headerName: "중량 (G/M2)", width: 100 },
+  { field: "weightGPerY", headerName: "중량 (G/Y)", width: 100 },
 ];
 
 const defaultColumns: GridColDef[] = [

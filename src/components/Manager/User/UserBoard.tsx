@@ -1,21 +1,32 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
+import { pdf } from "@react-pdf/renderer";
 import { useOverlay } from "@toss/use-overlay";
+import JSZip from "jszip";
 import { useEffect, useState } from "react";
 
 import {
   getOrdererInfoList,
+  getProductList,
   permanentDeleteOrdererList,
   reassignFolder,
 } from "@/api";
+import { FormType } from "@/components/const";
+import CounselingIntakeForm from "@/components/CounselingIntakeForm";
 import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/Manager/const";
 import DataFolderReassignModal from "@/components/Manager/Folder/DataFolderReassignModal";
+import { PdfBlob } from "@/components/Manager/User/const";
 import UserCopyModal from "@/components/Manager/User/UserCopyModal";
 import UserTable from "@/components/Manager/User/UserTable";
 import UserTextActionModal from "@/components/Manager/User/UserTextActionModal";
 import MessageDialog from "@/components/MessageDialog";
-import { Folder, OrdererInfo } from "@/const";
-
+import {
+  countries,
+  CountryType,
+} from "@/components/UserInfoSubmission/countries";
+import { Folder, OrdererInfo, Product } from "@/const";
+import { imageUrlList } from "@/recoil/atoms/imageUrlListState";
+import { SelectedInfoList } from "@/recoil/atoms/selectedInfoListState";
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -49,6 +60,7 @@ const UserBoard = ({
   });
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
   const overlay = useOverlay();
+  const [productList, setProductList] = useState<Product[]>([]);
 
   const updateOrdererInfoList = () => {
     getOrdererInfoList(
@@ -146,8 +158,105 @@ const UserBoard = ({
     }
   };
 
+  const handleUserPdfDownloadButtonClick = async () => {
+    const zip = new JSZip();
+    const userList: OrdererInfo[] = filteredUserList.filter((f) =>
+      selectedUserList.find((userId) => f.userId === userId)
+    );
+    const pdfBlobList: PdfBlob[] = [];
+
+    for (const user of userList) {
+      const { name, companyName } = user.personalInfo;
+      const { email, phoneNumber, weChatId } = user.personalInfo.contactInfo;
+      const { code, label }: CountryType = countries.filter(
+        (country) =>
+          `+${country.phone}` ===
+          user.personalInfo.contactInfo.phoneNumber.countryCode
+      )[0];
+
+      const userValues: Partial<FormType> = {
+        name: name,
+        companyName: companyName,
+        email: email,
+        countryCode: {
+          code: code,
+          label: label,
+          phone: phoneNumber.countryCode.split("+")[1],
+        },
+        weChatId: weChatId || "",
+        phoneNumber: phoneNumber.number,
+      };
+
+      const selectedInfoList: SelectedInfoList = {};
+      const imageUrlList: imageUrlList = {};
+
+      user.hopeProducts.forEach((product) => {
+        const productInfo = productList.find(
+          (p) => p.productId === product.productId
+        );
+
+        if (productInfo && productInfo.image) {
+          imageUrlList[product.productId] = productInfo.image;
+        }
+
+        if (product.colorCardQuantity > 0) {
+          selectedInfoList[product.productId] = {
+            "Color Card": product.colorCardQuantity,
+          };
+        }
+        product.sampleYardages.forEach((sy) => {
+          selectedInfoList[product.productId] = {
+            ...selectedInfoList[product.productId],
+            [sy.colorName]: sy.yardageQuantity,
+          };
+        });
+      });
+
+      const pdfBlob = await pdf(
+        <CounselingIntakeForm
+          ordererInfo={userValues}
+          selectedInfoList={selectedInfoList}
+          imageUrlList={imageUrlList}
+          userId={user.userId}
+        />
+      ).toBlob();
+
+      pdfBlobList.push({ userId: user.userId, pdf: pdfBlob });
+    }
+
+    const link = document.createElement("a");
+
+    if (userList.length === 1) {
+      link.href = URL.createObjectURL(pdfBlobList[0].pdf);
+      link.download = `${pdfBlobList[0].userId}.pdf`;
+    } else {
+      pdfBlobList.forEach(({ userId, pdf }) => {
+        zip.file(`${userId}.pdf`, pdf);
+      });
+      const zipContent = await zip.generateAsync({ type: "blob" });
+      link.href = URL.createObjectURL(zipContent);
+      link.download = `pdfs.zip`;
+    }
+
+    link.click();
+  };
+
   useEffect(() => {
     updateOrdererInfoList();
+    getProductList(
+      (data) => {
+        setProductList(data);
+      },
+      () => {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["제품 목록 받아오기 실패"]}
+          />
+        ));
+      }
+    );
   }, []);
 
   return (
@@ -175,6 +284,9 @@ const UserBoard = ({
             </>
           ) : (
             <>
+              <Button onClick={handleUserPdfDownloadButtonClick}>
+                PDF 다운로드
+              </Button>
               <Button
                 onClick={() => {
                   overlay.open(({ isOpen, close }) => (
