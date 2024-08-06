@@ -8,6 +8,8 @@ import {
   TextField,
 } from "@mui/material";
 
+import ImageWithFallback from "@/components/ImageWithFallback";
+
 const StyledWrapper = styled.div`
   border: 0.5px solid var(--color-gray-40);
   border-radius: 12px;
@@ -38,18 +40,6 @@ const StyledTop = styled.div`
     width: 100%;
   }
 
-  & > img,
-  > svg {
-    margin-right: 20px;
-    border-radius: 2px;
-    min-height: 71px;
-    min-width: 71px;
-  }
-
-  & > svg {
-    color: var(--color-gray-60);
-  }
-
   & .MuiInputBase-root {
     color: var(--color-primary);
     font-size: 12px;
@@ -62,6 +52,14 @@ const StyledTop = styled.div`
   & .Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid var(--color-text-field-primary);
   }
+`;
+
+const StyledImageWithFallback = styled(ImageWithFallback)`
+  margin-right: 20px;
+  border-radius: 2px;
+  min-height: 71px;
+  min-width: 71px;
+  color: var(--color-gray-60);
 `;
 
 const StyledRight = styled.div`
@@ -250,6 +248,7 @@ export {
   StyledBottom,
   StyledBox,
   StyledButton,
+  StyledImageWithFallback,
   StyledInput,
   StyledInputLabel,
   StyledMenuItem,
