@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import { Snackbar } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 
 import { snackBarStatusMessage } from "@/components/const";
 import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
-import { useTranslation } from "react-i18next";
 
 interface StyledSnackBarProps {
   isScanned: boolean;
