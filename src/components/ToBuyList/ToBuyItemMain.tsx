@@ -5,7 +5,6 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
 import { IS_USING_SY } from "@/components/const";
@@ -20,6 +19,7 @@ import {
   Counter,
   MenuItemDivider,
   SelectedOption,
+  StyledImageWithFallback,
   StyledInput,
   StyledInputLabel,
   StyledMenuItem,
@@ -109,12 +109,10 @@ const ToBuyItemMain = ({
 
   return (
     <StyledTop>
-      <Image
+      <StyledImageWithFallback
+        src={image}
         width={IMG_SIZE}
         height={IMG_SIZE}
-        src={`${image ?? ""}`}
-        loading="lazy"
-        unoptimized
         alt={name}
       />
       <StyledRight>
