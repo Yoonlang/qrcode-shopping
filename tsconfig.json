@@ -31,7 +31,9 @@
     "src/app/i18n.js",
     "src/components/TranslationsProvider.js",
     "src/i18nConfig.js",
-    "jest.config.js"
+    "jest.config.js",
+    "next.config.js",
+    "scripts/**/*"
   ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
