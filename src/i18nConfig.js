@@ -3,4 +3,4 @@ const i18nConfig = {
   defaultLocale: "zh",
 };
 
-module.exports = i18nConfig;
+export default i18nConfig;
