@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { useFormikContext } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -201,6 +201,17 @@ const BottomAppBar = () => {
   const userId = useRecoilValue(userIdState);
   const overlay = useOverlay();
 
+  useEffect(() => {
+    setCounselingIntakeFormData(
+      <CounselingIntakeForm
+        ordererInfo={values}
+        selectedInfoList={selectedInfoList}
+        imageUrlList={imageUrlList}
+        userId={userId}
+      />
+    );
+  }, [userId]);
+
   const handleBottomAppBarClick = async () => {
     if (isPageName("qrcode")) {
       if (Object.keys(scannedItemList).length === 0) {
@@ -245,14 +256,6 @@ const BottomAppBar = () => {
       if (isValid) {
         try {
           await submitForm();
-          setCounselingIntakeFormData(
-            <CounselingIntakeForm
-              ordererInfo={values}
-              selectedInfoList={selectedInfoList}
-              imageUrlList={imageUrlList}
-              userId={userId}
-            />
-          );
           setScannedItemList({});
           setSelectedInfoList({});
           setImageUrlList({});
