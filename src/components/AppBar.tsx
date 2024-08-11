@@ -209,6 +209,7 @@ const BottomAppBar = () => {
         selectedInfoList={selectedInfoList}
         imageUrlList={imageUrlList}
         userId={userId}
+        language={i18n.language as Language}
       />
     );
   }, [userId]);
