@@ -3,10 +3,11 @@ import * as yup from "yup";
 
 import {
   PRODUCT_DEFAULT,
+  PRODUCT_TRASH_CAN,
   ProductCreationForm,
   ProductEditionForm,
 } from "@/components/Manager/const";
-import { Product } from "@/const";
+import { Folder, Product } from "@/const";
 
 export const fileTypes = ["JPG", "PNG"];
 
@@ -70,6 +71,21 @@ export const productEditionSchema = yup.object().shape({
 
 export const productDetailColumns: GridColDef[] = [
   { field: "sampleYardage", headerName: "Sample Yardage", width: 300 },
+];
+
+export const mockProductFolderList: Folder[] = [
+  {
+    name: "전체",
+    type: "product",
+    id: PRODUCT_DEFAULT,
+    creationTime: "2024-08-10 09:00:00",
+  },
+  {
+    name: "휴지통",
+    type: "product",
+    id: PRODUCT_TRASH_CAN,
+    creationTime: "2024-08-10 09:00:00",
+  },
 ];
 
 export const mockProductList: Product[] = [
