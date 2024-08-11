@@ -256,7 +256,7 @@ const CounselingIntakeForm = ({
                   >
                     {data.title}
                   </Text>
-                  {data.value.map((v) => (
+                  {data.value.map((v: string) => (
                     <Text
                       key={`customer-${data.title}-value`}
                       style={[
@@ -265,7 +265,9 @@ const CounselingIntakeForm = ({
                         styles[`${detectLanugage(v || "")}`],
                       ]}
                     >
-                      {v}
+                      {v.split("").map((s, idx) => (
+                        <Text key={idx}>{s}</Text>
+                      ))}
                     </Text>
                   ))}
                 </View>
