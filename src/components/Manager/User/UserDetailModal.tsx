@@ -117,7 +117,7 @@ const UserDetailModal = ({
             rows={[
               {
                 email,
-                contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
+                contactNumber: `${phoneNumber.countryCode} ${phoneNumber.number}`,
                 businessType,
               },
             ]}
