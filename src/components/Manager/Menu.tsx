@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import AddIcon from "@mui/icons-material/Add";
-import ConstructionIcon from "@mui/icons-material/Construction";
+import EditIcon from "@mui/icons-material/Edit";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {
@@ -102,7 +102,7 @@ const NestedListItem = ({
                 primary={shortenWithEllipsis(folder.name, 8)}
               />
               {idx !== folderList.length - 2 && (
-                <ConstructionIcon
+                <EditIcon
                   onClick={(e) => {
                     e.stopPropagation();
                     overlay.open(({ isOpen, close }) => (

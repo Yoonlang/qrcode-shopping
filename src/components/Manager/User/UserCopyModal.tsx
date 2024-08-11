@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 
 import {
-  handleUserInfoForOrder,
   initialSelectedOptionsObj,
   optionsToCopyList,
   SelectedOptions,
@@ -42,6 +41,8 @@ const getTitleData = (option: string): string[] => {
       "SHIPPING - ADDRESS",
       "SHIPPING - DETAIL ADDRESS",
     ];
+  } else if (option === "hopeProducts") {
+    return ["PRODUCT ID", "NUMBER OF COLOR CARD"];
   }
   return [optionData.label];
 };
@@ -98,7 +99,7 @@ const UserCopyModal = ({
     const titleData = selectedOptionList.flatMap(getTitleData);
     clipboardData.push(titleData.join("\t"));
 
-    const getRowData = (user: any): string[] => {
+    const getRowData = (user: OrdererInfo): string[] => {
       return selectedOptionList
         .map((option) => {
           switch (option) {
@@ -117,12 +118,7 @@ const UserCopyModal = ({
               ];
             }
             case "hopeProducts":
-              return handleUserInfoForOrder(user.hopeProducts)
-                .map(
-                  (product) =>
-                    `${product.productId} : ${product.type}(${product.quantity})`
-                )
-                .join(" / ");
+              return `${user.hopeProducts[0].productId}\t${user.hopeProducts[0].colorCardQuantity}`;
             default:
               return (
                 user[option] ||
@@ -135,9 +131,23 @@ const UserCopyModal = ({
         .flat();
     };
 
+    const productRowIdx = titleData.indexOf("PRODUCT ID");
+
     selectedUserList.forEach((user) => {
       const rowData = getRowData(user);
       clipboardData.push(rowData.join("\t"));
+
+      let idx = 1;
+      if (productRowIdx !== -1) {
+        while (idx < user.hopeProducts.length) {
+          clipboardData.push(
+            `${"\t".repeat(productRowIdx - 1)}\t${
+              user.hopeProducts[idx].productId
+            }\t${user.hopeProducts[idx].colorCardQuantity}`
+          );
+          idx++;
+        }
+      }
     });
 
     try {

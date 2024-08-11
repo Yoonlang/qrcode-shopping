@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
+import JSZip from "jszip";
+import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 
 import {
@@ -126,6 +128,57 @@ const ProductBoard = ({
     );
   };
 
+  const handleProductQrCodeCreate = async () => {
+    if (selectedProductList.length > 0) {
+      try {
+        const zip = new JSZip();
+        const canvas = document.createElement("canvas");
+        const qrCodeList: { productId: string; image: string }[] = [];
+        for (const productId of selectedProductList) {
+          QRCode.toCanvas(
+            canvas,
+            `products/${productId}`,
+            { width: 200 },
+            (e) => {
+              if (e) {
+                throw e;
+              }
+
+              qrCodeList.push({
+                productId,
+                image: canvas.toDataURL("image/png"),
+              });
+            }
+          );
+        }
+
+        const downloadLink = document.createElement("a");
+        if (qrCodeList.length === 1) {
+          downloadLink.href = qrCodeList[0].image;
+          downloadLink.download = `${qrCodeList[0].productId}.png`;
+        } else {
+          for (const { image, productId } of qrCodeList) {
+            const response = await fetch(image);
+            const blob = await response.blob();
+            zip.file(`${productId}.png`, blob);
+          }
+          const zipContent = await zip.generateAsync({ type: "blob" });
+          downloadLink.href = URL.createObjectURL(zipContent);
+          downloadLink.download = `qrcodes.zip`;
+        }
+        downloadLink.click();
+      } catch (e) {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={[e?.message ?? "QR code 생성 실패"]}
+          />
+        ));
+      }
+    }
+  };
+
   const handleProductFolderReassign = () => {
     if (selectedProductList.length > 0) {
       overlay.open(({ isOpen, close }) => (
@@ -163,6 +216,7 @@ const ProductBoard = ({
             </>
           ) : (
             <>
+              <Button onClick={handleProductQrCodeCreate}>QR CODE 생성</Button>
               <Button onClick={handleProductFolderReassign}>
                 데이터 폴더 이동
               </Button>

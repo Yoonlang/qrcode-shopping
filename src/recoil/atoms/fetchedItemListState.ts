@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 
 import { getProductList } from "@/api";
+import { PRODUCT_TRASH_CAN } from "@/components/Manager/const";
 import { Product } from "@/const";
 
 export const fetchedItemListCounter = atom<number>({
@@ -16,7 +17,10 @@ export const fetchedItemListSelector = selector<Product[]>({
     const getProductListPromise = () =>
       new Promise<Product[]>((resolve, reject) => {
         getProductList(
-          (data) => resolve(data),
+          (data) =>
+            resolve(
+              data.filter((d) => d.metadata.folderId !== PRODUCT_TRASH_CAN)
+            ),
           (e) => reject(e)
         );
       });

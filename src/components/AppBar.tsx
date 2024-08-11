@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import { useFormikContext } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -17,6 +17,7 @@ import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
 import MessageDialog from "@/components/MessageDialog";
+import { Language } from "@/const";
 import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
@@ -187,7 +188,7 @@ const BottomAppBarTitleText = styled.div`
 `;
 
 const BottomAppBar = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { pageName, isPageName, goToPage, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
@@ -200,6 +201,18 @@ const BottomAppBar = () => {
   );
   const userId = useRecoilValue(userIdState);
   const overlay = useOverlay();
+
+  useEffect(() => {
+    setCounselingIntakeFormData(
+      <CounselingIntakeForm
+        ordererInfo={values}
+        selectedInfoList={selectedInfoList}
+        imageUrlList={imageUrlList}
+        userId={userId}
+        language={i18n.language as Language}
+      />
+    );
+  }, [userId]);
 
   const handleBottomAppBarClick = async () => {
     if (isPageName("qrcode")) {
@@ -245,14 +258,6 @@ const BottomAppBar = () => {
       if (isValid) {
         try {
           await submitForm();
-          setCounselingIntakeFormData(
-            <CounselingIntakeForm
-              ordererInfo={values}
-              selectedInfoList={selectedInfoList}
-              imageUrlList={imageUrlList}
-              userId={userId}
-            />
-          );
           setScannedItemList({});
           setSelectedInfoList({});
           setImageUrlList({});

@@ -218,6 +218,7 @@ const UserBoard = ({
           selectedInfoList={selectedInfoList}
           imageUrlList={imageUrlList}
           userId={user.userId}
+          language={user.metadata.language}
         />
       ).toBlob();
 
