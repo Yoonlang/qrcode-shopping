@@ -148,6 +148,10 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiCheckbox-root {
     color: var(--color-black);
     padding-left: 0;
+
+    &.Mui-checked {
+      color: var(--color-black);
+    }
   }
 
   & .MuiFormControlLabel-label {
