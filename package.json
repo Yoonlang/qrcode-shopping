@@ -12,9 +12,7 @@
     "lint-no-exit": "node scripts/lint-no-exit.js",
     "lint-staged": "lint-staged",
     "secure": "next dev --experimental-https",
-    "pretest": "node scripts/set-react-jsx.js",
-    "test": "jest || true",
-    "posttest": "node scripts/reset-jsx.js"
+    "test": "jest"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
