@@ -18,6 +18,8 @@ import ProductTable from "@/components/Manager/Product/ProductTable";
 import MessageDialog from "@/components/MessageDialog";
 import { Folder, Product } from "@/const";
 
+const QR_CODE_LENGTH = 254; // 3cm
+
 const StyledProductBoard = styled.div`
   display: flex;
   flex-direction: column;
@@ -138,7 +140,7 @@ const ProductBoard = ({
           QRCode.toCanvas(
             canvas,
             `products/${productId}`,
-            { width: 200 },
+            { width: QR_CODE_LENGTH },
             (e) => {
               if (e) {
                 throw e;
