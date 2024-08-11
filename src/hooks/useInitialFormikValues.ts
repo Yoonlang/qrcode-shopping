@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
 import { submitOrdererInfo } from "@/api";
@@ -33,6 +34,7 @@ export const initialValues: FormType = {
 };
 
 const useInitialFormikValues = () => {
+  const { i18n } = useTranslation();
   const [storedFormikValues, handleFormikValuesUpdate] = useLocalStorageState({
     key: "form",
     value: initialValues,
@@ -103,6 +105,7 @@ const useInitialFormikValues = () => {
             detailAddress: isSameAddress ? coDetailAddress : spDetailAddress,
           },
         },
+        language: i18n.language,
       }),
       (res) => {
         setUserId(res.userId);

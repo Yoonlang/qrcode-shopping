@@ -17,6 +17,7 @@ import Icons from "@/components/Icons";
 import Info from "@/components/Info";
 import LanguageSelector from "@/components/LanguageSelector";
 import MessageDialog from "@/components/MessageDialog";
+import { Language } from "@/const";
 import { initialValues } from "@/hooks/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/usePageRouter";
 import useScannedItemList from "@/hooks/useScannedItemList";
@@ -187,7 +188,7 @@ const BottomAppBarTitleText = styled.div`
 `;
 
 const BottomAppBar = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { pageName, isPageName, goToPage, goToNextPage } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
@@ -251,6 +252,7 @@ const BottomAppBar = () => {
               selectedInfoList={selectedInfoList}
               imageUrlList={imageUrlList}
               userId={userId}
+              language={i18n.language as Language}
             />
           );
           setScannedItemList({});

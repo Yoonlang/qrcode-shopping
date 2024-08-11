@@ -25,6 +25,7 @@ interface OrdererInfoMetadata {
   userId: string;
   submissionTime: string;
   folderId: string;
+  language: Language;
 }
 
 export interface OrdererInfo {
@@ -77,3 +78,5 @@ export interface Folder {
   id: string;
   creationTime: string;
 }
+
+export type Language = "ko" | "zh" | "en" | "ja";
