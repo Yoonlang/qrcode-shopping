@@ -24,7 +24,7 @@ export const handleUserInfoListForTable = (
         id: userId,
         name,
         weChatId,
-        contactNumber: `${phoneNumber.countryCode}${phoneNumber.number}`,
+        contactNumber: `${phoneNumber.countryCode} ${phoneNumber.number}`,
         company: companyName,
         type: businessType,
         remark1,

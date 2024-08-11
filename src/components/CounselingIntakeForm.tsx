@@ -11,6 +11,7 @@ import { franc } from "franc";
 import { useTranslation } from "react-i18next";
 
 import { FormType } from "@/components/const";
+import { Language } from "@/const";
 import dayjs from "@/dayjsConfig";
 import { imageUrlList } from "@/recoil/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/atoms/selectedInfoListState";
@@ -150,13 +151,17 @@ const CounselingIntakeForm = ({
   selectedInfoList,
   imageUrlList,
   userId,
+  language,
 }: {
   ordererInfo: Partial<FormType>;
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
   userId: string;
+  language: Language;
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t: T } = useTranslation();
+  const t = (str: string) => T(str, { lng: language });
+
   const clientData = [
     { title: t("In charge"), value: ["JAY KIM"], width: "50" },
     { title: t("Contact information"), value: [], width: "100" },
@@ -222,7 +227,7 @@ const CounselingIntakeForm = ({
   ];
 
   return (
-    <Document style={styles[i18n.language]}>
+    <Document style={styles[language]}>
       <Page>
         <View style={styles.table}>
           <View
