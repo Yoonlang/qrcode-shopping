@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
 
-const testExtList = ["js", "ts", "jsx", "tsx"];
+const testExtList = [".js", ".ts", ".jsx", ".tsx"];
 
 const stagedFileList = execSync("git diff --cached --name-only", {
   encoding: "utf-8",
