@@ -5,12 +5,12 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
+import MessageDialog from "@/components/common/MessageDialog";
 import { snackBarStatusMessage } from "@/components/const";
-import MessageDialog from "@/components/MessageDialog";
-import QrCode from "@/components/QrScanner/QrCode";
-import RetryButton from "@/components/RetryButton";
-import useScannedItemList from "@/hooks/useScannedItemList";
-import { messageSnackBarState } from "@/recoil/atoms/messageSnackBarState";
+import QrCode from "@/components/user/qrScanner/QrCode";
+import RetryButton from "@/components/user/RetryButton";
+import useScannedItemList from "@/hooks/user/useScannedItemList";
+import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
 
 const StyledContainer = styled.div`
   display: flex;

@@ -3,9 +3,9 @@
 import { OverlayProvider } from "@toss/use-overlay";
 
 import initTranslations from "@/app/i18n";
+import TranslationsProvider from "@/components/common/TranslationsProvider";
 import ManagerPage from "@/components/pages/ManagerPage";
-import TranslationsProvider from "@/components/TranslationsProvider";
-import GlobalStyle from "@/styles/global";
+import GlobalStyle from "@/globalStyles";
 
 const i18nNamespaces = ["common"];
 
