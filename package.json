@@ -6,15 +6,15 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "next dev",
-    "build": "npm run lint && next build",
+    "prebuild": "npm run lint",
+    "build": "next build",
     "start": "next start",
     "lint": "npx eslint src --fix",
     "lint-no-exit": "node scripts/lint-no-exit.js",
     "lint-staged": "lint-staged",
     "secure": "next dev --experimental-https",
-    "pretest": "node scripts/set-react-jsx.js",
-    "test": "jest || true",
-    "posttest": "node scripts/reset-jsx.js"
+    "test": "jest --coverage",
+    "test:staged": "node scripts/jest-staged-test.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
