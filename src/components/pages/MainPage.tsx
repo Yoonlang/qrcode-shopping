@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import QrScannerPage from "@/components/pages/QrScannerPage";
 import SubmissionCompletePage from "@/components/pages/SubmissionCompletePage";
 import ToBuyListPage from "@/components/pages/ToBuyListPage";
-import UserInfoSubmissionPage from "@/components/pages/UserSubmissionPage";
+import UserSubmissionPage from "@/components/pages/UserSubmissionPage";
 import WeChatFriendGuidePage from "@/components/pages/WeChatFriendGuidePage";
 import { BottomAppBar, TitleAppBar } from "@/components/user/AppBar";
 import RetryButton from "@/components/user/RetryButton";
@@ -30,7 +30,7 @@ const MainPage = () => {
           </Suspense>
         </ErrorBoundary>
       )}
-      {isPageName("info") && <UserInfoSubmissionPage />}
+      {isPageName("info") && <UserSubmissionPage />}
       {isPageName("wechat") && <WeChatFriendGuidePage />}
       {isPageName("complete") && <SubmissionCompletePage />}
       <BottomAppBar />

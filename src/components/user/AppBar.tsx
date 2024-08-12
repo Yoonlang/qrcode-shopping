@@ -205,7 +205,7 @@ const BottomAppBar = () => {
   useEffect(() => {
     setCounselingIntakeFormData(
       <CounselingIntakeForm
-        ordererInfo={values}
+        userInfo={values}
         selectedInfoList={selectedInfoList}
         imageUrlList={imageUrlList}
         userId={userId}

@@ -11,8 +11,8 @@ import {
   AddressCheckbox,
   StyledStepper,
 } from "@/components/user/userSubmission/FormItems";
-import OrdererInfo from "@/components/user/userSubmission/OrdererInfo";
 import ShippingAddress from "@/components/user/userSubmission/ShippingAddress";
+import UserInfo from "@/components/user/userSubmission/UserInfo";
 
 const UserSubmissionPage = () => {
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ const UserSubmissionPage = () => {
                 </AddressBox>
               )}
               <StepContent>
-                {index === 0 && <OrdererInfo />}
+                {index === 0 && <UserInfo />}
                 {index === 1 && <CompanyAddress />}
                 {index === 2 && <ShippingAddress />}
               </StepContent>

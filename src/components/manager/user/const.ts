@@ -1,6 +1,6 @@
 import { GridColDef } from "@mui/x-data-grid";
 
-import { OrdererInfo } from "@/const";
+import { User } from "@/const";
 
 export const tableColumns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 80 },
@@ -105,7 +105,7 @@ export type UserTableRow = {
   remark2: string;
   folderId: string;
   folderName: string;
-  __user_info__: OrdererInfo;
+  __user__: User;
 };
 
 export interface PdfBlob {

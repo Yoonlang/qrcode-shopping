@@ -1,5 +1,5 @@
 import { SERVER_URL } from "@/components/const";
-import { Folder, OrdererInfo, Product } from "@/const";
+import { Folder, Product, User } from "@/const";
 import {
   transformProductForFolderUpdate,
   transformUserForUpdate,
@@ -210,14 +210,11 @@ export const permanentDeleteProductList = (
   return Promise.all(deletePromises).then(onSuccess).catch(onFail);
 };
 
-export const getOrdererInfoList: ApiGetFunction<OrdererInfo[]> = (
-  onSuccess,
-  onFail
-) => {
+export const getUserList: ApiGetFunction<User[]> = (onSuccess, onFail) => {
   return http.get(`/users`, { credentials: "include" }, onSuccess, onFail);
 };
 
-export const submitOrdererInfo: ApiModifyFunction<OrdererInfo> = (
+export const submitUser: ApiModifyFunction<User> = (
   body,
   onSuccess,
   onFail
@@ -241,7 +238,7 @@ const putUser: ApiModifyFunction<SucceedResponse> = (
 };
 
 export const editUserRemark = (
-  user: OrdererInfo,
+  user: User,
   onSuccess: SuccessCallback<SucceedResponse>,
   onFail: FailCallback
 ) => {
@@ -249,13 +246,13 @@ export const editUserRemark = (
 };
 
 export const reassignFolder = (
-  dataList: OrdererInfo[] | Product[],
+  dataList: User[] | Product[],
   folderId: string,
   onSuccess: SuccessCallback<SucceedResponse[] | Product[]>,
   onFail: FailCallback
 ) => {
   const promises: Promise<SucceedResponse | Product>[] = [];
-  dataList.forEach((d: OrdererInfo | Product) => {
+  dataList.forEach((d: User | Product) => {
     promises.push(
       new Promise((resolve, reject) => {
         "productId" in d

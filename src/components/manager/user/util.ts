@@ -1,12 +1,12 @@
 import { UserTableRow } from "@/components/manager/user/const";
-import { Folder, OrdererInfo } from "@/const";
+import { Folder, User } from "@/const";
 
-export const handleUserInfoListForTable = (
-  userInfoList: OrdererInfo[],
+export const handleUserListForTable = (
+  userList: User[],
   folderList: Folder[]
 ): UserTableRow[] => {
   return (
-    userInfoList?.map((userInfo) => {
+    userList?.map((user) => {
       const {
         personalInfo: {
           name,
@@ -18,7 +18,7 @@ export const handleUserInfoListForTable = (
         remark1,
         remark2,
         metadata: { folderId },
-      } = userInfo;
+      } = user;
 
       return {
         id: userId,
@@ -32,13 +32,13 @@ export const handleUserInfoListForTable = (
         folderId,
         folderName:
           folderList.find((f) => f.id === folderId)?.name ?? "Not Found",
-        __user_info__: userInfo,
+        __user__: user,
       };
     }) ?? []
   );
 };
 
-export const handleUserInfoForOrder = (
+export const handleUserForOrder = (
   hopeProducts: [
     {
       colorCardQuantity: number;
