@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
 import { submitUser } from "@/api";
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { validationSchema } from "@/components/user/validation";
 import dayjs from "@/dayjsConfig";
 import useLocalStorageState from "@/hooks/user/useLocalStorageState";
 import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
 import { userIdState } from "@/recoil/user/atoms/userIdState";
 
-export const initialValues: FormType = {
+export const initialValues: UserInfo = {
   name: "",
   companyName: "",
   businessType: "",

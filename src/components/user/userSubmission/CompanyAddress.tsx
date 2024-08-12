@@ -2,7 +2,7 @@ import { FormikContextType, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { UserInput } from "@/components/user/userSubmission/FormItems";
 
 const CompanyAddress = () => {
@@ -14,7 +14,7 @@ const CompanyAddress = () => {
     setValues,
     setErrors,
     setTouched,
-  }: FormikContextType<FormType> = useFormikContext();
+  }: FormikContextType<UserInfo> = useFormikContext();
 
   useEffect(() => {
     if (values.businessType === "Student") {

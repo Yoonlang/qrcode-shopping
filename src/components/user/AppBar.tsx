@@ -11,9 +11,9 @@ import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
 import Icons from "@/components/common/Icons";
 import MessageDialog from "@/components/common/MessageDialog";
 import {
-  FormType,
   IS_USING_SY,
   snackBarStatusMessage,
+  UserInfo,
 } from "@/components/const";
 import Info from "@/components/user/Info";
 import LanguageSelector from "@/components/user/LanguageSelector";
@@ -195,7 +195,7 @@ const BottomAppBar = () => {
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
   const { isValid, values, resetForm, submitForm } =
-    useFormikContext<FormType>();
+    useFormikContext<UserInfo>();
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );

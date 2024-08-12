@@ -10,7 +10,7 @@ import {
 import { franc } from "franc";
 import { useTranslation } from "react-i18next";
 
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { Language } from "@/const";
 import dayjs from "@/dayjsConfig";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
@@ -153,7 +153,7 @@ const CounselingIntakeForm = ({
   userId,
   language,
 }: {
-  userInfo: Partial<FormType>;
+  userInfo: Partial<UserInfo>;
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
   userId: string;

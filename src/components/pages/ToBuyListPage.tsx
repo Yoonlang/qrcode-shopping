@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import Icons from "@/components/common/Icons";
-import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
+import { EMPTY_TEXT, IS_USING_SY, UserInfo } from "@/components/const";
 import { COLOR_CARD_TEXT } from "@/components/user/toBuyList/const";
 import {
   SelectedBox,
@@ -58,7 +58,7 @@ const ProductLists = styled.div`
 `;
 
 const StyledSwitch = () => {
-  const { values, setFieldValue } = useFormikContext<FormType>();
+  const { values, setFieldValue } = useFormikContext<UserInfo>();
 
   return (
     <Box sx={{ display: "flex" }}>

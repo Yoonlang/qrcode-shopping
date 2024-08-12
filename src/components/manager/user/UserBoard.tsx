@@ -13,7 +13,7 @@ import {
 } from "@/api";
 import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
 import MessageDialog from "@/components/common/MessageDialog";
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/manager/const";
 import DataFolderReassignModal from "@/components/manager/folder/DataFolderReassignModal";
 import { PdfBlob } from "@/components/manager/user/const";
@@ -174,7 +174,7 @@ const UserBoard = ({
           user.personalInfo.contactInfo.phoneNumber.countryCode
       )[0];
 
-      const userValues: Partial<FormType> = {
+      const userValues: Partial<UserInfo> = {
         name: name,
         companyName: companyName,
         email: email,

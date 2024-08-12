@@ -3,7 +3,7 @@ import { FormikContextType, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import CompanyAddress from "@/components/user/userSubmission/CompanyAddress";
 import { steps } from "@/components/user/userSubmission/const";
 import {
@@ -17,7 +17,7 @@ import UserDetails from "@/components/user/userSubmission/UserDetails";
 const UserSubmissionPage = () => {
   const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
-  const { values, errors, handleSubmit }: FormikContextType<FormType> =
+  const { values, errors, handleSubmit }: FormikContextType<UserInfo> =
     useFormikContext();
 
   useEffect(() => {

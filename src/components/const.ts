@@ -12,7 +12,7 @@ export const META = {
 
 export const SERVER_URL = `${process.env.SERVER_URL}`;
 
-export interface FormType {
+export interface UserInfo {
   name: string;
   companyName: string;
   businessType: string;
