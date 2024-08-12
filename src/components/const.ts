@@ -1,3 +1,5 @@
+import { CountryType } from "@/components/user/userSubmission/countries";
+
 export const META = {
   title: "YOUNGWON X MAEIL",
   description: "QR Scan",
@@ -9,8 +11,6 @@ export const META = {
 } as const;
 
 export const SERVER_URL = `${process.env.SERVER_URL}`;
-
-import { CountryType } from "@/components/UserInfoSubmission/countries";
 
 export interface FormType {
   name: string;

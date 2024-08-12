@@ -5,8 +5,8 @@ import Image from "next/image";
 import { ReactNode, useRef } from "react";
 import { useRecoilValue } from "recoil";
 
-import MessageDialog from "@/components/MessageDialog";
-import { userIdState } from "@/recoil/atoms/userIdState";
+import MessageDialog from "@/components/common/MessageDialog";
+import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const StyledWeChatFriendGuideBox = styled.div`
   align-items: center;

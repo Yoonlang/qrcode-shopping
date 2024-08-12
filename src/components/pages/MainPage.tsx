@@ -1,15 +1,15 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-import { BottomAppBar, TitleAppBar } from "@/components/AppBar";
 import QrScannerPage from "@/components/pages/QrScannerPage";
 import SubmissionCompletePage from "@/components/pages/SubmissionCompletePage";
 import ToBuyListPage from "@/components/pages/ToBuyListPage";
-import UserInfoSubmissionPage from "@/components/pages/UserInfoSubmissionPage";
+import UserInfoSubmissionPage from "@/components/pages/UserSubmissionPage";
 import WeChatFriendGuidePage from "@/components/pages/WeChatFriendGuidePage";
-import RetryButton from "@/components/RetryButton";
-import SplashScreen from "@/components/SplashScreen";
-import usePageRouter from "@/hooks/usePageRouter";
+import { BottomAppBar, TitleAppBar } from "@/components/user/AppBar";
+import RetryButton from "@/components/user/RetryButton";
+import SplashScreen from "@/components/user/SplashScreen";
+import usePageRouter from "@/hooks/user/usePageRouter";
 
 const MainPage = () => {
   const { isPageName } = usePageRouter();

@@ -5,21 +5,21 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
+import Icons from "@/components/common/Icons";
 import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
-import Icons from "@/components/Icons";
-import { COLOR_CARD_TEXT } from "@/components/ToBuyList/const";
+import { COLOR_CARD_TEXT } from "@/components/user/toBuyList/const";
 import {
   SelectedBox,
   StyledBox,
   StyledButton,
   StyledWrapper,
-} from "@/components/ToBuyList/styled";
-import ToBuyItemMain from "@/components/ToBuyList/ToBuyItemMain";
-import ToBuyItemOptions from "@/components/ToBuyList/ToBuyItemOptions";
-import useScannedItemList from "@/hooks/useScannedItemList";
-import useSelectedInfoList from "@/hooks/useSelectedInfoList";
-import { fetchedItemListSelector } from "@/recoil/atoms/fetchedItemListState";
-import { imageUrlListState } from "@/recoil/atoms/imageUrlListState";
+} from "@/components/user/toBuyList/styled";
+import ToBuyItemMain from "@/components/user/toBuyList/ToBuyItemMain";
+import ToBuyItemOptions from "@/components/user/toBuyList/ToBuyItemOptions";
+import useScannedItemList from "@/hooks/user/useScannedItemList";
+import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
+import { fetchedItemListSelector } from "@/recoil/user/atoms/fetchedItemListState";
+import { imageUrlListState } from "@/recoil/user/atoms/imageUrlListState";
 
 const StyledDiv = styled.div`
   align-items: normal;

@@ -4,9 +4,9 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 
-import Icons from "@/components/Icons";
-import { counselingIntakeFormDataState } from "@/recoil/atoms/counselingIntakeFormState";
-import { userIdState } from "@/recoil/atoms/userIdState";
+import Icons from "@/components/common/Icons";
+import { counselingIntakeFormDataState } from "@/recoil/user/atoms/counselingIntakeFormState";
+import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const StyledSubmissionCompletePageBox = styled.div`
   display: flex;
