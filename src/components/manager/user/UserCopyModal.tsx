@@ -13,7 +13,7 @@ import {
   optionsToCopyList,
   SelectedOptions,
 } from "@/components/manager/user/util";
-import { OrdererInfo } from "@/const";
+import { User } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -54,7 +54,7 @@ const UserCopyModal = ({
 }: {
   isModalOpen: boolean;
   onModalClose: () => void;
-  selectedUserList: OrdererInfo[];
+  selectedUserList: User[];
 }) => {
   const [isSelectedAllOptions, setIsSelectedAllOptions] =
     useState<boolean>(true);
@@ -90,7 +90,7 @@ const UserCopyModal = ({
     });
   };
 
-  const handleUserInfoCopy = async () => {
+  const handleUserCopy = async () => {
     const clipboardData: string[] = [];
     const selectedOptionList = Object.keys(selectedOptionsObj).filter(
       (key) => selectedOptionsObj[key]
@@ -99,7 +99,7 @@ const UserCopyModal = ({
     const titleData = selectedOptionList.flatMap(getTitleData);
     clipboardData.push(titleData.join("\t"));
 
-    const getRowData = (user: OrdererInfo): string[] => {
+    const getRowData = (user: User): string[] => {
       return selectedOptionList
         .map((option) => {
           switch (option) {
@@ -195,7 +195,7 @@ const UserCopyModal = ({
           ))}
         </div>
         <DialogActions>
-          <Button onClick={handleUserInfoCopy} ref={copyButtonRef}>
+          <Button onClick={handleUserCopy} ref={copyButtonRef}>
             복사
           </Button>
           <Button onClick={onModalClose}>닫기</Button>

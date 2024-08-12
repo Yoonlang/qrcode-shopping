@@ -11,32 +11,32 @@ import {
   UserTableRow,
 } from "@/components/manager/user/const";
 import UserDetailModal from "@/components/manager/user/UserDetailModal";
-import { handleUserInfoListForTable } from "@/components/manager/user/util";
-import { Folder, OrdererInfo } from "@/const";
+import { handleUserListForTable } from "@/components/manager/user/util";
+import { Folder, User } from "@/const";
 
 const UserTable = ({
   folder,
   folderList,
-  userInfoList,
+  userList,
   setSelectedUserList,
 }: {
   folder: Folder;
   folderList: Folder[];
-  userInfoList: OrdererInfo[];
+  userList: User[];
   setSelectedUserList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const tableRows = handleUserInfoListForTable(userInfoList, folderList);
+  const tableRows = handleUserListForTable(userList, folderList);
   const overlay = useOverlay();
 
   const handleRemarkUpdate = async (
     row: UserTableRow,
     old: UserTableRow
   ): Promise<UserTableRow> => {
-    row.__user_info__.remark1 = row.remark1;
-    row.__user_info__.remark2 = row.remark2;
+    row.__user__.remark1 = row.remark1;
+    row.__user__.remark2 = row.remark2;
     try {
       await editUserRemark(
-        row.__user_info__,
+        row.__user__,
         () => {},
         (e) => {
           throw e;
@@ -44,8 +44,8 @@ const UserTable = ({
       );
       return row;
     } catch (e) {
-      old.__user_info__.remark1 = old.remark1;
-      old.__user_info__.remark2 = old.remark2;
+      old.__user__.remark1 = old.remark1;
+      old.__user__.remark2 = old.remark2;
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
           isDialogOpen={isOpen}
@@ -85,7 +85,7 @@ const UserTable = ({
               <UserDetailModal
                 isModalOpen={isOpen}
                 onModalClose={close}
-                modalUserInfoData={cell.row.__user_info__}
+                modalUserData={cell.row.__user__}
               />
             ));
           }

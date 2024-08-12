@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 
-import { submitOrdererInfo } from "@/api";
+import { submitUser } from "@/api";
 import { FormType } from "@/components/const";
 import { validationSchema } from "@/components/user/validation";
 import dayjs from "@/dayjsConfig";
@@ -60,7 +60,7 @@ const useInitialFormikValues = () => {
       isSameAddress,
       productLengthUnit,
     } = form;
-    await submitOrdererInfo(
+    await submitUser(
       JSON.stringify({
         submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
         hopeProducts: Object.entries(selectedInfoList).map(

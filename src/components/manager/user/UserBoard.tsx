@@ -6,8 +6,8 @@ import JSZip from "jszip";
 import { useEffect, useState } from "react";
 
 import {
-  getOrdererInfoList,
   getProductList,
+  getUserList,
   permanentDeleteOrdererList,
   reassignFolder,
 } from "@/api";
@@ -24,7 +24,7 @@ import {
   countries,
   CountryType,
 } from "@/components/user/userSubmission/countries";
-import { Folder, OrdererInfo, Product } from "@/const";
+import { Folder, Product, User } from "@/const";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 
@@ -51,8 +51,8 @@ const UserBoard = ({
   folder: Folder;
   userFolderList: Folder[];
 }) => {
-  const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
-  const filteredUserList = userInfoList.filter((u) => {
+  const [userList, setUserList] = useState<User[]>([]);
+  const filteredUserList = userList.filter((u) => {
     if (folder.id === USER_DEFAULT) {
       return u.metadata.folderId !== USER_TRASH_CAN;
     }
@@ -62,10 +62,10 @@ const UserBoard = ({
   const overlay = useOverlay();
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const updateOrdererInfoList = () => {
-    getOrdererInfoList(
+  const updateUserList = () => {
+    getUserList(
       (data) => {
-        setUserInfoList(data);
+        setUserList(data);
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -86,7 +86,7 @@ const UserBoard = ({
       ),
       USER_DEFAULT,
       () => {
-        updateOrdererInfoList();
+        updateUserList();
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -107,7 +107,7 @@ const UserBoard = ({
       ),
       USER_TRASH_CAN,
       () => {
-        updateOrdererInfoList();
+        updateUserList();
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -125,7 +125,7 @@ const UserBoard = ({
     permanentDeleteOrdererList(
       selectedUserList,
       () => {
-        updateOrdererInfoList();
+        updateUserList();
       },
       () => {
         overlay.open(({ isOpen, close }) => (
@@ -151,7 +151,7 @@ const UserBoard = ({
           folder={folder}
           folderList={userFolderList}
           onReassignComplete={() => {
-            updateOrdererInfoList();
+            updateUserList();
           }}
         />
       ));
@@ -160,7 +160,7 @@ const UserBoard = ({
 
   const handleUserPdfDownloadButtonClick = async () => {
     const zip = new JSZip();
-    const userList: OrdererInfo[] = filteredUserList.filter((f) =>
+    const userList: User[] = filteredUserList.filter((f) =>
       selectedUserList.find((userId) => f.userId === userId)
     );
     const pdfBlobList: PdfBlob[] = [];
@@ -214,7 +214,7 @@ const UserBoard = ({
 
       const pdfBlob = await pdf(
         <CounselingIntakeForm
-          ordererInfo={userValues}
+          userInfo={userValues}
           selectedInfoList={selectedInfoList}
           imageUrlList={imageUrlList}
           userId={user.userId}
@@ -243,7 +243,7 @@ const UserBoard = ({
   };
 
   useEffect(() => {
-    updateOrdererInfoList();
+    updateUserList();
     getProductList(
       (data) => {
         setProductList(data);
@@ -314,7 +314,7 @@ const UserBoard = ({
       <UserTable
         folder={folder}
         folderList={userFolderList}
-        userInfoList={filteredUserList}
+        userList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />
     </StyledUserBoard>

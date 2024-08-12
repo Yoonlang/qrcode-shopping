@@ -12,7 +12,7 @@ import * as Yup from "yup";
 
 import { reassignFolder } from "@/api";
 import MessageDialog from "@/components/common/MessageDialog";
-import { Folder, OrdererInfo, Product } from "@/const";
+import { Folder, Product, User } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -38,7 +38,7 @@ const DataFolderReassignModal = ({
 }: {
   isModalOpen: boolean;
   onModalClose: () => void;
-  selectedDataList: OrdererInfo[] | Product[];
+  selectedDataList: User[] | Product[];
   folder: Folder;
   folderList: Folder[];
   onReassignComplete?: () => void;
