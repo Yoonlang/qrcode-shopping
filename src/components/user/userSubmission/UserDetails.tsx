@@ -9,7 +9,7 @@ import {
   UserSelect,
 } from "@/components/user/userSubmission/FormItems";
 
-const UserInfo = () => {
+const UserDetails = () => {
   const { t } = useTranslation();
   const { values }: FormikContextType<FormType> = useFormikContext();
 
@@ -37,4 +37,4 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default UserDetails;

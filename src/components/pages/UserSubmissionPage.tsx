@@ -12,7 +12,7 @@ import {
   StyledStepper,
 } from "@/components/user/userSubmission/FormItems";
 import ShippingAddress from "@/components/user/userSubmission/ShippingAddress";
-import UserInfo from "@/components/user/userSubmission/UserInfo";
+import UserDetails from "@/components/user/userSubmission/UserDetails";
 
 const UserSubmissionPage = () => {
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ const UserSubmissionPage = () => {
                 </AddressBox>
               )}
               <StepContent>
-                {index === 0 && <UserInfo />}
+                {index === 0 && <UserDetails />}
                 {index === 1 && <CompanyAddress />}
                 {index === 2 && <ShippingAddress />}
               </StepContent>
