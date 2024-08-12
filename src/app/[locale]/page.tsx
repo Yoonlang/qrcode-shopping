@@ -5,12 +5,12 @@ import { FormikProvider } from "formik";
 import { RecoilRoot } from "recoil";
 
 import initTranslations from "@/app/i18n";
-import MessageSnackBar from "@/components/MessageSnackBar";
+import MessageSnackBar from "@/components/common/MessageSnackBar";
+import TranslationsProvider from "@/components/common/TranslationsProvider";
 import MainPage from "@/components/pages/MainPage";
-import TranslationsProvider from "@/components/TranslationsProvider";
 import "@/dayjsConfig";
-import useInitialFormikValues from "@/hooks/useInitialFormikValues";
-import GlobalStyle from "@/styles/global";
+import GlobalStyle from "@/globalStyles";
+import useInitialFormikValues from "@/hooks/user/useInitialFormikValues";
 
 const i18nNamespaces = ["common"];
 
