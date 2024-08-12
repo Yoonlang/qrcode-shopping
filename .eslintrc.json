@@ -22,6 +22,7 @@
     "import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] }
   },
   "rules": {
+    "no-multiple-empty-lines": ["warn", { "max": 1 }],
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unsafe-call": "warn",
     "@typescript-eslint/no-unsafe-argument": "warn",
