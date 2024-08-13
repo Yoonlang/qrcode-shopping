@@ -7,6 +7,7 @@ import {
 } from "@/api/const";
 import http from "@/api/http";
 import { deleteProduct, putProduct } from "@/api/products";
+import { deleteUser, putUser } from "@/api/users";
 import {
   transformProductForFolderUpdate,
   transformUserForUpdate,
@@ -25,33 +26,6 @@ export const permanentDeleteProductList = (
   });
 
   return Promise.all(deletePromises).then(onSuccess).catch(onFail);
-};
-
-export const getUserList: ApiGetFunction<User[]> = (onSuccess, onFail) => {
-  return http.get(`/users`, { credentials: "include" }, onSuccess, onFail);
-};
-
-export const submitUser: ApiModifyFunction<User> = (
-  body,
-  onSuccess,
-  onFail
-) => {
-  return http.post(`/users`, undefined, body, onSuccess, onFail);
-};
-
-const putUser: ApiModifyFunction<SucceedResponse> = (
-  body,
-  onSuccess,
-  onFail,
-  targetId
-) => {
-  return http.put(
-    `/users/${targetId}`,
-    { credentials: "include" },
-    body,
-    onSuccess,
-    onFail
-  );
 };
 
 export const editUserRemark = (
@@ -91,21 +65,6 @@ export const reassignFolder = (
   return Promise.all(promises).then(onSuccess).catch(onFail);
 };
 
-const deleteOrderer: ApiModifyFunction<SucceedResponse> = (
-  body,
-  onSuccess,
-  onFail,
-  targetId
-) => {
-  return http.delete(
-    `/users/${targetId}`,
-    { credentials: "include" },
-    body,
-    onSuccess,
-    onFail
-  );
-};
-
 export const permanentDeleteOrdererList = (
   ordererList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
@@ -114,7 +73,7 @@ export const permanentDeleteOrdererList = (
   const deletePromises: Promise<SucceedResponse>[] = ordererList.map(
     (ordererId) => {
       return new Promise((resolve, reject) => {
-        deleteOrderer(undefined, resolve, reject, ordererId);
+        deleteUser(undefined, resolve, reject, ordererId);
       });
     }
   );
