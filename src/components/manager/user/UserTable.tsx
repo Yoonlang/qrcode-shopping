@@ -2,7 +2,6 @@ import { DataGrid, GridCellParams } from "@mui/x-data-grid";
 import { useOverlay } from "@toss/use-overlay";
 import { Dispatch, SetStateAction } from "react";
 
-import { editUserRemark } from "@/api";
 import MessageDialog from "@/components/common/MessageDialog";
 import { USER_DEFAULT } from "@/components/manager/const";
 import {
@@ -13,6 +12,7 @@ import {
 import UserDetailModal from "@/components/manager/user/UserDetailModal";
 import { handleUserListForTable } from "@/components/manager/user/util";
 import { Folder, User } from "@/const";
+import { editUserRemark } from "@/services/users";
 
 const UserTable = ({
   folder,

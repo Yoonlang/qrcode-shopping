@@ -10,9 +10,9 @@ import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import { reassignFolder } from "@/api";
 import MessageDialog from "@/components/common/MessageDialog";
 import { Folder, Product, User } from "@/const";
+import { reassignFolder } from "@/services/folders";
 
 const StyledModalContainer = styled.div`
   position: absolute;
