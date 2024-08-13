@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-import { postLogin } from "@/api";
+import { postLogin } from "@/api/auth";
 
 const LoginForm = ({ setHasAuth }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

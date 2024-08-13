@@ -1,11 +1,4 @@
-import {
-  ApiGetFunction,
-  ApiModifyFunction,
-  FailCallback,
-  SucceedResponse,
-  SuccessCallback,
-} from "@/api/const";
-import http from "@/api/http";
+import { FailCallback, SucceedResponse, SuccessCallback } from "@/api/const";
 import { deleteProduct, putProduct } from "@/api/products";
 import { deleteUser, putUser } from "@/api/users";
 import {
@@ -79,25 +72,4 @@ export const permanentDeleteOrdererList = (
   );
 
   return Promise.all(deletePromises).then(onSuccess).catch(onFail);
-};
-
-export const checkCookieAuth: ApiGetFunction<SucceedResponse> = (
-  onSuccess,
-  onFail
-) => {
-  return http.get(`/cookie`, { credentials: "include" }, onSuccess, onFail);
-};
-
-export const postLogin: ApiModifyFunction<SucceedResponse> = (
-  body,
-  onSuccess,
-  onFail
-) => {
-  return http.post(
-    `/login`,
-    { credentials: "include" },
-    body,
-    onSuccess,
-    onFail
-  );
 };
