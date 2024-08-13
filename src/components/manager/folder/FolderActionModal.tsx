@@ -4,7 +4,7 @@ import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 
-import { deleteFolder, patchFolder } from "@/api";
+import { deleteFolder, patchFolder } from "@/api/folders";
 import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
 import { Folder } from "@/const";

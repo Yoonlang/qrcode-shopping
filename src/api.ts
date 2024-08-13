@@ -12,7 +12,7 @@ import {
   transformProductForFolderUpdate,
   transformUserForUpdate,
 } from "@/api/util";
-import { Folder, Product, User } from "@/const";
+import { Product, User } from "@/const";
 
 export const permanentDeleteProductList = (
   productList: string[],
@@ -79,54 +79,6 @@ export const permanentDeleteOrdererList = (
   );
 
   return Promise.all(deletePromises).then(onSuccess).catch(onFail);
-};
-
-export const getFolderList: ApiGetFunction<Folder[]> = (onSuccess, onFail) => {
-  return http.get(`/folders`, { credentials: "include" }, onSuccess, onFail);
-};
-
-export const postFolder: ApiModifyFunction<SucceedResponse> = (
-  body,
-  onSuccess,
-  onFail
-) => {
-  return http.post(
-    `/folders`,
-    { credentials: "include" },
-    body,
-    onSuccess,
-    onFail
-  );
-};
-
-export const patchFolder: ApiModifyFunction<SucceedResponse> = (
-  body,
-  onSuccess,
-  onFail,
-  targetId
-) => {
-  return http.patch(
-    `/folders/${targetId}`,
-    { credentials: "include" },
-    body,
-    onSuccess,
-    onFail
-  );
-};
-
-export const deleteFolder: ApiModifyFunction<SucceedResponse> = (
-  body,
-  onSuccess,
-  onFail,
-  targetId
-) => {
-  return http.delete(
-    `/folders/${targetId}`,
-    { credentials: "include" },
-    body,
-    onSuccess,
-    onFail
-  );
 };
 
 export const getText: ApiGetFunction<{ text: string }> = (
