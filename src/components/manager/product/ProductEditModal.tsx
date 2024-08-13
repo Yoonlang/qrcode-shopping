@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 
-import { putProduct } from "@/api";
+import { putProduct } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import {
   ProductAddModal,

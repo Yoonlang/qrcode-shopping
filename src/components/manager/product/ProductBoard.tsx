@@ -5,11 +5,8 @@ import JSZip from "jszip";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 
-import {
-  getProductList,
-  permanentDeleteProductList,
-  reassignFolder,
-} from "@/api";
+import { permanentDeleteProductList, reassignFolder } from "@/api";
+import { getProductList } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import { PRODUCT_DEFAULT, PRODUCT_TRASH_CAN } from "@/components/manager/const";
 import DataFolderReassignModal from "@/components/manager/folder/DataFolderReassignModal";
