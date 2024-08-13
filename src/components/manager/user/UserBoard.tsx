@@ -24,7 +24,7 @@ import { Folder, Product, User } from "@/const";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 import { reassignFolder } from "@/services/folders";
-import { permanentDeleteOrdererList } from "@/services/users";
+import { deleteUserList } from "@/services/users";
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -120,7 +120,7 @@ const UserBoard = ({
   };
 
   const handleUserPermanentDelete = () => {
-    permanentDeleteOrdererList(
+    deleteUserList(
       selectedUserList,
       () => {
         updateUserList();

@@ -1,9 +1,7 @@
 import { FailCallback, SucceedResponse, SuccessCallback } from "@/api/const";
-import { putUser , deleteUser } from "@/api/users";
-import { User } from "@/const";
-import { transformUserForUpdate } from "@/services/util";
+import { deleteUser } from "@/api/users";
 
-export const permanentDeleteOrdererList = (
+export const deleteUserList = (
   ordererList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback
@@ -17,12 +15,4 @@ export const permanentDeleteOrdererList = (
   );
 
   return Promise.all(deletePromises).then(onSuccess).catch(onFail);
-};
-
-export const editUserRemark = (
-  user: User,
-  onSuccess: SuccessCallback<SucceedResponse>,
-  onFail: FailCallback
-) => {
-  return putUser(transformUserForUpdate(user), onSuccess, onFail, user.userId);
 };

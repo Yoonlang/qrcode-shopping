@@ -1,7 +1,7 @@
 import { FailCallback, SucceedResponse, SuccessCallback } from "@/api/const";
 import { deleteProduct } from "@/api/products";
 
-export const permanentDeleteProductList = (
+export const deleteProductList = (
   productList: string[],
   onSuccess: SuccessCallback<SucceedResponse[]>,
   onFail: FailCallback

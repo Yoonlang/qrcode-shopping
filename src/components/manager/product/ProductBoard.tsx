@@ -14,7 +14,7 @@ import ProductCreateModal from "@/components/manager/product/ProductCreateModal"
 import ProductTable from "@/components/manager/product/ProductTable";
 import { Folder, Product } from "@/const";
 import { reassignFolder } from "@/services/folders";
-import { permanentDeleteProductList } from "@/services/products";
+import { deleteProductList } from "@/services/products";
 
 const QR_CODE_LENGTH = 254; // 3cm
 
@@ -111,7 +111,7 @@ const ProductBoard = ({
   };
 
   const handleProductPermanentDelete = () => {
-    permanentDeleteProductList(
+    deleteProductList(
       selectedProductList,
       () => {
         handleProductListUpdate();
