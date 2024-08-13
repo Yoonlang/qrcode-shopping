@@ -9,8 +9,11 @@ import MessageDialog from "@/components/common/MessageDialog";
 import { snackBarStatusMessage } from "@/components/const";
 import QrCode from "@/components/user/qrScanner/QrCode";
 import RetryButton from "@/components/user/RetryButton";
+import usePageRouter from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
+import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
 import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
+import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -25,10 +28,28 @@ const QrScannerPage = () => {
   const { t } = useTranslation();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList } = useScannedItemList();
+  const { goToNextPage } = usePageRouter();
+  const setPageAction = useSetRecoilState(pageActionState);
+  const { selectedInfoList } = useSelectedInfoList();
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
+
+  useEffect(() => {
+    const action = () => {
+      if (Object.keys(scannedItemList).length === 0) {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["empty"]),
+          isMessageSnackBarOpen: true,
+        });
+      } else {
+        goToNextPage();
+      }
+    };
+
+    setPageAction(() => action);
+  }, [scannedItemList]);
 
   useEffect(() => {
     if (Object.keys(scannedItemList).length > 0) {
