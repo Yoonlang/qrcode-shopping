@@ -5,8 +5,9 @@ import { useOverlay } from "@toss/use-overlay";
 import JSZip from "jszip";
 import { useEffect, useState } from "react";
 
-import { getUserList, permanentDeleteOrdererList, reassignFolder } from "@/api";
+import { permanentDeleteOrdererList, reassignFolder } from "@/api";
 import { getProductList } from "@/api/products";
+import { getUserList } from "@/api/users";
 import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
 import MessageDialog from "@/components/common/MessageDialog";
 import { FormType } from "@/components/const";
