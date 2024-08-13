@@ -10,7 +10,7 @@ const MAX_TEXT = {
   "50": "You can enter up to 50 characters",
 };
 
-export const validationSchema = Yup.object().shape({
+export const userInfoValidationSchema = Yup.object().shape({
   name: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)

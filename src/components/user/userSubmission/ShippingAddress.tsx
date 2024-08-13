@@ -1,20 +1,19 @@
-import { FormikContextType, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { UserInfo } from "@/components/const";
+import { UserAddressProps } from "@/components/user/userSubmission/const";
 import { UserInput } from "@/components/user/userSubmission/FormItems";
 
-const ShippingAddress = () => {
+const ShippingAddress = ({
+  values,
+  errors,
+  touched,
+  setValues,
+  setErrors,
+  setTouched,
+}: UserAddressProps<UserInfo>) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    setValues,
-    setErrors,
-    setTouched,
-  }: FormikContextType<UserInfo> = useFormikContext();
 
   useEffect(() => {
     if (values.isSameAddress) {

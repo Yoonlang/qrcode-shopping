@@ -1,4 +1,3 @@
-import { FormikContextType, useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 
 import { UserInfo } from "@/components/const";
@@ -9,9 +8,12 @@ import {
   UserSelect,
 } from "@/components/user/userSubmission/FormItems";
 
-const UserDetails = () => {
+interface UserDetailsProps {
+  values: UserInfo;
+}
+
+const UserDetails = ({ values }: UserDetailsProps) => {
   const { t } = useTranslation();
-  const { values }: FormikContextType<UserInfo> = useFormikContext();
 
   return (
     <>
