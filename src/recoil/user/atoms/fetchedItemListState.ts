@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 
-import { getProductList } from "@/api";
+import { getProductList } from "@/api/products";
 import { PRODUCT_TRASH_CAN } from "@/components/manager/const";
 import { Product } from "@/const";
 

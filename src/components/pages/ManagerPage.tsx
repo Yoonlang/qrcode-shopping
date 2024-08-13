@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { checkCookieAuth } from "@/api";
+import { getCookie } from "@/api/auth";
 import Dashboard from "@/components/manager/Dashboard";
 import LoginForm from "@/components/manager/LoginForm";
 
@@ -9,7 +9,7 @@ const ManagerPage = () => {
   const [isCookieAuthChecking, setIsCookieAuthChecking] = useState(true);
 
   useEffect(() => {
-    checkCookieAuth(
+    getCookie(
       () => {
         setHasAuth(true);
         setIsCookieAuthChecking(false);

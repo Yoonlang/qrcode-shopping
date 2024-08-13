@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 
-import { getFolderList } from "@/api";
+import { getFolderList } from "@/api/folders";
 import Icons from "@/components/common/Icons";
 import { initialFolderList } from "@/components/manager/const";
 import { StyledAppBar } from "@/components/manager/DashboardItems";

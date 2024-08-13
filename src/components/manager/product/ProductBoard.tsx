@@ -5,11 +5,7 @@ import JSZip from "jszip";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 
-import {
-  getProductList,
-  permanentDeleteProductList,
-  reassignFolder,
-} from "@/api";
+import { getProductList } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import { PRODUCT_DEFAULT, PRODUCT_TRASH_CAN } from "@/components/manager/const";
 import DataFolderReassignModal from "@/components/manager/folder/DataFolderReassignModal";
@@ -17,6 +13,8 @@ import ExcelProductCreateModal from "@/components/manager/product/ExcelProductCr
 import ProductCreateModal from "@/components/manager/product/ProductCreateModal";
 import ProductTable from "@/components/manager/product/ProductTable";
 import { Folder, Product } from "@/const";
+import { reassignFolder } from "@/services/folders";
+import { deleteProductList } from "@/services/products";
 
 const QR_CODE_LENGTH = 254; // 3cm
 
@@ -113,7 +111,7 @@ const ProductBoard = ({
   };
 
   const handleProductPermanentDelete = () => {
-    permanentDeleteProductList(
+    deleteProductList(
       selectedProductList,
       () => {
         handleProductListUpdate();

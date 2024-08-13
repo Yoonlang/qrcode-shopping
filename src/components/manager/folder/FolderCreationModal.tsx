@@ -4,7 +4,7 @@ import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import { postFolder } from "@/api";
+import { postFolder } from "@/api/folders";
 import MessageDialog from "@/components/common/MessageDialog";
 
 const StyledModalContainer = styled.div`

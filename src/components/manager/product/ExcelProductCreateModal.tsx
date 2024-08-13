@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import * as XLSX from "xlsx";
 
-import { postProducts } from "@/api";
+import { postProductList } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import {
   ErrorProductExcel,
@@ -86,7 +86,7 @@ const ExcelProductCreateModal = ({
   };
 
   const handleProductListCreate = () => {
-    postProducts(
+    postProductList(
       transformProductExcelListToSubmitForm(newProductList, folder.id),
       () => {
         onProductListCreate();

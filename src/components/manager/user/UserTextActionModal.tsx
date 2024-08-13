@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import * as Yup from "yup";
 
-import { getText, putText } from "@/api";
+import { getText, putText } from "@/api/text";
 import MessageDialog from "@/components/common/MessageDialog";
 
 const StyledModalContainer = styled.div`

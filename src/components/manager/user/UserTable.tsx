@@ -2,7 +2,7 @@ import { DataGrid, GridCellParams } from "@mui/x-data-grid";
 import { useOverlay } from "@toss/use-overlay";
 import { Dispatch, SetStateAction } from "react";
 
-import { editUserRemark } from "@/api";
+import { putUser } from "@/api/users";
 import MessageDialog from "@/components/common/MessageDialog";
 import { USER_DEFAULT } from "@/components/manager/const";
 import {
@@ -13,6 +13,7 @@ import {
 import UserDetailModal from "@/components/manager/user/UserDetailModal";
 import { handleUserListForTable } from "@/components/manager/user/util";
 import { Folder, User } from "@/const";
+import { transformUserForUpdate } from "@/services/util";
 
 const UserTable = ({
   folder,
@@ -35,12 +36,13 @@ const UserTable = ({
     row.__user__.remark1 = row.remark1;
     row.__user__.remark2 = row.remark2;
     try {
-      await editUserRemark(
-        row.__user__,
+      await putUser(
+        transformUserForUpdate(row.__user__),
         () => {},
         (e) => {
           throw e;
-        }
+        },
+        row.__user__.userId
       );
       return row;
     } catch (e) {
