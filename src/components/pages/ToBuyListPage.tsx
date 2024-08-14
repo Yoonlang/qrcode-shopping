@@ -121,7 +121,6 @@ const ToBuyListPage = () => {
   const setPageAction = useSetRecoilState(pageActionState);
 
   useEffect(() => {
-    console.log(scannedItemList, selectedInfoList);
     const action = () => {
       if (Object.keys(scannedItemList).length === 0) {
         setMessageSnackBarState({
