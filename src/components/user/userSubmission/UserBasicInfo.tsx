@@ -8,11 +8,11 @@ import {
   UserSelect,
 } from "@/components/user/userSubmission/FormItems";
 
-interface UserDetailsProps {
+interface UserBasicInfoProps {
   values: UserInfo;
 }
 
-const UserDetails = ({ values }: UserDetailsProps) => {
+const UserBasicInfo = ({ values }: UserBasicInfoProps) => {
   const { t } = useTranslation();
 
   return (
@@ -39,4 +39,4 @@ const UserDetails = ({ values }: UserDetailsProps) => {
   );
 };
 
-export default UserDetails;
+export default UserBasicInfo;

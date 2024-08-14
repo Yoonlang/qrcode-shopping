@@ -16,7 +16,7 @@ import {
   StyledStepper,
 } from "@/components/user/userSubmission/FormItems";
 import ShippingAddress from "@/components/user/userSubmission/ShippingAddress";
-import UserDetails from "@/components/user/userSubmission/UserDetails";
+import UserBasicInfo from "@/components/user/userSubmission/UserBasicInfo";
 import { Language } from "@/const";
 import usePageRouter from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
@@ -148,7 +148,7 @@ const UserForm = ({
               </AddressBox>
             )}
             <StepContent>
-              {index === 0 && <UserDetails values={values} />}
+              {index === 0 && <UserBasicInfo values={values} />}
               {index === 1 && <CompanyAddress formik={formik} />}
               {index === 2 && <ShippingAddress formik={formik} />}
             </StepContent>
