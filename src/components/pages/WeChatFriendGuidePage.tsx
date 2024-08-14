@@ -3,12 +3,11 @@ import { Button } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
 import Image from "next/image";
 import { ReactNode, useEffect, useRef } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
 import usePageRouter from "@/hooks/user/usePageRouter";
-import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const StyledWeChatFriendGuideBox = styled.div`
@@ -186,8 +185,7 @@ const guides = [
 
 const WeChatFriendGuidePage = () => {
   const overlay = useOverlay();
-  const setPageAction = useSetRecoilState(pageActionState);
-  const { goToNextPage } = usePageRouter();
+  const { goToNextPage, setPageAction } = usePageRouter();
 
   useEffect(() => {
     const action = () => {

@@ -27,7 +27,6 @@ import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/user/atoms/fetchedItemListState";
 import { imageUrlListState } from "@/recoil/user/atoms/imageUrlListState";
 import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
-import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -117,8 +116,7 @@ const ToBuyListPage = () => {
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const setImageUrlList = useSetRecoilState(imageUrlListState);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const { goToNextPage } = usePageRouter();
-  const setPageAction = useSetRecoilState(pageActionState);
+  const { goToNextPage, setPageAction } = usePageRouter();
 
   useEffect(() => {
     const action = () => {

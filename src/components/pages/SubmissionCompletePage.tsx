@@ -3,12 +3,11 @@ import { Button } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 import Icons from "@/components/common/Icons";
 import usePageRouter from "@/hooks/user/usePageRouter";
 import { counselingIntakeFormDataState } from "@/recoil/user/atoms/counselingIntakeFormState";
-import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const StyledSubmissionCompletePageBox = styled.div`
@@ -50,8 +49,7 @@ const SubmissionCompletePage = () => {
     counselingIntakeFormDataState
   );
   const userId = useRecoilValue(userIdState);
-  const setPageAction = useSetRecoilState(pageActionState);
-  const { goToNextPage } = usePageRouter();
+  const { goToNextPage, setPageAction } = usePageRouter();
 
   useEffect(() => {
     const action = () => {

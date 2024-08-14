@@ -13,7 +13,6 @@ import usePageRouter from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
 import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
 import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
-import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -28,8 +27,7 @@ const QrScannerPage = () => {
   const { t } = useTranslation();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
   const { scannedItemList } = useScannedItemList();
-  const { goToNextPage } = usePageRouter();
-  const setPageAction = useSetRecoilState(pageActionState);
+  const { goToNextPage, setPageAction } = usePageRouter();
   const { selectedInfoList } = useSelectedInfoList(); // 추후 커스텀 훅 개선 시 삭제 예정
 
   const handleDialogClose = () => {
