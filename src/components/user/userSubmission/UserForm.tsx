@@ -29,21 +29,12 @@ import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const UserForm = ({
   formik,
-  handleFormikValuesUpdate,
+  onFormikValuesSyncToLocalStorage,
 }: {
   formik: FormikProps<UserInfo>;
-  handleFormikValuesUpdate: (x: any) => void;
+  onFormikValuesSyncToLocalStorage: (x: any) => void;
 }) => {
-  const {
-    values,
-    errors,
-    touched,
-    setValues,
-    setErrors,
-    setTouched,
-    isValid,
-    submitForm,
-  } = formik;
+  const { values, errors, isValid, submitForm } = formik;
   const { t, i18n } = useTranslation();
   const overlay = useOverlay();
   const userId = useRecoilValue(userIdState);
@@ -63,7 +54,7 @@ const UserForm = ({
   } = useSelectedInfoList();
 
   useEffect(() => {
-    handleFormikValuesUpdate(values);
+    onFormikValuesSyncToLocalStorage(values);
   }, [values]);
 
   useEffect(() => {

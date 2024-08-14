@@ -17,10 +17,11 @@ const UserSubmissionPage = () => {
   const { i18n } = useTranslation();
   const selectedInfoList = useRecoilValue(selectedInfoListState);
   const setUserId = useSetRecoilState(userIdState);
-  const [storedFormikValues, handleFormikValuesUpdate] = useLocalStorageState({
-    key: "form",
-    value: userInfoInitialValues,
-  });
+  const [storedFormikValues, handleFormikValuesSyncToLocalStorage] =
+    useLocalStorageState({
+      key: "form",
+      value: userInfoInitialValues,
+    });
 
   const handleUserInfoSubmit = async (form: UserInfo) => {
     await submitUser(
@@ -53,7 +54,9 @@ const UserSubmissionPage = () => {
         return (
           <UserForm
             formik={formik}
-            handleFormikValuesUpdate={handleFormikValuesUpdate}
+            onFormikValuesSyncToLocalStorage={
+              handleFormikValuesSyncToLocalStorage
+            }
           />
         );
       }}
