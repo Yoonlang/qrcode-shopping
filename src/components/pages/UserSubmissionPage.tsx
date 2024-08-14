@@ -44,8 +44,8 @@ const UserSubmissionPage = () => {
     <Formik
       initialValues={storedFormikValues}
       validationSchema={userInfoValidationSchema}
-      onSubmit={(form, params) => {
-        handleUserInfoSubmit(form);
+      onSubmit={async (form, params) => {
+        await handleUserInfoSubmit(form);
         params.resetForm({ values: userInfoInitialValues });
       }}
       validateOnMount={true}
