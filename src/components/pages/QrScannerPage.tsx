@@ -30,7 +30,7 @@ const QrScannerPage = () => {
   const { scannedItemList } = useScannedItemList();
   const { goToNextPage } = usePageRouter();
   const setPageAction = useSetRecoilState(pageActionState);
-  const { selectedInfoList } = useSelectedInfoList();
+  const { selectedInfoList } = useSelectedInfoList(); // 추후 커스텀 훅 개선 시 삭제 예정
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
