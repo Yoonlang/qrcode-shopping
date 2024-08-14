@@ -1,4 +1,4 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -49,30 +49,12 @@ const UserSubmissionPage = () => {
       }}
       validateOnMount={true}
     >
-      {({
-        values,
-        errors,
-        touched,
-        setValues,
-        setErrors,
-        setTouched,
-        isValid,
-        submitForm,
-      }) => {
+      {(formik) => {
         return (
-          <Form>
-            <UserForm
-              values={values}
-              errors={errors}
-              touched={touched}
-              setValues={setValues}
-              setErrors={setErrors}
-              setTouched={setTouched}
-              isValid={isValid}
-              submitForm={submitForm}
-              handleFormikValuesUpdate={handleFormikValuesUpdate}
-            />
-          </Form>
+          <UserForm
+            formik={formik}
+            handleFormikValuesUpdate={handleFormikValuesUpdate}
+          />
         );
       }}
     </Formik>

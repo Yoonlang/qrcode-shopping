@@ -1,6 +1,6 @@
 import { Step, StepContent, StepLabel } from "@mui/material";
 import { useOverlay } from "@toss/use-overlay";
-import { FormikErrors } from "formik";
+import { Form, FormikErrors, FormikProps } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -9,7 +9,7 @@ import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
 import MessageDialog from "@/components/common/MessageDialog";
 import { snackBarStatusMessage, UserInfo } from "@/components/const";
 import CompanyAddress from "@/components/user/userSubmission/CompanyAddress";
-import { steps, UserFormProps } from "@/components/user/userSubmission/const";
+import { steps } from "@/components/user/userSubmission/const";
 import {
   AddressBox,
   AddressCheckbox,
@@ -28,16 +28,22 @@ import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const UserForm = ({
-  values,
-  errors,
-  touched,
-  setValues,
-  setErrors,
-  setTouched,
-  isValid,
-  submitForm,
+  formik,
   handleFormikValuesUpdate,
-}: UserFormProps<UserInfo>) => {
+}: {
+  formik: FormikProps<UserInfo>;
+  handleFormikValuesUpdate: (x: any) => void;
+}) => {
+  const {
+    values,
+    errors,
+    touched,
+    setValues,
+    setErrors,
+    setTouched,
+    isValid,
+    submitForm,
+  } = formik;
   const { t, i18n } = useTranslation();
   const overlay = useOverlay();
   const userId = useRecoilValue(userIdState);
@@ -133,48 +139,32 @@ const UserForm = ({
   };
 
   return (
-    <StyledStepper
-      activeStep={getActiveStep(errors, values.countryCode.label)}
-      orientation="vertical"
-    >
-      {steps.map((step, index) => (
-        <Step key={step.label} expanded>
-          {index !== 2 ? (
-            <StepLabel>{t(step.label)}</StepLabel>
-          ) : (
-            <AddressBox>
+    <Form>
+      <StyledStepper
+        activeStep={getActiveStep(errors, values.countryCode.label)}
+        orientation="vertical"
+      >
+        {steps.map((step, index) => (
+          <Step key={step.label} expanded>
+            {index !== 2 ? (
               <StepLabel>{t(step.label)}</StepLabel>
-              {values.businessType !== "Student" && (
-                <AddressCheckbox name="isSameAddress" />
-              )}
-            </AddressBox>
-          )}
-          <StepContent>
-            {index === 0 && <UserDetails values={values} />}
-            {index === 1 && (
-              <CompanyAddress
-                values={values}
-                errors={errors}
-                touched={touched}
-                setValues={setValues}
-                setErrors={setErrors}
-                setTouched={setTouched}
-              />
+            ) : (
+              <AddressBox>
+                <StepLabel>{t(step.label)}</StepLabel>
+                {values.businessType !== "Student" && (
+                  <AddressCheckbox name="isSameAddress" />
+                )}
+              </AddressBox>
             )}
-            {index === 2 && (
-              <ShippingAddress
-                values={values}
-                errors={errors}
-                touched={touched}
-                setValues={setValues}
-                setErrors={setErrors}
-                setTouched={setTouched}
-              />
-            )}
-          </StepContent>
-        </Step>
-      ))}
-    </StyledStepper>
+            <StepContent>
+              {index === 0 && <UserDetails values={values} />}
+              {index === 1 && <CompanyAddress formik={formik} />}
+              {index === 2 && <ShippingAddress formik={formik} />}
+            </StepContent>
+          </Step>
+        ))}
+      </StyledStepper>
+    </Form>
   );
 };
 

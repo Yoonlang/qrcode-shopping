@@ -1,19 +1,13 @@
+import { FormikProps } from "formik";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { UserInfo } from "@/components/const";
-import { UserAddressProps } from "@/components/user/userSubmission/const";
 import { UserInput } from "@/components/user/userSubmission/FormItems";
 
-const CompanyAddress = ({
-  values,
-  errors,
-  touched,
-  setValues,
-  setErrors,
-  setTouched,
-}: UserAddressProps<UserInfo>) => {
+const CompanyAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
   const { t } = useTranslation();
+  const { values, errors, touched, setValues, setErrors, setTouched } = formik;
 
   useEffect(() => {
     if (values.businessType === "Student") {
