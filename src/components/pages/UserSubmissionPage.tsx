@@ -72,6 +72,7 @@ const UserSubmissionPage = () => {
 
         if (isValid) {
           try {
+            // NOTE: submitForm은 Formik onSubmit와 동일
             await submitForm();
             setScannedItemList({});
             setSelectedInfoList({});
@@ -107,20 +108,15 @@ const UserSubmissionPage = () => {
     form: UserInfo,
     resetForm: (nextState?: Partial<FormikState<UserInfo>> | undefined) => void
   ) => {
-    await postUser(
+    const { userId } = await postUser(
       formatSubmitUserBody(
         form,
         dayjs().format("YYYY-MM-DD HH:mm"),
         i18n.language,
         selectedInfoList
-      ),
-      (res) => {
-        setUserId(res.userId);
-      },
-      (e) => {
-        throw e;
-      }
+      )
     );
+    setUserId(userId);
   };
 
   return (

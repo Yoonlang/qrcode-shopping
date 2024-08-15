@@ -60,21 +60,19 @@ const UserBoard = ({
   const overlay = useOverlay();
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const updateUserList = () => {
-    getUserList(
-      (data) => {
-        setUserList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 가져오기 실패"]}
-          />
-        ));
-      }
-    );
+  const updateUserList = async () => {
+    try {
+      const userList = await getUserList();
+      setUserList(userList);
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 가져오기 실패"]}
+        />
+      ));
+    }
   };
 
   const handleUserRestore = async () => {
@@ -117,22 +115,19 @@ const UserBoard = ({
     }
   };
 
-  const handleUserPermanentDelete = () => {
-    deleteUserList(
-      selectedUserList,
-      () => {
-        updateUserList();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 영구 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleUserPermanentDelete = async () => {
+    try {
+      await deleteUserList(selectedUserList);
+      updateUserList();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 영구 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleUserFolderReassign = () => {
