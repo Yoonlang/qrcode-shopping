@@ -9,16 +9,19 @@ const ManagerPage = () => {
   const [isCookieAuthChecking, setIsCookieAuthChecking] = useState(true);
 
   useEffect(() => {
-    getCookie(
-      () => {
+    const handleAuthCheck = async () => {
+      try {
+        await getCookie();
         setHasAuth(true);
-        setIsCookieAuthChecking(false);
-      },
-      (e) => {
+      } catch (e) {
+        // NOTE: status 상태 코드도 에러 관리에 포함 후 console 제거 예정
         console.log(e);
+      } finally {
         setIsCookieAuthChecking(false);
       }
-    );
+    };
+
+    handleAuthCheck();
   }, []);
 
   if (isCookieAuthChecking) {
