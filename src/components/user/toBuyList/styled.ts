@@ -172,7 +172,7 @@ const StyledInput = styled(TextField)`
 const Counter = styled.div`
   display: flex;
 
-  > button:first-child,
+  > button:first-of-type,
   button:nth-of-type(2) {
     min-width: 30px;
     font-size: 10px;
@@ -184,7 +184,7 @@ const Counter = styled.div`
     }
   }
 
-  > button:first-child {
+  > button:first-of-type {
     border-right: 0px;
     border-radius: 4px 0px 0px 4px;
   }
