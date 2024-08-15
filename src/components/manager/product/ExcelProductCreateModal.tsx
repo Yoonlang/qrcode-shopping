@@ -85,24 +85,23 @@ const ExcelProductCreateModal = ({
     reader.readAsArrayBuffer(file);
   };
 
-  const handleProductListCreate = () => {
-    postProductList(
-      transformProductExcelListToSubmitForm(newProductList, folder.id),
-      () => {
-        onProductListCreate();
-        onModalClose();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["제품 생성 실패"]}
-          />
-        ));
-        onModalClose();
-      }
-    );
+  const handleProductListCreate = async () => {
+    try {
+      await postProductList(
+        transformProductExcelListToSubmitForm(newProductList, folder.id)
+      );
+      onProductListCreate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["제품 생성 실패"]}
+        />
+      ));
+    } finally {
+      onModalClose();
+    }
   };
 
   return (

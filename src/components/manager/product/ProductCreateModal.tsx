@@ -35,7 +35,7 @@ const ProductCreateModal = ({
   const formik = useFormik({
     initialValues: productCreationInitialValues,
     validationSchema: productCreationSchema,
-    onSubmit: (form, { resetForm }) => {
+    onSubmit: async (form, { resetForm }) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -58,23 +58,19 @@ const ProductCreateModal = ({
           formData.append(key, JSON.stringify(value));
         }
       });
-
-      postProduct(
-        formData,
-        () => {
-          resetForm();
-          onProductCreate();
-        },
-        (e) => {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={[e.message]}
-            />
-          ));
-        }
-      );
+      try {
+        await postProduct(formData);
+        resetForm();
+        onProductCreate();
+      } catch (e) {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={[e.message]}
+          />
+        ));
+      }
     },
   });
   const productIdRefs = useRef<HTMLInputElement>(null);

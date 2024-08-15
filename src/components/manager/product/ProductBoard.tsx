@@ -51,21 +51,19 @@ const ProductBoard = ({
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
   const overlay = useOverlay();
 
-  const handleProductListUpdate = () => {
-    getProductList(
-      (data) => {
-        setProductList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 가져오기 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductListUpdate = async () => {
+    try {
+      const productList = await getProductList();
+      setProductList(productList);
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 가져오기 실패"]}
+        />
+      ));
+    }
   };
 
   const handleProductRestore = async () => {

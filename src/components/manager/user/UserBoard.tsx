@@ -238,22 +238,24 @@ const UserBoard = ({
     link.click();
   };
 
+  const handleProductListUpdate = async () => {
+    try {
+      const productList = await getProductList();
+      setProductList(productList);
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["제품 목록 받아오기 실패"]}
+        />
+      ));
+    }
+  };
+
   useEffect(() => {
     updateUserList();
-    getProductList(
-      (data) => {
-        setProductList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["제품 목록 받아오기 실패"]}
-          />
-        ));
-      }
-    );
+    handleProductListUpdate();
   }, []);
 
   return (
