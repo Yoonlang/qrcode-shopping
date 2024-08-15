@@ -77,46 +77,44 @@ const UserBoard = ({
     );
   };
 
-  const handleUserRestore = () => {
-    reassignFolder(
-      filteredUserList.filter((f) =>
-        selectedUserList.find((userId) => f.userId === userId)
-      ),
-      USER_DEFAULT,
-      () => {
-        updateUserList();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 복구 실패"]}
-          />
-        ));
-      }
-    );
+  const handleUserRestore = async () => {
+    try {
+      await reassignFolder(
+        filteredUserList.filter((f) =>
+          selectedUserList.find((userId) => f.userId === userId)
+        ),
+        USER_DEFAULT
+      );
+      updateUserList();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 복구 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleUserSoftDelete = () => {
-    reassignFolder(
-      filteredUserList.filter((f) =>
-        selectedUserList.find((userId) => f.userId === userId)
-      ),
-      USER_TRASH_CAN,
-      () => {
-        updateUserList();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleUserSoftDelete = async () => {
+    try {
+      await reassignFolder(
+        filteredUserList.filter((f) =>
+          selectedUserList.find((userId) => f.userId === userId)
+        ),
+        USER_TRASH_CAN
+      );
+      updateUserList();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleUserPermanentDelete = () => {

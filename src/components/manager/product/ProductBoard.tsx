@@ -68,46 +68,44 @@ const ProductBoard = ({
     );
   };
 
-  const handleProductRestore = () => {
-    reassignFolder(
-      filteredProductList.filter((f) =>
-        selectedProductList.find((productId) => f.productId === productId)
-      ),
-      PRODUCT_DEFAULT,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 복구 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductRestore = async () => {
+    try {
+      await reassignFolder(
+        filteredProductList.filter((f) =>
+          selectedProductList.find((productId) => f.productId === productId)
+        ),
+        PRODUCT_DEFAULT
+      );
+      handleProductListUpdate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 복구 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductSoftDelete = () => {
-    reassignFolder(
-      filteredProductList.filter((f) =>
-        selectedProductList.find((productId) => f.productId === productId)
-      ),
-      PRODUCT_TRASH_CAN,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductSoftDelete = async () => {
+    try {
+      await reassignFolder(
+        filteredProductList.filter((f) =>
+          selectedProductList.find((productId) => f.productId === productId)
+        ),
+        PRODUCT_TRASH_CAN
+      );
+      handleProductListUpdate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleProductPermanentDelete = () => {
