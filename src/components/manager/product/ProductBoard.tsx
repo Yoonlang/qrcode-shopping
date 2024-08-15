@@ -106,22 +106,19 @@ const ProductBoard = ({
     }
   };
 
-  const handleProductPermanentDelete = () => {
-    deleteProductList(
-      selectedProductList,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 영구 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductPermanentDelete = async () => {
+    try {
+      await deleteProductList(selectedProductList);
+      handleProductListUpdate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 영구 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleProductQrCodeCreate = async () => {
