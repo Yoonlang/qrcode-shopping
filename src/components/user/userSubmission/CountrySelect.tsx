@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { MenuItem, Paper } from "@mui/material";
+import { ListItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { FormikContextType, useFormikContext } from "formik";
 import { SyntheticEvent } from "react";
@@ -86,8 +86,8 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
           }
           isOptionEqualToValue={(option, value) => option.code === value.code}
           renderOption={(props, option) => (
-            <MenuItem {...props} key={option.label}>
-              <div key={props.id}>
+            <ListItem {...props} key={option.code}>
+              <div>
                 <img
                   key={option.label}
                   loading="lazy"
@@ -100,7 +100,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
               {values.countryCode.phone === option.phone && (
                 <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
               )}
-            </MenuItem>
+            </ListItem>
           )}
           filterOptions={(options, { inputValue }) => {
             return options.filter(({ label, phone }) =>
