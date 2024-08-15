@@ -1,4 +1,3 @@
-import { FailCallback, SucceedResponse, SuccessCallback } from "@/api/const";
 import { putProduct } from "@/api/products";
 import { putUser } from "@/api/users";
 import { Product, User } from "@/const";
@@ -9,29 +8,12 @@ import {
 
 export const reassignFolder = (
   dataList: User[] | Product[],
-  folderId: string,
-  onSuccess: SuccessCallback<SucceedResponse[] | Product[]>,
-  onFail: FailCallback
+  folderId: string
 ) => {
-  const promises: Promise<SucceedResponse | Product>[] = [];
-  dataList.forEach((d: User | Product) => {
-    promises.push(
-      new Promise((resolve, reject) => {
-        "productId" in d
-          ? putProduct(
-              transformProductForFolderUpdate(d, folderId),
-              resolve,
-              reject,
-              d.productId
-            )
-          : putUser(
-              transformUserForUpdate(d, folderId),
-              resolve,
-              reject,
-              d.userId
-            );
-      })
-    );
+  const promises = dataList.map((d: User | Product) => {
+    return "productId" in d
+      ? putProduct(transformProductForFolderUpdate(d, folderId), d.productId)
+      : putUser(transformUserForUpdate(d, folderId), d.userId);
   });
-  return Promise.all(promises).then(onSuccess).catch(onFail);
+  return Promise.all(promises);
 };

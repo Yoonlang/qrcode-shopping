@@ -11,15 +11,9 @@ export interface ErrorResponse {
 export type SuccessCallback<T> = (data: T) => void;
 export type FailCallback = (error: Error) => void;
 
-export type ApiGetFunction<T> = (
-  onSuccess: SuccessCallback<T>,
-  onFail: FailCallback,
-  targetId?: string
-) => Promise<void>;
+export type ApiGetFunction<T> = (targetId?: string) => Promise<T>;
 
 export type ApiModifyFunction<T> = (
   body: BodyInit | null | undefined,
-  onSuccess: SuccessCallback<T>,
-  onFail: FailCallback,
   targetId?: string
-) => Promise<void>;
+) => Promise<T>;
