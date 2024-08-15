@@ -7,10 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
 import { UserInfo } from "@/components/const";
-import {
-  CountryType,
-  countries,
-} from "@/components/user/userSubmission/countries";
+import { Country, countries } from "@/components/user/userSubmission/countries";
 import {
   StyledErrorMessage,
   StyledIconButton,
@@ -66,10 +63,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
     handleBlur,
   }: FormikContextType<UserInfo> = useFormikContext();
 
-  const handleChangeCountry = (
-    e: SyntheticEvent<Element>,
-    option: CountryType
-  ) => {
+  const handleChangeCountry = (e: SyntheticEvent<Element>, option: Country) => {
     if (option) {
       setValues({ ...values, countryCode: option });
     }
