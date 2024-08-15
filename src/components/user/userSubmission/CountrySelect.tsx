@@ -84,24 +84,30 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
               ? `${option.label} +${option.phone}`
               : ""
           }
+          renderOption={(props, option) => {
+            if (option.code !== "") {
+              return (
+                <ListItem {...props} key={option.code}>
+                  <div>
+                    <img
+                      key={option.label}
+                      loading="lazy"
+                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                      alt={`${option.label}-flag`}
+                    />
+                    {option.label} +{option.phone}
+                  </div>
+                  {values.countryCode.phone === option.phone && (
+                    <StyledIconButton disabled>
+                      {Icons["select"]}
+                    </StyledIconButton>
+                  )}
+                </ListItem>
+              );
+            }
+          }}
           isOptionEqualToValue={(option, value) => option.code === value.code}
-          renderOption={(props, option) => (
-            <ListItem {...props} key={option.code}>
-              <div>
-                <img
-                  key={option.label}
-                  loading="lazy"
-                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                  alt={`${option.label}-flag`}
-                />
-                {option.label} +{option.phone}
-              </div>
-              {values.countryCode.phone === option.phone && (
-                <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
-              )}
-            </ListItem>
-          )}
           filterOptions={(options, { inputValue }) => {
             return options.filter(({ label, phone }) =>
               `${label} +${phone}`
