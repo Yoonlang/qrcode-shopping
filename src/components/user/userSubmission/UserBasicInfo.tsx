@@ -1,7 +1,6 @@
-import { FormikContextType, useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { business } from "@/components/user/userSubmission/const";
 import CountrySelect from "@/components/user/userSubmission/CountrySelect";
 import {
@@ -9,9 +8,12 @@ import {
   UserSelect,
 } from "@/components/user/userSubmission/FormItems";
 
-const UserInfo = () => {
+interface UserBasicInfoProps {
+  values: UserInfo;
+}
+
+const UserBasicInfo = ({ values }: UserBasicInfoProps) => {
   const { t } = useTranslation();
-  const { values }: FormikContextType<FormType> = useFormikContext();
 
   return (
     <>
@@ -37,4 +39,4 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default UserBasicInfo;

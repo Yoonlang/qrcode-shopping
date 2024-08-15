@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 
 const StyledBox = styled(Box)`
   display: grid;
@@ -179,7 +179,7 @@ const StyledIconButton = styled(IconButton)`
 
 const AddressCheckbox = ({ name }: { name: string }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, handleChange }: FormikContextType<FormType> =
+  const { values, handleBlur, handleChange }: FormikContextType<UserInfo> =
     useFormikContext();
 
   return (
@@ -216,7 +216,7 @@ const UserInput = ({
     touched,
     handleBlur,
     handleChange,
-  }: FormikContextType<FormType> = useFormikContext();
+  }: FormikContextType<UserInfo> = useFormikContext();
 
   return (
     <>
@@ -275,7 +275,7 @@ const UserSelect = ({
     touched,
     handleBlur,
     handleChange,
-  }: FormikContextType<FormType> = useFormikContext();
+  }: FormikContextType<UserInfo> = useFormikContext();
   const [v, setV] = useState("");
   useEffect(() => setV(values[name]), [values[name]]);
 

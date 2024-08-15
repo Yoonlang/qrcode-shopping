@@ -6,7 +6,7 @@ import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import {
   CountryType,
   countries,
@@ -64,7 +64,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
     touched,
     setValues,
     handleBlur,
-  }: FormikContextType<FormType> = useFormikContext();
+  }: FormikContextType<UserInfo> = useFormikContext();
 
   const handleChangeCountry = (
     e: SyntheticEvent<Element>,
