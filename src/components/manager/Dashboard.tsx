@@ -50,7 +50,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    handleFolderListUpdate();
+    void handleFolderListUpdate();
   }, []);
 
   useEffect(() => {

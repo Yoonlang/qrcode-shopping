@@ -11,7 +11,7 @@ const CompanyAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
 
   useEffect(() => {
     if (values.businessType === "Student") {
-      setValues({
+      void setValues({
         ...values,
         coPostalCode: "",
         coAddress: "",
@@ -24,7 +24,7 @@ const CompanyAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
         coAddress: undefined,
         coDetailAddress: undefined,
       });
-      setTouched({
+      void setTouched({
         ...touched,
         coPostalCode: false,
         coAddress: false,

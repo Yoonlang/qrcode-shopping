@@ -62,7 +62,7 @@ const UserTextActionModal = ({
 
   useEffect(() => {
     if (isModalOpen) {
-      handleTextUpdate();
+      void handleTextUpdate();
     }
   }, [isModalOpen]);
 

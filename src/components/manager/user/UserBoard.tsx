@@ -83,7 +83,7 @@ const UserBoard = ({
         ),
         USER_DEFAULT
       );
-      updateUserList();
+      await updateUserList();
     } catch {
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
@@ -103,7 +103,7 @@ const UserBoard = ({
         ),
         USER_TRASH_CAN
       );
-      updateUserList();
+      await updateUserList();
     } catch {
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
@@ -118,7 +118,7 @@ const UserBoard = ({
   const handleUserPermanentDelete = async () => {
     try {
       await deleteUserList(selectedUserList);
-      updateUserList();
+      await updateUserList();
     } catch {
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
@@ -141,8 +141,8 @@ const UserBoard = ({
           )}
           folder={folder}
           folderList={userFolderList}
-          onReassignComplete={() => {
-            updateUserList();
+          onReassignComplete={async () => {
+            await updateUserList();
           }}
         />
       ));
@@ -249,8 +249,8 @@ const UserBoard = ({
   };
 
   useEffect(() => {
-    updateUserList();
-    handleProductListUpdate();
+    void updateUserList();
+    void handleProductListUpdate();
   }, []);
 
   return (

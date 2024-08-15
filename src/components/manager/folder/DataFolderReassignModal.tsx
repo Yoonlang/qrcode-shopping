@@ -41,7 +41,7 @@ const DataFolderReassignModal = ({
   selectedDataList: User[] | Product[];
   folder: Folder;
   folderList: Folder[];
-  onReassignComplete?: () => void;
+  onReassignComplete?: () => Promise<void>;
 }) => {
   const overlay = useOverlay();
 
@@ -57,7 +57,7 @@ const DataFolderReassignModal = ({
           onSubmit={async (values, { setSubmitting }) => {
             try {
               await reassignFolder(selectedDataList, values.folderId);
-              onReassignComplete && onReassignComplete();
+              onReassignComplete && (await onReassignComplete());
               onModalClose();
             } catch {
               overlay.open(({ isOpen, close }) => (

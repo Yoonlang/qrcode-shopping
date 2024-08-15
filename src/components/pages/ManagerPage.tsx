@@ -21,7 +21,7 @@ const ManagerPage = () => {
       }
     };
 
-    handleAuthCheck();
+    void handleAuthCheck();
   }, []);
 
   if (isCookieAuthChecking) {
