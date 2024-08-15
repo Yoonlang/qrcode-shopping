@@ -84,6 +84,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
               ? `${option.label} +${option.phone}`
               : ""
           }
+          isOptionEqualToValue={(option, value) => option.code === value.code}
           renderOption={(props, option) => (
             <MenuItem {...props} key={option.label}>
               <div key={props.id}>
