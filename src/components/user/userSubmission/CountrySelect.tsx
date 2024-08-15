@@ -73,7 +73,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
     <>
       <StyledDiv>
         <Autocomplete
-          defaultValue={values.countryCode}
+          value={values.countryCode}
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
