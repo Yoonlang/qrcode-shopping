@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
+import { OverlayControl } from "@/const";
+
 interface StyledMessageDialogProps {
   customStyle?: string;
 }
@@ -21,22 +23,25 @@ const StyledMessageDialog = styled(Dialog, {
 `;
 
 const MessageDialog = ({
-  isDialogOpen,
-  onDialogClose,
+  overlayControl,
   messageList,
+  onDialogClose = () => {},
   customStyle = "",
 }: {
-  isDialogOpen: boolean;
-  onDialogClose: () => void;
+  overlayControl: OverlayControl;
   messageList: string[];
+  onDialogClose?: () => void | Promise<void>;
   customStyle?: string;
 }) => {
   const { t } = useTranslation();
 
   return (
     <StyledMessageDialog
-      open={isDialogOpen}
-      onClose={onDialogClose}
+      open={overlayControl.isOpen}
+      onClose={async () => {
+        await onDialogClose();
+        overlayControl.exit();
+      }}
       customStyle={customStyle}
     >
       <DialogContent>
@@ -45,7 +50,14 @@ const MessageDialog = ({
         ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onDialogClose} color="primary" autoFocus>
+        <Button
+          onClick={async () => {
+            await onDialogClose();
+            overlayControl.exit();
+          }}
+          color="primary"
+          autoFocus
+        >
           {t("Confirm")}
         </Button>
       </DialogActions>

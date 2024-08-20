@@ -80,3 +80,9 @@ export interface Folder {
 }
 
 export type Language = "ko" | "zh" | "en" | "ja";
+
+export interface OverlayControl {
+  isOpen: boolean;
+  close: () => void;
+  exit: () => void;
+}
