@@ -1,12 +1,18 @@
 import { UserInfo } from "@/components/const";
+import { CountryType } from "@/components/user/userSubmission/countries";
+import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 
-export const steps = [
+interface UserFormStep {
+  label: string;
+}
+
+export const steps: UserFormStep[] = [
   { label: "Orderer" },
   { label: "Company Address" },
   { label: "Shipping Address" },
 ];
 
-export const business = [
+export const business: string[] = [
   "Trading",
   "Wholesaler",
   "Converter",
@@ -35,3 +41,27 @@ export const userInfoInitialValues: UserInfo = {
   isSameAddress: false,
   productLengthUnit: "METER",
 };
+
+export interface FormatShippingAddressProps {
+  isSameAddress: boolean;
+  coPostalCode: string;
+  coAddress: string;
+  coDetailAddress: string;
+  spPostalCode: string;
+  spAddress: string;
+  spDetailAddress: string;
+}
+
+export interface FormatContactInfoProps {
+  countryCode: CountryType;
+  phoneNumber: string;
+  email: string;
+  weChatId: string;
+}
+
+export interface FormatSubmitUserBodyProps {
+  form: UserInfo;
+  submissionTime: string;
+  language: string;
+  selectedInfoList: SelectedInfoList;
+}

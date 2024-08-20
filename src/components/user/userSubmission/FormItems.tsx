@@ -196,27 +196,25 @@ const AddressCheckbox = ({ name }: { name: string }) => {
   );
 };
 
+interface UserInputProps {
+  label: string;
+  name: string;
+  type?: string;
+  disable?: boolean;
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
+
 const UserInput = ({
   label,
   name,
   type = "text",
   disable = false,
   required = false,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  disable?: boolean;
-  required?: boolean;
-}) => {
+  formik,
+}: UserInputProps) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleChange,
-  }: FormikContextType<UserInfo> = useFormikContext();
+  const { values, errors, touched, handleBlur, handleChange } = formik;
 
   return (
     <>
@@ -255,27 +253,23 @@ const UserInput = ({
   );
 };
 
+interface UserSelectProps {
+  label: string;
+  name: string;
+  items: string[];
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
+
 const UserSelect = ({
   label,
   name,
   items,
-
   required = false,
-}: {
-  label: string;
-  name: string;
-  items: string[];
-
-  required?: boolean;
-}) => {
+  formik,
+}: UserSelectProps) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleChange,
-  }: FormikContextType<UserInfo> = useFormikContext();
+  const { values, errors, touched, handleBlur, handleChange } = formik;
   const [v, setV] = useState("");
   useEffect(() => setV(values[name]), [values[name]]);
 

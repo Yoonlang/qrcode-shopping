@@ -107,12 +107,12 @@ const UserSubmissionPage = () => {
     resetForm: (nextState?: Partial<FormikState<UserInfo>> | undefined) => void
   ) => {
     const { userId } = await postUser(
-      formatSubmitUserBody(
+      formatSubmitUserBody({
         form,
-        dayjs().format("YYYY-MM-DD HH:mm"),
-        i18n.language,
-        selectedInfoList
-      )
+        submissionTime: dayjs().format("YYYY-MM-DD HH:mm"),
+        language: i18n.language,
+        selectedInfoList,
+      })
     );
     setUserId(userId);
   };
