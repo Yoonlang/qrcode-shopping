@@ -71,7 +71,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
     option: CountryType
   ) => {
     if (option) {
-      setValues({ ...values, countryCode: option });
+      void setValues({ ...values, countryCode: option });
     }
   };
 

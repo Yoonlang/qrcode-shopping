@@ -11,7 +11,7 @@ const ShippingAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
 
   useEffect(() => {
     if (values.isSameAddress) {
-      setValues({
+      void setValues({
         ...values,
         spPostalCode: "",
         spAddress: "",
@@ -23,7 +23,7 @@ const ShippingAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
         spAddress: undefined,
         spDetailAddress: undefined,
       });
-      setTouched({
+      void setTouched({
         ...touched,
         spPostalCode: false,
         spAddress: false,

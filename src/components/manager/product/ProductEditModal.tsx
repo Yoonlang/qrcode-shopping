@@ -85,13 +85,13 @@ const ProductEditModal = ({
   const colorRefs = useRef<HTMLInputElement[]>([]);
 
   const handleChangeFile = (file) => {
-    formik.setFieldValue("image", file);
-    formik.setFieldValue("useSameImage", false);
+    void formik.setFieldValue("image", file);
+    void formik.setFieldValue("useSameImage", false);
   };
 
   const handleAddColor = () => {
     const newColors = [...formik.values.colors, ""];
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -106,7 +106,7 @@ const ProductEditModal = ({
   ) => {
     const newColors = [...formik.values.colors];
     newColors.splice(index, 1);
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   useEffect(() => {
@@ -118,18 +118,17 @@ const ProductEditModal = ({
   useEffect(() => {
     const { image, colors, price, weightGPerM2, widthInch, composition } =
       product;
-    formik.setFieldValue("method", "PUT");
-    formik.setFieldValue("weightGPerM2", weightGPerM2);
-    formik.setFieldValue("widthInch", widthInch);
-    formik.setFieldValue("composition", composition);
-    formik.setFieldValue("price", price);
 
+    void formik.setFieldValue("method", "PUT");
+    void formik.setFieldValue("weightGPerM2", weightGPerM2);
+    void formik.setFieldValue("widthInch", widthInch);
+    void formik.setFieldValue("composition", composition);
+    void formik.setFieldValue("price", price);
     if (image) {
-      formik.setFieldValue("image", new File([], ""));
+      void formik.setFieldValue("image", new File([], ""));
     }
-
     const handledColors = colors.map(({ colorName }) => colorName);
-    formik.setFieldValue("colors", handledColors);
+    void formik.setFieldValue("colors", handledColors);
   }, [product]);
 
   return (
@@ -192,8 +191,8 @@ const ProductEditModal = ({
           ))}
         <StyledFlexDiv>
           <Button
-            onClick={() => {
-              formik.submitForm();
+            onClick={async () => {
+              await formik.submitForm();
             }}
           >
             Confirm
