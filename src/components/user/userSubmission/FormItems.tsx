@@ -235,17 +235,6 @@ const UserInput = ({
         type={type}
         margin="dense"
         fullWidth
-        InputProps={
-          {
-            // endAdornment: (
-            //   <InputAdornment position="end">
-            //     {!errors[name] && touched[name] && (
-            //       <>{Icons["select"]}</>
-            //     )}
-            //   </InputAdornment>
-            // ),
-          }
-        }
         disabled={disable}
       />
       {errors[name] && touched[name] ? (
