@@ -43,23 +43,19 @@ const FolderActionModal = ({
     initialValues: {},
     validateOnMount: true,
     onSubmit: async () => {
-      await deleteFolder(
-        undefined,
-        () => {
-          onFolderListUpdate();
-          onFolderDelete();
-        },
-        () => {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={["폴더 삭제 실패"]}
-            />
-          ));
-        },
-        id
-      );
+      try {
+        await deleteFolder(undefined, id);
+        onFolderListUpdate();
+        onFolderDelete();
+      } catch {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={["폴더 삭제 실패"]}
+          />
+        ));
+      }
     },
   });
 
@@ -73,25 +69,21 @@ const FolderActionModal = ({
           }}
           validationSchema={editionValidationSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await patchFolder(
-              JSON.stringify(values),
-              () => {
-                setSubmitting(false);
-                onFolderListUpdate();
-                onClose();
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["폴더 수정 실패"]}
-                  />
-                ));
-              },
-              id
-            );
+            try {
+              await patchFolder(JSON.stringify(values), id);
+              onFolderListUpdate();
+              onClose();
+            } catch {
+              overlay.open(({ isOpen, close }) => (
+                <MessageDialog
+                  isDialogOpen={isOpen}
+                  onDialogClose={close}
+                  messageList={["폴더 수정 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched }) => (

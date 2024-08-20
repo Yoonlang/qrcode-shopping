@@ -51,81 +51,74 @@ const ProductBoard = ({
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
   const overlay = useOverlay();
 
-  const handleProductListUpdate = () => {
-    getProductList(
-      (data) => {
-        setProductList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 가져오기 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductListUpdate = async () => {
+    try {
+      const productList = await getProductList();
+      setProductList(productList);
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 가져오기 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductRestore = () => {
-    reassignFolder(
-      filteredProductList.filter((f) =>
-        selectedProductList.find((productId) => f.productId === productId)
-      ),
-      PRODUCT_DEFAULT,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 복구 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductRestore = async () => {
+    try {
+      await reassignFolder(
+        filteredProductList.filter((f) =>
+          selectedProductList.find((productId) => f.productId === productId)
+        ),
+        PRODUCT_DEFAULT
+      );
+      handleProductListUpdate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 복구 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductSoftDelete = () => {
-    reassignFolder(
-      filteredProductList.filter((f) =>
-        selectedProductList.find((productId) => f.productId === productId)
-      ),
-      PRODUCT_TRASH_CAN,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductSoftDelete = async () => {
+    try {
+      await reassignFolder(
+        filteredProductList.filter((f) =>
+          selectedProductList.find((productId) => f.productId === productId)
+        ),
+        PRODUCT_TRASH_CAN
+      );
+      handleProductListUpdate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 삭제 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductPermanentDelete = () => {
-    deleteProductList(
-      selectedProductList,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 영구 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductPermanentDelete = async () => {
+    try {
+      await deleteProductList(selectedProductList);
+      handleProductListUpdate();
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={close}
+          messageList={["데이터 영구 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleProductQrCodeCreate = async () => {

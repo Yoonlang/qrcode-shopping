@@ -42,24 +42,22 @@ const UserTextActionModal = ({
   const [initialText, setInitialText] = useState("");
   const overlay = useOverlay();
 
-  const handleTextUpdate = () => {
-    getText(
-      ({ text }) => {
-        setInitialText(text);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={() => {
-              close();
-              onClose();
-            }}
-            messageList={["기존 텍스트 불러오기 실패"]}
-          />
-        ));
-      }
-    );
+  const handleTextUpdate = async () => {
+    try {
+      const { text } = await getText();
+      setInitialText(text);
+    } catch {
+      overlay.open(({ isOpen, close }) => (
+        <MessageDialog
+          isDialogOpen={isOpen}
+          onDialogClose={() => {
+            close();
+            onClose();
+          }}
+          messageList={["기존 텍스트 불러오기 실패"]}
+        />
+      ));
+    }
   };
 
   useEffect(() => {
@@ -84,32 +82,29 @@ const UserTextActionModal = ({
           enableReinitialize={true}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await putText(
-              JSON.stringify(values),
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={() => {
-                      close();
-                      onClose();
-                    }}
-                    messageList={["설정 텍스트 변경 성공"]}
-                  />
-                ));
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["설정 텍스트 변경 실패"]}
-                  />
-                ));
-              }
-            );
+            try {
+              await putText(JSON.stringify(values));
+              overlay.open(({ isOpen, close }) => (
+                <MessageDialog
+                  isDialogOpen={isOpen}
+                  onDialogClose={() => {
+                    close();
+                    onClose();
+                  }}
+                  messageList={["설정 텍스트 변경 성공"]}
+                />
+              ));
+            } catch {
+              overlay.open(({ isOpen, close }) => (
+                <MessageDialog
+                  isDialogOpen={isOpen}
+                  onDialogClose={close}
+                  messageList={["설정 텍스트 변경 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched }) => (

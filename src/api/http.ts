@@ -1,9 +1,4 @@
-import {
-  API_VERSION,
-  ErrorResponse,
-  FailCallback,
-  SuccessCallback,
-} from "@/api/const";
+import { API_VERSION, ErrorResponse } from "@/api/const";
 import { SERVER_URL } from "@/components/const";
 
 const isErrorResponse = (data: unknown): data is ErrorResponse => {
@@ -19,26 +14,12 @@ const handleResponse = <T>(res: Response): Promise<T> =>
   });
 
 const http = {
-  get: <T>(
-    path: string,
-    options = {},
-    onSuccess: SuccessCallback<T>,
-    onFail: FailCallback
-  ) =>
+  get: <T>(path: string, options = {}) =>
     fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "GET",
       ...options,
-    })
-      .then((res) => handleResponse<T>(res))
-      .then(onSuccess)
-      .catch(onFail),
-  post: <T>(
-    path: string,
-    options = {},
-    body: BodyInit | null | undefined,
-    onSuccess: SuccessCallback<T>,
-    onFail: FailCallback
-  ) =>
+    }).then((res) => handleResponse<T>(res)),
+  post: <T>(path: string, options = {}, body: BodyInit | null | undefined) =>
     fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "POST",
       headers: {
@@ -46,17 +27,8 @@ const http = {
       },
       ...options,
       body,
-    })
-      .then((res) => handleResponse<T>(res))
-      .then(onSuccess)
-      .catch(onFail),
-  put: <T>(
-    path: string,
-    options = {},
-    body: BodyInit | null | undefined,
-    onSuccess: SuccessCallback<T>,
-    onFail: FailCallback
-  ) =>
+    }).then((res) => handleResponse<T>(res)),
+  put: <T>(path: string, options = {}, body: BodyInit | null | undefined) =>
     fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "PUT",
       headers: {
@@ -64,17 +36,8 @@ const http = {
       },
       ...options,
       body,
-    })
-      .then((res) => handleResponse<T>(res))
-      .then(onSuccess)
-      .catch(onFail),
-  patch: <T>(
-    path: string,
-    options = {},
-    body: BodyInit | null | undefined,
-    onSuccess: SuccessCallback<T>,
-    onFail: FailCallback
-  ) =>
+    }).then((res) => handleResponse<T>(res)),
+  patch: <T>(path: string, options = {}, body: BodyInit | null | undefined) =>
     fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "PATCH",
       headers: {
@@ -82,17 +45,8 @@ const http = {
       },
       ...options,
       body,
-    })
-      .then((res) => handleResponse<T>(res))
-      .then(onSuccess)
-      .catch(onFail),
-  delete: <T>(
-    path: string,
-    options = {},
-    body: BodyInit | null | undefined,
-    onSuccess: SuccessCallback<T>,
-    onFail: FailCallback
-  ) =>
+    }).then((res) => handleResponse<T>(res)),
+  delete: <T>(path: string, options = {}, body: BodyInit | null | undefined) =>
     fetch(`${SERVER_URL}${API_VERSION}${path}`, {
       method: "DELETE",
       headers: {
@@ -100,10 +54,7 @@ const http = {
       },
       ...options,
       body,
-    })
-      .then((res) => handleResponse<T>(res))
-      .then(onSuccess)
-      .catch(onFail),
+    }).then((res) => handleResponse<T>(res)),
 };
 
 export default http;

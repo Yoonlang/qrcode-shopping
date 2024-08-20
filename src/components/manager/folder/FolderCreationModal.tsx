@@ -57,24 +57,21 @@ const FolderCreationModal = ({
           }}
           validationSchema={creationValidationSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await postFolder(
-              JSON.stringify(values),
-              () => {
-                setSubmitting(false);
-                onFolderListUpdate();
-                onClose();
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["폴더 생성 실패"]}
-                  />
-                ));
-              }
-            );
+            try {
+              await postFolder(JSON.stringify(values));
+              onFolderListUpdate();
+              onClose();
+            } catch {
+              overlay.open(({ isOpen, close }) => (
+                <MessageDialog
+                  isDialogOpen={isOpen}
+                  onDialogClose={close}
+                  messageList={["폴더 생성 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched }) => (

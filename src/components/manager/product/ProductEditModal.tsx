@@ -34,7 +34,7 @@ const ProductEditModal = ({
     initialValues: productEditionInitialValues,
     validateOnMount: true,
     validationSchema: productEditionSchema,
-    onSubmit: (form) => {
+    onSubmit: async (form) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -59,29 +59,25 @@ const ProductEditModal = ({
         }
       });
 
-      putProduct(
-        formData,
-        (product) => {
-          overlay.open(({ isOpen, close }) => (
-            <ProductDetailModal
-              modalProductData={product}
-              isModalOpen={isOpen}
-              onModalClose={close}
-            />
-          ));
-          onModalClose();
-        },
-        (e) => {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={[e.message]}
-            />
-          ));
-        },
-        product.productId
-      );
+      try {
+        const res = await putProduct(formData, product.productId);
+        overlay.open(({ isOpen, close }) => (
+          <ProductDetailModal
+            modalProductData={res}
+            isModalOpen={isOpen}
+            onModalClose={close}
+          />
+        ));
+        onModalClose();
+      } catch (e) {
+        overlay.open(({ isOpen, close }) => (
+          <MessageDialog
+            isDialogOpen={isOpen}
+            onDialogClose={close}
+            messageList={[e.message]}
+          />
+        ));
+      }
     },
   });
 

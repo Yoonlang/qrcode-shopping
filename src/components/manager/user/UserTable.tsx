@@ -36,14 +36,7 @@ const UserTable = ({
     row.__user__.remark1 = row.remark1;
     row.__user__.remark2 = row.remark2;
     try {
-      await putUser(
-        transformUserForUpdate(row.__user__),
-        () => {},
-        (e) => {
-          throw e;
-        },
-        row.__user__.userId
-      );
+      await putUser(transformUserForUpdate(row.__user__), row.__user__.userId);
       return row;
     } catch (e) {
       old.__user__.remark1 = old.remark1;

@@ -55,25 +55,21 @@ const DataFolderReassignModal = ({
           }}
           validationSchema={folderSelectionSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await reassignFolder(
-              selectedDataList,
-              values.folderId,
-              () => {
-                setSubmitting(false);
-                onReassignComplete && onReassignComplete();
-                onModalClose();
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["폴더 이동 실패"]}
-                  />
-                ));
-              }
-            );
+            try {
+              await reassignFolder(selectedDataList, values.folderId);
+              onReassignComplete && onReassignComplete();
+              onModalClose();
+            } catch {
+              overlay.open(({ isOpen, close }) => (
+                <MessageDialog
+                  isDialogOpen={isOpen}
+                  onDialogClose={close}
+                  messageList={["폴더 이동 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched, values, setFieldValue }) => (

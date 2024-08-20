@@ -1,16 +1,9 @@
-import { FailCallback, SucceedResponse, SuccessCallback } from "@/api/const";
 import { deleteProduct } from "@/api/products";
 
-export const deleteProductList = (
-  productList: string[],
-  onSuccess: SuccessCallback<SucceedResponse[]>,
-  onFail: FailCallback
-) => {
+export const deleteProductList = (productList: string[]) => {
   const deletePromises = productList.map((productId) => {
-    return new Promise((resolve, reject) => {
-      deleteProduct(undefined, resolve, reject, productId);
-    });
+    return deleteProduct(undefined, productId);
   });
 
-  return Promise.all(deletePromises).then(onSuccess).catch(onFail);
+  return Promise.all(deletePromises);
 };
