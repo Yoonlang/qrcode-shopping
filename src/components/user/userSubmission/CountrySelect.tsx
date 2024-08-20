@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { MenuItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FormikContextType, useFormikContext } from "formik";
+import { FormikProps } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -56,15 +56,14 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const CountrySelect = ({ required = false }: { required?: boolean }) => {
+interface CountrySelectProps {
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
+
+const CountrySelect = ({ required = false, formik }: CountrySelectProps) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    setValues,
-    handleBlur,
-  }: FormikContextType<UserInfo> = useFormikContext();
+  const { values, errors, touched, setValues, handleBlur } = formik;
 
   const handleChangeCountry = (
     e: SyntheticEvent<Element>,

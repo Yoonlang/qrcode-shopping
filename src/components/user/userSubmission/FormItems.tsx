@@ -8,7 +8,7 @@ import {
   Stepper,
   TextField,
 } from "@mui/material";
-import { FormikContextType, useFormikContext } from "formik";
+import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -177,10 +177,15 @@ const StyledIconButton = styled(IconButton)`
   padding: 0;
 `;
 
-const AddressCheckbox = ({ name }: { name: string }) => {
+const AddressCheckbox = ({
+  name,
+  formik,
+}: {
+  name: string;
+  formik: FormikProps<UserInfo>;
+}) => {
   const { t } = useTranslation();
-  const { values, handleBlur, handleChange }: FormikContextType<UserInfo> =
-    useFormikContext();
+  const { values, handleBlur, handleChange } = formik;
 
   return (
     <StyledFormControlLabel
