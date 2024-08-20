@@ -1,5 +1,5 @@
 import { useOverlay } from "@toss/use-overlay";
-import { Formik, FormikState } from "formik";
+import { Formik } from "formik";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -42,27 +42,10 @@ const UserSubmissionPage = () => {
   const setImageUrlList = useSetRecoilState(imageUrlListState);
   const { goToNextPage, goToPage, setPageAction } = usePageRouter();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const userId = useRecoilValue(userIdState);
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
   const imageUrlList = useRecoilValue(imageUrlListState);
-
-  useEffect(() => {
-    if (userFormRef.current) {
-      const { values } = userFormRef.current.getUserFormValues();
-
-      setCounselingIntakeFormData(
-        <CounselingIntakeForm
-          userInfo={values}
-          selectedInfoList={selectedInfoList}
-          imageUrlList={imageUrlList}
-          userId={userId}
-          language={i18n.language as Language}
-        />
-      );
-    }
-  }, [userId]);
 
   useEffect(() => {
     const action = async () => {
@@ -73,10 +56,8 @@ const UserSubmissionPage = () => {
         if (isValid) {
           try {
             await submitForm();
-            setScannedItemList({});
-            setSelectedInfoList({});
-            setImageUrlList({});
             resetForm({ values: userInfoInitialValues });
+            handleFormikValuesSyncToLocalStorage(userInfoInitialValues);
             if (values.countryCode.label === "China") {
               goToNextPage();
             } else {
@@ -103,10 +84,7 @@ const UserSubmissionPage = () => {
     setPageAction(() => action);
   }, []);
 
-  const handleUserInfoSubmit = async (
-    form: UserInfo,
-    resetForm: (nextState?: Partial<FormikState<UserInfo>> | undefined) => void
-  ) => {
+  const handleUserInfoSubmit = async (form: UserInfo) => {
     await postUser(
       formatSubmitUserBody(
         form,
@@ -115,7 +93,19 @@ const UserSubmissionPage = () => {
         selectedInfoList
       ),
       (res) => {
+        setCounselingIntakeFormData(
+          <CounselingIntakeForm
+            userInfo={form}
+            selectedInfoList={selectedInfoList}
+            imageUrlList={imageUrlList}
+            userId={res.userId}
+            language={i18n.language as Language}
+          />
+        );
         setUserId(res.userId);
+        setScannedItemList({});
+        setSelectedInfoList({});
+        setImageUrlList({});
       },
       (e) => {
         throw e;
@@ -127,8 +117,8 @@ const UserSubmissionPage = () => {
     <Formik
       initialValues={storedFormikValues}
       validationSchema={userInfoValidationSchema}
-      onSubmit={async (form, { resetForm }) => {
-        await handleUserInfoSubmit(form, resetForm);
+      onSubmit={async (form) => {
+        await handleUserInfoSubmit(form);
       }}
       validateOnMount={true}
     >
