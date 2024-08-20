@@ -19,6 +19,7 @@ export default {
     "header-max-length": [ERROR, "always", 72],
     "type-enum": [ERROR, "always", typeList],
     "type-case": [ERROR, "always", "lower-case"],
+    "subject-case": [OFF],
   },
   plugins: [
     {
