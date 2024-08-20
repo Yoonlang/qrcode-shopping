@@ -17,7 +17,7 @@ import {
   StyledTextField,
 } from "@/components/user/userSubmission/FormItems";
 
-const StyledDiv = styled.div`
+const StyledCountrySelectBox = styled.div`
   margin-top: 8px;
   margin-bottom: 4px;
 `;
@@ -76,7 +76,7 @@ const CountrySelect = ({ required = false, formik }: CountrySelectProps) => {
 
   return (
     <>
-      <StyledDiv>
+      <StyledCountrySelectBox>
         <Autocomplete
           defaultValue={values.countryCode}
           options={countries.sort((a, b) => {
@@ -133,7 +133,7 @@ const CountrySelect = ({ required = false, formik }: CountrySelectProps) => {
           PaperComponent={(props) => <StyledPaper {...props} />}
           onChange={(e, option) => option && handleChangeCountry(e, option)}
         />
-      </StyledDiv>
+      </StyledCountrySelectBox>
       {errors.countryCode && touched.countryCode && (
         <StyledErrorMessage>
           {Icons["error"]}
