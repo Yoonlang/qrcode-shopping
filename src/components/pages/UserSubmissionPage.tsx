@@ -2,7 +2,7 @@ import { useOverlay } from "@toss/use-overlay";
 import { Formik, FormikState } from "formik";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { postUser } from "@/api/users";
 import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
@@ -29,24 +29,22 @@ import { userIdState } from "@/recoil/user/atoms/userIdState";
 const UserSubmissionPage = () => {
   const { t, i18n } = useTranslation();
   const overlay = useOverlay();
-  const selectedInfoList = useRecoilValue(selectedInfoListState);
-  const setUserId = useSetRecoilState(userIdState);
+  const userFormRef = useRef<UserFormHandle>(null);
+  const { goToNextPage, goToPage, setPageAction } = usePageRouter();
+  const { setScannedItemList } = useScannedItemList();
+  const { setSelectedInfoList } = useSelectedInfoList();
   const [storedFormikValues, handleFormikValuesSyncToLocalStorage] =
     useLocalStorageState({
       key: "form",
       value: userInfoInitialValues,
     });
-  const userFormRef = useRef<UserFormHandle>(null);
-  const { setScannedItemList } = useScannedItemList();
-  const { setSelectedInfoList } = useSelectedInfoList();
-  const setImageUrlList = useSetRecoilState(imageUrlListState);
-  const { goToNextPage, goToPage, setPageAction } = usePageRouter();
+  const selectedInfoList = useRecoilValue(selectedInfoListState);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const userId = useRecoilValue(userIdState);
   const setCounselingIntakeFormData = useSetRecoilState(
     counselingIntakeFormDataState
   );
-  const imageUrlList = useRecoilValue(imageUrlListState);
+  const [userId, setUserId] = useRecoilState(userIdState);
+  const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
 
   useEffect(() => {
     if (userFormRef.current) {
