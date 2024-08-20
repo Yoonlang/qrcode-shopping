@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { CircularProgress } from "@mui/material";
+import { useOverlay } from "@toss/use-overlay";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
@@ -29,6 +30,7 @@ const QrScannerPage = () => {
   const { scannedItemList } = useScannedItemList();
   const { goToNextPage, setPageAction } = usePageRouter();
   const { selectedInfoList } = useSelectedInfoList(); // 추후 커스텀 훅 개선 시 삭제 예정
+  const overlay = useOverlay();
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -63,13 +65,21 @@ const QrScannerPage = () => {
     }
   }, [scannedItemList, setMessageSnackBarState, t]);
 
-  return (
-    <StyledContainer>
+  useEffect(() => {
+    overlay.open((control) => (
       <MessageDialog
-        isDialogOpen={isDialogOpen}
-        onDialogClose={handleDialogClose}
+        overlayControl={control}
+        onDialogClose={() => {
+          handleDialogClose();
+        }}
         messageList={[t("Dialog1"), t("Dialog2")]}
       />
+    ));
+  }, []);
+
+  return (
+    <StyledContainer>
+      {/* NOTE: 다이얼로그를 직접 확인 눌러야 WeChat에서 카메라가 켜짐 */}
       {!isDialogOpen && (
         <ErrorBoundary
           fallbackRender={({ resetErrorBoundary }) => (

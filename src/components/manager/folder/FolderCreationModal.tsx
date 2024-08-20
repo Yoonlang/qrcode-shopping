@@ -6,6 +6,7 @@ import * as Yup from "yup";
 
 import { postFolder } from "@/api/folders";
 import MessageDialog from "@/components/common/MessageDialog";
+import { OverlayControl } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -34,20 +35,18 @@ const creationValidationSchema = Yup.object({
 });
 
 const FolderCreationModal = ({
-  isModalOpen,
-  onClose,
+  overlayControl,
   type,
   onFolderListUpdate,
 }: {
-  isModalOpen: boolean;
-  onClose: () => void;
+  overlayControl: OverlayControl;
   type: "user" | "product";
   onFolderListUpdate: () => void;
 }) => {
   const overlay = useOverlay();
 
   return (
-    <Modal open={isModalOpen} onClose={onClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>{type} 폴더 생성</h3>
         <Formik
@@ -60,12 +59,11 @@ const FolderCreationModal = ({
             try {
               await postFolder(JSON.stringify(values));
               onFolderListUpdate();
-              onClose();
+              overlayControl.exit();
             } catch {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <MessageDialog
-                  isDialogOpen={isOpen}
-                  onDialogClose={close}
+                  overlayControl={control}
                   messageList={["폴더 생성 실패"]}
                 />
               ));
@@ -88,7 +86,7 @@ const FolderCreationModal = ({
                 <Button type="submit" disabled={isSubmitting}>
                   생성
                 </Button>
-                <Button onClick={onClose}>닫기</Button>
+                <Button onClick={overlayControl.exit}>닫기</Button>
               </DialogActions>
             </StyledForm>
           )}

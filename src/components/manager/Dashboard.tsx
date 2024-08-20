@@ -35,10 +35,9 @@ const Dashboard = () => {
       const folderList = await getFolderList();
       setFolderList(folderList);
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["폴더 불러오기 실패"]}
         />
       ));

@@ -10,13 +10,17 @@ describe("ProductDetailModal", () => {
   it("초기 렌더링 확인", async () => {
     // Given
     const modalProductData = mockProductList[0];
+    const control = {
+      isOpen: true,
+      close: jest.fn(),
+      exit: jest.fn(),
+    };
 
     // When
     render(
       <OverlayProvider>
         <ProductDetailModal
-          isModalOpen={true}
-          onModalClose={jest.fn()}
+          overlayControl={control}
           modalProductData={modalProductData}
         />
       </OverlayProvider>
@@ -31,13 +35,17 @@ describe("ProductDetailModal", () => {
   it("수정 누를 시 edit 모드로 변경", async () => {
     // Given
     const modalProductData = mockProductList[0];
+    const control = {
+      isOpen: true,
+      close: jest.fn(),
+      exit: jest.fn(),
+    };
 
     // When
     render(
       <OverlayProvider>
         <ProductDetailModal
-          isModalOpen={true}
-          onModalClose={jest.fn()}
+          overlayControl={control}
           modalProductData={modalProductData}
         />
       </OverlayProvider>

@@ -6,6 +6,7 @@ import {
   ErrorProductExcel,
   ProductExcel,
 } from "@/components/manager/product/const";
+import { OverlayControl } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -31,13 +32,11 @@ const columns: GridColDef[] = [
 ];
 
 const ExcelProductTableModal = ({
+  overlayControl,
   productList,
-  isModalOpen,
-  onModalClose,
 }: {
+  overlayControl: OverlayControl;
   productList: ProductExcel[] | ErrorProductExcel[];
-  isModalOpen: boolean;
-  onModalClose: () => void;
 }) => {
   const tableRows = productList.map((p: ProductExcel | ErrorProductExcel) => {
     const { __rowNum__, ...rest } = p;
@@ -48,7 +47,7 @@ const ExcelProductTableModal = ({
   });
 
   return (
-    <Modal open={isModalOpen} onClose={onModalClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <DataGrid
           rows={tableRows}

@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import { getText, putText } from "@/api/text";
 import MessageDialog from "@/components/common/MessageDialog";
+import { OverlayControl } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -33,11 +34,9 @@ const validationSchema = Yup.object({
 });
 
 const UserTextActionModal = ({
-  isModalOpen,
-  onClose,
+  overlayControl,
 }: {
-  isModalOpen: boolean;
-  onClose: () => void;
+  overlayControl: OverlayControl;
 }) => {
   const [initialText, setInitialText] = useState("");
   const overlay = useOverlay();
@@ -47,12 +46,11 @@ const UserTextActionModal = ({
       const { text } = await getText();
       setInitialText(text);
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
+          overlayControl={control}
           onDialogClose={() => {
-            close();
-            onClose();
+            overlayControl.exit();
           }}
           messageList={["기존 텍스트 불러오기 실패"]}
         />
@@ -61,13 +59,13 @@ const UserTextActionModal = ({
   };
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (overlayControl.isOpen) {
       void handleTextUpdate();
     }
-  }, [isModalOpen]);
+  }, [overlayControl.isOpen]);
 
   return (
-    <Modal open={isModalOpen} onClose={onClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>텍스트 설정</h3>
         <p>해당 텍스트는 앞으로의 유저 ID와 PDF 파일명에 적용됩니다.</p>
@@ -84,21 +82,19 @@ const UserTextActionModal = ({
           onSubmit={async (values, { setSubmitting }) => {
             try {
               await putText(JSON.stringify(values));
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <MessageDialog
-                  isDialogOpen={isOpen}
+                  overlayControl={control}
                   onDialogClose={() => {
-                    close();
-                    onClose();
+                    overlayControl.exit();
                   }}
                   messageList={["설정 텍스트 변경 성공"]}
                 />
               ));
             } catch {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <MessageDialog
-                  isDialogOpen={isOpen}
-                  onDialogClose={close}
+                  overlayControl={control}
                   messageList={["설정 텍스트 변경 실패"]}
                 />
               ));
@@ -121,7 +117,7 @@ const UserTextActionModal = ({
                 <Button type="submit" disabled={isSubmitting}>
                   수정
                 </Button>
-                <Button onClick={onClose}>닫기</Button>
+                <Button onClick={overlayControl.exit}>닫기</Button>
               </DialogActions>
             </StyledForm>
           )}

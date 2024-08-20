@@ -18,16 +18,14 @@ import {
   productEditionSchema,
 } from "@/components/manager/product/const";
 import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
-import { Product } from "@/const";
+import { OverlayControl, Product } from "@/const";
 
 const ProductEditModal = ({
+  overlayControl,
   product,
-  isModalOpen,
-  onModalClose,
 }: {
+  overlayControl: OverlayControl;
   product: Product;
-  isModalOpen: boolean;
-  onModalClose: () => void;
 }) => {
   const overlay = useOverlay();
   const formik = useFormik({
@@ -61,21 +59,13 @@ const ProductEditModal = ({
 
       try {
         const res = await putProduct(formData, product.productId);
-        overlay.open(({ isOpen, close }) => (
-          <ProductDetailModal
-            modalProductData={res}
-            isModalOpen={isOpen}
-            onModalClose={close}
-          />
+        overlay.open((control) => (
+          <ProductDetailModal overlayControl={control} modalProductData={res} />
         ));
-        onModalClose();
+        overlayControl.close();
       } catch (e) {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={[e.message]}
-          />
+        overlay.open((control) => (
+          <MessageDialog overlayControl={control} messageList={[e.message]} />
         ));
       }
     },
@@ -132,7 +122,7 @@ const ProductEditModal = ({
   }, [product]);
 
   return (
-    <StyledModal open={isModalOpen} onClose={onModalClose}>
+    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <ProductAddModal data-testid={"product-edit-modal"}>
         <h2>Edit</h2>
         <TextField
@@ -199,14 +189,13 @@ const ProductEditModal = ({
           </Button>
           <Button
             onClick={() => {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <ProductDetailModal
+                  overlayControl={control}
                   modalProductData={product}
-                  isModalOpen={isOpen}
-                  onModalClose={close}
                 />
               ));
-              onModalClose();
+              overlayControl.close();
             }}
           >
             Cancel

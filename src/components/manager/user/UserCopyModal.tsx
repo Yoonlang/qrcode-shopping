@@ -13,7 +13,7 @@ import {
   optionsToCopyList,
   SelectedOptions,
 } from "@/components/manager/user/util";
-import { User } from "@/const";
+import { OverlayControl, User } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -48,12 +48,10 @@ const getTitleData = (option: string): string[] => {
 };
 
 const UserCopyModal = ({
-  isModalOpen,
-  onModalClose,
+  overlayControl,
   selectedUserList,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
+  overlayControl: OverlayControl;
   selectedUserList: User[];
 }) => {
   const [isSelectedAllOptions, setIsSelectedAllOptions] =
@@ -159,7 +157,7 @@ const UserCopyModal = ({
   };
 
   return (
-    <Modal open={isModalOpen} onClose={onModalClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>복사할 정보를 선택하세요.</h3>
         <FormControlLabel
@@ -198,7 +196,7 @@ const UserCopyModal = ({
           <Button onClick={handleUserCopy} ref={copyButtonRef}>
             복사
           </Button>
-          <Button onClick={onModalClose}>닫기</Button>
+          <Button onClick={overlayControl.exit}>닫기</Button>
         </DialogActions>
       </StyledModalContainer>
     </Modal>

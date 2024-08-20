@@ -13,7 +13,7 @@ import {
 } from "@/components/manager/product/const";
 import ExcelProductTableModal from "@/components/manager/product/ExcelProductTableModal";
 import { handleExcelFileProductList } from "@/components/manager/product/util";
-import { Folder, Product } from "@/const";
+import { Folder, OverlayControl, Product } from "@/const";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -43,16 +43,14 @@ const transformProductExcelListToSubmitForm = (
 };
 
 const ExcelProductCreateModal = ({
+  overlayControl,
   folder,
   productList,
-  isModalOpen,
-  onModalClose,
   onProductListCreate,
 }: {
+  overlayControl: OverlayControl;
   folder: Folder;
   productList: Product[];
-  isModalOpen: boolean;
-  onModalClose: () => void;
   onProductListCreate: () => void;
 }) => {
   const [isFileUploaded, setIsFileUploaded] = useState(false);
@@ -91,21 +89,22 @@ const ExcelProductCreateModal = ({
         transformProductExcelListToSubmitForm(newProductList, folder.id)
       );
       onProductListCreate();
+      overlayControl.exit();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
+          onDialogClose={() => {
+            overlayControl.exit();
+          }}
           messageList={["제품 생성 실패"]}
         />
       ));
-    } finally {
-      onModalClose();
     }
   };
 
   return (
-    <Modal open={isModalOpen} onClose={onModalClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>엑셀 파일 추출로 제품 생성</h3>
         <FileUploader
@@ -129,11 +128,10 @@ const ExcelProductCreateModal = ({
               <Button
                 variant="text"
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlay.open((control) => (
                     <ExcelProductTableModal
+                      overlayControl={control}
                       productList={newProductList}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                     />
                   ));
                 }}
@@ -146,11 +144,10 @@ const ExcelProductCreateModal = ({
               <Button
                 variant="text"
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlay.open((control) => (
                     <ExcelProductTableModal
+                      overlayControl={control}
                       productList={existingProductList}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                     />
                   ));
                 }}
@@ -163,11 +160,10 @@ const ExcelProductCreateModal = ({
               <Button
                 variant="text"
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlay.open((control) => (
                     <ExcelProductTableModal
+                      overlayControl={control}
                       productList={errorProductList}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                     />
                   ));
                 }}
@@ -179,7 +175,7 @@ const ExcelProductCreateModal = ({
         )}
         <DialogActions>
           <Button onClick={handleProductListCreate}>제품 생성하기</Button>
-          <Button onClick={onModalClose}>취소</Button>
+          <Button onClick={overlayControl.exit}>취소</Button>
         </DialogActions>
       </StyledModalContainer>
     </Modal>
