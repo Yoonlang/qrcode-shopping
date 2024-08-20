@@ -74,7 +74,7 @@ const ProductBoard = ({
         ),
         PRODUCT_DEFAULT
       );
-      handleProductListUpdate();
+      await handleProductListUpdate();
     } catch {
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
@@ -94,7 +94,7 @@ const ProductBoard = ({
         ),
         PRODUCT_TRASH_CAN
       );
-      handleProductListUpdate();
+      await handleProductListUpdate();
     } catch {
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
@@ -109,7 +109,7 @@ const ProductBoard = ({
   const handleProductPermanentDelete = async () => {
     try {
       await deleteProductList(selectedProductList);
-      handleProductListUpdate();
+      await handleProductListUpdate();
     } catch {
       overlay.open(({ isOpen, close }) => (
         <MessageDialog
@@ -183,8 +183,8 @@ const ProductBoard = ({
           )}
           folder={folder}
           folderList={productFolderList}
-          onReassignComplete={() => {
-            handleProductListUpdate();
+          onReassignComplete={async () => {
+            await handleProductListUpdate();
           }}
         />
       ));
@@ -192,7 +192,7 @@ const ProductBoard = ({
   };
 
   useEffect(() => {
-    handleProductListUpdate();
+    void handleProductListUpdate();
   }, []);
 
   return (

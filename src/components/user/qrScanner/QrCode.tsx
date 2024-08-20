@@ -157,7 +157,7 @@ const QrCode = () => {
           }
         }}
         onUserMedia={() => {
-          navigator.mediaDevices
+          void navigator.mediaDevices
             .enumerateDevices()
             .then(handleDevicesWideAngle);
         }}

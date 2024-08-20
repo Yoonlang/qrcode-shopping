@@ -78,12 +78,12 @@ const ProductCreateModal = ({
   const colorRefs = useRef<HTMLInputElement[]>([]);
 
   const handleChangeFile = (file) => {
-    formik.setFieldValue("image", file);
+    void formik.setFieldValue("image", file);
   };
 
   const handleAddColor = () => {
     const newColors = [...formik.values.colors, ""];
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -98,7 +98,7 @@ const ProductCreateModal = ({
   ) => {
     const newColors = [...formik.values.colors];
     newColors.splice(index, 1);
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   useEffect(() => {
