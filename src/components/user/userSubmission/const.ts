@@ -1,5 +1,5 @@
 import { UserInfo } from "@/components/const";
-import { CountryType } from "@/components/user/userSubmission/countries";
+import { Country } from "@/components/user/userSubmission/countries";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 
 interface UserFormStep {
@@ -55,7 +55,7 @@ export interface FormatShippingAddressProps {
 }
 
 export interface FormatContactInfoProps {
-  countryCode: CountryType;
+  countryCode: Country;
   phoneNumber: string;
   email: string;
   weChatId: string;
