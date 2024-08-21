@@ -65,6 +65,7 @@ const ProductLists = styled.div`
 `;
 
 const StyledSwitch = () => {
+  // NOTE: formik이 아닌 recoil로 처리하도록 수정 필요
   const { values, setFieldValue } = useFormikContext<UserInfo>();
 
   return (

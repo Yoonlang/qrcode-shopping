@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { ListItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FormikContextType, useFormikContext } from "formik";
+import { FormikProps } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +14,7 @@ import {
   StyledTextField,
 } from "@/components/user/userSubmission/FormItems";
 
-const StyledDiv = styled.div`
+const StyledCountrySelectBox = styled.div`
   margin-top: 8px;
   margin-bottom: 4px;
 `;
@@ -53,15 +53,14 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const CountrySelect = ({ required = false }: { required?: boolean }) => {
+interface CountrySelectProps {
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
+
+const CountrySelect = ({ required = false, formik }: CountrySelectProps) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    setValues,
-    handleBlur,
-  }: FormikContextType<UserInfo> = useFormikContext();
+  const { values, errors, touched, setValues, handleBlur } = formik;
 
   const handleChangeCountry = (e: SyntheticEvent<Element>, option: Country) => {
     if (option) {
@@ -71,7 +70,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
 
   return (
     <>
-      <StyledDiv>
+      <StyledCountrySelectBox>
         <Autocomplete
           value={values.countryCode}
           options={countries.sort((a, b) => {
@@ -135,7 +134,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
           PaperComponent={(props) => <StyledPaper {...props} />}
           onChange={(e, option) => option && handleChangeCountry(e, option)}
         />
-      </StyledDiv>
+      </StyledCountrySelectBox>
       {errors.countryCode && touched.countryCode && (
         <StyledErrorMessage>
           {Icons["error"]}

@@ -38,16 +38,19 @@ const ShippingAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
         label={t("Postal Code")}
         name="spPostalCode"
         disable={values.isSameAddress}
+        formik={formik}
       />
       <UserInput
         label={t("Address")}
         name="spAddress"
         disable={values.isSameAddress}
+        formik={formik}
       />
       <UserInput
         label={t("Detail Address")}
         name="spDetailAddress"
         disable={values.isSameAddress}
+        formik={formik}
       />
     </>
   );

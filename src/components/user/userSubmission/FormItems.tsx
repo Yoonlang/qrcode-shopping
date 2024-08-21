@@ -8,7 +8,7 @@ import {
   Stepper,
   TextField,
 } from "@mui/material";
-import { FormikContextType, useFormikContext } from "formik";
+import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -177,10 +177,15 @@ const StyledIconButton = styled(IconButton)`
   padding: 0;
 `;
 
-const AddressCheckbox = ({ name }: { name: string }) => {
+const AddressCheckbox = ({
+  name,
+  formik,
+}: {
+  name: string;
+  formik: FormikProps<UserInfo>;
+}) => {
   const { t } = useTranslation();
-  const { values, handleBlur, handleChange }: FormikContextType<UserInfo> =
-    useFormikContext();
+  const { values, handleBlur, handleChange } = formik;
 
   return (
     <StyledFormControlLabel
@@ -196,27 +201,25 @@ const AddressCheckbox = ({ name }: { name: string }) => {
   );
 };
 
+interface UserInputProps {
+  label: string;
+  name: string;
+  type?: string;
+  disable?: boolean;
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
+
 const UserInput = ({
   label,
   name,
   type = "text",
   disable = false,
   required = false,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  disable?: boolean;
-  required?: boolean;
-}) => {
+  formik,
+}: UserInputProps) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleChange,
-  }: FormikContextType<UserInfo> = useFormikContext();
+  const { values, errors, touched, handleBlur, handleChange } = formik;
 
   return (
     <>
@@ -232,17 +235,6 @@ const UserInput = ({
         type={type}
         margin="dense"
         fullWidth
-        InputProps={
-          {
-            // endAdornment: (
-            //   <InputAdornment position="end">
-            //     {!errors[name] && touched[name] && (
-            //       <>{Icons["select"]}</>
-            //     )}
-            //   </InputAdornment>
-            // ),
-          }
-        }
         disabled={disable}
       />
       {errors[name] && touched[name] ? (
@@ -255,27 +247,23 @@ const UserInput = ({
   );
 };
 
+interface UserSelectProps {
+  label: string;
+  name: string;
+  items: string[];
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
+
 const UserSelect = ({
   label,
   name,
   items,
-
   required = false,
-}: {
-  label: string;
-  name: string;
-  items: string[];
-
-  required?: boolean;
-}) => {
+  formik,
+}: UserSelectProps) => {
   const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    handleBlur,
-    handleChange,
-  }: FormikContextType<UserInfo> = useFormikContext();
+  const { values, errors, touched, handleBlur, handleChange } = formik;
   const [v, setV] = useState("");
   useEffect(() => setV(values[name]), [values[name]]);
 
