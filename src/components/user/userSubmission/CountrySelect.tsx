@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { MenuItem, Paper } from "@mui/material";
+import { ListItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { FormikContextType, useFormikContext } from "formik";
 import { SyntheticEvent } from "react";
@@ -7,10 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
 import { UserInfo } from "@/components/const";
-import {
-  CountryType,
-  countries,
-} from "@/components/user/userSubmission/countries";
+import { Country, countries } from "@/components/user/userSubmission/countries";
 import {
   StyledErrorMessage,
   StyledIconButton,
@@ -66,10 +63,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
     handleBlur,
   }: FormikContextType<UserInfo> = useFormikContext();
 
-  const handleChangeCountry = (
-    e: SyntheticEvent<Element>,
-    option: CountryType
-  ) => {
+  const handleChangeCountry = (e: SyntheticEvent<Element>, option: Country) => {
     if (option) {
       void setValues({ ...values, countryCode: option });
     }
@@ -79,7 +73,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
     <>
       <StyledDiv>
         <Autocomplete
-          defaultValue={values.countryCode}
+          value={values.countryCode}
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
@@ -90,23 +84,30 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
               ? `${option.label} +${option.phone}`
               : ""
           }
-          renderOption={(props, option) => (
-            <MenuItem {...props} key={option.label}>
-              <div key={props.id}>
-                <img
-                  key={option.label}
-                  loading="lazy"
-                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                  alt={`${option.label}-flag`}
-                />
-                {option.label} +{option.phone}
-              </div>
-              {values.countryCode.phone === option.phone && (
-                <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
-              )}
-            </MenuItem>
-          )}
+          renderOption={(props, option) => {
+            if (option.code !== "") {
+              return (
+                <ListItem {...props} key={option.code}>
+                  <div>
+                    <img
+                      key={option.label}
+                      loading="lazy"
+                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                      alt={`${option.label}-flag`}
+                    />
+                    {option.label} +{option.phone}
+                  </div>
+                  {values.countryCode.phone === option.phone && (
+                    <StyledIconButton disabled>
+                      {Icons["select"]}
+                    </StyledIconButton>
+                  )}
+                </ListItem>
+              );
+            }
+          }}
+          isOptionEqualToValue={(option, value) => option.code === value.code}
           filterOptions={(options, { inputValue }) => {
             return options.filter(({ label, phone }) =>
               `${label} +${phone}`
