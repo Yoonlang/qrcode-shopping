@@ -2,7 +2,7 @@ import { FormikProps } from "formik";
 import { useTranslation } from "react-i18next";
 
 import { UserInfo } from "@/components/const";
-import { business } from "@/components/user/userSubmission/const";
+import { businessList } from "@/components/user/userSubmission/const";
 import CountrySelect from "@/components/user/userSubmission/CountrySelect";
 import {
   UserInput,
@@ -29,7 +29,7 @@ const UserBasicInfo = ({ formik }: { formik: FormikProps<UserInfo> }) => {
       <UserSelect
         label={t("Business Type")}
         name="businessType"
-        items={business}
+        items={businessList}
         required={true}
         formik={formik}
       />

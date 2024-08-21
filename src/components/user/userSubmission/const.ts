@@ -12,7 +12,9 @@ export const steps: UserFormStep[] = [
   { label: "Shipping Address" },
 ];
 
-export const business: string[] = [
+type Business = "Trading" | "Wholesaler" | "Converter" | "Brand" | "Student";
+
+export const businessList: Business[] = [
   "Trading",
   "Wholesaler",
   "Converter",
