@@ -106,8 +106,10 @@ const FolderActionModal = ({
                     overlay.open((control) => (
                       <Confirm
                         overlayControl={control}
+                        onClose={overlayControl.exit}
                         onConfirm={async () => {
                           await deletionFormik.submitForm();
+                          overlayControl.exit();
                         }}
                         content={
                           "폴더 삭제 시 내부 데이터는 휴지통으로 이동합니다. 삭제하시겠습니까?"
