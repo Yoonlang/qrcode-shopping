@@ -56,10 +56,9 @@ const ProductBoard = ({
       const productList = await getProductList();
       setProductList(productList);
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 가져오기 실패"]}
         />
       ));
@@ -76,10 +75,9 @@ const ProductBoard = ({
       );
       await handleProductListUpdate();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 복구 실패"]}
         />
       ));
@@ -96,10 +94,9 @@ const ProductBoard = ({
       );
       await handleProductListUpdate();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 삭제 실패"]}
         />
       ));
@@ -111,10 +108,9 @@ const ProductBoard = ({
       await deleteProductList(selectedProductList);
       await handleProductListUpdate();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 영구 삭제 실패"]}
         />
       ));
@@ -161,10 +157,9 @@ const ProductBoard = ({
         }
         downloadLink.click();
       } catch (e) {
-        overlay.open(({ isOpen, close }) => (
+        overlay.open((control) => (
           <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
+            overlayControl={control}
             messageList={[e?.message ?? "QR code 생성 실패"]}
           />
         ));
@@ -174,10 +169,9 @@ const ProductBoard = ({
 
   const handleProductFolderReassign = () => {
     if (selectedProductList.length > 0) {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <DataFolderReassignModal
-          isModalOpen={isOpen}
-          onModalClose={close}
+          overlayControl={control}
           selectedDataList={filteredProductList.filter((f) =>
             selectedProductList.find((productId) => f.productId === productId)
           )}
@@ -215,11 +209,10 @@ const ProductBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlay.open((control) => (
                     <ProductCreateModal
+                      overlayControl={control}
                       folder={folder}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                       onProductCreate={handleProductListUpdate}
                     />
                   ));
@@ -229,12 +222,11 @@ const ProductBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlay.open((control) => (
                     <ExcelProductCreateModal
+                      overlayControl={control}
                       folder={folder}
                       productList={productList}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                       onProductListCreate={handleProductListUpdate}
                     />
                   ));

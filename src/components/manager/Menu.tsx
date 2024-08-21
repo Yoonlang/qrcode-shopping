@@ -105,10 +105,9 @@ const NestedListItem = ({
                 <EditIcon
                   onClick={(e) => {
                     e.stopPropagation();
-                    overlay.open(({ isOpen, close }) => (
+                    overlay.open((control) => (
                       <FolderActionModal
-                        isModalOpen={isOpen}
-                        onClose={close}
+                        overlayControl={control}
                         folder={folder}
                         onFolderListUpdate={onFolderListUpdate}
                         onFolderDelete={onFolderDelete}
@@ -123,10 +122,9 @@ const NestedListItem = ({
         <ListItem>
           <ListItemButton
             onClick={() => {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <FolderCreationModal
-                  isModalOpen={isOpen}
-                  onClose={close}
+                  overlayControl={control}
                   type={folderList[0].type}
                   onFolderListUpdate={onFolderListUpdate}
                 />

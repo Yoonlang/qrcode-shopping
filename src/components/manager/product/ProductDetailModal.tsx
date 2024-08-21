@@ -7,7 +7,7 @@ import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { StyledModal } from "@/components/manager/DashboardItems";
 import { productDetailColumns } from "@/components/manager/product/const";
 import ProductEditModal from "@/components/manager/product/ProductEditModal";
-import { Product } from "@/const";
+import { OverlayControl, Product } from "@/const";
 
 const StyledDetailModalContainer = styled.div`
   position: relative;
@@ -59,12 +59,10 @@ const StyledDetailModalContainer = styled.div`
 `;
 
 const ProductDetailModal = ({
-  isModalOpen,
-  onModalClose,
+  overlayControl,
   modalProductData,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
+  overlayControl: OverlayControl;
   modalProductData: Product;
 }) => {
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
@@ -79,8 +77,8 @@ const ProductDetailModal = ({
 
   return (
     <StyledModal
-      open={isModalOpen}
-      onClose={onModalClose}
+      open={overlayControl.isOpen}
+      onClose={overlayControl.exit}
       data-testid={"product-detail-modal"}
     >
       <StyledDetailModalContainer>
@@ -118,20 +116,19 @@ const ProductDetailModal = ({
         <div className="buttonContainer">
           <Button
             onClick={() => {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <ProductEditModal
+                  overlayControl={control}
                   product={modalProductData}
-                  isModalOpen={isOpen}
-                  onModalClose={close}
                 />
               ));
-              onModalClose();
+              overlayControl.close();
             }}
             data-testid={"product-detail-open-edit-modal-button"}
           >
             수정
           </Button>
-          <Button onClick={onModalClose}>닫기</Button>
+          <Button onClick={overlayControl.exit}>닫기</Button>
         </div>
       </StyledDetailModalContainer>
     </StyledModal>

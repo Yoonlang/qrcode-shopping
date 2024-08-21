@@ -65,10 +65,9 @@ const ProductTable = ({
         onCellClick={(cell: GridCellParams<ProductTableRow>, e) => {
           if (cell.field !== "__check__") {
             e.stopPropagation();
-            overlay.open(({ isOpen, close }) => (
+            overlay.open((control) => (
               <ProductDetailModal
-                isModalOpen={isOpen}
-                onModalClose={close}
+                overlayControl={control}
                 modalProductData={cell.row.__product__}
               />
             ));

@@ -41,12 +41,8 @@ const UserTable = ({
     } catch (e) {
       old.__user__.remark1 = old.remark1;
       old.__user__.remark2 = old.remark2;
-      overlay.open(({ isOpen, close }) => (
-        <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
-          messageList={[e.message]}
-        />
+      overlay.open((control) => (
+        <MessageDialog overlayControl={control} messageList={[e.message]} />
       ));
       return old;
     }
@@ -76,10 +72,9 @@ const UserTable = ({
             cell.field !== "remark2"
           ) {
             e.stopPropagation();
-            overlay.open(({ isOpen, close }) => (
+            overlay.open((control) => (
               <UserDetailModal
-                isModalOpen={isOpen}
-                onModalClose={close}
+                overlayControl={control}
                 modalUserData={cell.row.__user__}
               />
             ));

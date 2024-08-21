@@ -84,10 +84,9 @@ const UserSubmissionPage = () => {
               goToPage("complete");
             }
           } catch (e) {
-            overlay.open(({ isOpen, close }) => (
+            overlay.open((control) => (
               <MessageDialog
-                isDialogOpen={isOpen}
-                onDialogClose={close}
+                overlayControl={control}
                 messageList={[t("Submission failed")]}
               />
             ));

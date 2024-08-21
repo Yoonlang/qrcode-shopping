@@ -65,10 +65,9 @@ const UserBoard = ({
       const userList = await getUserList();
       setUserList(userList);
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 가져오기 실패"]}
         />
       ));
@@ -85,10 +84,9 @@ const UserBoard = ({
       );
       await updateUserList();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 복구 실패"]}
         />
       ));
@@ -105,10 +103,9 @@ const UserBoard = ({
       );
       await updateUserList();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 삭제 실패"]}
         />
       ));
@@ -120,10 +117,9 @@ const UserBoard = ({
       await deleteUserList(selectedUserList);
       await updateUserList();
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["데이터 영구 삭제 실패"]}
         />
       ));
@@ -132,10 +128,9 @@ const UserBoard = ({
 
   const handleUserFolderReassign = () => {
     if (selectedUserList.length > 0) {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <DataFolderReassignModal
-          isModalOpen={isOpen}
-          onModalClose={close}
+          overlayControl={control}
           selectedDataList={filteredUserList.filter((f) =>
             selectedUserList.find((userId) => f.userId === userId)
           )}
@@ -238,10 +233,9 @@ const UserBoard = ({
       const productList = await getProductList();
       setProductList(productList);
     } catch {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
+          overlayControl={control}
           messageList={["제품 목록 받아오기 실패"]}
         />
       ));
@@ -261,8 +255,8 @@ const UserBoard = ({
           {folder.id === USER_DEFAULT && (
             <Button
               onClick={() => {
-                overlay.open(({ isOpen, close }) => (
-                  <UserTextActionModal isModalOpen={isOpen} onClose={close} />
+                overlay.open((control) => (
+                  <UserTextActionModal overlayControl={control} />
                 ));
               }}
             >
@@ -283,10 +277,9 @@ const UserBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlay.open((control) => (
                     <UserCopyModal
-                      isModalOpen={isOpen}
-                      onModalClose={close}
+                      overlayControl={control}
                       selectedUserList={filteredUserList.filter((f) =>
                         selectedUserList.find((userId) => f.userId === userId)
                       )}

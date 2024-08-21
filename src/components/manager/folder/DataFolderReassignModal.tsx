@@ -11,7 +11,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import MessageDialog from "@/components/common/MessageDialog";
-import { Folder, Product, User } from "@/const";
+import { Folder, OverlayControl, Product, User } from "@/const";
 import { reassignFolder } from "@/services/folders";
 
 const StyledModalContainer = styled.div`
@@ -29,15 +29,13 @@ const folderSelectionSchema = Yup.object({
 });
 
 const DataFolderReassignModal = ({
-  isModalOpen,
-  onModalClose,
+  overlayControl,
   selectedDataList,
   folder,
   folderList,
   onReassignComplete,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
+  overlayControl: OverlayControl;
   selectedDataList: User[] | Product[];
   folder: Folder;
   folderList: Folder[];
@@ -46,7 +44,7 @@ const DataFolderReassignModal = ({
   const overlay = useOverlay();
 
   return (
-    <Modal open={isModalOpen} onClose={onModalClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>{folder.type}</h3>
         <Formik
@@ -58,12 +56,11 @@ const DataFolderReassignModal = ({
             try {
               await reassignFolder(selectedDataList, values.folderId);
               onReassignComplete && (await onReassignComplete());
-              onModalClose();
+              overlayControl.exit();
             } catch {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <MessageDialog
-                  isDialogOpen={isOpen}
-                  onDialogClose={close}
+                  overlayControl={control}
                   messageList={["폴더 이동 실패"]}
                 />
               ));
@@ -100,7 +97,7 @@ const DataFolderReassignModal = ({
                 <Button type="submit" disabled={isSubmitting}>
                   확인
                 </Button>
-                <Button onClick={onModalClose}>닫기</Button>
+                <Button onClick={overlayControl.exit}>닫기</Button>
               </DialogActions>
             </Form>
           )}

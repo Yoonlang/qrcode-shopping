@@ -141,12 +141,8 @@ const UserIdCopyButton = () => {
         userIdCopyButtonRef.current.textContent = "复制好了";
       }
     } catch (e) {
-      overlay.open(({ isOpen, close }) => (
-        <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
-          messageList={["复制失败"]}
-        />
+      overlay.open((control) => (
+        <MessageDialog overlayControl={control} messageList={["复制失败"]} />
       ));
     }
   };
@@ -189,13 +185,11 @@ const WeChatFriendGuidePage = () => {
 
   useEffect(() => {
     const action = () => {
-      overlay.open(({ isOpen, close }) => (
+      overlay.open((control) => (
         <Confirm
-          isConfirmOpen={isOpen}
-          onClose={close}
+          overlayControl={control}
           onConfirm={() => {
             goToNextPage();
-            close();
           }}
           content="你完成微信好友添加了吗？"
           confirmText="是"

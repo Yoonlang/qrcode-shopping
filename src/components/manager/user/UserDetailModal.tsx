@@ -14,7 +14,7 @@ import {
   userMetadataColumns2,
 } from "@/components/manager/user/const";
 import { handleUserForOrder } from "@/components/manager/user/util";
-import { User } from "@/const";
+import { OverlayControl, User } from "@/const";
 
 const StyledModalContainer = styled.div`
   display: flex;
@@ -46,12 +46,10 @@ const StyledCopyButton = styled(Button)`
 `;
 
 const UserDetailModal = ({
-  isModalOpen,
-  onModalClose,
+  overlayControl,
   modalUserData,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
+  overlayControl: OverlayControl;
   modalUserData: User;
 }) => {
   const {
@@ -87,7 +85,7 @@ const UserDetailModal = ({
   };
 
   return (
-    <StyledModal open={isModalOpen} onClose={onModalClose}>
+    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h2>User Info</h2>
         <h4>Personal Info</h4>

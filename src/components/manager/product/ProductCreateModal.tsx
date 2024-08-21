@@ -17,17 +17,15 @@ import {
   productCreationInitialValues,
   productCreationSchema,
 } from "@/components/manager/product/const";
-import { Folder } from "@/const";
+import { Folder, OverlayControl } from "@/const";
 
 const ProductCreateModal = ({
+  overlayControl,
   folder,
-  isModalOpen,
-  onModalClose,
   onProductCreate,
 }: {
+  overlayControl: OverlayControl;
   folder: Folder;
-  isModalOpen: boolean;
-  onModalClose: () => void;
   onProductCreate: () => void;
 }) => {
   const overlay = useOverlay();
@@ -63,12 +61,8 @@ const ProductCreateModal = ({
         resetForm();
         onProductCreate();
       } catch (e) {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={[e.message]}
-          />
+        overlay.open((control) => (
+          <MessageDialog overlayControl={control} messageList={[e.message]} />
         ));
       }
     },
@@ -112,7 +106,7 @@ const ProductCreateModal = ({
   }, [colors.length]);
 
   return (
-    <StyledModal open={isModalOpen} onClose={onModalClose}>
+    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <ProductAddModal>
         <h2>Add</h2>
         <ProductInput label="Product ID" name="productId" formik={formik} />
@@ -161,7 +155,7 @@ const ProductCreateModal = ({
           >
             Confirm
           </Button>
-          <Button onClick={onModalClose}>Cancel</Button>
+          <Button onClick={overlayControl.exit}>Cancel</Button>
         </StyledFlexDiv>
       </ProductAddModal>
     </StyledModal>
