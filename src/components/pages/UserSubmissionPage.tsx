@@ -1,4 +1,3 @@
-import { useOverlay } from "@toss/use-overlay";
 import { Formik } from "formik";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +15,7 @@ import { formatSubmitUserBody } from "@/components/user/userSubmission/utils";
 import { userInfoValidationSchema } from "@/components/user/userSubmission/validation";
 import { Language } from "@/const";
 import dayjs from "@/dayjsConfig";
+import { useOverlay } from "@/hooks/useOverlay";
 import useLocalStorageState from "@/hooks/user/useLocalStorageState";
 import usePageRouter from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";

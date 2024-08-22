@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { CircularProgress } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
@@ -10,6 +9,7 @@ import MessageDialog from "@/components/common/MessageDialog";
 import { snackBarStatusMessage } from "@/components/const";
 import QrCode from "@/components/user/qrScanner/QrCode";
 import RetryButton from "@/components/user/RetryButton";
+import { useOverlay } from "@/hooks/useOverlay";
 import usePageRouter from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
 import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";

@@ -6,12 +6,12 @@ import {
   FormControlLabel,
   Modal,
 } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import MessageDialog from "@/components/common/MessageDialog";
 import { Folder, OverlayControl, Product, User } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 import { reassignFolder } from "@/services/folders";
 
 const StyledModalContainer = styled.div`

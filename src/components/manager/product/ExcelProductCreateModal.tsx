@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Button, DialogActions, Modal } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import * as XLSX from "xlsx";
@@ -14,6 +13,7 @@ import {
 import ExcelProductTableModal from "@/components/manager/product/ExcelProductTableModal";
 import { handleExcelFileProductList } from "@/components/manager/product/util";
 import { Folder, OverlayControl, Product } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -65,7 +65,7 @@ const ExcelProductCreateModal = ({
   });
   const { newProductList, existingProductList, errorProductList } =
     handledProductList;
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(4);
 
   const handleExcelFileUpload = (file: File) => {
     setIsFileUploaded(true);
@@ -91,7 +91,7 @@ const ExcelProductCreateModal = ({
       onProductListCreate();
       overlayControl.exit();
     } catch {
-      overlay.open((control) => (
+      overlays[0].open((control) => (
         <MessageDialog
           overlayControl={control}
           onDialogClose={() => {
@@ -128,7 +128,7 @@ const ExcelProductCreateModal = ({
               <Button
                 variant="text"
                 onClick={() => {
-                  overlay.open((control) => (
+                  overlays[1].open((control) => (
                     <ExcelProductTableModal
                       overlayControl={control}
                       productList={newProductList}
@@ -144,7 +144,7 @@ const ExcelProductCreateModal = ({
               <Button
                 variant="text"
                 onClick={() => {
-                  overlay.open((control) => (
+                  overlays[2].open((control) => (
                     <ExcelProductTableModal
                       overlayControl={control}
                       productList={existingProductList}
@@ -160,7 +160,7 @@ const ExcelProductCreateModal = ({
               <Button
                 variant="text"
                 onClick={() => {
-                  overlay.open((control) => (
+                  overlays[3].open((control) => (
                     <ExcelProductTableModal
                       overlayControl={control}
                       productList={errorProductList}

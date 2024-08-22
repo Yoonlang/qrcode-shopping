@@ -1,5 +1,4 @@
 import { Button, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
@@ -18,6 +17,7 @@ import {
   productCreationSchema,
 } from "@/components/manager/product/const";
 import { Folder, OverlayControl } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const ProductCreateModal = ({
   overlayControl,

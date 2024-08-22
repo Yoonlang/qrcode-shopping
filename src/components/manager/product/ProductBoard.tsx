@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import JSZip from "jszip";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ import ExcelProductCreateModal from "@/components/manager/product/ExcelProductCr
 import ProductCreateModal from "@/components/manager/product/ProductCreateModal";
 import ProductTable from "@/components/manager/product/ProductTable";
 import { Folder, Product } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 import { reassignFolder } from "@/services/folders";
 import { deleteProductList } from "@/services/products";
 
@@ -49,14 +49,14 @@ const ProductBoard = ({
     return p.metadata.folderId === folder.id;
   });
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(8);
 
   const handleProductListUpdate = async () => {
     try {
       const productList = await getProductList();
       setProductList(productList);
     } catch {
-      overlay.open((control) => (
+      overlays[0].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 가져오기 실패"]}
@@ -75,7 +75,7 @@ const ProductBoard = ({
       );
       await handleProductListUpdate();
     } catch {
-      overlay.open((control) => (
+      overlays[1].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 복구 실패"]}
@@ -94,7 +94,7 @@ const ProductBoard = ({
       );
       await handleProductListUpdate();
     } catch {
-      overlay.open((control) => (
+      overlays[2].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 삭제 실패"]}
@@ -108,7 +108,7 @@ const ProductBoard = ({
       await deleteProductList(selectedProductList);
       await handleProductListUpdate();
     } catch {
-      overlay.open((control) => (
+      overlays[3].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 영구 삭제 실패"]}
@@ -157,7 +157,7 @@ const ProductBoard = ({
         }
         downloadLink.click();
       } catch (e) {
-        overlay.open((control) => (
+        overlays[4].open((control) => (
           <MessageDialog
             overlayControl={control}
             messageList={[e?.message ?? "QR code 생성 실패"]}
@@ -169,7 +169,7 @@ const ProductBoard = ({
 
   const handleProductFolderReassign = () => {
     if (selectedProductList.length > 0) {
-      overlay.open((control) => (
+      overlays[5].open((control) => (
         <DataFolderReassignModal
           overlayControl={control}
           selectedDataList={filteredProductList.filter((f) =>
@@ -209,7 +209,7 @@ const ProductBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open((control) => (
+                  overlays[6].open((control) => (
                     <ProductCreateModal
                       overlayControl={control}
                       folder={folder}
@@ -222,7 +222,7 @@ const ProductBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open((control) => (
+                  overlays[7].open((control) => (
                     <ExcelProductCreateModal
                       overlayControl={control}
                       folder={folder}
@@ -244,6 +244,7 @@ const ProductBoard = ({
         folderList={productFolderList}
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
+        updateProductList={handleProductListUpdate}
       />
     </StyledProductBoard>
   );

@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Button, DialogActions, Modal, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -8,6 +7,7 @@ import { deleteFolder, patchFolder } from "@/api/folders";
 import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
 import { Folder, OverlayControl } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -34,7 +34,7 @@ const FolderActionModal = ({
   onFolderListUpdate: () => void;
   onFolderDelete: () => void;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(3);
   const { name, type, id } = folder;
 
   const deletionFormik = useFormik({
@@ -45,8 +45,9 @@ const FolderActionModal = ({
         await deleteFolder(undefined, id);
         onFolderListUpdate();
         onFolderDelete();
+        overlayControl.exit();
       } catch {
-        overlay.open((control) => (
+        overlays[0].open((control) => (
           <MessageDialog
             overlayControl={control}
             messageList={["폴더 삭제 실패"]}
@@ -71,7 +72,7 @@ const FolderActionModal = ({
               onFolderListUpdate();
               overlayControl.exit();
             } catch {
-              overlay.open((control) => (
+              overlays[1].open((control) => (
                 <MessageDialog
                   overlayControl={control}
                   messageList={["폴더 수정 실패"]}
@@ -102,14 +103,11 @@ const FolderActionModal = ({
                 <Button
                   disabled={isSubmitting || deletionFormik.isSubmitting}
                   onClick={() => {
-                    overlayControl.close();
-                    overlay.open((control) => (
+                    overlays[2].open((control) => (
                       <Confirm
                         overlayControl={control}
-                        onClose={overlayControl.exit}
                         onConfirm={async () => {
                           await deletionFormik.submitForm();
-                          overlayControl.exit();
                         }}
                         content={
                           "폴더 삭제 시 내부 데이터는 휴지통으로 이동합니다. 삭제하시겠습니까?"

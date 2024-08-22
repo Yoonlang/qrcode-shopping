@@ -11,7 +11,6 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useState } from "react";
 
 import Icons from "@/components/common/Icons";
@@ -20,6 +19,7 @@ import FolderActionModal from "@/components/manager/folder/FolderActionModal";
 import FolderCreationModal from "@/components/manager/folder/FolderCreationModal";
 import { sortFolderListByType } from "@/components/manager/util";
 import { Folder } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 interface StyledListItemTextProp {
   selected: boolean;
@@ -56,7 +56,7 @@ const NestedListItem = ({
   onMenuChange: (folder: Folder) => void;
   onFolderDelete: () => void;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(2);
   const [isNestedListOpen, setIsNestedListOpen] = useState<boolean>(true);
 
   const handleNestedList = () => {
@@ -105,7 +105,7 @@ const NestedListItem = ({
                 <EditIcon
                   onClick={(e) => {
                     e.stopPropagation();
-                    overlay.open((control) => (
+                    overlays[0].open((control) => (
                       <FolderActionModal
                         overlayControl={control}
                         folder={folder}
@@ -122,7 +122,7 @@ const NestedListItem = ({
         <ListItem>
           <ListItemButton
             onClick={() => {
-              overlay.open((control) => (
+              overlays[1].open((control) => (
                 <FolderCreationModal
                   overlayControl={control}
                   type={folderList[0].type}

@@ -1,5 +1,4 @@
 import { Button, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
@@ -17,17 +16,19 @@ import {
   productEditionInitialValues,
   productEditionSchema,
 } from "@/components/manager/product/const";
-import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
 import { OverlayControl, Product } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const ProductEditModal = ({
   overlayControl,
   product,
+  onProductUpdate,
 }: {
   overlayControl: OverlayControl;
   product: Product;
+  onProductUpdate: (updatedProduct: Product) => void | Promise<void>;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(2);
   const formik = useFormik({
     initialValues: productEditionInitialValues,
     validateOnMount: true,
@@ -59,12 +60,10 @@ const ProductEditModal = ({
 
       try {
         const res = await putProduct(formData, product.productId);
-        overlay.open((control) => (
-          <ProductDetailModal overlayControl={control} modalProductData={res} />
-        ));
-        overlayControl.close();
+        await onProductUpdate(res);
+        overlayControl.exit();
       } catch (e) {
-        overlay.open((control) => (
+        overlays[1].open((control) => (
           <MessageDialog overlayControl={control} messageList={[e.message]} />
         ));
       }
@@ -187,19 +186,7 @@ const ProductEditModal = ({
           >
             Confirm
           </Button>
-          <Button
-            onClick={() => {
-              overlay.open((control) => (
-                <ProductDetailModal
-                  overlayControl={control}
-                  modalProductData={product}
-                />
-              ));
-              overlayControl.close();
-            }}
-          >
-            Cancel
-          </Button>
+          <Button onClick={overlayControl.exit}>Cancel</Button>
         </StyledFlexDiv>
       </ProductAddModal>
     </StyledModal>
