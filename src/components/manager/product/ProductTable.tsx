@@ -38,11 +38,13 @@ const ProductTable = ({
   folderList,
   productList,
   setSelectedProductList,
+  updateProductList,
 }: {
   folder: Folder;
   folderList: Folder[];
   productList: Product[];
   setSelectedProductList: Dispatch<SetStateAction<string[]>>;
+  updateProductList: () => Promise<void>;
 }) => {
   const tableRows = handleProductListForTable(productList, folderList);
   const overlay = useOverlay();
@@ -68,7 +70,8 @@ const ProductTable = ({
             overlay.open((control) => (
               <ProductDetailModal
                 overlayControl={control}
-                modalProductData={cell.row.__product__}
+                product={cell.row.__product__}
+                updateProductList={updateProductList}
               />
             ));
           }

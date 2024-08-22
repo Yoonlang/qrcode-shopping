@@ -25,6 +25,7 @@ describe("ProductTable", () => {
           folderList={folderList}
           productList={productList}
           setSelectedProductList={mockSetSelectedProductList}
+          updateProductList={jest.fn()}
         />
       </OverlayProvider>
     );
@@ -47,6 +48,7 @@ describe("ProductTable", () => {
           folderList={folderList}
           productList={productList}
           setSelectedProductList={mockSetSelectedProductList}
+          updateProductList={jest.fn()}
         />
       </OverlayProvider>
     );

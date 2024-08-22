@@ -244,6 +244,7 @@ const ProductBoard = ({
         folderList={productFolderList}
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
+        updateProductList={handleProductListUpdate}
       />
     </StyledProductBoard>
   );
