@@ -58,7 +58,9 @@ export function useMultipleOverlay(
           id,
           <OverlayController
             key={Date.now()}
-            ref={overlayRefs[index]}
+            ref={(ref) => {
+              overlayRefs.current[index] = ref;
+            }}
             overlayElement={overlayElement}
             onExit={() => {
               unmount(id);
