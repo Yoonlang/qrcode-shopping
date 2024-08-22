@@ -12,7 +12,7 @@ let elementId = 1;
 
 export function useMultipleOverlay(
   count: number,
-  nonExitOnUnmountList: number[]
+  nonExitOnUnmountList?: number[]
 ) {
   const context = useContext(OverlayContext);
 
@@ -44,7 +44,7 @@ export function useMultipleOverlay(
   useEffect(() => {
     return () => {
       ids.forEach((id, index) => {
-        if (!nonExitOnUnmountList.includes(index)) {
+        if (!nonExitOnUnmountList || !nonExitOnUnmountList.includes(index)) {
           unmount(id);
         }
       });
