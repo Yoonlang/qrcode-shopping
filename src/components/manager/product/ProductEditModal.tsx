@@ -18,7 +18,7 @@ import {
 } from "@/components/manager/product/const";
 import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
 import { OverlayControl, Product } from "@/const";
-import { useOverlay } from "@/hooks/useOverlay";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const ProductEditModal = ({
   overlayControl,
@@ -27,7 +27,7 @@ const ProductEditModal = ({
   overlayControl: OverlayControl;
   product: Product;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(3);
   const formik = useFormik({
     initialValues: productEditionInitialValues,
     validateOnMount: true,
@@ -59,12 +59,12 @@ const ProductEditModal = ({
 
       try {
         const res = await putProduct(formData, product.productId);
-        overlay.open((control) => (
+        overlays[0].open((control) => (
           <ProductDetailModal overlayControl={control} modalProductData={res} />
         ));
         overlayControl.close();
       } catch (e) {
-        overlay.open((control) => (
+        overlays[1].open((control) => (
           <MessageDialog overlayControl={control} messageList={[e.message]} />
         ));
       }
@@ -189,7 +189,7 @@ const ProductEditModal = ({
           </Button>
           <Button
             onClick={() => {
-              overlay.open((control) => (
+              overlays[2].open((control) => (
                 <ProductDetailModal
                   overlayControl={control}
                   modalProductData={product}

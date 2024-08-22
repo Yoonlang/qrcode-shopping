@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { getText, putText } from "@/api/text";
 import MessageDialog from "@/components/common/MessageDialog";
 import { OverlayControl } from "@/const";
-import { useOverlay } from "@/hooks/useOverlay";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -39,14 +39,14 @@ const UserTextActionModal = ({
   overlayControl: OverlayControl;
 }) => {
   const [initialText, setInitialText] = useState("");
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(3);
 
   const handleTextUpdate = async () => {
     try {
       const { text } = await getText();
       setInitialText(text);
     } catch {
-      overlay.open((control) => (
+      overlays[0].open((control) => (
         <MessageDialog
           overlayControl={control}
           onDialogClose={() => {
@@ -82,7 +82,7 @@ const UserTextActionModal = ({
           onSubmit={async (values, { setSubmitting }) => {
             try {
               await putText(JSON.stringify(values));
-              overlay.open((control) => (
+              overlays[1].open((control) => (
                 <MessageDialog
                   overlayControl={control}
                   onDialogClose={() => {
@@ -92,7 +92,7 @@ const UserTextActionModal = ({
                 />
               ));
             } catch {
-              overlay.open((control) => (
+              overlays[2].open((control) => (
                 <MessageDialog
                   overlayControl={control}
                   messageList={["설정 텍스트 변경 실패"]}

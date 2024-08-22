@@ -20,7 +20,7 @@ import {
   CountryType,
 } from "@/components/user/userSubmission/countries";
 import { Folder, Product, User } from "@/const";
-import { useOverlay } from "@/hooks/useOverlay";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 import { reassignFolder } from "@/services/folders";
@@ -57,7 +57,7 @@ const UserBoard = ({
     return u.metadata.folderId === folder.id;
   });
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(8);
   const [productList, setProductList] = useState<Product[]>([]);
 
   const updateUserList = async () => {
@@ -65,7 +65,7 @@ const UserBoard = ({
       const userList = await getUserList();
       setUserList(userList);
     } catch {
-      overlay.open((control) => (
+      overlays[0].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 가져오기 실패"]}
@@ -84,7 +84,7 @@ const UserBoard = ({
       );
       await updateUserList();
     } catch {
-      overlay.open((control) => (
+      overlays[1].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 복구 실패"]}
@@ -103,7 +103,7 @@ const UserBoard = ({
       );
       await updateUserList();
     } catch {
-      overlay.open((control) => (
+      overlays[2].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 삭제 실패"]}
@@ -117,7 +117,7 @@ const UserBoard = ({
       await deleteUserList(selectedUserList);
       await updateUserList();
     } catch {
-      overlay.open((control) => (
+      overlays[3].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["데이터 영구 삭제 실패"]}
@@ -128,7 +128,7 @@ const UserBoard = ({
 
   const handleUserFolderReassign = () => {
     if (selectedUserList.length > 0) {
-      overlay.open((control) => (
+      overlays[4].open((control) => (
         <DataFolderReassignModal
           overlayControl={control}
           selectedDataList={filteredUserList.filter((f) =>
@@ -233,7 +233,7 @@ const UserBoard = ({
       const productList = await getProductList();
       setProductList(productList);
     } catch {
-      overlay.open((control) => (
+      overlays[5].open((control) => (
         <MessageDialog
           overlayControl={control}
           messageList={["제품 목록 받아오기 실패"]}
@@ -255,7 +255,7 @@ const UserBoard = ({
           {folder.id === USER_DEFAULT && (
             <Button
               onClick={() => {
-                overlay.open((control) => (
+                overlays[6].open((control) => (
                   <UserTextActionModal overlayControl={control} />
                 ));
               }}
@@ -277,7 +277,7 @@ const UserBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open((control) => (
+                  overlays[7].open((control) => (
                     <UserCopyModal
                       overlayControl={control}
                       selectedUserList={filteredUserList.filter((f) =>

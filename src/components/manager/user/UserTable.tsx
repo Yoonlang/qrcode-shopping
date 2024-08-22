@@ -12,7 +12,7 @@ import {
 import UserDetailModal from "@/components/manager/user/UserDetailModal";
 import { handleUserListForTable } from "@/components/manager/user/util";
 import { Folder, User } from "@/const";
-import { useOverlay } from "@/hooks/useOverlay";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 import { transformUserForUpdate } from "@/services/util";
 
 const UserTable = ({
@@ -27,7 +27,7 @@ const UserTable = ({
   setSelectedUserList: Dispatch<SetStateAction<string[]>>;
 }) => {
   const tableRows = handleUserListForTable(userList, folderList);
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(2);
 
   const handleRemarkUpdate = async (
     row: UserTableRow,
@@ -41,7 +41,7 @@ const UserTable = ({
     } catch (e) {
       old.__user__.remark1 = old.remark1;
       old.__user__.remark2 = old.remark2;
-      overlay.open((control) => (
+      overlays[0].open((control) => (
         <MessageDialog overlayControl={control} messageList={[e.message]} />
       ));
       return old;
@@ -72,7 +72,7 @@ const UserTable = ({
             cell.field !== "remark2"
           ) {
             e.stopPropagation();
-            overlay.open((control) => (
+            overlays[1].open((control) => (
               <UserDetailModal
                 overlayControl={control}
                 modalUserData={cell.row.__user__}

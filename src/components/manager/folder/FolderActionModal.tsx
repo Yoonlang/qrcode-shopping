@@ -7,7 +7,7 @@ import { deleteFolder, patchFolder } from "@/api/folders";
 import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
 import { Folder, OverlayControl } from "@/const";
-import { useOverlay } from "@/hooks/useOverlay";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -34,7 +34,7 @@ const FolderActionModal = ({
   onFolderListUpdate: () => void;
   onFolderDelete: () => void;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(3);
   const { name, type, id } = folder;
 
   const deletionFormik = useFormik({
@@ -47,7 +47,7 @@ const FolderActionModal = ({
         onFolderDelete();
         overlayControl.exit();
       } catch {
-        overlay.open((control) => (
+        overlays[0].open((control) => (
           <MessageDialog
             overlayControl={control}
             messageList={["폴더 삭제 실패"]}
@@ -72,7 +72,7 @@ const FolderActionModal = ({
               onFolderListUpdate();
               overlayControl.exit();
             } catch {
-              overlay.open((control) => (
+              overlays[1].open((control) => (
                 <MessageDialog
                   overlayControl={control}
                   messageList={["폴더 수정 실패"]}
@@ -103,7 +103,7 @@ const FolderActionModal = ({
                 <Button
                   disabled={isSubmitting || deletionFormik.isSubmitting}
                   onClick={() => {
-                    overlay.open((control) => (
+                    overlays[2].open((control) => (
                       <Confirm
                         overlayControl={control}
                         onConfirm={async () => {
