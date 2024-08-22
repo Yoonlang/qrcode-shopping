@@ -21,7 +21,8 @@ describe("ProductDetailModal", () => {
       <OverlayProvider>
         <ProductDetailModal
           overlayControl={control}
-          modalProductData={modalProductData}
+          product={modalProductData}
+          updateProductList={jest.fn()}
         />
       </OverlayProvider>
     );
@@ -46,7 +47,8 @@ describe("ProductDetailModal", () => {
       <OverlayProvider>
         <ProductDetailModal
           overlayControl={control}
-          modalProductData={modalProductData}
+          product={modalProductData}
+          updateProductList={jest.fn()}
         />
       </OverlayProvider>
     );

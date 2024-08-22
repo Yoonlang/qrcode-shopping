@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useState } from "react";
 
 import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { StyledModal } from "@/components/manager/DashboardItems";
@@ -60,13 +61,16 @@ const StyledDetailModalContainer = styled.div`
 
 const ProductDetailModal = ({
   overlayControl,
-  modalProductData,
+  product,
+  updateProductList,
 }: {
   overlayControl: OverlayControl;
-  modalProductData: Product;
+  product: Product;
+  updateProductList: () => Promise<void>;
 }) => {
+  const [editedProduct, setEditedProduct] = useState<Product | null>(null);
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
-    modalProductData;
+    editedProduct ? editedProduct : product;
   const overlay = useOverlay();
 
   const rows = colors.map(({ colorName, colorId }) => {
@@ -119,10 +123,13 @@ const ProductDetailModal = ({
               overlay.open((control) => (
                 <ProductEditModal
                   overlayControl={control}
-                  product={modalProductData}
+                  product={product}
+                  onProductUpdate={(p) => {
+                    setEditedProduct(p);
+                    void updateProductList();
+                  }}
                 />
               ));
-              overlayControl.close();
             }}
             data-testid={"product-detail-open-edit-modal-button"}
           >
