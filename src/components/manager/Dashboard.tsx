@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useOverlay } from "@toss/use-overlay";
 import { useEffect, useState } from "react";
 
 import { getFolderList } from "@/api/folders";
@@ -12,6 +11,7 @@ import ProductBoard from "@/components/manager/product/ProductBoard";
 import UserBoard from "@/components/manager/user/UserBoard";
 import { sortFolderListByType } from "@/components/manager/util";
 import { Folder } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledBoardContainer = styled.div`
   display: flex;

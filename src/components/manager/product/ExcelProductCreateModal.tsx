@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Button, DialogActions, Modal } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import * as XLSX from "xlsx";
@@ -14,6 +13,7 @@ import {
 import ExcelProductTableModal from "@/components/manager/product/ExcelProductTableModal";
 import { handleExcelFileProductList } from "@/components/manager/product/util";
 import { Folder, OverlayControl, Product } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;

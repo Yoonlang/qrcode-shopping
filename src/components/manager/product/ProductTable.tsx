@@ -1,5 +1,4 @@
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { useOverlay } from "@toss/use-overlay";
 import { Dispatch, SetStateAction } from "react";
 
 import { PRODUCT_DEFAULT } from "@/components/manager/const";
@@ -7,6 +6,7 @@ import { ProductTableRow } from "@/components/manager/product/const";
 import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
 import { handleProductListForTable } from "@/components/manager/product/util";
 import { Folder, Product } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "제품 ID", width: 150 },

@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { Button, DialogActions, Modal, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import { postFolder } from "@/api/folders";
 import MessageDialog from "@/components/common/MessageDialog";
 import { OverlayControl } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;

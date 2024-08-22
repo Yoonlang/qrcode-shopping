@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { OverlayProvider } from "@toss/use-overlay";
 
 import { mockProductList } from "@/components/manager/product/const";
 import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
+import { OverlayProvider } from "@/hooks/useOverlay";
 
 describe("ProductDetailModal", () => {
   it("초기 렌더링 확인", async () => {

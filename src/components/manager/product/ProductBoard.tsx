@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import JSZip from "jszip";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ import ExcelProductCreateModal from "@/components/manager/product/ExcelProductCr
 import ProductCreateModal from "@/components/manager/product/ProductCreateModal";
 import ProductTable from "@/components/manager/product/ProductTable";
 import { Folder, Product } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 import { reassignFolder } from "@/services/folders";
 import { deleteProductList } from "@/services/products";
 

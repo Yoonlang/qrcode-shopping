@@ -1,12 +1,12 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { OverlayProvider } from "@toss/use-overlay";
 
 import {
   mockProductFolderList,
   mockProductList,
 } from "@/components/manager/product/const";
 import ProductTable from "@/components/manager/product/ProductTable";
+import { OverlayProvider } from "@/hooks/useOverlay";
 
 const mockSetSelectedProductList = jest.fn();
 

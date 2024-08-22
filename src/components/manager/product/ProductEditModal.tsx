@@ -1,5 +1,4 @@
 import { Button, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
@@ -19,6 +18,7 @@ import {
 } from "@/components/manager/product/const";
 import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
 import { OverlayControl, Product } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const ProductEditModal = ({
   overlayControl,

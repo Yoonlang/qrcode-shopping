@@ -1,5 +1,4 @@
 import { Button, DialogActions, Modal, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
@@ -8,6 +7,7 @@ import * as Yup from "yup";
 import { getText, putText } from "@/api/text";
 import MessageDialog from "@/components/common/MessageDialog";
 import { OverlayControl } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;

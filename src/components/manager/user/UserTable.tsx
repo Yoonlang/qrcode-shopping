@@ -1,5 +1,4 @@
 import { DataGrid, GridCellParams } from "@mui/x-data-grid";
-import { useOverlay } from "@toss/use-overlay";
 import { Dispatch, SetStateAction } from "react";
 
 import { putUser } from "@/api/users";
@@ -13,6 +12,7 @@ import {
 import UserDetailModal from "@/components/manager/user/UserDetailModal";
 import { handleUserListForTable } from "@/components/manager/user/util";
 import { Folder, User } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 import { transformUserForUpdate } from "@/services/util";
 
 const UserTable = ({

@@ -11,7 +11,6 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useState } from "react";
 
 import Icons from "@/components/common/Icons";
@@ -20,6 +19,7 @@ import FolderActionModal from "@/components/manager/folder/FolderActionModal";
 import FolderCreationModal from "@/components/manager/folder/FolderCreationModal";
 import { sortFolderListByType } from "@/components/manager/util";
 import { Folder } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 interface StyledListItemTextProp {
   selected: boolean;

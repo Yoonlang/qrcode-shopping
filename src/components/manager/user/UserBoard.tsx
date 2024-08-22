@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { pdf } from "@react-pdf/renderer";
-import { useOverlay } from "@toss/use-overlay";
 import JSZip from "jszip";
 import { useEffect, useState } from "react";
 
@@ -21,6 +20,7 @@ import {
   CountryType,
 } from "@/components/user/userSubmission/countries";
 import { Folder, Product, User } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 import { reassignFolder } from "@/services/folders";

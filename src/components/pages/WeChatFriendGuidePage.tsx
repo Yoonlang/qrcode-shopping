@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import Image from "next/image";
 import { ReactNode, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 
 import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
+import { useOverlay } from "@/hooks/useOverlay";
 import usePageRouter from "@/hooks/user/usePageRouter";
 import { userIdState } from "@/recoil/user/atoms/userIdState";
 

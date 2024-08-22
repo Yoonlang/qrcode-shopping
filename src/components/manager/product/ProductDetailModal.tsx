@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useOverlay } from "@toss/use-overlay";
 
 import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { StyledModal } from "@/components/manager/DashboardItems";
 import { productDetailColumns } from "@/components/manager/product/const";
 import ProductEditModal from "@/components/manager/product/ProductEditModal";
 import { OverlayControl, Product } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledDetailModalContainer = styled.div`
   position: relative;
