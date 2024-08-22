@@ -13,7 +13,7 @@ export const OverlayContext = createContext<{
   unmount(id: string): void;
 } | null>(null);
 
-export function OverlayProvider({ children }: PropsWithChildren) {
+export const OverlayProvider = ({ children }: PropsWithChildren) => {
   const [overlayById, setOverlayById] = useState<Map<string, ReactNode>>(
     new Map()
   );
@@ -44,4 +44,4 @@ export function OverlayProvider({ children }: PropsWithChildren) {
       ))}
     </OverlayContext.Provider>
   );
-}
+};

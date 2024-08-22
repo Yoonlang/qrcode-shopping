@@ -14,7 +14,7 @@ interface Options {
   exitOnUnmount?: boolean;
 }
 
-export function useOverlay({ exitOnUnmount = true }: Options = {}) {
+export const useOverlay = ({ exitOnUnmount = true }: Options = {}) => {
   const context = useContext(OverlayContext);
 
   if (context == null) {
@@ -60,4 +60,4 @@ export function useOverlay({ exitOnUnmount = true }: Options = {}) {
     }),
     [id, mount, unmount]
   );
-}
+};

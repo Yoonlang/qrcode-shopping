@@ -10,10 +10,10 @@ import { CreateOverlayElement } from "@/hooks/useOverlay/types";
 
 let elementId = 1;
 
-export function useMultipleOverlay(
+export const useMultipleOverlay = (
   count: number,
   nonExitOnUnmountList?: number[]
-) {
+) => {
   const context = useContext(OverlayContext);
 
   if (context == null) {
@@ -78,4 +78,4 @@ export function useMultipleOverlay(
 
     return overlays;
   }, [ids, mount, unmount]);
-}
+};
