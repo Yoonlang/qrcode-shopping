@@ -1,4 +1,4 @@
-import { CountryType } from "@/components/user/userSubmission/countries";
+import { Country } from "@/components/user/userSubmission/countries";
 
 export const META = {
   title: "YOUNGWON X MAEIL",
@@ -17,7 +17,7 @@ export interface UserInfo {
   companyName: string;
   businessType: string;
   email: string;
-  countryCode: CountryType;
+  countryCode: Country;
   weChatId: string;
   phoneNumber: string;
   coPostalCode: string;

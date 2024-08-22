@@ -1,21 +1,30 @@
-import { UserInfo } from "@/components/const";
+import {
+  FormatContactInfoProps,
+  FormatShippingAddressProps,
+  FormatSubmitUserBodyProps,
+} from "@/components/user/userSubmission/const";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
 
-const formatShippingAddress = (
+const formatShippingAddress = ({
   isSameAddress,
   coPostalCode,
   coAddress,
   coDetailAddress,
   spPostalCode,
   spAddress,
-  spDetailAddress
-) => ({
+  spDetailAddress,
+}: FormatShippingAddressProps) => ({
   postalCode: isSameAddress ? coPostalCode : spPostalCode,
   address: isSameAddress ? coAddress : spAddress,
   detailAddress: isSameAddress ? coDetailAddress : spDetailAddress,
 });
 
-const formatContactInfo = (countryCode, phoneNumber, email, weChatId) => ({
+const formatContactInfo = ({
+  countryCode,
+  phoneNumber,
+  email,
+  weChatId,
+}: FormatContactInfoProps) => ({
   phoneNumber: {
     countryCode: `+${countryCode.phone}`,
     number: phoneNumber,
@@ -36,12 +45,12 @@ const formatHopeProducts = (selectedInfoList: SelectedInfoList) =>
       }),
   }));
 
-export const formatSubmitUserBody = (
-  form: UserInfo,
-  submissionTime: string,
-  language: string,
-  selectedInfoList: SelectedInfoList
-) => {
+export const formatSubmitUserBody = ({
+  form,
+  submissionTime,
+  language,
+  selectedInfoList,
+}: FormatSubmitUserBodyProps) => {
   const {
     name,
     companyName,
@@ -68,21 +77,26 @@ export const formatSubmitUserBody = (
       name,
       companyName,
       businessType,
-      contactInfo: formatContactInfo(countryCode, phoneNumber, email, weChatId),
+      contactInfo: formatContactInfo({
+        countryCode,
+        phoneNumber,
+        email,
+        weChatId,
+      }),
       companyAddress: {
         postalCode: coPostalCode,
         address: coAddress,
         detailAddress: coDetailAddress,
       },
-      shippingAddress: formatShippingAddress(
+      shippingAddress: formatShippingAddress({
         isSameAddress,
         coPostalCode,
         coAddress,
         coDetailAddress,
         spPostalCode,
         spAddress,
-        spDetailAddress
-      ),
+        spDetailAddress,
+      }),
     },
     language: language,
   });

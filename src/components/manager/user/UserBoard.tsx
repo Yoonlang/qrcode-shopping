@@ -15,10 +15,7 @@ import { PdfBlob } from "@/components/manager/user/const";
 import UserCopyModal from "@/components/manager/user/UserCopyModal";
 import UserTable from "@/components/manager/user/UserTable";
 import UserTextActionModal from "@/components/manager/user/UserTextActionModal";
-import {
-  countries,
-  CountryType,
-} from "@/components/user/userSubmission/countries";
+import { countries, Country } from "@/components/user/userSubmission/countries";
 import { Folder, Product, User } from "@/const";
 import { useMultipleOverlay } from "@/hooks/useOverlay";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
@@ -154,7 +151,7 @@ const UserBoard = ({
     for (const user of userList) {
       const { name, companyName } = user.personalInfo;
       const { email, phoneNumber, weChatId } = user.personalInfo.contactInfo;
-      const { code, label }: CountryType = countries.filter(
+      const { code, label }: Country = countries.filter(
         (country) =>
           `+${country.phone}` ===
           user.personalInfo.contactInfo.phoneNumber.countryCode

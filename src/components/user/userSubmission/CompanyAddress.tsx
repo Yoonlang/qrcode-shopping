@@ -39,16 +39,19 @@ const CompanyAddress = ({ formik }: { formik: FormikProps<UserInfo> }) => {
         label={t("Postal Code")}
         name="coPostalCode"
         disable={values.businessType === "Student"}
+        formik={formik}
       />
       <UserInput
         label={t("Address")}
         name="coAddress"
         disable={values.businessType === "Student"}
+        formik={formik}
       />
       <UserInput
         label={t("Detail Address")}
         name="coDetailAddress"
         disable={values.businessType === "Student"}
+        formik={formik}
       />
     </>
   );

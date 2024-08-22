@@ -73,12 +73,12 @@ const UserForm = forwardRef<UserFormHandle, UserFormProps>(
                 <AddressBox>
                   <StepLabel>{t(step.label)}</StepLabel>
                   {values.businessType !== "Student" && (
-                    <AddressCheckbox name="isSameAddress" />
+                    <AddressCheckbox name="isSameAddress" formik={formik} />
                   )}
                 </AddressBox>
               )}
               <StepContent>
-                {index === 0 && <UserBasicInfo values={values} />}
+                {index === 0 && <UserBasicInfo formik={formik} />}
                 {index === 1 && <CompanyAddress formik={formik} />}
                 {index === 2 && <ShippingAddress formik={formik} />}
               </StepContent>
