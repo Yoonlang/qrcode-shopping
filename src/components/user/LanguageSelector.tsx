@@ -36,10 +36,7 @@ const LanguageSelector = () => {
     const expires = date.toUTCString();
     document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
 
-    if (
-      currentLocale === i18nConfig.defaultLocale &&
-      !i18nConfig.prefixDefault
-    ) {
+    if (currentLocale === i18nConfig.defaultLocale) {
       router.push("/" + newLocale + currentPathname);
     } else {
       router.push(
