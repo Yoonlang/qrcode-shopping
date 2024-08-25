@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { Language } from "@/const";
+import "@/dayjsConfig";
 import GlobalStyle from "@/globalStyles";
 import { OverlayProvider } from "@/hooks/useOverlay";
 import { TranslationsProvider } from "@/i18n";

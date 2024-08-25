@@ -8,8 +8,6 @@ import MessageSnackBar from "@/components/common/MessageSnackBar";
 import MainPage from "@/components/pages/MainPage";
 import { Language } from "@/const";
 
-import "@/dayjsConfig";
-
 interface HomeProps {
   params: {
     locale: Language;
