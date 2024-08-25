@@ -5,11 +5,11 @@ import { initReactI18next } from "react-i18next/initReactI18next";
 import { Language } from "@/const";
 import { i18nConfig } from "@/i18n";
 
-export default async function initTranslations(
+const initTranslations = async (
   locale: Language,
   namespaces: string[],
   i18nInstance: i18n
-) {
+) => {
   i18nInstance.use(initReactI18next);
   i18nInstance.use(
     resourcesToBackend(
@@ -25,4 +25,6 @@ export default async function initTranslations(
     fallbackNS: namespaces[0],
     ns: namespaces,
   });
-}
+};
+
+export default initTranslations;
