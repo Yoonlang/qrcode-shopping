@@ -2,21 +2,10 @@
 
 import CommonProvider from "@/components/common/CommonProvider";
 import ManagerPage from "@/components/pages/ManagerPage";
-import { initTranslations } from "@/i18n";
 
-const i18nNamespaces = ["common"];
-
-const Manager = async ({ params: { locale } }) => {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
-
+const Manager = ({ params: { locale } }) => {
   return (
-    <CommonProvider
-      TranslationsProviderProps={{
-        namespaces: i18nNamespaces,
-        locale: locale,
-        resources: resources,
-      }}
-    >
+    <CommonProvider locale={locale}>
       <ManagerPage />
     </CommonProvider>
   );
