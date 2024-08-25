@@ -2,11 +2,11 @@
 
 import { RecoilRoot } from "recoil";
 
-import initTranslations from "@/app/i18n";
 import CommonProvider from "@/components/common/CommonProvider";
 import MessageSnackBar from "@/components/common/MessageSnackBar";
 import MainPage from "@/components/pages/MainPage";
 import "@/dayjsConfig";
+import { initTranslations } from "@/i18n";
 
 const i18nNamespaces = ["common"];
 

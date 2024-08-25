@@ -1,8 +1,8 @@
 "use client";
 
-import initTranslations from "@/app/i18n";
 import CommonProvider from "@/components/common/CommonProvider";
 import ManagerPage from "@/components/pages/ManagerPage";
+import { initTranslations } from "@/i18n";
 
 const i18nNamespaces = ["common"];
 
