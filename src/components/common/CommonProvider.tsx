@@ -1,11 +1,20 @@
-import TranslationsProvider from "@/components/common/TranslationsProvider";
+import { ReactNode } from "react";
+
+import { Language } from "@/const";
 import "@/dayjsConfig";
 import GlobalStyle from "@/globalStyles";
 import { OverlayProvider } from "@/hooks/useOverlay";
+import { TranslationsProvider } from "@/i18n";
 
-const CommonProvider = ({ children, TranslationsProviderProps }) => {
+const CommonProvider = ({
+  children,
+  locale,
+}: {
+  children: ReactNode;
+  locale: Language;
+}) => {
   return (
-    <TranslationsProvider {...TranslationsProviderProps}>
+    <TranslationsProvider locale={locale}>
       <OverlayProvider>
         <GlobalStyle />
         {children}

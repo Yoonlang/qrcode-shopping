@@ -1,22 +1,20 @@
 "use client";
 
-import initTranslations from "@/app/i18n";
+import { NextPage } from "next";
+
 import CommonProvider from "@/components/common/CommonProvider";
 import ManagerPage from "@/components/pages/ManagerPage";
+import { Language } from "@/const";
 
-const i18nNamespaces = ["common"];
+interface ManagerProps {
+  params: {
+    locale: Language;
+  };
+}
 
-const Manager = async ({ params: { locale } }) => {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
-
+const Manager: NextPage<ManagerProps> = ({ params: { locale } }) => {
   return (
-    <CommonProvider
-      TranslationsProviderProps={{
-        namespaces: i18nNamespaces,
-        locale: locale,
-        resources: resources,
-      }}
-    >
+    <CommonProvider locale={locale}>
       <ManagerPage />
     </CommonProvider>
   );

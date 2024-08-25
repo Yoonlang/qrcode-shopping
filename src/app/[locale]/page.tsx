@@ -1,25 +1,22 @@
 "use client";
 
+import { NextPage } from "next";
 import { RecoilRoot } from "recoil";
 
-import initTranslations from "@/app/i18n";
 import CommonProvider from "@/components/common/CommonProvider";
 import MessageSnackBar from "@/components/common/MessageSnackBar";
 import MainPage from "@/components/pages/MainPage";
+import { Language } from "@/const";
 
-const i18nNamespaces = ["common"];
+interface HomeProps {
+  params: {
+    locale: Language;
+  };
+}
 
-const Home = async ({ params: { locale } }) => {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
-
+const Home: NextPage<HomeProps> = ({ params: { locale } }) => {
   return (
-    <CommonProvider
-      TranslationsProviderProps={{
-        namespaces: i18nNamespaces,
-        locale: locale,
-        resources: resources,
-      }}
-    >
+    <CommonProvider locale={locale}>
       <RecoilRoot>
         <MessageSnackBar />
         <MainPage />
