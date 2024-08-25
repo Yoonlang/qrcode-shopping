@@ -14,7 +14,8 @@
     "lint-staged": "lint-staged",
     "secure": "next dev --experimental-https",
     "test": "jest --coverage",
-    "test:staged": "node scripts/jest-staged-test.js"
+    "test:staged": "node scripts/jest-staged-test.js",
+    "cypress": "npx cypress open"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -61,6 +62,7 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
+    "cypress": "^13.13.3",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.1.4",
     "eslint-import-resolver-typescript": "^3.6.1",
