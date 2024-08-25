@@ -10,7 +10,8 @@
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:import/typescript",
     "plugin:import/recommended",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:cypress/recommended"
   ],
   "settings": {
     "import/resolver": {
