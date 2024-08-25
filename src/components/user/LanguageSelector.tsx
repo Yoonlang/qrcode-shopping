@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
-import i18nConfig from "@/i18nConfig";
+import { i18nConfig } from "@/i18n";
 
 const StyledLanguageSelectorBox = styled.div`
   display: flex;
@@ -36,10 +36,7 @@ const LanguageSelector = () => {
     const expires = date.toUTCString();
     document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
 
-    if (
-      currentLocale === i18nConfig.defaultLocale &&
-      !i18nConfig.prefixDefault
-    ) {
+    if (currentLocale === i18nConfig.defaultLocale) {
       router.push("/" + newLocale + currentPathname);
     } else {
       router.push(

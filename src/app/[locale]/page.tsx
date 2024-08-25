@@ -1,34 +1,27 @@
 "use client";
 
+import { NextPage } from "next";
 import { RecoilRoot } from "recoil";
 
-import initTranslations from "@/app/i18n";
+import CommonProvider from "@/components/common/CommonProvider";
 import MessageSnackBar from "@/components/common/MessageSnackBar";
-import TranslationsProvider from "@/components/common/TranslationsProvider";
 import MainPage from "@/components/pages/MainPage";
-import "@/dayjsConfig";
-import GlobalStyle from "@/globalStyles";
-import { OverlayProvider } from "@/hooks/useOverlay";
+import { Language } from "@/const";
 
-const i18nNamespaces = ["common"];
+interface HomeProps {
+  params: {
+    locale: Language;
+  };
+}
 
-const Home = async ({ params: { locale } }) => {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
-
+const Home: NextPage<HomeProps> = ({ params: { locale } }) => {
   return (
-    <TranslationsProvider
-      namespaces={i18nNamespaces}
-      locale={locale}
-      resources={resources}
-    >
-      <OverlayProvider>
-        <RecoilRoot>
-          <GlobalStyle />
-          <MessageSnackBar />
-          <MainPage />
-        </RecoilRoot>
-      </OverlayProvider>
-    </TranslationsProvider>
+    <CommonProvider locale={locale}>
+      <RecoilRoot>
+        <MessageSnackBar />
+        <MainPage />
+      </RecoilRoot>
+    </CommonProvider>
   );
 };
 
