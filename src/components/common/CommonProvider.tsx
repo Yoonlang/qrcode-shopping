@@ -1,4 +1,5 @@
 import TranslationsProvider from "@/components/common/TranslationsProvider";
+import "@/dayjsConfig";
 import GlobalStyle from "@/globalStyles";
 import { OverlayProvider } from "@/hooks/useOverlay";
 
