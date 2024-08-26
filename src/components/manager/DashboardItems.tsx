@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 import { AppBar, Drawer, List, Modal, TextField } from "@mui/material";
 import { FormikProps } from "formik";
-import { MutableRefObject } from "react";
 
 import {
   ProductCreationForm,
+  ProductCreationStringKeyList,
   ProductEditionForm,
+  ProductEditionStringKeyList,
 } from "@/components/manager/const";
 
 const StyledAppBar = styled(AppBar)`
@@ -83,18 +84,21 @@ const StyledFlexDiv = styled.div`
   display: flex;
 `;
 
-const ProductInput = ({
+// NOTE: NameType<T>가 ProductInput의 제네릭 T의 key라는 걸 명확히 하기 위해 keyof T를 붙임
+type NameType<T> = T extends ProductCreationForm
+  ? ProductCreationStringKeyList & keyof T
+  : ProductEditionStringKeyList & keyof T;
+
+const ProductInput = <T extends ProductCreationForm | ProductEditionForm>({
   label,
   name,
   formik,
   type = "text",
-  inputRef = undefined,
 }: {
   label: string;
-  name: string;
-  formik: FormikProps<ProductCreationForm | ProductEditionForm>;
+  name: NameType<T>;
+  formik: FormikProps<T>;
   type?: string;
-  inputRef?: MutableRefObject<HTMLInputElement | undefined>;
 }) => {
   return (
     <TextField
@@ -108,11 +112,6 @@ const ProductInput = ({
       type={type}
       margin="dense"
       fullWidth
-      inputRef={(el) => {
-        if (inputRef) {
-          inputRef.current = el;
-        }
-      }}
     />
   );
 };
