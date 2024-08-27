@@ -4,7 +4,12 @@
   "parserOptions": {
     "project": true
   },
-  "plugins": ["@typescript-eslint", "import", "sort-react-dependency-arrays"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "sort-react-dependency-arrays",
+    "cypress"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
@@ -16,8 +21,7 @@
   "settings": {
     "import/resolver": {
       "typescript": {
-        "directory": "./src",
-        "paths": ["src"]
+        "directory": "./"
       }
     },
     "import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] }
