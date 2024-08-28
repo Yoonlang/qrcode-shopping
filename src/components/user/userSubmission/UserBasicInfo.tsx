@@ -41,12 +41,7 @@ const UserBasicInfo = ({ formik }: { formik: FormikProps<UserInfo> }) => {
         formik={formik}
       />
       {formik.values.countryCode.label === "China" && (
-        <UserInput
-          label="WeChat ID"
-          name="weChatId"
-          required={true}
-          formik={formik}
-        />
+        <UserInput label="WeChat ID" name="weChatId" formik={formik} />
       )}
       <UserInput
         label={t("Email")}
