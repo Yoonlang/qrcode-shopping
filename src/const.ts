@@ -20,7 +20,7 @@ export interface Product {
   metadata: ProductMetadata;
 }
 
-interface OrdererInfoMetadata {
+interface UserMetadata {
   documentId: string;
   userId: string;
   submissionTime: string;
@@ -28,7 +28,7 @@ interface OrdererInfoMetadata {
   language: Language;
 }
 
-export interface OrdererInfo {
+export interface User {
   userId: string;
   hopeProducts: [
     {
@@ -69,7 +69,7 @@ export interface OrdererInfo {
   };
   remark1: string;
   remark2: string;
-  metadata: OrdererInfoMetadata;
+  metadata: UserMetadata;
 }
 
 export interface Folder {
@@ -80,3 +80,9 @@ export interface Folder {
 }
 
 export type Language = "ko" | "zh" | "en" | "ja";
+
+export interface OverlayControl {
+  isOpen: boolean;
+  close: () => void;
+  exit: () => void;
+}

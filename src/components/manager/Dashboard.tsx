@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 
-import { getFolderList } from "@/api";
+import { getFolderList } from "@/api/folders";
 import Icons from "@/components/common/Icons";
+import MessageDialog from "@/components/common/MessageDialog";
 import { initialFolderList } from "@/components/manager/const";
 import { StyledAppBar } from "@/components/manager/DashboardItems";
 import Menu from "@/components/manager/Menu";
@@ -10,6 +11,7 @@ import ProductBoard from "@/components/manager/product/ProductBoard";
 import UserBoard from "@/components/manager/user/UserBoard";
 import { sortFolderListByType } from "@/components/manager/util";
 import { Folder } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledBoardContainer = styled.div`
   display: flex;
@@ -26,16 +28,20 @@ const Dashboard = () => {
   );
   const [folderList, setFolderList] = useState<Folder[]>(initialFolderList);
   const [updateTrigger, setUpdateTrigger] = useState(0);
+  const overlay = useOverlay();
 
-  const handleFolderListUpdate = () => {
-    getFolderList(
-      (data) => {
-        setFolderList(data);
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
+  const handleFolderListUpdate = async () => {
+    try {
+      const folderList = await getFolderList();
+      setFolderList(folderList);
+    } catch {
+      overlay.open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["폴더 불러오기 실패"]}
+        />
+      ));
+    }
   };
 
   const handleBoardUpdate = () => {
@@ -43,7 +49,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    handleFolderListUpdate();
+    void handleFolderListUpdate();
   }, []);
 
   useEffect(() => {

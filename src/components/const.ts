@@ -1,4 +1,4 @@
-import { CountryType } from "@/components/user/userSubmission/countries";
+import { Country } from "@/components/user/userSubmission/countries";
 
 export const META = {
   title: "YOUNGWON X MAEIL",
@@ -12,12 +12,12 @@ export const META = {
 
 export const SERVER_URL = `${process.env.SERVER_URL}`;
 
-export interface FormType {
+export interface UserInfo {
   name: string;
   companyName: string;
   businessType: string;
   email: string;
-  countryCode: CountryType;
+  countryCode: Country;
   weChatId: string;
   phoneNumber: string;
   coPostalCode: string;

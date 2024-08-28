@@ -1,23 +1,20 @@
 import styled from "@emotion/styled";
-import { MenuItem, Paper } from "@mui/material";
+import { ListItem, Paper } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FormikContextType, useFormikContext } from "formik";
+import { FormikProps } from "formik";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
-import { FormType } from "@/components/const";
-import {
-  CountryType,
-  countries,
-} from "@/components/user/userSubmission/countries";
+import { UserInfo } from "@/components/const";
+import { Country, countries } from "@/components/user/userSubmission/countries";
 import {
   StyledErrorMessage,
   StyledIconButton,
   StyledTextField,
 } from "@/components/user/userSubmission/FormItems";
 
-const StyledDiv = styled.div`
+const StyledCountrySelectBox = styled.div`
   margin-top: 8px;
   margin-bottom: 4px;
 `;
@@ -56,30 +53,26 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const CountrySelect = ({ required = false }: { required?: boolean }) => {
-  const { t } = useTranslation();
-  const {
-    values,
-    errors,
-    touched,
-    setValues,
-    handleBlur,
-  }: FormikContextType<FormType> = useFormikContext();
+interface CountrySelectProps {
+  required?: boolean;
+  formik: FormikProps<UserInfo>;
+}
 
-  const handleChangeCountry = (
-    e: SyntheticEvent<Element>,
-    option: CountryType
-  ) => {
+const CountrySelect = ({ required = false, formik }: CountrySelectProps) => {
+  const { t } = useTranslation();
+  const { values, errors, touched, setValues, handleBlur } = formik;
+
+  const handleChangeCountry = (e: SyntheticEvent<Element>, option: Country) => {
     if (option) {
-      setValues({ ...values, countryCode: option });
+      void setValues({ ...values, countryCode: option });
     }
   };
 
   return (
     <>
-      <StyledDiv>
+      <StyledCountrySelectBox>
         <Autocomplete
-          defaultValue={values.countryCode}
+          value={values.countryCode}
           options={countries.sort((a, b) => {
             if (a.label < b.label) return -1;
             else return 1;
@@ -90,23 +83,30 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
               ? `${option.label} +${option.phone}`
               : ""
           }
-          renderOption={(props, option) => (
-            <MenuItem {...props} key={option.label}>
-              <div key={props.id}>
-                <img
-                  key={option.label}
-                  loading="lazy"
-                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                  alt={`${option.label}-flag`}
-                />
-                {option.label} +{option.phone}
-              </div>
-              {values.countryCode.phone === option.phone && (
-                <StyledIconButton disabled>{Icons["select"]}</StyledIconButton>
-              )}
-            </MenuItem>
-          )}
+          renderOption={(props, option) => {
+            if (option.code !== "") {
+              return (
+                <ListItem {...props} key={option.code}>
+                  <div>
+                    <img
+                      key={option.label}
+                      loading="lazy"
+                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                      alt={`${option.label}-flag`}
+                    />
+                    {option.label} +{option.phone}
+                  </div>
+                  {values.countryCode.phone === option.phone && (
+                    <StyledIconButton disabled>
+                      {Icons["select"]}
+                    </StyledIconButton>
+                  )}
+                </ListItem>
+              );
+            }
+          }}
+          isOptionEqualToValue={(option, value) => option.code === value.code}
           filterOptions={(options, { inputValue }) => {
             return options.filter(({ label, phone }) =>
               `${label} +${phone}`
@@ -134,7 +134,7 @@ const CountrySelect = ({ required = false }: { required?: boolean }) => {
           PaperComponent={(props) => <StyledPaper {...props} />}
           onChange={(e, option) => option && handleChangeCountry(e, option)}
         />
-      </StyledDiv>
+      </StyledCountrySelectBox>
       {errors.countryCode && touched.countryCode && (
         <StyledErrorMessage>
           {Icons["error"]}

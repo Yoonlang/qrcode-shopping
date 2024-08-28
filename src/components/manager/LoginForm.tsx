@@ -8,24 +8,24 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-import { postLogin } from "@/api";
+import { postLogin } from "@/api/auth";
 
 const LoginForm = ({ setHasAuth }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const inputData = new FormData(event.currentTarget);
-    postLogin(
-      JSON.stringify({
-        email: inputData.get("email"),
-        password: inputData.get("password"),
-      }),
-      () => {
-        setHasAuth(true);
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
+    try {
+      await postLogin(
+        JSON.stringify({
+          email: inputData.get("email"),
+          password: inputData.get("password"),
+        })
+      );
+      setHasAuth(true);
+    } catch (e) {
+      // NOTE: Formik으로 변경 후 errors에서 다룰 예정
+      console.log("로그인 실패");
+    }
   };
 
   return (

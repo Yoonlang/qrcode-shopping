@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useOverlay } from "@toss/use-overlay";
+import { useState } from "react";
 
 import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { StyledModal } from "@/components/manager/DashboardItems";
 import { productDetailColumns } from "@/components/manager/product/const";
 import ProductEditModal from "@/components/manager/product/ProductEditModal";
-import { Product } from "@/const";
+import { OverlayControl, Product } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const StyledDetailModalContainer = styled.div`
   position: relative;
@@ -59,16 +60,17 @@ const StyledDetailModalContainer = styled.div`
 `;
 
 const ProductDetailModal = ({
-  isModalOpen,
-  onModalClose,
-  modalProductData,
+  overlayControl,
+  product,
+  updateProductList,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
-  modalProductData: Product;
+  overlayControl: OverlayControl;
+  product: Product;
+  updateProductList: () => Promise<void>;
 }) => {
+  const [editedProduct, setEditedProduct] = useState<Product | null>(null);
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
-    modalProductData;
+    editedProduct ? editedProduct : product;
   const overlay = useOverlay();
 
   const rows = colors.map(({ colorName, colorId }) => {
@@ -79,8 +81,8 @@ const ProductDetailModal = ({
 
   return (
     <StyledModal
-      open={isModalOpen}
-      onClose={onModalClose}
+      open={overlayControl.isOpen}
+      onClose={overlayControl.exit}
       data-testid={"product-detail-modal"}
     >
       <StyledDetailModalContainer>
@@ -118,20 +120,22 @@ const ProductDetailModal = ({
         <div className="buttonContainer">
           <Button
             onClick={() => {
-              overlay.open(({ isOpen, close }) => (
+              overlay.open((control) => (
                 <ProductEditModal
-                  product={modalProductData}
-                  isModalOpen={isOpen}
-                  onModalClose={close}
+                  overlayControl={control}
+                  product={product}
+                  onProductUpdate={(p) => {
+                    setEditedProduct(p);
+                    void updateProductList();
+                  }}
                 />
               ));
-              onModalClose();
             }}
             data-testid={"product-detail-open-edit-modal-button"}
           >
             수정
           </Button>
-          <Button onClick={onModalClose}>닫기</Button>
+          <Button onClick={overlayControl.exit}>닫기</Button>
         </div>
       </StyledDetailModalContainer>
     </StyledModal>

@@ -13,8 +13,8 @@ import {
   userMetadataColumns1,
   userMetadataColumns2,
 } from "@/components/manager/user/const";
-import { handleUserInfoForOrder } from "@/components/manager/user/util";
-import { OrdererInfo } from "@/const";
+import { handleUserForOrder } from "@/components/manager/user/util";
+import { OverlayControl, User } from "@/const";
 
 const StyledModalContainer = styled.div`
   display: flex;
@@ -46,13 +46,11 @@ const StyledCopyButton = styled(Button)`
 `;
 
 const UserDetailModal = ({
-  isModalOpen,
-  onModalClose,
-  modalUserInfoData,
+  overlayControl,
+  modalUserData,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
-  modalUserInfoData: OrdererInfo;
+  overlayControl: OverlayControl;
+  modalUserData: User;
 }) => {
   const {
     userId,
@@ -69,9 +67,9 @@ const UserDetailModal = ({
     remark1,
     remark2,
     metadata: { submissionTime, folderId },
-  } = modalUserInfoData;
+  } = modalUserData;
 
-  const orderRows = handleUserInfoForOrder(hopeProducts);
+  const orderRows = handleUserForOrder(hopeProducts);
   const copyButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleCopyClipBoard = async () => {
@@ -87,7 +85,7 @@ const UserDetailModal = ({
   };
 
   return (
-    <StyledModal open={isModalOpen} onClose={onModalClose}>
+    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h2>User Info</h2>
         <h4>Personal Info</h4>

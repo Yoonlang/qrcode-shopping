@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { checkCookieAuth } from "@/api";
+import { getCookie } from "@/api/auth";
 import Dashboard from "@/components/manager/Dashboard";
 import LoginForm from "@/components/manager/LoginForm";
 
@@ -9,16 +9,19 @@ const ManagerPage = () => {
   const [isCookieAuthChecking, setIsCookieAuthChecking] = useState(true);
 
   useEffect(() => {
-    checkCookieAuth(
-      () => {
+    const handleAuthCheck = async () => {
+      try {
+        await getCookie();
         setHasAuth(true);
-        setIsCookieAuthChecking(false);
-      },
-      (e) => {
+      } catch (e) {
+        // NOTE: status 상태 코드도 에러 관리에 포함 후 console 제거 예정
         console.log(e);
+      } finally {
         setIsCookieAuthChecking(false);
       }
-    );
+    };
+
+    void handleAuthCheck();
   }, []);
 
   if (isCookieAuthChecking) {

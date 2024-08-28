@@ -1,5 +1,6 @@
 import { useRecoilState } from "recoil";
 
+import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 import { pageIdxState } from "@/recoil/user/atoms/pageIdxState";
 
 export type PageName = "qrcode" | "cart" | "info" | "wechat" | "complete";
@@ -14,6 +15,7 @@ export const pageNameList: PageName[] = [
 const usePageRouter = () => {
   const [pageIdx, setPageIdx] = useRecoilState(pageIdxState);
   const pageName = pageNameList[pageIdx];
+  const [pageAction, setPageAction] = useRecoilState(pageActionState);
 
   const isPageName = (page: PageName): boolean => {
     if (page === pageName) {
@@ -41,6 +43,8 @@ const usePageRouter = () => {
     goToPage,
     goToNextPage,
     goToPreviousPage,
+    pageAction,
+    setPageAction,
   };
 };
 

@@ -1,28 +1,22 @@
 "use client";
 
-import { OverlayProvider } from "@toss/use-overlay";
+import { NextPage } from "next";
 
-import initTranslations from "@/app/i18n";
-import TranslationsProvider from "@/components/common/TranslationsProvider";
+import CommonProvider from "@/components/common/CommonProvider";
 import ManagerPage from "@/components/pages/ManagerPage";
-import GlobalStyle from "@/globalStyles";
+import { Language } from "@/const";
 
-const i18nNamespaces = ["common"];
+interface ManagerProps {
+  params: {
+    locale: Language;
+  };
+}
 
-const Manager = async ({ params: { locale } }) => {
-  const { resources } = await initTranslations(locale, i18nNamespaces);
-
+const Manager: NextPage<ManagerProps> = ({ params: { locale } }) => {
   return (
-    <TranslationsProvider
-      namespaces={i18nNamespaces}
-      locale={locale}
-      resources={resources}
-    >
-      <OverlayProvider>
-        <GlobalStyle />
-        <ManagerPage />
-      </OverlayProvider>
-    </TranslationsProvider>
+    <CommonProvider locale={locale}>
+      <ManagerPage />
+    </CommonProvider>
   );
 };
 

@@ -1,15 +1,10 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import JSZip from "jszip";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 
-import {
-  getProductList,
-  permanentDeleteProductList,
-  reassignFolder,
-} from "@/api";
+import { getProductList } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import { PRODUCT_DEFAULT, PRODUCT_TRASH_CAN } from "@/components/manager/const";
 import DataFolderReassignModal from "@/components/manager/folder/DataFolderReassignModal";
@@ -17,6 +12,9 @@ import ExcelProductCreateModal from "@/components/manager/product/ExcelProductCr
 import ProductCreateModal from "@/components/manager/product/ProductCreateModal";
 import ProductTable from "@/components/manager/product/ProductTable";
 import { Folder, Product } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
+import { reassignFolder } from "@/services/folders";
+import { deleteProductList } from "@/services/products";
 
 const QR_CODE_LENGTH = 254; // 3cm
 
@@ -51,83 +49,72 @@ const ProductBoard = ({
     return p.metadata.folderId === folder.id;
   });
   const [selectedProductList, setSelectedProductList] = useState<string[]>([]);
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(8);
 
-  const handleProductListUpdate = () => {
-    getProductList(
-      (data) => {
-        setProductList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 가져오기 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductListUpdate = async () => {
+    try {
+      const productList = await getProductList();
+      setProductList(productList);
+    } catch {
+      overlays[0].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 가져오기 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductRestore = () => {
-    reassignFolder(
-      filteredProductList.filter((f) =>
-        selectedProductList.find((productId) => f.productId === productId)
-      ),
-      PRODUCT_DEFAULT,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 복구 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductRestore = async () => {
+    try {
+      await reassignFolder(
+        filteredProductList.filter((f) =>
+          selectedProductList.find((productId) => f.productId === productId)
+        ),
+        PRODUCT_DEFAULT
+      );
+      await handleProductListUpdate();
+    } catch {
+      overlays[1].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 복구 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductSoftDelete = () => {
-    reassignFolder(
-      filteredProductList.filter((f) =>
-        selectedProductList.find((productId) => f.productId === productId)
-      ),
-      PRODUCT_TRASH_CAN,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductSoftDelete = async () => {
+    try {
+      await reassignFolder(
+        filteredProductList.filter((f) =>
+          selectedProductList.find((productId) => f.productId === productId)
+        ),
+        PRODUCT_TRASH_CAN
+      );
+      await handleProductListUpdate();
+    } catch {
+      overlays[2].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 삭제 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleProductPermanentDelete = () => {
-    permanentDeleteProductList(
-      selectedProductList,
-      () => {
-        handleProductListUpdate();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 영구 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleProductPermanentDelete = async () => {
+    try {
+      await deleteProductList(selectedProductList);
+      await handleProductListUpdate();
+    } catch {
+      overlays[3].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 영구 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleProductQrCodeCreate = async () => {
@@ -170,10 +157,9 @@ const ProductBoard = ({
         }
         downloadLink.click();
       } catch (e) {
-        overlay.open(({ isOpen, close }) => (
+        overlays[4].open((control) => (
           <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
+            overlayControl={control}
             messageList={[e?.message ?? "QR code 생성 실패"]}
           />
         ));
@@ -183,17 +169,16 @@ const ProductBoard = ({
 
   const handleProductFolderReassign = () => {
     if (selectedProductList.length > 0) {
-      overlay.open(({ isOpen, close }) => (
+      overlays[5].open((control) => (
         <DataFolderReassignModal
-          isModalOpen={isOpen}
-          onModalClose={close}
+          overlayControl={control}
           selectedDataList={filteredProductList.filter((f) =>
             selectedProductList.find((productId) => f.productId === productId)
           )}
           folder={folder}
           folderList={productFolderList}
-          onReassignComplete={() => {
-            handleProductListUpdate();
+          onReassignComplete={async () => {
+            await handleProductListUpdate();
           }}
         />
       ));
@@ -201,7 +186,7 @@ const ProductBoard = ({
   };
 
   useEffect(() => {
-    handleProductListUpdate();
+    void handleProductListUpdate();
   }, []);
 
   return (
@@ -224,11 +209,10 @@ const ProductBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlays[6].open((control) => (
                     <ProductCreateModal
+                      overlayControl={control}
                       folder={folder}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                       onProductCreate={handleProductListUpdate}
                     />
                   ));
@@ -238,12 +222,11 @@ const ProductBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlays[7].open((control) => (
                     <ExcelProductCreateModal
+                      overlayControl={control}
                       folder={folder}
                       productList={productList}
-                      isModalOpen={isOpen}
-                      onModalClose={close}
                       onProductListCreate={handleProductListUpdate}
                     />
                   ));
@@ -261,6 +244,7 @@ const ProductBoard = ({
         folderList={productFolderList}
         productList={filteredProductList}
         setSelectedProductList={setSelectedProductList}
+        updateProductList={handleProductListUpdate}
       />
     </StyledProductBoard>
   );

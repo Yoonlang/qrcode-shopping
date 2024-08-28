@@ -27,12 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/middleware.js",
-    "src/app/i18n.js",
-    "src/components/common/TranslationsProvider.js",
-    "src/i18nConfig.js",
     "jest.config.js",
     "next.config.js",
+    "commitlint.config.js",
     "scripts/**/*"
   ],
   "exclude": ["node_modules", "**/*.spec.ts"]

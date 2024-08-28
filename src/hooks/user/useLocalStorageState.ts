@@ -11,7 +11,7 @@ const useLocalStorageState = ({ key, value }) => {
     return value;
   });
 
-  const handleUpdateLocalStorageState = useCallback(
+  const handleLocalStorageStateUpdate = useCallback(
     (x) => {
       setLocalStorageState(x);
       if (typeof window !== "undefined") {
@@ -21,7 +21,7 @@ const useLocalStorageState = ({ key, value }) => {
     [key]
   );
 
-  return [localStorageState, handleUpdateLocalStorageState];
+  return [localStorageState, handleLocalStorageStateUpdate];
 };
 
 export default useLocalStorageState;

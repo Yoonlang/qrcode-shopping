@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 
-import { getProductList } from "@/api";
+import { getProductList } from "@/api/products";
 import { PRODUCT_TRASH_CAN } from "@/components/manager/const";
 import { Product } from "@/const";
 
@@ -14,17 +14,14 @@ export const fetchedItemListSelector = selector<Product[]>({
   get: async ({ get }) => {
     get(fetchedItemListCounter);
 
-    const getProductListPromise = () =>
-      new Promise<Product[]>((resolve, reject) => {
-        getProductList(
-          (data) =>
-            resolve(
-              data.filter((d) => d.metadata.folderId !== PRODUCT_TRASH_CAN)
-            ),
-          (e) => reject(e)
-        );
-      });
-
-    return await getProductListPromise();
+    try {
+      const productList = await getProductList();
+      return productList.filter(
+        (product) => product.metadata.folderId !== PRODUCT_TRASH_CAN
+      );
+    } catch {
+      // NOTE: 오류 발생 시 빈 배열 반환
+      return [];
+    }
   },
 });

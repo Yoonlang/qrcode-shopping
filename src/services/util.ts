@@ -1,4 +1,4 @@
-import { OrdererInfo, Product } from "@/const";
+import { Product, User } from "@/const";
 
 export const transformProductForFolderUpdate = (
   product: Product,
@@ -17,7 +17,7 @@ export const transformProductForFolderUpdate = (
 };
 
 export const transformUserForUpdate = (
-  user: OrdererInfo,
+  user: User,
   folderId?: string
 ): string => {
   const { metadata, userId, ...rest } = user;

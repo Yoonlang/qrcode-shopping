@@ -6,13 +6,13 @@ import {
   FormControlLabel,
   Modal,
 } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import { reassignFolder } from "@/api";
 import MessageDialog from "@/components/common/MessageDialog";
-import { Folder, OrdererInfo, Product } from "@/const";
+import { Folder, OverlayControl, Product, User } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
+import { reassignFolder } from "@/services/folders";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -29,24 +29,22 @@ const folderSelectionSchema = Yup.object({
 });
 
 const DataFolderReassignModal = ({
-  isModalOpen,
-  onModalClose,
+  overlayControl,
   selectedDataList,
   folder,
   folderList,
   onReassignComplete,
 }: {
-  isModalOpen: boolean;
-  onModalClose: () => void;
-  selectedDataList: OrdererInfo[] | Product[];
+  overlayControl: OverlayControl;
+  selectedDataList: User[] | Product[];
   folder: Folder;
   folderList: Folder[];
-  onReassignComplete?: () => void;
+  onReassignComplete?: () => Promise<void>;
 }) => {
   const overlay = useOverlay();
 
   return (
-    <Modal open={isModalOpen} onClose={onModalClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>{folder.type}</h3>
         <Formik
@@ -55,25 +53,20 @@ const DataFolderReassignModal = ({
           }}
           validationSchema={folderSelectionSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await reassignFolder(
-              selectedDataList,
-              values.folderId,
-              () => {
-                setSubmitting(false);
-                onReassignComplete && onReassignComplete();
-                onModalClose();
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["폴더 이동 실패"]}
-                  />
-                ));
-              }
-            );
+            try {
+              await reassignFolder(selectedDataList, values.folderId);
+              onReassignComplete && (await onReassignComplete());
+              overlayControl.exit();
+            } catch {
+              overlay.open((control) => (
+                <MessageDialog
+                  overlayControl={control}
+                  messageList={["폴더 이동 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched, values, setFieldValue }) => (
@@ -104,7 +97,7 @@ const DataFolderReassignModal = ({
                 <Button type="submit" disabled={isSubmitting}>
                   확인
                 </Button>
-                <Button onClick={onModalClose}>닫기</Button>
+                <Button onClick={overlayControl.exit}>닫기</Button>
               </DialogActions>
             </Form>
           )}

@@ -6,7 +6,12 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import Icons from "@/components/common/Icons";
-import { EMPTY_TEXT, FormType, IS_USING_SY } from "@/components/const";
+import {
+  EMPTY_TEXT,
+  IS_USING_SY,
+  snackBarStatusMessage,
+  UserInfo,
+} from "@/components/const";
 import { COLOR_CARD_TEXT } from "@/components/user/toBuyList/const";
 import {
   SelectedBox,
@@ -16,10 +21,12 @@ import {
 } from "@/components/user/toBuyList/styled";
 import ToBuyItemMain from "@/components/user/toBuyList/ToBuyItemMain";
 import ToBuyItemOptions from "@/components/user/toBuyList/ToBuyItemOptions";
+import usePageRouter from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
 import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
 import { fetchedItemListSelector } from "@/recoil/user/atoms/fetchedItemListState";
 import { imageUrlListState } from "@/recoil/user/atoms/imageUrlListState";
+import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
 
 const StyledDiv = styled.div`
   align-items: normal;
@@ -58,7 +65,8 @@ const ProductLists = styled.div`
 `;
 
 const StyledSwitch = () => {
-  const { values, setFieldValue } = useFormikContext<FormType>();
+  // NOTE: formik이 아닌 recoil로 처리하도록 수정 필요
+  const { values, setFieldValue } = useFormikContext<UserInfo>();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -108,6 +116,44 @@ const ToBuyListPage = () => {
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
   const setImageUrlList = useSetRecoilState(imageUrlListState);
+  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+  const { goToNextPage, setPageAction } = usePageRouter();
+
+  useEffect(() => {
+    const action = () => {
+      if (Object.keys(scannedItemList).length === 0) {
+        setMessageSnackBarState({
+          message: t(snackBarStatusMessage["multipleScan"]),
+          isMessageSnackBarOpen: true,
+        });
+      } else {
+        if (IS_USING_SY) {
+          let isAllSelected = true;
+          for (const key of Object.keys(scannedItemList)) {
+            if (
+              !selectedInfoList[key] ||
+              Object.keys(selectedInfoList[key]).length <= 0
+            ) {
+              isAllSelected = false;
+              break;
+            }
+          }
+          if (!isAllSelected) {
+            setMessageSnackBarState({
+              message: t(snackBarStatusMessage["option"]),
+              isMessageSnackBarOpen: true,
+            });
+          } else {
+            goToNextPage();
+          }
+        } else {
+          goToNextPage();
+        }
+      }
+    };
+
+    setPageAction(() => action);
+  }, [scannedItemList, selectedInfoList]);
 
   useEffect(() => {
     fetchedItemList

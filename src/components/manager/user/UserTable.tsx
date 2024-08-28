@@ -1,8 +1,7 @@
 import { DataGrid, GridCellParams } from "@mui/x-data-grid";
-import { useOverlay } from "@toss/use-overlay";
 import { Dispatch, SetStateAction } from "react";
 
-import { editUserRemark } from "@/api";
+import { putUser } from "@/api/users";
 import MessageDialog from "@/components/common/MessageDialog";
 import { USER_DEFAULT } from "@/components/manager/const";
 import {
@@ -11,47 +10,39 @@ import {
   UserTableRow,
 } from "@/components/manager/user/const";
 import UserDetailModal from "@/components/manager/user/UserDetailModal";
-import { handleUserInfoListForTable } from "@/components/manager/user/util";
-import { Folder, OrdererInfo } from "@/const";
+import { handleUserListForTable } from "@/components/manager/user/util";
+import { Folder, User } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
+import { transformUserForUpdate } from "@/services/util";
 
 const UserTable = ({
   folder,
   folderList,
-  userInfoList,
+  userList,
   setSelectedUserList,
 }: {
   folder: Folder;
   folderList: Folder[];
-  userInfoList: OrdererInfo[];
+  userList: User[];
   setSelectedUserList: Dispatch<SetStateAction<string[]>>;
 }) => {
-  const tableRows = handleUserInfoListForTable(userInfoList, folderList);
-  const overlay = useOverlay();
+  const tableRows = handleUserListForTable(userList, folderList);
+  const overlays = useMultipleOverlay(2);
 
   const handleRemarkUpdate = async (
     row: UserTableRow,
     old: UserTableRow
   ): Promise<UserTableRow> => {
-    row.__user_info__.remark1 = row.remark1;
-    row.__user_info__.remark2 = row.remark2;
+    row.__user__.remark1 = row.remark1;
+    row.__user__.remark2 = row.remark2;
     try {
-      await editUserRemark(
-        row.__user_info__,
-        () => {},
-        (e) => {
-          throw e;
-        }
-      );
+      await putUser(transformUserForUpdate(row.__user__), row.__user__.userId);
       return row;
     } catch (e) {
-      old.__user_info__.remark1 = old.remark1;
-      old.__user_info__.remark2 = old.remark2;
-      overlay.open(({ isOpen, close }) => (
-        <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
-          messageList={[e.message]}
-        />
+      old.__user__.remark1 = old.remark1;
+      old.__user__.remark2 = old.remark2;
+      overlays[0].open((control) => (
+        <MessageDialog overlayControl={control} messageList={[e.message]} />
       ));
       return old;
     }
@@ -81,11 +72,10 @@ const UserTable = ({
             cell.field !== "remark2"
           ) {
             e.stopPropagation();
-            overlay.open(({ isOpen, close }) => (
+            overlays[1].open((control) => (
               <UserDetailModal
-                isModalOpen={isOpen}
-                onModalClose={close}
-                modalUserInfoData={cell.row.__user_info__}
+                overlayControl={control}
+                modalUserData={cell.row.__user__}
               />
             ));
           }

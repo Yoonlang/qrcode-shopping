@@ -10,7 +10,7 @@ const MAX_TEXT = {
   "50": "You can enter up to 50 characters",
 };
 
-export const validationSchema = Yup.object().shape({
+export const userInfoValidationSchema = Yup.object().shape({
   name: Yup.string()
     .required(REQUIRED_TEXT)
     .typeError(STRING_TEXT)
@@ -36,10 +36,7 @@ export const validationSchema = Yup.object().shape({
       phone: Yup.string().required(REQUIRED_TEXT),
     })
     .required(REQUIRED_TEXT),
-  weChatId: Yup.string().when("countryCode.label", {
-    is: "China",
-    then: () => Yup.string().required(REQUIRED_TEXT),
-  }),
+  weChatId: Yup.string().max(30, MAX_TEXT["30"]),
   phoneNumber: Yup.string()
     .matches(/^[0-9]+$/, NUMBER_TEXT)
     .required(REQUIRED_TEXT)

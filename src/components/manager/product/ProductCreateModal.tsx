@@ -1,10 +1,9 @@
 import { Button, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 
-import { postProduct } from "@/api";
+import { postProduct } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import {
   ProductAddModal,
@@ -17,17 +16,16 @@ import {
   productCreationInitialValues,
   productCreationSchema,
 } from "@/components/manager/product/const";
-import { Folder } from "@/const";
+import { Folder, OverlayControl } from "@/const";
+import { useOverlay } from "@/hooks/useOverlay";
 
 const ProductCreateModal = ({
+  overlayControl,
   folder,
-  isModalOpen,
-  onModalClose,
   onProductCreate,
 }: {
+  overlayControl: OverlayControl;
   folder: Folder;
-  isModalOpen: boolean;
-  onModalClose: () => void;
   onProductCreate: () => void;
 }) => {
   const overlay = useOverlay();
@@ -35,7 +33,7 @@ const ProductCreateModal = ({
   const formik = useFormik({
     initialValues: productCreationInitialValues,
     validationSchema: productCreationSchema,
-    onSubmit: (form, { resetForm }) => {
+    onSubmit: async (form, { resetForm }) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -58,23 +56,15 @@ const ProductCreateModal = ({
           formData.append(key, JSON.stringify(value));
         }
       });
-
-      postProduct(
-        formData,
-        () => {
-          resetForm();
-          onProductCreate();
-        },
-        (e) => {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={[e.message]}
-            />
-          ));
-        }
-      );
+      try {
+        await postProduct(formData);
+        resetForm();
+        onProductCreate();
+      } catch (e) {
+        overlay.open((control) => (
+          <MessageDialog overlayControl={control} messageList={[e.message]} />
+        ));
+      }
     },
   });
   const productIdRefs = useRef<HTMLInputElement>(null);
@@ -82,12 +72,12 @@ const ProductCreateModal = ({
   const colorRefs = useRef<HTMLInputElement[]>([]);
 
   const handleChangeFile = (file) => {
-    formik.setFieldValue("image", file);
+    void formik.setFieldValue("image", file);
   };
 
   const handleAddColor = () => {
     const newColors = [...formik.values.colors, ""];
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -102,7 +92,7 @@ const ProductCreateModal = ({
   ) => {
     const newColors = [...formik.values.colors];
     newColors.splice(index, 1);
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   useEffect(() => {
@@ -116,7 +106,7 @@ const ProductCreateModal = ({
   }, [colors.length]);
 
   return (
-    <StyledModal open={isModalOpen} onClose={onModalClose}>
+    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <ProductAddModal>
         <h2>Add</h2>
         <ProductInput label="Product ID" name="productId" formik={formik} />
@@ -165,7 +155,7 @@ const ProductCreateModal = ({
           >
             Confirm
           </Button>
-          <Button onClick={onModalClose}>Cancel</Button>
+          <Button onClick={overlayControl.exit}>Cancel</Button>
         </StyledFlexDiv>
       </ProductAddModal>
     </StyledModal>

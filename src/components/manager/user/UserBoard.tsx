@@ -1,32 +1,27 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { pdf } from "@react-pdf/renderer";
-import { useOverlay } from "@toss/use-overlay";
 import JSZip from "jszip";
 import { useEffect, useState } from "react";
 
-import {
-  getOrdererInfoList,
-  getProductList,
-  permanentDeleteOrdererList,
-  reassignFolder,
-} from "@/api";
+import { getProductList } from "@/api/products";
+import { getUserList } from "@/api/users";
 import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
 import MessageDialog from "@/components/common/MessageDialog";
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { USER_DEFAULT, USER_TRASH_CAN } from "@/components/manager/const";
 import DataFolderReassignModal from "@/components/manager/folder/DataFolderReassignModal";
 import { PdfBlob } from "@/components/manager/user/const";
 import UserCopyModal from "@/components/manager/user/UserCopyModal";
 import UserTable from "@/components/manager/user/UserTable";
 import UserTextActionModal from "@/components/manager/user/UserTextActionModal";
-import {
-  countries,
-  CountryType,
-} from "@/components/user/userSubmission/countries";
-import { Folder, OrdererInfo, Product } from "@/const";
+import { countries, Country } from "@/components/user/userSubmission/countries";
+import { Folder, Product, User } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
 import { SelectedInfoList } from "@/recoil/user/atoms/selectedInfoListState";
+import { reassignFolder } from "@/services/folders";
+import { deleteUserList } from "@/services/users";
 
 const StyledUserBoard = styled.div`
   display: flex;
@@ -51,107 +46,95 @@ const UserBoard = ({
   folder: Folder;
   userFolderList: Folder[];
 }) => {
-  const [userInfoList, setUserInfoList] = useState<OrdererInfo[]>([]);
-  const filteredUserList = userInfoList.filter((u) => {
+  const [userList, setUserList] = useState<User[]>([]);
+  const filteredUserList = userList.filter((u) => {
     if (folder.id === USER_DEFAULT) {
       return u.metadata.folderId !== USER_TRASH_CAN;
     }
     return u.metadata.folderId === folder.id;
   });
   const [selectedUserList, setSelectedUserList] = useState<string[]>([]);
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(8);
   const [productList, setProductList] = useState<Product[]>([]);
 
-  const updateOrdererInfoList = () => {
-    getOrdererInfoList(
-      (data) => {
-        setUserInfoList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 가져오기 실패"]}
-          />
-        ));
-      }
-    );
+  const updateUserList = async () => {
+    try {
+      const userList = await getUserList();
+      setUserList(userList);
+    } catch {
+      overlays[0].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 가져오기 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleUserRestore = () => {
-    reassignFolder(
-      filteredUserList.filter((f) =>
-        selectedUserList.find((userId) => f.userId === userId)
-      ),
-      USER_DEFAULT,
-      () => {
-        updateOrdererInfoList();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 복구 실패"]}
-          />
-        ));
-      }
-    );
+  const handleUserRestore = async () => {
+    try {
+      await reassignFolder(
+        filteredUserList.filter((f) =>
+          selectedUserList.find((userId) => f.userId === userId)
+        ),
+        USER_DEFAULT
+      );
+      await updateUserList();
+    } catch {
+      overlays[1].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 복구 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleUserSoftDelete = () => {
-    reassignFolder(
-      filteredUserList.filter((f) =>
-        selectedUserList.find((userId) => f.userId === userId)
-      ),
-      USER_TRASH_CAN,
-      () => {
-        updateOrdererInfoList();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleUserSoftDelete = async () => {
+    try {
+      await reassignFolder(
+        filteredUserList.filter((f) =>
+          selectedUserList.find((userId) => f.userId === userId)
+        ),
+        USER_TRASH_CAN
+      );
+      await updateUserList();
+    } catch {
+      overlays[2].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 삭제 실패"]}
+        />
+      ));
+    }
   };
 
-  const handleUserPermanentDelete = () => {
-    permanentDeleteOrdererList(
-      selectedUserList,
-      () => {
-        updateOrdererInfoList();
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["데이터 영구 삭제 실패"]}
-          />
-        ));
-      }
-    );
+  const handleUserPermanentDelete = async () => {
+    try {
+      await deleteUserList(selectedUserList);
+      await updateUserList();
+    } catch {
+      overlays[3].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["데이터 영구 삭제 실패"]}
+        />
+      ));
+    }
   };
 
   const handleUserFolderReassign = () => {
     if (selectedUserList.length > 0) {
-      overlay.open(({ isOpen, close }) => (
+      overlays[4].open((control) => (
         <DataFolderReassignModal
-          isModalOpen={isOpen}
-          onModalClose={close}
+          overlayControl={control}
           selectedDataList={filteredUserList.filter((f) =>
             selectedUserList.find((userId) => f.userId === userId)
           )}
           folder={folder}
           folderList={userFolderList}
-          onReassignComplete={() => {
-            updateOrdererInfoList();
+          onReassignComplete={async () => {
+            await updateUserList();
           }}
         />
       ));
@@ -160,7 +143,7 @@ const UserBoard = ({
 
   const handleUserPdfDownloadButtonClick = async () => {
     const zip = new JSZip();
-    const userList: OrdererInfo[] = filteredUserList.filter((f) =>
+    const userList: User[] = filteredUserList.filter((f) =>
       selectedUserList.find((userId) => f.userId === userId)
     );
     const pdfBlobList: PdfBlob[] = [];
@@ -168,13 +151,13 @@ const UserBoard = ({
     for (const user of userList) {
       const { name, companyName } = user.personalInfo;
       const { email, phoneNumber, weChatId } = user.personalInfo.contactInfo;
-      const { code, label }: CountryType = countries.filter(
+      const { code, label }: Country = countries.filter(
         (country) =>
           `+${country.phone}` ===
           user.personalInfo.contactInfo.phoneNumber.countryCode
       )[0];
 
-      const userValues: Partial<FormType> = {
+      const userValues: Partial<UserInfo> = {
         name: name,
         companyName: companyName,
         email: email,
@@ -214,7 +197,7 @@ const UserBoard = ({
 
       const pdfBlob = await pdf(
         <CounselingIntakeForm
-          ordererInfo={userValues}
+          userInfo={userValues}
           selectedInfoList={selectedInfoList}
           imageUrlList={imageUrlList}
           userId={user.userId}
@@ -242,22 +225,23 @@ const UserBoard = ({
     link.click();
   };
 
+  const handleProductListUpdate = async () => {
+    try {
+      const productList = await getProductList();
+      setProductList(productList);
+    } catch {
+      overlays[5].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          messageList={["제품 목록 받아오기 실패"]}
+        />
+      ));
+    }
+  };
+
   useEffect(() => {
-    updateOrdererInfoList();
-    getProductList(
-      (data) => {
-        setProductList(data);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={close}
-            messageList={["제품 목록 받아오기 실패"]}
-          />
-        ));
-      }
-    );
+    void updateUserList();
+    void handleProductListUpdate();
   }, []);
 
   return (
@@ -268,8 +252,8 @@ const UserBoard = ({
           {folder.id === USER_DEFAULT && (
             <Button
               onClick={() => {
-                overlay.open(({ isOpen, close }) => (
-                  <UserTextActionModal isModalOpen={isOpen} onClose={close} />
+                overlays[6].open((control) => (
+                  <UserTextActionModal overlayControl={control} />
                 ));
               }}
             >
@@ -290,10 +274,9 @@ const UserBoard = ({
               </Button>
               <Button
                 onClick={() => {
-                  overlay.open(({ isOpen, close }) => (
+                  overlays[7].open((control) => (
                     <UserCopyModal
-                      isModalOpen={isOpen}
-                      onModalClose={close}
+                      overlayControl={control}
                       selectedUserList={filteredUserList.filter((f) =>
                         selectedUserList.find((userId) => f.userId === userId)
                       )}
@@ -314,7 +297,7 @@ const UserBoard = ({
       <UserTable
         folder={folder}
         folderList={userFolderList}
-        userInfoList={filteredUserList}
+        userList={filteredUserList}
         setSelectedUserList={setSelectedUserList}
       />
     </StyledUserBoard>

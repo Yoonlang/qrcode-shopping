@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import Image from "next/image";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 
+import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
+import { useOverlay } from "@/hooks/useOverlay";
+import usePageRouter from "@/hooks/user/usePageRouter";
 import { userIdState } from "@/recoil/user/atoms/userIdState";
 
 const StyledWeChatFriendGuideBox = styled.div`
@@ -139,12 +141,8 @@ const UserIdCopyButton = () => {
         userIdCopyButtonRef.current.textContent = "复制好了";
       }
     } catch (e) {
-      overlay.open(({ isOpen, close }) => (
-        <MessageDialog
-          isDialogOpen={isOpen}
-          onDialogClose={close}
-          messageList={["复制失败"]}
-        />
+      overlay.open((control) => (
+        <MessageDialog overlayControl={control} messageList={["复制失败"]} />
       ));
     }
   };
@@ -182,6 +180,27 @@ const guides = [
 ];
 
 const WeChatFriendGuidePage = () => {
+  const overlay = useOverlay();
+  const { goToNextPage, setPageAction } = usePageRouter();
+
+  useEffect(() => {
+    const action = () => {
+      overlay.open((control) => (
+        <Confirm
+          overlayControl={control}
+          onConfirm={() => {
+            goToNextPage();
+          }}
+          content="你完成微信好友添加了吗？"
+          confirmText="是"
+          cancelText="不是"
+        />
+      ));
+    };
+
+    setPageAction(() => action);
+  }, []);
+
   return (
     <StyledWeChatFriendGuideBox>
       <StyledTitleBox>

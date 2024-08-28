@@ -1,12 +1,13 @@
 import { Button, DialogActions, Modal, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import * as Yup from "yup";
 
-import { getText, putText } from "@/api";
+import { getText, putText } from "@/api/text";
 import MessageDialog from "@/components/common/MessageDialog";
+import { OverlayControl } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -33,43 +34,38 @@ const validationSchema = Yup.object({
 });
 
 const UserTextActionModal = ({
-  isModalOpen,
-  onClose,
+  overlayControl,
 }: {
-  isModalOpen: boolean;
-  onClose: () => void;
+  overlayControl: OverlayControl;
 }) => {
   const [initialText, setInitialText] = useState("");
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(3);
 
-  const handleTextUpdate = () => {
-    getText(
-      ({ text }) => {
-        setInitialText(text);
-      },
-      () => {
-        overlay.open(({ isOpen, close }) => (
-          <MessageDialog
-            isDialogOpen={isOpen}
-            onDialogClose={() => {
-              close();
-              onClose();
-            }}
-            messageList={["기존 텍스트 불러오기 실패"]}
-          />
-        ));
-      }
-    );
+  const handleTextUpdate = async () => {
+    try {
+      const { text } = await getText();
+      setInitialText(text);
+    } catch {
+      overlays[0].open((control) => (
+        <MessageDialog
+          overlayControl={control}
+          onDialogClose={() => {
+            overlayControl.exit();
+          }}
+          messageList={["기존 텍스트 불러오기 실패"]}
+        />
+      ));
+    }
   };
 
   useEffect(() => {
-    if (isModalOpen) {
-      handleTextUpdate();
+    if (overlayControl.isOpen) {
+      void handleTextUpdate();
     }
-  }, [isModalOpen]);
+  }, [overlayControl.isOpen]);
 
   return (
-    <Modal open={isModalOpen} onClose={onClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>텍스트 설정</h3>
         <p>해당 텍스트는 앞으로의 유저 ID와 PDF 파일명에 적용됩니다.</p>
@@ -84,32 +80,27 @@ const UserTextActionModal = ({
           enableReinitialize={true}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await putText(
-              JSON.stringify(values),
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={() => {
-                      close();
-                      onClose();
-                    }}
-                    messageList={["설정 텍스트 변경 성공"]}
-                  />
-                ));
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["설정 텍스트 변경 실패"]}
-                  />
-                ));
-              }
-            );
+            try {
+              await putText(JSON.stringify(values));
+              overlays[1].open((control) => (
+                <MessageDialog
+                  overlayControl={control}
+                  onDialogClose={() => {
+                    overlayControl.exit();
+                  }}
+                  messageList={["설정 텍스트 변경 성공"]}
+                />
+              ));
+            } catch {
+              overlays[2].open((control) => (
+                <MessageDialog
+                  overlayControl={control}
+                  messageList={["설정 텍스트 변경 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched }) => (
@@ -126,7 +117,7 @@ const UserTextActionModal = ({
                 <Button type="submit" disabled={isSubmitting}>
                   수정
                 </Button>
-                <Button onClick={onClose}>닫기</Button>
+                <Button onClick={overlayControl.exit}>닫기</Button>
               </DialogActions>
             </StyledForm>
           )}

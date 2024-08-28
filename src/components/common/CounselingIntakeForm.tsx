@@ -10,7 +10,7 @@ import {
 import { franc } from "franc";
 import { useTranslation } from "react-i18next";
 
-import { FormType } from "@/components/const";
+import { UserInfo } from "@/components/const";
 import { Language } from "@/const";
 import dayjs from "@/dayjsConfig";
 import { imageUrlList } from "@/recoil/user/atoms/imageUrlListState";
@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
 });
 
 const CounselingIntakeForm = ({
-  ordererInfo,
+  userInfo,
   selectedInfoList,
   imageUrlList,
   userId,
   language,
 }: {
-  ordererInfo: Partial<FormType>;
+  userInfo: Partial<UserInfo>;
   selectedInfoList: SelectedInfoList;
   imageUrlList: imageUrlList;
   userId: string;
@@ -196,32 +196,32 @@ const CounselingIntakeForm = ({
     { title: t("User ID"), value: [userId], width: "50" },
     {
       title: t("Company"),
-      value: [ordererInfo.companyName],
+      value: [userInfo.companyName],
       width: "50",
     },
     {
       title: t("Customer"),
-      value: [ordererInfo.name],
+      value: [userInfo.name],
       width: "50",
     },
     {
       title: t("Country"),
-      value: [ordererInfo.countryCode?.label],
+      value: [userInfo.countryCode?.label],
       width: "50",
     },
     {
       title: t("Email"),
-      value: [ordererInfo.email],
+      value: [userInfo.email],
       width: "50",
     },
     {
       title: t("Tel#"),
-      value: [`+${ordererInfo.countryCode?.phone} ${ordererInfo.phoneNumber}`],
+      value: [`+${userInfo.countryCode?.phone} ${userInfo.phoneNumber}`],
       width: "50",
     },
     {
       title: `Wechat ID (${t("optional")})`,
-      value: [ordererInfo.weChatId],
+      value: [userInfo.weChatId],
       width: "50",
     },
   ];

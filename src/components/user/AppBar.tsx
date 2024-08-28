@@ -1,31 +1,15 @@
 import styled from "@emotion/styled";
 import { AppBar, Badge, IconButton, Popover } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
-import { useFormikContext } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
-import Confirm from "@/components/common/Confirm";
-import CounselingIntakeForm from "@/components/common/CounselingIntakeForm";
 import Icons from "@/components/common/Icons";
-import MessageDialog from "@/components/common/MessageDialog";
-import {
-  FormType,
-  IS_USING_SY,
-  snackBarStatusMessage,
-} from "@/components/const";
 import Info from "@/components/user/Info";
 import LanguageSelector from "@/components/user/LanguageSelector";
-import { Language } from "@/const";
-import { initialValues } from "@/hooks/user/useInitialFormikValues";
 import usePageRouter, { PageName } from "@/hooks/user/usePageRouter";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
-import useSelectedInfoList from "@/hooks/user/useSelectedInfoList";
-import { counselingIntakeFormDataState } from "@/recoil/user/atoms/counselingIntakeFormState";
-import { imageUrlListState } from "@/recoil/user/atoms/imageUrlListState";
-import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
-import { userIdState } from "@/recoil/user/atoms/userIdState";
+import { pageActionState } from "@/recoil/user/atoms/pageActionState";
 
 const StyledTitleAppBar = styled(AppBar)`
   display: flex;
@@ -188,117 +172,13 @@ const BottomAppBarTitleText = styled.div`
 `;
 
 const BottomAppBar = () => {
-  const { t, i18n } = useTranslation();
-  const { pageName, isPageName, goToPage, goToNextPage } = usePageRouter();
-  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
-  const { scannedItemList, setScannedItemList } = useScannedItemList();
-  const { selectedInfoList, setSelectedInfoList } = useSelectedInfoList();
-  const [imageUrlList, setImageUrlList] = useRecoilState(imageUrlListState);
-  const { isValid, values, resetForm, submitForm } =
-    useFormikContext<FormType>();
-  const setCounselingIntakeFormData = useSetRecoilState(
-    counselingIntakeFormDataState
-  );
-  const userId = useRecoilValue(userIdState);
-  const overlay = useOverlay();
+  const { t } = useTranslation();
+  const { pageName, isPageName } = usePageRouter();
+  const { scannedItemList } = useScannedItemList();
+  const pageAction = useRecoilValue(pageActionState);
 
-  useEffect(() => {
-    setCounselingIntakeFormData(
-      <CounselingIntakeForm
-        ordererInfo={values}
-        selectedInfoList={selectedInfoList}
-        imageUrlList={imageUrlList}
-        userId={userId}
-        language={i18n.language as Language}
-      />
-    );
-  }, [userId]);
-
-  const handleBottomAppBarClick = async () => {
-    if (isPageName("qrcode")) {
-      if (Object.keys(scannedItemList).length === 0) {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["empty"]),
-          isMessageSnackBarOpen: true,
-        });
-      } else {
-        goToNextPage();
-      }
-    } else if (isPageName("cart")) {
-      if (Object.keys(scannedItemList).length === 0) {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["multipleScan"]),
-          isMessageSnackBarOpen: true,
-        });
-      } else {
-        if (IS_USING_SY) {
-          let isAllSelected = true;
-          for (const key of Object.keys(scannedItemList)) {
-            if (
-              !selectedInfoList[key] ||
-              Object.keys(selectedInfoList[key]).length <= 0
-            ) {
-              isAllSelected = false;
-              break;
-            }
-          }
-          if (!isAllSelected) {
-            setMessageSnackBarState({
-              message: t(snackBarStatusMessage["option"]),
-              isMessageSnackBarOpen: true,
-            });
-          } else {
-            goToNextPage();
-          }
-        } else {
-          goToNextPage();
-        }
-      }
-    } else if (isPageName("info")) {
-      if (isValid) {
-        try {
-          await submitForm();
-          setScannedItemList({});
-          setSelectedInfoList({});
-          setImageUrlList({});
-          resetForm({ values: initialValues });
-          if (values.countryCode.label === "China") {
-            goToNextPage();
-          } else {
-            goToPage("complete");
-          }
-        } catch (e) {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={[t("Submission failed")]}
-            />
-          ));
-        }
-      } else {
-        setMessageSnackBarState({
-          message: t(snackBarStatusMessage["invalid"]),
-          isMessageSnackBarOpen: true,
-        });
-      }
-    } else if (isPageName("wechat")) {
-      overlay.open(({ isOpen, close }) => (
-        <Confirm
-          isConfirmOpen={isOpen}
-          onClose={close}
-          onConfirm={() => {
-            goToNextPage();
-            close();
-          }}
-          content="你完成微信好友添加了吗？"
-          confirmText="是"
-          cancelText="不是"
-        />
-      ));
-    } else if (isPageName("complete")) {
-      goToNextPage();
-    }
+  const handleBottomAppBarClick = () => {
+    pageAction();
   };
 
   return (

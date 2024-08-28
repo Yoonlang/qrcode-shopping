@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import { Button, DialogActions, Modal, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { Field, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 
-import { deleteFolder, patchFolder } from "@/api";
+import { deleteFolder, patchFolder } from "@/api/folders";
 import Confirm from "@/components/common/Confirm";
 import MessageDialog from "@/components/common/MessageDialog";
-import { Folder } from "@/const";
+import { Folder, OverlayControl } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const StyledModalContainer = styled.div`
   position: absolute;
@@ -24,47 +24,41 @@ const editionValidationSchema = Yup.object({
 });
 
 const FolderActionModal = ({
-  isModalOpen,
-  onClose,
+  overlayControl,
   folder,
   onFolderListUpdate,
   onFolderDelete,
 }: {
-  isModalOpen: boolean;
-  onClose: () => void;
+  overlayControl: OverlayControl;
   folder: Folder;
   onFolderListUpdate: () => void;
   onFolderDelete: () => void;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(3);
   const { name, type, id } = folder;
 
   const deletionFormik = useFormik({
     initialValues: {},
     validateOnMount: true,
     onSubmit: async () => {
-      await deleteFolder(
-        undefined,
-        () => {
-          onFolderListUpdate();
-          onFolderDelete();
-        },
-        () => {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={["폴더 삭제 실패"]}
-            />
-          ));
-        },
-        id
-      );
+      try {
+        await deleteFolder(undefined, id);
+        onFolderListUpdate();
+        onFolderDelete();
+        overlayControl.exit();
+      } catch {
+        overlays[0].open((control) => (
+          <MessageDialog
+            overlayControl={control}
+            messageList={["폴더 삭제 실패"]}
+          />
+        ));
+      }
     },
   });
 
   return (
-    <Modal open={isModalOpen} onClose={onClose}>
+    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <StyledModalContainer>
         <h3>{type} 폴더 관리</h3>
         <Formik
@@ -73,25 +67,20 @@ const FolderActionModal = ({
           }}
           validationSchema={editionValidationSchema}
           onSubmit={async (values, { setSubmitting }) => {
-            await patchFolder(
-              JSON.stringify(values),
-              () => {
-                setSubmitting(false);
-                onFolderListUpdate();
-                onClose();
-              },
-              () => {
-                setSubmitting(false);
-                overlay.open(({ isOpen, close }) => (
-                  <MessageDialog
-                    isDialogOpen={isOpen}
-                    onDialogClose={close}
-                    messageList={["폴더 수정 실패"]}
-                  />
-                ));
-              },
-              id
-            );
+            try {
+              await patchFolder(JSON.stringify(values), id);
+              onFolderListUpdate();
+              overlayControl.exit();
+            } catch {
+              overlays[1].open((control) => (
+                <MessageDialog
+                  overlayControl={control}
+                  messageList={["폴더 수정 실패"]}
+                />
+              ));
+            } finally {
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, errors, touched }) => (
@@ -114,16 +103,11 @@ const FolderActionModal = ({
                 <Button
                   disabled={isSubmitting || deletionFormik.isSubmitting}
                   onClick={() => {
-                    onClose();
-                    overlay.open(({ isOpen, close }) => (
+                    overlays[2].open((control) => (
                       <Confirm
-                        isConfirmOpen={isOpen}
-                        onClose={() => {
-                          close();
-                        }}
+                        overlayControl={control}
                         onConfirm={async () => {
                           await deletionFormik.submitForm();
-                          close();
                         }}
                         content={
                           "폴더 삭제 시 내부 데이터는 휴지통으로 이동합니다. 삭제하시겠습니까?"
@@ -134,7 +118,7 @@ const FolderActionModal = ({
                 >
                   삭제
                 </Button>
-                <Button onClick={onClose}>닫기</Button>
+                <Button onClick={overlayControl.exit}>닫기</Button>
               </DialogActions>
             </Form>
           )}

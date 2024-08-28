@@ -1,10 +1,9 @@
 import { Button, TextField } from "@mui/material";
-import { useOverlay } from "@toss/use-overlay";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 
-import { putProduct } from "@/api";
+import { putProduct } from "@/api/products";
 import MessageDialog from "@/components/common/MessageDialog";
 import {
   ProductAddModal,
@@ -17,24 +16,24 @@ import {
   productEditionInitialValues,
   productEditionSchema,
 } from "@/components/manager/product/const";
-import ProductDetailModal from "@/components/manager/product/ProductDetailModal";
-import { Product } from "@/const";
+import { OverlayControl, Product } from "@/const";
+import { useMultipleOverlay } from "@/hooks/useOverlay";
 
 const ProductEditModal = ({
+  overlayControl,
   product,
-  isModalOpen,
-  onModalClose,
+  onProductUpdate,
 }: {
+  overlayControl: OverlayControl;
   product: Product;
-  isModalOpen: boolean;
-  onModalClose: () => void;
+  onProductUpdate: (updatedProduct: Product) => void | Promise<void>;
 }) => {
-  const overlay = useOverlay();
+  const overlays = useMultipleOverlay(2);
   const formik = useFormik({
     initialValues: productEditionInitialValues,
     validateOnMount: true,
     validationSchema: productEditionSchema,
-    onSubmit: (form) => {
+    onSubmit: async (form) => {
       const newForm = {
         ...form,
         colors: form.colors.map((color, index) => {
@@ -59,29 +58,15 @@ const ProductEditModal = ({
         }
       });
 
-      putProduct(
-        formData,
-        (product) => {
-          overlay.open(({ isOpen, close }) => (
-            <ProductDetailModal
-              modalProductData={product}
-              isModalOpen={isOpen}
-              onModalClose={close}
-            />
-          ));
-          onModalClose();
-        },
-        (e) => {
-          overlay.open(({ isOpen, close }) => (
-            <MessageDialog
-              isDialogOpen={isOpen}
-              onDialogClose={close}
-              messageList={[e.message]}
-            />
-          ));
-        },
-        product.productId
-      );
+      try {
+        const res = await putProduct(formData, product.productId);
+        await onProductUpdate(res);
+        overlayControl.exit();
+      } catch (e) {
+        overlays[1].open((control) => (
+          <MessageDialog overlayControl={control} messageList={[e.message]} />
+        ));
+      }
     },
   });
 
@@ -89,13 +74,13 @@ const ProductEditModal = ({
   const colorRefs = useRef<HTMLInputElement[]>([]);
 
   const handleChangeFile = (file) => {
-    formik.setFieldValue("image", file);
-    formik.setFieldValue("useSameImage", false);
+    void formik.setFieldValue("image", file);
+    void formik.setFieldValue("useSameImage", false);
   };
 
   const handleAddColor = () => {
     const newColors = [...formik.values.colors, ""];
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -110,7 +95,7 @@ const ProductEditModal = ({
   ) => {
     const newColors = [...formik.values.colors];
     newColors.splice(index, 1);
-    formik.setFieldValue("colors", newColors);
+    void formik.setFieldValue("colors", newColors);
   };
 
   useEffect(() => {
@@ -122,22 +107,21 @@ const ProductEditModal = ({
   useEffect(() => {
     const { image, colors, price, weightGPerM2, widthInch, composition } =
       product;
-    formik.setFieldValue("method", "PUT");
-    formik.setFieldValue("weightGPerM2", weightGPerM2);
-    formik.setFieldValue("widthInch", widthInch);
-    formik.setFieldValue("composition", composition);
-    formik.setFieldValue("price", price);
 
+    void formik.setFieldValue("method", "PUT");
+    void formik.setFieldValue("weightGPerM2", weightGPerM2);
+    void formik.setFieldValue("widthInch", widthInch);
+    void formik.setFieldValue("composition", composition);
+    void formik.setFieldValue("price", price);
     if (image) {
-      formik.setFieldValue("image", new File([], ""));
+      void formik.setFieldValue("image", new File([], ""));
     }
-
     const handledColors = colors.map(({ colorName }) => colorName);
-    formik.setFieldValue("colors", handledColors);
+    void formik.setFieldValue("colors", handledColors);
   }, [product]);
 
   return (
-    <StyledModal open={isModalOpen} onClose={onModalClose}>
+    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
       <ProductAddModal data-testid={"product-edit-modal"}>
         <h2>Edit</h2>
         <TextField
@@ -196,26 +180,13 @@ const ProductEditModal = ({
           ))}
         <StyledFlexDiv>
           <Button
-            onClick={() => {
-              formik.submitForm();
+            onClick={async () => {
+              await formik.submitForm();
             }}
           >
             Confirm
           </Button>
-          <Button
-            onClick={() => {
-              overlay.open(({ isOpen, close }) => (
-                <ProductDetailModal
-                  modalProductData={product}
-                  isModalOpen={isOpen}
-                  onModalClose={close}
-                />
-              ));
-              onModalClose();
-            }}
-          >
-            Cancel
-          </Button>
+          <Button onClick={overlayControl.exit}>Cancel</Button>
         </StyledFlexDiv>
       </ProductAddModal>
     </StyledModal>
