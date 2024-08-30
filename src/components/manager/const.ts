@@ -20,6 +20,13 @@ export interface ProductEditionForm {
   useSameImage: boolean;
 }
 
+type StringKeyList<T> = {
+  [K in keyof T]: T[K] extends string ? K : never;
+}[keyof T];
+
+export type ProductCreationStringKeyList = StringKeyList<ProductCreationForm>;
+export type ProductEditionStringKeyList = StringKeyList<ProductEditionForm>;
+
 export const USER_DEFAULT = "user-default";
 export const USER_TRASH_CAN = "user-trash-can";
 export const PRODUCT_DEFAULT = "product-default";
