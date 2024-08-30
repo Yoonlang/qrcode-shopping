@@ -39,7 +39,7 @@ describe("QrCode loading 확인", () => {
     ]);
 
     // When
-    let container;
+    let container: HTMLElement;
     act(() => {
       const renderResult = render(
         <RecoilRoot>
