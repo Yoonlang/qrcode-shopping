@@ -16,3 +16,10 @@ export const sortFolderListByType = (
       return a.creationTime.localeCompare(b.creationTime);
     });
 };
+
+export const shortenWithEllipsis = (str: string, limit: number): string => {
+  if (str.length <= limit) {
+    return str;
+  }
+  return str.slice(0, limit) + "...";
+};

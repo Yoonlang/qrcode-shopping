@@ -30,7 +30,7 @@ const StyledAppBar = styled(AppBar)`
 
 const StyledDrawer = styled(Drawer)`
   &.MuiDrawer-root .MuiPaper-root {
-    width: 200px;
+    width: 250px;
   }
 `;
 
