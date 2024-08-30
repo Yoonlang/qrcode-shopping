@@ -34,13 +34,6 @@ const StyledCollapse = styled(Collapse)`
   padding-left: 20px;
 `;
 
-const shortenWithEllipsis = (str: string, limit: number): string => {
-  if (str.length <= limit) {
-    return str;
-  }
-  return str.slice(0, limit) + "...";
-};
-
 const NestedListItem = ({
   selectedFolder,
   folderList,
@@ -99,7 +92,7 @@ const NestedListItem = ({
             <ListItemButton onClick={() => onMenuChange(folder)}>
               <StyledListItemText
                 selected={selectedFolder.id === folder.id}
-                primary={shortenWithEllipsis(folder.name, 8)}
+                primary={folder.name}
               />
               {idx !== folderList.length - 2 && (
                 <EditIcon

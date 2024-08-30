@@ -16,9 +16,9 @@ import { useOverlay } from "@/hooks/useOverlay";
 const StyledBoardContainer = styled.div`
   display: flex;
   position: fixed;
-  left: 200px;
+  left: 250px;
   top: 70px;
-  width: calc(100% - 200px);
+  width: calc(100% - 250px);
   height: calc(100% - 70px);
 `;
 
