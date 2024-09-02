@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import "@testing-library/jest-dom";
 import { act, render, waitFor } from "@testing-library/react";
 import { Suspense } from "react";
@@ -10,27 +11,27 @@ jest.mock("recoil", () => ({
   useRecoilValue: jest.fn(),
 }));
 
-describe("QrCode loading 확인", () => {
-  it("fetchedItemList가 로딩 중일 때, Fragment 반환", () => {
+describe("QrCode 컴포넌트 테스트", () => {
+  it("상품 목록 불러오는 중일 때, 프로그레스 바 렌더링", () => {
     // Given
     (useRecoilValue as jest.Mock).mockImplementation(() => {
       throw new Promise(() => {});
     });
 
     // When
-    const { container } = render(
+    const { getByRole } = render(
       <RecoilRoot>
-        <Suspense fallback={<></>}>
+        <Suspense fallback={<CircularProgress />}>
           <QrCode />
         </Suspense>
       </RecoilRoot>
     );
 
     // Then
-    expect(container).toBeEmptyDOMElement();
+    expect(getByRole("progressbar")).toBeInTheDocument();
   });
 
-  it("fetchedItemList 불러오기 성공 시, video DOMElement 반환", async () => {
+  it("상품 목록 불러오기 성공 시, video 렌더링", async () => {
     // Given
     (useRecoilValue as jest.Mock).mockReturnValue([
       {
@@ -39,7 +40,7 @@ describe("QrCode loading 확인", () => {
     ]);
 
     // When
-    let container;
+    let container: HTMLElement;
     act(() => {
       const renderResult = render(
         <RecoilRoot>
