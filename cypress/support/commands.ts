@@ -1,37 +1,29 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+// NOTE: 사용자 정보를 입력하여 로그인하는 커맨드
+Cypress.Commands.add("login", (email, password) => {
+  cy.get('input[name="email"]').type(email);
+  cy.get('input[name="password"]').type(password);
+  cy.get('button[type="submit"]').click();
+});
+
+// NOTE: 대시보드 초기 데이터를 fetch하는 커맨드
+Cypress.Commands.add("fetchInitialData", () => {
+  cy.intercept("GET", `${Cypress.env("API_VERSION")}/users`).as(
+    "getUsersRequest"
+  );
+  cy.intercept("GET", `${Cypress.env("API_VERSION")}/products`).as(
+    "getProductsRequest"
+  );
+  cy.intercept("GET", `${Cypress.env("API_VERSION")}/folders`).as(
+    "getFoldersRequest"
+  );
+
+  cy.wait([
+    "@getUsersRequest",
+    "@getProductsRequest",
+    "@getFoldersRequest",
+  ]).then((interceptions) => {
+    interceptions.forEach((interception) => {
+      expect(interception.response.statusCode).to.equal(200);
+    });
+  });
+});

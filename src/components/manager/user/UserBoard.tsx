@@ -245,7 +245,7 @@ const UserBoard = ({
   }, []);
 
   return (
-    <StyledUserBoard>
+    <StyledUserBoard data-cy="user-board">
       <div className="header">
         <h3>user / {folder.name}</h3>
         <div>
