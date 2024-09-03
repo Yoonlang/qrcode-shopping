@@ -103,7 +103,7 @@ const QrCode = () => {
   );
 
   const capture = useCallback(
-    (webcam) => {
+    (webcam: Webcam) => {
       const imageSrc = webcam.getScreenshot();
       if (imageSrc) {
         const image = new Image();
@@ -145,7 +145,7 @@ const QrCode = () => {
       <Webcam
         audio={false}
         screenshotFormat="image/png"
-        ref={(node: any) => {
+        ref={(node: Webcam | null) => {
           if (node) {
             intervalRef.current = setInterval(() => {
               capture(node);

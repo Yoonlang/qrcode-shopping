@@ -14,7 +14,8 @@
     "lint-staged": "lint-staged",
     "secure": "next dev --experimental-https",
     "test": "jest --coverage",
-    "test:staged": "node scripts/jest-staged-test.js"
+    "test:staged": "node scripts/jest-staged-test.js",
+    "cypress": "npx cypress open"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -51,6 +52,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@cypress/webpack-preprocessor": "^6.0.2",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
@@ -60,9 +62,11 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
+    "cypress": "^13.13.3",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.1.4",
     "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-cypress": "^3.5.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-sort-react-dependency-arrays": "^0.3.0",
     "husky": "^9.0.11",
