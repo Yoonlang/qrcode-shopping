@@ -10,7 +10,7 @@ import React from "react";
 
 import { postLogin } from "@/api/auth";
 
-const LoginForm = ({ setHasAuth }) => {
+const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const inputData = new FormData(event.currentTarget);
@@ -21,7 +21,7 @@ const LoginForm = ({ setHasAuth }) => {
           password: inputData.get("password"),
         })
       );
-      setHasAuth(true);
+      onLoginSuccess();
     } catch (e) {
       // NOTE: Formik으로 변경 후 errors에서 다룰 예정
       console.log("로그인 실패");

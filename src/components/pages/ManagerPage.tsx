@@ -30,7 +30,15 @@ const ManagerPage = () => {
 
   return (
     <main>
-      {hasAuth ? <Dashboard /> : <LoginForm setHasAuth={setHasAuth} />}
+      {hasAuth ? (
+        <Dashboard />
+      ) : (
+        <LoginForm
+          onLoginSuccess={() => {
+            setHasAuth(true);
+          }}
+        />
+      )}
     </main>
   );
 };

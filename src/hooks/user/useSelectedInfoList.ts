@@ -11,7 +11,7 @@ import {
 
 const useSelectedInfoList = () => {
   const [storedSelectedItemList, handleSelectedItemListUpdate] =
-    useLocalStorageState({ key: "selectedInfoList", value: {} });
+    useLocalStorageState({ key: "selectedInfoList", initialValue: {} });
   const [selectedInfoList, setSelectedInfoList] =
     useRecoilState<SelectedInfoList>(selectedInfoListState);
   const { scannedItemList } = useScannedItemList();
