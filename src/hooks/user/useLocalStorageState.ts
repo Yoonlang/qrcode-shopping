@@ -23,9 +23,9 @@ const useLocalStorageState = <T extends LocalStorageKey>({
     LocalStorageTypeList[T]
   >(() => {
     if (typeof window !== "undefined") {
-      const parsedLocalStorage: LocalStorageTypeList[T] = JSON.parse(
+      const parsedLocalStorage = JSON.parse(
         localStorage.getItem(key) || "{}"
-      );
+      ) as LocalStorageTypeList[T];
       if (Object.keys(parsedLocalStorage).length > 0) {
         return parsedLocalStorage;
       }
