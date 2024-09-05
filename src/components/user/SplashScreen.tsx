@@ -7,7 +7,7 @@ import { MAEIL_TEXT, YOUNGWON_TEXT } from "@/components/const";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "600"],
 });
 
 interface StyledSplashScreenBoxProps {
@@ -53,7 +53,7 @@ const StyledSplashScreenBox = styled("div", {
     color: var(--color-white);
     text-align: center;
     margin: 0;
-    font-weight: 700;
+    font-weight: 600;
 
     line-height: 80px;
   }
