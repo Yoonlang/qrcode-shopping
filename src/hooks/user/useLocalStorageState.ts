@@ -14,10 +14,10 @@ interface LocalStorageTypeList {
 
 const useLocalStorageState = <T extends LocalStorageKey>({
   key,
-  value,
+  initialValue,
 }: {
   key: T;
-  value: LocalStorageTypeList[T];
+  initialValue: LocalStorageTypeList[T];
 }): [LocalStorageTypeList[T], (value: LocalStorageTypeList[T]) => void] => {
   const [localStorageState, setLocalStorageState] = useState<
     LocalStorageTypeList[T]
@@ -26,11 +26,11 @@ const useLocalStorageState = <T extends LocalStorageKey>({
       const parsedLocalStorage: LocalStorageTypeList[T] = JSON.parse(
         localStorage.getItem(key) || "{}"
       );
-      return Object.keys(parsedLocalStorage).length > 0
-        ? parsedLocalStorage
-        : value;
+      if (Object.keys(parsedLocalStorage).length > 0) {
+        return parsedLocalStorage;
+      }
     }
-    return value;
+    return initialValue;
   });
 
   const handleLocalStorageStateUpdate = useCallback(
