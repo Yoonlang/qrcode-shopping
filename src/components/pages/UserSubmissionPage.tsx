@@ -36,7 +36,7 @@ const UserSubmissionPage = () => {
   const [storedFormikValues, handleFormikValuesSyncToLocalStorage] =
     useLocalStorageState({
       key: "form",
-      value: userInfoInitialValues,
+      initialValue: userInfoInitialValues,
     });
   const selectedInfoList = useRecoilValue(selectedInfoListState);
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);

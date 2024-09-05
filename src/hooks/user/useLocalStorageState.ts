@@ -34,10 +34,10 @@ const useLocalStorageState = <T extends LocalStorageKey>({
   });
 
   const handleLocalStorageStateUpdate = useCallback(
-    (x: LocalStorageTypeList[T]) => {
-      setLocalStorageState(x);
+    (value: LocalStorageTypeList[T]) => {
+      setLocalStorageState(value);
       if (typeof window !== "undefined") {
-        localStorage.setItem(key, JSON.stringify(x));
+        localStorage.setItem(key, JSON.stringify(value));
       }
     },
     [key]
