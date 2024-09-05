@@ -1,26 +1,19 @@
 import { dir } from "i18next";
 import { Metadata } from "next";
-import { Noto_Sans, Noto_Sans_JP, Noto_Sans_SC } from "next/font/google";
+import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 
 import { META } from "@/components/const";
+import { Language } from "@/const";
 import { i18nConfig } from "@/i18n";
 
 export function generateStaticParams() {
   return i18nConfig.locales.map((locale) => ({ locale }));
 }
 
-const NotoSans = Noto_Sans({
-  subsets: ["latin"],
-});
-
-const NotoSansSc = Noto_Sans_SC({
-  subsets: ["latin"],
-});
-
-const NotoSansJp = Noto_Sans_JP({
-  subsets: ["latin"],
-});
+const NotoSans = dynamic(() => import("@/components/fonts/NotoSans"));
+const NotoSansSc = dynamic(() => import("@/components/fonts/NotoSansSc"));
+const NotoSansJp = dynamic(() => import("@/components/fonts/NotoSansJp"));
 
 const { title, description, url, ogImage, siteName, type } = META;
 
@@ -55,14 +48,14 @@ export const metadata: Metadata = {
   },
 };
 
-const getFontByLocale = (locale) => {
+const getFontComponent = (locale: Language) => {
   switch (locale) {
     case "zh":
-      return NotoSansSc.className;
+      return NotoSansSc;
     case "ja":
-      return NotoSansJp.className;
+      return NotoSansJp;
     default:
-      return NotoSans.className;
+      return NotoSans;
   }
 };
 
@@ -72,12 +65,14 @@ export default function RootLayout({
 }: {
   children: ReactNode;
   params: {
-    locale: string;
+    locale: Language;
   };
 }) {
+  const FontContainer = getFontComponent(locale);
+
   return (
     <html lang={locale} dir={dir(locale)}>
-      <body className={getFontByLocale(locale)}>{children}</body>
+      <FontContainer>{children}</FontContainer>
     </html>
   );
 }
