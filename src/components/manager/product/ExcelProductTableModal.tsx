@@ -42,7 +42,7 @@ const ExcelProductTableModal = ({
     const { __rowNum__, ...rest } = p;
     return {
       ...rest,
-      id: __rowNum__,
+      id: __rowNum__ + 1,
     };
   });
 

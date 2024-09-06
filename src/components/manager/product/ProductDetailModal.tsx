@@ -68,9 +68,9 @@ const ProductDetailModal = ({
   product: Product;
   updateProductList: () => Promise<void>;
 }) => {
-  const [editedProduct, setEditedProduct] = useState<Product | null>(null);
+  const [editedProduct, setEditedProduct] = useState<Product>(product);
   const { productId, image, composition, weightGPerM2, widthInch, colors } =
-    editedProduct ? editedProduct : product;
+    editedProduct;
   const overlay = useOverlay();
 
   const rows = colors.map(({ colorName, colorId }) => {
@@ -123,7 +123,7 @@ const ProductDetailModal = ({
               overlay.open((control) => (
                 <ProductEditModal
                   overlayControl={control}
-                  product={product}
+                  product={editedProduct}
                   onProductUpdate={(p) => {
                     setEditedProduct(p);
                     void updateProductList();
