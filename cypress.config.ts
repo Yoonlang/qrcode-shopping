@@ -4,6 +4,9 @@ import { fileURLToPath } from "url";
 import webpack from "@cypress/webpack-preprocessor";
 import { defineConfig } from "cypress";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
@@ -12,11 +15,23 @@ export default defineConfig({
           resolve: {
             extensions: [".ts", ".tsx"],
             alias: {
-              cypress: path.resolve(
-                dirname(fileURLToPath(import.meta.url)),
-                "cypress"
-              ),
+              cypress: path.resolve(__dirname, "cypress"),
+              src: path.resolve(__dirname, "src"),
             },
+          },
+          module: {
+            rules: [
+              {
+                test: /\.tsx?$/,
+                use: [
+                  {
+                    loader: "ts-loader",
+                    options: { transpileOnly: true },
+                  },
+                ],
+                exclude: /node_modules/,
+              },
+            ],
           },
         },
       });

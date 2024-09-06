@@ -1,8 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["cypress", "node", "./support"]
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["esnext", "dom"],
+    "types": ["cypress", "node", "./support"],
+    "esModuleInterop": true,
+    "paths": {
+      "cypress/*": ["./cypress/*"],
+      "src/*": ["../src/*"]
+    }
   },
-  "include": ["**/*.ts"]
+  "include": ["./**/*.ts", "../cypress.config.ts"]
 }
