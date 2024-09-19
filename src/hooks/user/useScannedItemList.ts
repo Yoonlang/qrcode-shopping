@@ -9,7 +9,7 @@ import {
 
 const useScannedItemList = () => {
   const [storedScannedItemList, handleScannedItemListUpdate] =
-    useLocalStorageState({ key: "scannedItemList", value: {} });
+    useLocalStorageState({ key: "scannedItemList", initialValue: {} });
   const [scannedItemList, setScannedItemList] =
     useRecoilState<ScannedItemList>(scannedItemListState);
 

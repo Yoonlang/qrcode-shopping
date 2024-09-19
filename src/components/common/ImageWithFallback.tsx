@@ -1,6 +1,6 @@
 import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface ImageWithFallbackProps {
   width: number;
@@ -10,13 +10,13 @@ interface ImageWithFallbackProps {
   className?: string;
 }
 
-const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
+const ImageWithFallback = ({
   width,
   height,
   src,
   alt = "",
   className = "",
-}) => {
+}: ImageWithFallbackProps) => {
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {

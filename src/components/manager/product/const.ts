@@ -56,10 +56,7 @@ export const productEditionSchema = yup.object().shape({
     .nullable()
     .test("fileType", (value) => {
       if (!value) return true;
-      return (
-        value instanceof File &&
-        ["image/jpeg", "image/png"].includes(value.type)
-      );
+      return value instanceof File;
     }),
   colors: yup.array().of(yup.string()),
   composition: yup.string().defined(),

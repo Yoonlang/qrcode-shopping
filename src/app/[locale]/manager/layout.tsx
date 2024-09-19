@@ -1,13 +1,9 @@
-import { Noto_Sans } from "next/font/google";
+import { ReactNode } from "react";
 
-const NotoSans = Noto_Sans({
-  subsets: ["latin"],
-});
-
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={"ko"}>
-      <body className={NotoSans.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
