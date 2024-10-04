@@ -85,7 +85,11 @@ const UserDetailModal = ({
   };
 
   return (
-    <StyledModal open={overlayControl.isOpen} onClose={overlayControl.exit}>
+    <StyledModal
+      open={overlayControl.isOpen}
+      onClose={overlayControl.exit}
+      data-testid="user-detail-modal"
+    >
       <StyledModalContainer>
         <h2>User Info</h2>
         <h4>Personal Info</h4>

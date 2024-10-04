@@ -65,7 +65,11 @@ const UserTextActionModal = ({
   }, [overlayControl.isOpen]);
 
   return (
-    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
+    <Modal
+      open={overlayControl.isOpen}
+      onClose={overlayControl.exit}
+      data-testid="text-action-modal"
+    >
       <StyledModalContainer>
         <h3>텍스트 설정</h3>
         <p>해당 텍스트는 앞으로의 유저 ID와 PDF 파일명에 적용됩니다.</p>

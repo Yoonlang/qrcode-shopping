@@ -24,7 +24,7 @@ describe("로그인 테스트", () => {
 
       // NOTE: 대시보드의 초기 데이터를 fetch하고 User 테이블을 볼 수 있음
       cy.fetchInitialData();
-      cy.get('[data-cy="user-board"]')
+      cy.get('[data-testid="user-board"]')
         .find("h3")
         .should("have.text", "user / 전체");
     });

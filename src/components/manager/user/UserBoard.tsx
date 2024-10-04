@@ -245,7 +245,7 @@ const UserBoard = ({
   }, []);
 
   return (
-    <StyledUserBoard data-cy="user-board">
+    <StyledUserBoard data-testid="user-board">
       <div className="header">
         <h3>user / {folder.name}</h3>
         <div>
@@ -256,6 +256,7 @@ const UserBoard = ({
                   <UserTextActionModal overlayControl={control} />
                 ));
               }}
+              data-testid="text-action-button"
             >
               텍스트 설정
             </Button>
@@ -269,7 +270,10 @@ const UserBoard = ({
             </>
           ) : (
             <>
-              <Button onClick={handleUserPdfDownloadButtonClick}>
+              <Button
+                onClick={handleUserPdfDownloadButtonClick}
+                data-testid="pdf-download-button"
+              >
                 PDF 다운로드
               </Button>
               <Button
@@ -283,6 +287,7 @@ const UserBoard = ({
                     ></UserCopyModal>
                   ));
                 }}
+                data-testid="user-copy-button"
               >
                 선택한 유저 정보 복사
               </Button>
