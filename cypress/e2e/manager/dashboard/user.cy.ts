@@ -46,4 +46,38 @@ describe("User 대시보드 테스트", () => {
     cy.get("body").click(0, 0);
     cy.get('[data-testid="user-detail-modal"]').should("not.exist");
   });
+
+  it("user 아이디 및 PDF 파일명에 prefix로 붙을 텍스트를 설정할 수 있다.", () => {
+    cy.intercept("GET", `${Cypress.env("API_VERSION")}/text`).as(
+      "getTextRequest"
+    );
+
+    cy.get('[data-testid="text-action-button"]').click();
+
+    cy.wait("@getTextRequest").then((interception) => {
+      expect(interception.response.statusCode).equal(200);
+
+      // NOTE: 텍스트 GET API 정상 동작 확인 후 텍스트 변경
+      cy.get('[data-testid="text-action-modal"]').find("input").clear();
+      cy.get('[data-testid="text-action-modal"]').find("input").type("TEST");
+      cy.get('[data-testid="text-action-modal"]')
+        .find('button[type="submit"]')
+        .click();
+
+      // NOTE: 설정 텍스트 변경 성공 모달 닫기
+      cy.get('.MuiDialog-paper[role="dialog"]').find("button").click();
+
+      // NOTE: 정상적으로 변경되었는지 확인
+      cy.get('[data-testid="text-action-button"]').click();
+
+      cy.wait("@getTextRequest").then((interception) => {
+        expect(interception.response.statusCode).equal(200);
+        expect(interception.response.body.text).equal("TEST");
+
+        cy.get('[data-testid="text-action-modal"]')
+          .find("input")
+          .should("have.value", "TEST");
+      });
+    });
+  });
 });
