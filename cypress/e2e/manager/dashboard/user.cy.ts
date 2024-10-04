@@ -80,4 +80,55 @@ describe("User 대시보드 테스트", () => {
       });
     });
   });
+
+  it("user를 선택할 수 있다.", () => {
+    cy.get(".MuiDataGrid-row[data-rowindex='0']")
+      .find('input[type="checkbox"]')
+      .check();
+    cy.get(".MuiDataGrid-row[data-rowindex='1']")
+      .find('input[type="checkbox"]')
+      .check();
+    cy.get(".MuiDataGrid-row[data-rowindex='2']")
+      .find('input[type="checkbox"]')
+      .check();
+  });
+
+  context("선택한 user에 대해", () => {
+    beforeEach(() => {
+      // NOTE: 데이터 션택
+      cy.get(".MuiDataGrid-row[data-rowindex='0']")
+        .find('input[type="checkbox"]')
+        .check();
+    });
+
+    it("user 정보가 담긴 PDF를 다운할 수 있다.", () => {
+      cy.get("[data-testid='pdf-download-button']").click();
+
+      cy.get(".MuiDataGrid-row[data-rowindex='0']")
+        .find('[data-field="id"]')
+        .invoke("text")
+        .then((idText) => {
+          // NOTE: pdf 파일이 존재하는지 확인
+          cy.readFile(`cypress/downloads/${idText}.pdf`, "binary", {
+            timeout: 15000,
+          }).should("exist");
+        });
+    });
+
+    it("여러 user에 대한 정보가 담긴 PDF를 zip 파일로 다운할 수 있다.", () => {
+      cy.get(".MuiDataGrid-row[data-rowindex='1']")
+        .find('input[type="checkbox"]')
+        .check();
+      cy.get(".MuiDataGrid-row[data-rowindex='2']")
+        .find('input[type="checkbox"]')
+        .check();
+
+      cy.get("[data-testid='pdf-download-button']").click();
+
+      // NOTE: zip 파일이 존재하는지 확인
+      cy.readFile("cypress/downloads/pdfs.zip", "binary", {
+        timeout: 15000,
+      }).should("have.length.gt", 0);
+    });
+  });
 });
