@@ -157,7 +157,11 @@ const UserCopyModal = ({
   };
 
   return (
-    <Modal open={overlayControl.isOpen} onClose={overlayControl.exit}>
+    <Modal
+      open={overlayControl.isOpen}
+      onClose={overlayControl.exit}
+      data-testid="user-copy-modal"
+    >
       <StyledModalContainer>
         <h3>복사할 정보를 선택하세요.</h3>
         <FormControlLabel
