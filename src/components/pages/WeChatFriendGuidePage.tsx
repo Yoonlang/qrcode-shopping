@@ -210,11 +210,12 @@ const WeChatFriendGuidePage = () => {
       <StyledWeChatQRBox>
         <Image
           width={200}
-          height={200}
-          src={"/images/WeChatQR.png"}
+          height={264}
+          // src={"/images/WeChatQR.png"}
+          src={"/images/WeChatQR1.jpeg"}
           alt="wechat-qr"
         />
-        <p>weChat ID : jayywmaeil</p>
+        <p>weChat ID : Mae_il</p>
       </StyledWeChatQRBox>
       {guides.map((guide, idx) => (
         <GuideStep key={`guide${idx}`} step={idx + 1} content={guide.content}>
