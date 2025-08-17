@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { t } from "i18next";
 import jsQR from "jsqr";
 import { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Webcam from "react-webcam";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -86,6 +86,7 @@ const QrCode = () => {
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+  const { t } = useTranslation();
 
   const showDuplicateMessage = useCallback(() => {
     if (throttleRef.current) {
