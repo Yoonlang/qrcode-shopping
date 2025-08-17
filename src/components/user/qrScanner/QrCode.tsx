@@ -1,11 +1,14 @@
 import styled from "@emotion/styled";
+import { t } from "i18next";
 import jsQR from "jsqr";
 import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
+import { snackBarStatusMessage } from "@/components/const";
 import useScannedItemList from "@/hooks/user/useScannedItemList";
 import { fetchedItemListSelector } from "@/recoil/user/atoms/fetchedItemListState";
+import { messageSnackBarState } from "@/recoil/user/atoms/messageSnackBarState";
 
 const CAPTURE_DELAY_MS = 100;
 
@@ -81,6 +84,7 @@ const QrCode = () => {
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
+  const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
 
   const imageScan = useCallback(
     (imageData: ImageData) => {
@@ -89,14 +93,23 @@ const QrCode = () => {
         const [pre, pid] = code.data.split("/");
         if (
           pre === "products" &&
-          fetchedItemList.some(({ productId }) => pid === productId) &&
-          !Object.keys(scannedItemList).some((productId) => pid === productId)
-        )
-          setScannedItemList((old) => {
-            const newScannedItemList = { ...old };
-            newScannedItemList[pid] = true;
-            return newScannedItemList;
-          });
+          fetchedItemList.some(({ productId }) => pid === productId)
+        ) {
+          if (
+            !Object.keys(scannedItemList).some((productId) => pid === productId)
+          ) {
+            setScannedItemList((old) => {
+              const newScannedItemList = { ...old };
+              newScannedItemList[pid] = true;
+              return newScannedItemList;
+            });
+          } else {
+            setMessageSnackBarState({
+              message: t(snackBarStatusMessage["duplicate"]),
+              isMessageSnackBarOpen: true,
+            });
+          }
+        }
       }
     },
     [fetchedItemList, scannedItemList, setScannedItemList]
