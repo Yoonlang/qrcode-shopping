@@ -81,10 +81,26 @@ const QrScannerBox = () => {
 
 const QrCode = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const throttleRef = useRef<NodeJS.Timeout | null>(null);
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
   const fetchedItemList = useRecoilValue(fetchedItemListSelector);
   const { scannedItemList, setScannedItemList } = useScannedItemList();
   const setMessageSnackBarState = useSetRecoilState(messageSnackBarState);
+
+  const showDuplicateMessage = useCallback(() => {
+    if (throttleRef.current) {
+      return;
+    }
+
+    setMessageSnackBarState({
+      message: t(snackBarStatusMessage["duplicate"]),
+      isMessageSnackBarOpen: true,
+    });
+
+    throttleRef.current = setTimeout(() => {
+      throttleRef.current = null;
+    }, 2000);
+  }, [setMessageSnackBarState]);
 
   const imageScan = useCallback(
     (imageData: ImageData) => {
@@ -104,15 +120,12 @@ const QrCode = () => {
               return newScannedItemList;
             });
           } else {
-            setMessageSnackBarState({
-              message: t(snackBarStatusMessage["duplicate"]),
-              isMessageSnackBarOpen: true,
-            });
+            showDuplicateMessage();
           }
         }
       }
     },
-    [fetchedItemList, scannedItemList, setScannedItemList]
+    [fetchedItemList, scannedItemList, setScannedItemList, showDuplicateMessage]
   );
 
   const capture = useCallback(
