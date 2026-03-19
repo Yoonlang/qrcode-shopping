@@ -3,6 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import {
   Collapse,
   ListItem,
@@ -11,7 +12,9 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Icons from "@/components/common/Icons";
 import { StyledDrawer, StyledList } from "@/components/manager/DashboardItems";
@@ -146,6 +149,10 @@ const Menu = ({
   onMenuChange: (folder: Folder) => void;
   onBoardUpdate: () => void;
 }) => {
+  const { i18n } = useTranslation();
+  const currentLocale = i18n.language;
+  const router = useRouter();
+
   const userFolderList = sortFolderListByType(folderList, "user");
   const productFolderList = sortFolderListByType(folderList, "product");
 
@@ -153,6 +160,16 @@ const Menu = ({
     <StyledDrawer variant="permanent" anchor="left">
       <Toolbar />
       <StyledList>
+        <ListItem>
+          <ListItemButton
+            onClick={() => {
+              router.push(`/${currentLocale}/manager/chat`);
+            }}
+          >
+            <ListItemIcon><SmartToyIcon /></ListItemIcon>
+            <ListItemText primary="AI 에이전트" />
+          </ListItemButton>
+        </ListItem>
         <NestedListItem
           selectedFolder={selectedFolder}
           folderList={userFolderList}
