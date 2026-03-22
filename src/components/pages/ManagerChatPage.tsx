@@ -12,6 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SERVER_URL } from "@/components/const";
 
 const ChatContainer = styled(Paper)`
   display: flex;
@@ -77,6 +78,7 @@ const ManagerChatPage = () => {
   const currentLocale = i18n.language;
 
   const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -86,23 +88,44 @@ const ManagerChatPage = () => {
     },
   ]);
 
-  const handleSend = () => {
-    if (!inputText.trim()) return;
+  const handleSend = async () => {
+    if (!inputText.trim() || isLoading) return;
 
+    const targetMessage = inputText;
     const newUserMsg: ChatMessage = {
       id: Date.now().toString(),
       role: "user",
-      content: inputText,
+      content: targetMessage,
     };
-    const newAiMsg: ChatMessage = {
-      id: (Date.now() + 1).toString(),
-      role: "ai",
-      content:
-        "접수되었습니다! 기능 개발을 시작합니다. (현재는 통신이 연결되지 않은 UI 더미 상태입니다.)",
-    };
-
-    setMessages([...messages, newUserMsg, newAiMsg]);
+    
+    setMessages((prev) => [...prev, newUserMsg]);
     setInputText("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${SERVER_URL}/v1/ai-chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: targetMessage }),
+      });
+      const data = await response.json();
+      
+      const newAiMsg: ChatMessage = {
+         id: (Date.now() + 1).toString(),
+         role: "ai",
+         content: data.reply ?? "에러: 응답을 파싱할 수 없습니다."
+      };
+      setMessages((prev) => [...prev, newAiMsg]);
+    } catch (err) {
+      const errorMsg: ChatMessage = {
+         id: (Date.now() + 1).toString(),
+         role: "ai",
+         content: `통신 에러: ${(err as Error).message}`
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleBack = () => {
@@ -136,7 +159,9 @@ const ManagerChatPage = () => {
           placeholder="AI 개발자에게 명령을 입력하세요"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
+          disabled={isLoading}
           onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing) return;
             if (e.key === "Enter") handleSend();
           }}
           size="small"
@@ -144,6 +169,7 @@ const ManagerChatPage = () => {
         <IconButton
           color="primary"
           onClick={handleSend}
+          disabled={isLoading}
           style={{ marginLeft: "12px" }}
         >
           <SendIcon />
