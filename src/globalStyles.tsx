@@ -9,7 +9,7 @@ const GlobalStyle = () => (
         --color-white: #ffffff;
         --color-red: #ff0000;
         --color-green: #42ff00;
-        --color-blue: #3da3f5;
+        --color-blue: #4682B4; /* Changed from #0000FF to #4682B4 (Steel Blue) */
         --color-gray-10: #fafafa;
         --color-gray-20: #f5f5f5;
         --color-gray-30: #eeeeee;
