@@ -80,6 +80,7 @@ const ManagerChatPage = () => {
 
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [aiStatus, setAiStatus] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -109,14 +110,45 @@ const ManagerChatPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: targetMessage }),
       });
-      const data = await response.json();
+
+      if (!response.body) throw new Error("서버 응답이 없습니다.");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
       
-      const newAiMsg: ChatMessage = {
-         id: (Date.now() + 1).toString(),
-         role: "ai",
-         content: data.reply ?? "에러: 응답을 파싱할 수 없습니다."
-      };
-      setMessages((prev) => [...prev, newAiMsg]);
+      let done = false;
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          const chunk = decoder.decode(value, { stream: true });
+          const events = chunk.split("\n\n").filter(Boolean);
+          
+          for (const ev of events) {
+            if (ev.startsWith("data: ")) {
+              const dataStr = ev.replace("data: ", "");
+              try {
+                const parsed = JSON.parse(dataStr);
+                if (parsed.type === "status") {
+                  setAiStatus(parsed.message);
+                } else if (parsed.type === "result") {
+                  const newAiMsg: ChatMessage = {
+                    id: Date.now().toString(),
+                    role: "ai",
+                    content: parsed.reply
+                  };
+                  setMessages((prev) => [...prev, newAiMsg]);
+                  setAiStatus("");
+                } else if (parsed.type === "error") {
+                  throw new Error(parsed.error);
+                }
+              } catch (e) {
+                // JSON parse error or incomplete chunk
+              }
+            }
+          }
+        }
+      }
     } catch (err) {
       const errorMsg: ChatMessage = {
          id: (Date.now() + 1).toString(),
@@ -124,6 +156,7 @@ const ManagerChatPage = () => {
          content: `통신 에러: ${(err as Error).message}`
       };
       setMessages((prev) => [...prev, errorMsg]);
+      setAiStatus("");
     } finally {
       setIsLoading(false);
     }
@@ -150,6 +183,25 @@ const ManagerChatPage = () => {
               <Typography variant="body1">{msg.content}</Typography>
             </MessageBubble>
           ))}
+          {isLoading && aiStatus && (
+            <MessageBubble isai={1}>
+              <Typography variant="body2" color="textSecondary" style={{ fontStyle: "italic" }}>
+                🤖 {aiStatus.split('\n').map((line, i) => (
+                  <span key={i}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </Typography>
+            </MessageBubble>
+          )}
+          {isLoading && !aiStatus && (
+            <MessageBubble isai={1}>
+              <Typography variant="body2" color="textSecondary">
+                ...
+              </Typography>
+            </MessageBubble>
+          )}
         </div>
       </ChatHistoryList>
 
