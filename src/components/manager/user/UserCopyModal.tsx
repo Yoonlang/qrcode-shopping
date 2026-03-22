@@ -106,6 +106,9 @@ const UserCopyModal = ({
                 user.personalInfo.contactInfo.phoneNumber;
               return `=${JSON.stringify(countryCode + number)}`;
             }
+            case "email": { // Add this case
+              return user.personalInfo.contactInfo.email || " ";
+            }
             case "companyAddress":
             case "shippingAddress": {
               const address = user.personalInfo[option];
