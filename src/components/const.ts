@@ -38,6 +38,7 @@ export const snackBarStatusMessage = {
   option: `Please select at least one option`,
   invalid: `Please enter valid information`,
   complete: `Successfully submitted`,
+  duplicate: `You have already scanned this item`,
 };
 
 export const YOUNGWON_TEXT = "YOUNGWON";
