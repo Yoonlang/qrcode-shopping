@@ -61,9 +61,7 @@ const Dashboard = () => {
   return (
     <>
       <StyledAppBar>
-        <div>YOUNGWON</div>
-        <div className="icon">{Icons["x"]}</div>
-        <div>MAEIL</div>
+        <div>AI 봇 테스트 성공</div>
       </StyledAppBar>
       <Menu
         selectedFolder={selectedFolder}
