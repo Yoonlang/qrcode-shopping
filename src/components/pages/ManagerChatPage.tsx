@@ -12,6 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+
 import { SERVER_URL } from "@/components/const";
 
 const ChatContainer = styled(Paper)`
@@ -162,7 +163,7 @@ const ManagerChatPage = () => {
           disabled={isLoading}
           onKeyDown={(e) => {
             if (e.nativeEvent.isComposing) return;
-            if (e.key === "Enter") handleSend();
+            if (e.key === "Enter") void handleSend();
           }}
           size="small"
         />
