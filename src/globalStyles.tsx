@@ -4,7 +4,7 @@ const GlobalStyle = () => (
   <Global
     styles={css`
       * {
-        --color-primary: #323232;
+        --color-primary: var(--color-red); /* Changed from #323232 to var(--color-red) */
         --color-black: #000000;
         --color-white: #ffffff;
         --color-red: #ff0000;
