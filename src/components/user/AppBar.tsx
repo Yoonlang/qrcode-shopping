@@ -16,7 +16,7 @@ const StyledTitleAppBar = styled(AppBar)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--color-white);
+  background-color: blue; /* Changed from var(--color-white) to blue */
   width: 100%;
   height: 56px;
 
