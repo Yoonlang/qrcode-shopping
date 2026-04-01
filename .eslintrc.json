@@ -18,6 +18,14 @@
     "next/core-web-vitals",
     "plugin:cypress/recommended"
   ],
+  "overrides": [
+    {
+      "files": ["cypress/**/*.ts", "cypress.config.ts"],
+      "parserOptions": {
+        "project": "./cypress/tsconfig.json"
+      }
+    }
+  ],
   "settings": {
     "import/resolver": {
       "typescript": {
